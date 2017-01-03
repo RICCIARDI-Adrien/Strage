@@ -5,14 +5,13 @@
 #include <cstdlib>
 #include <Log.hpp>
 #include <SDL2/SDL.h>
-
-#include <Texture.hpp>
+#include <TextureManager.hpp>
 
 //-------------------------------------------------------------------------------------------------
 // Private variables
 //-------------------------------------------------------------------------------------------------
 /** The game window. */
-static SDL_Window *pointerMainWindow;
+static SDL_Window *pointerMainWindow; // TODO put _ if really private
 
 //-------------------------------------------------------------------------------------------------
 // Public variables
@@ -22,9 +21,12 @@ SDL_Renderer *pointerMainRenderer;
 //-------------------------------------------------------------------------------------------------
 // Private functions
 //-------------------------------------------------------------------------------------------------
-/** Automatically close SDL resources on program shutdown. */
-static void exitUninitializeSdl()
+/** Automatically free allocated resources on program shutdown. */
+static void exitFreeResources()
 {
+	TextureManager::textureManagerUninitialize();
+	
+	SDL_DestroyRenderer(pointerMainRenderer);
 	SDL_DestroyWindow(pointerMainWindow);
 	SDL_Quit();
 }
@@ -43,7 +45,7 @@ static int sdlInitialize()
 	}
 	
 	// Create the game window (fullscreen mode)
-	pointerMainWindow = SDL_CreateWindow("Strage", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, CONFIGURATION_DISPLAY_WIDTH, CONFIGURATION_DISPLAY_HEIGHT, /*SDL_WINDOW_FULLSCREEN |*/ SDL_WINDOW_INPUT_GRABBED); // TODO enable fullscreen
+	pointerMainWindow = SDL_CreateWindow("Strage", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, CONFIGURATION_DISPLAY_WIDTH, CONFIGURATION_DISPLAY_HEIGHT, /*SDL_WINDOW_FULLSCREEN*/ 0); // TODO enable fullscreen
 	if (pointerMainWindow == NULL)
 	{
 		LOG("Error : failed to create the main window (%s).\n", SDL_GetError());
@@ -57,9 +59,6 @@ static int sdlInitialize()
 		LOG("Error : failed to create the main renderer (%s).\n", SDL_GetError());
 		goto Exit_Error_Destroy_Window;
 	}
-	
-	// Automatically dispose of SDL resources on program exit
-	atexit(exitUninitializeSdl);
 	
 	// Everything went fine
 	return 0;
@@ -79,19 +78,39 @@ Exit_Error:
 //-------------------------------------------------------------------------------------------------
 int main(void)
 {
-	sdlInitialize();
+	SDL_Event event;
 	
-	Texture t("Textures/0.bmp");
+	// Engine initialization
+	if (sdlInitialize() != 0) return -1; // TODO put in renderer
+	if (TextureManager::textureManagerInitialize() != 0) return -1;
+	
+	// Automatically dispose of allocated resources on program exit
+	atexit(exitFreeResources);
+	LOG("Information : game engine successfully initialized.\n");
+	
+	/*Texture t("Textures/0.bmp");
 	Texture t2("Textures/Player.bmp");
 	
 	SDL_RenderClear(pointerMainRenderer);
 	SDL_RenderCopy(pointerMainRenderer, t.getTexture(), NULL, NULL);
 	SDL_RenderCopy(pointerMainRenderer, t2.getTexture(), NULL, NULL);
-	SDL_RenderPresent(pointerMainRenderer);
+	SDL_RenderPresent(pointerMainRenderer);*/
 	
-	getchar();
+	while (1)
+	{
+		// Handle all events
+		while (SDL_PollEvent(&event))
+		{
+			switch (event.type)
+			{
+				case SDL_QUIT:
+					goto Exit;
+			}
+		}
+	}
+	
+Exit:
 	
 	
-	LOG("Information : game engine successfully initialized.\n");
 	return 0;
 }
