@@ -33,7 +33,7 @@ static void exitUninitializeSdl()
  * @return 0 if all went successful,
  * @return -1 if an error occurred.
  */
-static int initializeSdl()
+static int sdlInitialize()
 {
 	// Initialize the needed subsystems
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0)
@@ -79,7 +79,7 @@ Exit_Error:
 //-------------------------------------------------------------------------------------------------
 int main(void)
 {
-	initializeSdl();
+	sdlInitialize();
 	
 	Texture t("Textures/0.bmp");
 	Texture t2("Textures/Player.bmp");

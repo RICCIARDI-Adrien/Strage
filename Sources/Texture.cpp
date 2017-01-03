@@ -21,8 +21,13 @@ SDL_Texture *Texture::loadFromBitmap(const char *fileName)
 		return NULL;
 	}
 	
-	// Set the transparent color
-	// TODO
+	// Set the transparent color as bright green (lime)
+	unsigned int transparentColor = SDL_MapRGB(pointerSurface->format, 0x00, 0xFF, 0x00);
+	if (SDL_SetColorKey(pointerSurface, SDL_TRUE, transparentColor) != 0)
+	{
+		LOG("Error : failed to set the surface transparent color (%s).\n", SDL_GetError());
+		return NULL;
+	}
 	
 	// Convert the surface to a texture
 	SDL_Texture *pointerTexture = SDL_CreateTextureFromSurface(pointerMainRenderer, pointerSurface);
