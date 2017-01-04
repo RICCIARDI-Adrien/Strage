@@ -5,7 +5,7 @@
 #ifndef HPP_TEXTURE_MANAGER_HPP
 #define HPP_TEXTURE_MANAGER_HPP
 
-namespace TextureManager
+namespace TextureManager // TODO is TextureManager useful ?
 {
 
 /** All available tile textures. */

@@ -6,6 +6,9 @@
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
 
+namespace Renderer
+{
+
 //-------------------------------------------------------------------------------------------------
 // Private variables
 //-------------------------------------------------------------------------------------------------
@@ -15,12 +18,12 @@ static SDL_Window *_pointerMainWindow;
 //-------------------------------------------------------------------------------------------------
 // Public variables
 //-------------------------------------------------------------------------------------------------
-SDL_Renderer *Renderer::pointerMainRenderer;
+SDL_Renderer *pointerMainRenderer;
 
 //-------------------------------------------------------------------------------------------------
 // Public functions
 //-------------------------------------------------------------------------------------------------
-int Renderer::initialize()
+int initialize()
 {
 	// Initialize the needed subsystems
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0)
@@ -58,9 +61,11 @@ Exit_Error:
 	return -1;
 }
 
-void Renderer::uninitialize()
+void uninitialize()
 {
 	SDL_DestroyRenderer(pointerMainRenderer);
 	SDL_DestroyWindow(_pointerMainWindow);
 	SDL_Quit();
+}
+
 }

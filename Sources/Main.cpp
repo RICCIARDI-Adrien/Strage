@@ -4,6 +4,7 @@
  */
 #include <cstdlib>
 #include <Log.hpp>
+#include <LevelManager.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
 #include <TextureManager.hpp>
@@ -14,6 +15,7 @@
 /** Automatically free allocated resources on program shutdown. */
 static void exitFreeResources()
 {
+	LevelManager::uninitialize();
 	TextureManager::uninitialize();
 	Renderer::uninitialize(); // Must be called at the end because it stops SDL
 }
@@ -29,6 +31,7 @@ int main(void)
 	// Engine initialization
 	if (Renderer::initialize() != 0) return -1;
 	if (TextureManager::initialize() != 0) return -1;
+	if (LevelManager::initialize() != 0) return -1;
 	
 	// Automatically dispose of allocated resources on program exit (allowing to use exit() elsewhere in the program)
 	atexit(exitFreeResources);
@@ -57,12 +60,19 @@ int main(void)
 			}
 		}
 		
+		// Start rendering
+		SDL_RenderClear(Renderer::pointerMainRenderer);
+		
+		// Render the level walls
+		LevelManager::renderScene(0, 0);
+		
+		SDL_RenderPresent(Renderer::pointerMainRenderer);
+		
 		// Wait enough time to achieve a 60Hz refresh rate
 		Elapsed_Time = SDL_GetTicks() - Starting_Time;
 		if (Elapsed_Time < CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS) SDL_Delay(CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS - Elapsed_Time);
 	}
 	
 Exit:
-	exitFreeResources();
 	return 0;
 }
