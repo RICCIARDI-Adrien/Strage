@@ -6,6 +6,7 @@
 #include <LevelManager.hpp>
 #include <Log.hpp>
 #include <Texture.hpp>
+#include <TextureManager.hpp>
 
 namespace LevelManager
 {
@@ -55,15 +56,15 @@ static Block *_pointerLevelBlocks[CONFIGURATION_LEVEL_MAXIMUM_WIDTH * CONFIGURAT
 int initialize()
 {
 	// Create all blocks
-	_blocks[BLOCK_ID_RIVER_SAND].pointerTexture = new Texture(CONFIGURATION_PATH_TEXTURES "/River_Sand.bmp");
+	_blocks[BLOCK_ID_RIVER_SAND].pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_RIVER_SAND);
 	_blocks[BLOCK_ID_RIVER_SAND].isColliding = 0;
-	_blocks[BLOCK_ID_GRASS].pointerTexture = new Texture(CONFIGURATION_PATH_TEXTURES "/Grass.bmp");
+	_blocks[BLOCK_ID_GRASS].pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_GREEN_GRASS);
 	_blocks[BLOCK_ID_GRASS].isColliding = 0;
-	_blocks[BLOCK_ID_WALL_STONE_1].pointerTexture = new Texture(CONFIGURATION_PATH_TEXTURES "/Wall_Stone_1.bmp");
+	_blocks[BLOCK_ID_WALL_STONE_1].pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_WALL_STONE_1);
 	_blocks[BLOCK_ID_WALL_STONE_1].isColliding = 1;
-	_blocks[BLOCK_ID_DIRT_1].pointerTexture = new Texture(CONFIGURATION_PATH_TEXTURES "/Dirt_1.bmp");
+	_blocks[BLOCK_ID_DIRT_1].pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_DIRT_1);
 	_blocks[BLOCK_ID_DIRT_1].isColliding = 0;
-	_blocks[BLOCK_ID_DIRT_2].pointerTexture = new Texture(CONFIGURATION_PATH_TEXTURES "/Dirt_2.bmp");
+	_blocks[BLOCK_ID_DIRT_2].pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_DIRT_2);
 	_blocks[BLOCK_ID_DIRT_2].isColliding = 0;
 	
 	// Compute the amount of blocks that can be simultanously displayed on the current display
@@ -85,10 +86,7 @@ int initialize()
 
 void uninitialize()
 {
-	int i;
-	
-	// Free all block textures
-	for (i = 0; i < BLOCK_IDS_COUNT; i++) delete _blocks[i].pointerTexture;
+	// TODO if needed
 }
 
 /*int loadLevel(const char *sceneFileName, const char *objectsFileName)

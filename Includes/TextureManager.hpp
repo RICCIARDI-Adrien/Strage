@@ -5,19 +5,21 @@
 #ifndef HPP_TEXTURE_MANAGER_HPP
 #define HPP_TEXTURE_MANAGER_HPP
 
-namespace TextureManager // TODO is TextureManager useful ?
+#include <Texture.hpp>
+
+namespace TextureManager
 {
 
-/** All available tile textures. */
+/** All available textures. */
 typedef enum
 {
-	TILE_ID_RIVER_SAND,
-	TILE_ID_RIVER_GREEN_GRASS,
-	TILE_ID_RIVER_WALL_GREY_STONES,
-	TILE_ID_DIRT_1,
-	TILE_ID_DIRT_2,
-	TILE_IDS_COUNT
-} TileId;
+	TEXTURE_ID_RIVER_SAND,
+	TEXTURE_ID_GREEN_GRASS,
+	TEXTURE_ID_WALL_STONE_1,
+	TEXTURE_ID_DIRT_1,
+	TEXTURE_ID_DIRT_2,
+	TEXTURE_IDS_COUNT
+} TextureId;
 
 //-------------------------------------------------------------------------------------------------
 // Functions
@@ -30,6 +32,12 @@ int initialize();
 
 /** Free all allocated resources. */
 void uninitialize();
+
+/** Retrieve a texture.
+ * @param id The texture identifier.
+ * @return The texture or NULL if the provided ID is bad.
+ */
+Texture *getTextureFromId(TextureId id);
 
 }
 

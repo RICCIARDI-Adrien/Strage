@@ -7,44 +7,43 @@
 #include <Texture.hpp>
 #include <TextureManager.hpp>
 
+namespace TextureManager
+{
+
 //-------------------------------------------------------------------------------------------------
 // Private variables
 //-------------------------------------------------------------------------------------------------
 /** All tiles. */
-static Texture *_pointerTextureManagerTiles[TextureManager::TILE_IDS_COUNT];
+static Texture *_pointerTextureManagerTextures[TEXTURE_IDS_COUNT];
 
 //-------------------------------------------------------------------------------------------------
 // Public functions
 //-------------------------------------------------------------------------------------------------
-int TextureManager::initialize()
+int initialize()
 {
-	int i;
-	char filePath[512];
-	
-	// Load all tiles
-	for (i = 0; i < TextureManager::TILE_IDS_COUNT; i++)
-	{
-		// Create the file path
-		snprintf(filePath, sizeof(filePath), CONFIGURATION_PATH_TEXTURES "/%d.bmp", i);
-		
-		// Try to load the file
-		_pointerTextureManagerTiles[i] = new Texture(filePath);
-		if (_pointerTextureManagerTiles[i] == NULL)
-		{
-			LOG("Error : failed to load a tile.\n");
-			return -1;
-		}
-	}
-	
-	// TODO other
+	_pointerTextureManagerTextures[TEXTURE_ID_RIVER_SAND] = new Texture(CONFIGURATION_PATH_TEXTURES "/River_Sand.bmp");
+	_pointerTextureManagerTextures[TEXTURE_ID_GREEN_GRASS] = new Texture(CONFIGURATION_PATH_TEXTURES "/Grass.bmp");
+	_pointerTextureManagerTextures[TEXTURE_ID_WALL_STONE_1] = new Texture(CONFIGURATION_PATH_TEXTURES "/Wall_Stone_1.bmp");
+	_pointerTextureManagerTextures[TEXTURE_ID_DIRT_1] = new Texture(CONFIGURATION_PATH_TEXTURES "/Dirt_1.bmp");
+	_pointerTextureManagerTextures[TEXTURE_ID_DIRT_2] = new Texture(CONFIGURATION_PATH_TEXTURES "/Dirt_2.bmp");
 	
 	return 0;
 }
 
-void TextureManager::uninitialize()
+void uninitialize()
 {
 	int i;
 	
 	// Free all tiles
-	for (i = 0; i < TextureManager::TILE_IDS_COUNT; i++) delete _pointerTextureManagerTiles[i];
+	for (i = 0; i < TEXTURE_IDS_COUNT; i++) delete _pointerTextureManagerTextures[i];
+}
+
+Texture *getTextureFromId(TextureId id)
+{
+	// Make sure the provided ID is valid
+	if (id >= TEXTURE_IDS_COUNT) return NULL;
+	
+	return _pointerTextureManagerTextures[id];
+}
+
 }
