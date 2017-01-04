@@ -38,7 +38,7 @@ int main(void)
 	
 	// Automatically dispose of allocated resources on program exit (allowing to use exit() elsewhere in the program)
 	atexit(exitFreeResources);
-	LOG("Information : game engine successfully initialized.\n");
+	LOG_INFORMATION("Game engine successfully initialized.\n");
 	
 	// TEST
 	LevelManager::loadLevel("Levels/Test_Scene.csv", "Levels/Test_Objects.csv");

@@ -72,10 +72,9 @@ int initialize()
 	// Compute the amount of blocks that can be simultanously displayed on the current display
 	_displayWidthBlocks = CONFIGURATION_DISPLAY_WIDTH / CONFIGURATION_LEVEL_BLOCK_SIZE;
 	if (CONFIGURATION_DISPLAY_WIDTH % CONFIGURATION_LEVEL_BLOCK_SIZE != 0) _displayWidthBlocks++;
-	LOG("Information : display width = %d pixels, %d blocks.\n", CONFIGURATION_DISPLAY_WIDTH, _displayWidthBlocks);
 	_displayHeightBlocks = CONFIGURATION_DISPLAY_HEIGHT / CONFIGURATION_LEVEL_BLOCK_SIZE;
 	if (CONFIGURATION_DISPLAY_HEIGHT % CONFIGURATION_LEVEL_BLOCK_SIZE != 0) _displayHeightBlocks++;
-	LOG("Information : display height = %d pixels, %d blocks.\n", CONFIGURATION_DISPLAY_HEIGHT, _displayHeightBlocks);
+	LOG_DEBUG("Display size : %dx%d pixels, %dx%d blocks.\n", CONFIGURATION_DISPLAY_WIDTH, CONFIGURATION_DISPLAY_HEIGHT, _displayWidthBlocks, _displayHeightBlocks);
 
 	return 0;
 }
@@ -95,7 +94,7 @@ int loadLevel(const char *sceneFileName, const char *objectsFileName)
 	pointerFile = fopen(sceneFileName, "r");
 	if (pointerFile == NULL)
 	{
-		LOG("Error : could not open '%s' (%s).\n", sceneFileName, strerror(errno));
+		LOG_ERROR("Could not open '%s' (%s).\n", sceneFileName, strerror(errno));
 		return -1;
 	}
 	
@@ -112,7 +111,7 @@ int loadLevel(const char *sceneFileName, const char *objectsFileName)
 			if (fscanf(pointerFile, "%d", (int *) &blockId) != 1) goto Scene_Loading_End;
 			if (blockId == -1)
 			{
-				LOG("Error : block (%d, %d) has no defined texture index.\n", x, y);
+				LOG_ERROR("Block (%d, %d) has no defined texture index.\n", x, y);
 				fclose(pointerFile);
 				return -1;
 			}
@@ -134,7 +133,7 @@ int loadLevel(const char *sceneFileName, const char *objectsFileName)
 	
 Scene_Loading_End:
 	_levelHeightBlocks = y;
-	LOG("Debug : level width = %d blocks, level height = %d blocks.\n", _levelWidthBlocks, _levelHeightBlocks);
+	LOG_DEBUG("Level size = %dx%d blocks.\n", _levelWidthBlocks, _levelHeightBlocks);
 	fclose(pointerFile);
 	
 	

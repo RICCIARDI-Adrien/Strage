@@ -17,7 +17,7 @@ SDL_Texture *Texture::loadFromBitmap(const char *fileName)
 	SDL_Surface *pointerSurface = SDL_LoadBMP(fileName);
 	if (pointerSurface == NULL)
 	{
-		LOG("Error : failed to load texture '%s' (%s).\n", fileName, SDL_GetError());
+		LOG_ERROR("Failed to load texture '%s' (%s).\n", fileName, SDL_GetError());
 		return NULL;
 	}
 	
@@ -25,7 +25,7 @@ SDL_Texture *Texture::loadFromBitmap(const char *fileName)
 	unsigned int transparentColor = SDL_MapRGB(pointerSurface->format, 0x00, 0xFF, 0x00);
 	if (SDL_SetColorKey(pointerSurface, SDL_TRUE, transparentColor) != 0)
 	{
-		LOG("Error : failed to set the surface transparent color (%s).\n", SDL_GetError());
+		LOG_ERROR("Failed to set the surface transparent color (%s).\n", SDL_GetError());
 		return NULL;
 	}
 	
@@ -34,7 +34,7 @@ SDL_Texture *Texture::loadFromBitmap(const char *fileName)
 	SDL_FreeSurface(pointerSurface);
 	if (pointerTexture == NULL)
 	{
-		LOG("Error : failed to convert the surface to a texture (%s).\n", SDL_GetError());
+		LOG_ERROR("Failed to convert the surface to a texture (%s).\n", SDL_GetError());
 		return NULL;
 	}
 	
@@ -56,7 +56,7 @@ Texture::Texture(const char *fileName)
 	// Cache width and height parameters
 	if (SDL_QueryTexture(_pointerTexture, &pixelFormat, &access, &_width, &_height) != 0)
 	{
-		LOG("Error : failed to query texture information (%s).\n", SDL_GetError());
+		LOG_ERROR("Failed to query texture information (%s).\n", SDL_GetError());
 		exit(-1);
 	}
 }
