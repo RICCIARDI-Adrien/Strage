@@ -13,7 +13,7 @@
 // Macros
 //-------------------------------------------------------------------------------------------------
 #if CONFIGURATION_ENABLE_LOGGING
-	#define LOG(String, ...) printf("[%s:%d] " String, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+	#define LOG(String, ...) printf("[%s:%s:%d] " String, __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
 #else
 	#define LOG(String, ...)
 #endif

@@ -28,6 +28,9 @@ int main(void)
 	SDL_Event event;
 	unsigned int Starting_Time, Elapsed_Time;
 	
+	// TEST
+	int camX = 0, camY = 0;
+	
 	// Engine initialization
 	if (Renderer::initialize() != 0) return -1;
 	if (TextureManager::initialize() != 0) return -1;
@@ -36,14 +39,6 @@ int main(void)
 	// Automatically dispose of allocated resources on program exit (allowing to use exit() elsewhere in the program)
 	atexit(exitFreeResources);
 	LOG("Information : game engine successfully initialized.\n");
-	
-	/*Texture t("Textures/0.bmp");
-	Texture t2("Textures/Player.bmp");
-	
-	SDL_RenderClear(pointerMainRenderer);
-	SDL_RenderCopy(pointerMainRenderer, t.getTexture(), NULL, NULL);
-	SDL_RenderCopy(pointerMainRenderer, t2.getTexture(), NULL, NULL);
-	SDL_RenderPresent(pointerMainRenderer);*/
 	
 	while (1)
 	{
@@ -57,6 +52,32 @@ int main(void)
 			{
 				case SDL_QUIT:
 					goto Exit;
+					
+				case SDL_KEYDOWN:
+				{
+					switch (event.key.keysym.scancode)
+					{
+						case SDL_SCANCODE_UP:
+							camY--;
+							break;
+							
+						case SDL_SCANCODE_DOWN:
+							camY++;
+							break;
+						
+						case SDL_SCANCODE_LEFT:
+							camX--;
+							break;
+						
+						case SDL_SCANCODE_RIGHT:
+							camX++;
+							break;
+							
+						default:
+							break;
+					}
+					break;
+				}
 			}
 		}
 		
@@ -64,7 +85,7 @@ int main(void)
 		SDL_RenderClear(Renderer::pointerMainRenderer);
 		
 		// Render the level walls
-		LevelManager::renderScene(0, 0);
+		LevelManager::renderScene(camX, camY);
 		
 		SDL_RenderPresent(Renderer::pointerMainRenderer);
 		

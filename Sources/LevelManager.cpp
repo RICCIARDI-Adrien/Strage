@@ -76,10 +76,12 @@ int initialize()
 	LOG("Information : display height = %d pixels, %d blocks.\n", CONFIGURATION_DISPLAY_HEIGHT, _displayHeightBlocks);
 	
 	// TEST
-	_levelWidthBlocks = 8;
-	_levelHeightBlocks = 5;
+	_levelWidthBlocks = 100;
+	_levelHeightBlocks = 100;
 	for (int i = 0; i < 256*256; i++) _pointerLevelBlocks[i] = &_blocks[BLOCK_ID_RIVER_SAND];
+	_pointerLevelBlocks[1] = &_blocks[BLOCK_ID_DIRT_1];
 	_pointerLevelBlocks[6] = &_blocks[BLOCK_ID_GRASS];
+	_pointerLevelBlocks[23] = &_blocks[BLOCK_ID_GRASS];
 	
 	return 0;
 }
@@ -95,17 +97,40 @@ void uninitialize()
 
 void renderScene(int topLeftX, int topLeftY)
 {
-	int yBlock, xBlock;
+	int xDisplayBlock, xStartingBlock, yStartingBlock, yDisplayBlock, xBlock, yBlock, xDisplayBlocksCount, yDisplayBlocksCount, xStartingPixel, yStartingPixel, xPixel, yPixel;
+	
+	// Get the amount of pixels the rendering must be shifted about in the begining blocks
+	xStartingPixel = -(topLeftX % CONFIGURATION_LEVEL_BLOCK_SIZE); // Invert result sign to make negative camera coordinates go to left and positive camera coordinates go to right
+	yStartingPixel = -(topLeftY % CONFIGURATION_LEVEL_BLOCK_SIZE);
+	
+	// Convert pixel coordinates to blocks
+	xStartingBlock = topLeftX / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	yStartingBlock = topLeftY / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	
+	// Compute the amount of blocks to display
+	// TODO handle user reaching the rightmost or the downer side
+	xDisplayBlocksCount = _displayWidthBlocks;
+	if (xStartingPixel < 0) xDisplayBlocksCount++; // Display one more block on the right if the leftmost block is not fully displayed
+	yDisplayBlocksCount = _displayHeightBlocks;
+	if (yStartingPixel < 0) yDisplayBlocksCount++; // Display one more block on the bottom if the upper block is not fully displayed
 	
 	// Render a full display from the specified coordinates
-	// TODO do not use _displayHeightBlocks but a variable (when the user reaches the rightmost or the downer side)
-	for (yBlock = 0; yBlock < _displayHeightBlocks; yBlock++)
+	yPixel = yStartingPixel;
+	for (yDisplayBlock = 0; yDisplayBlock < yDisplayBlocksCount; yDisplayBlock++)
 	{
-		for (xBlock = 0; xBlock < _displayHeightBlocks; xBlock++)
+		xPixel = xStartingPixel;
+		for (xDisplayBlock = 0; xDisplayBlock < xDisplayBlocksCount; xDisplayBlock++)
 		{
-			_pointerLevelBlocks[yBlock * _displayWidthBlocks + xBlock]->pointerTexture->render(xBlock * 64, yBlock * 64);
+			// Compute the level block coordinates
+			xBlock = xStartingBlock + xDisplayBlock;
+			yBlock = yStartingBlock + yDisplayBlock;
 			
+			// Render the block only if it existing in the level
+			if ((xBlock >= 0) && (yBlock >= 0)) _pointerLevelBlocks[yBlock * _displayWidthBlocks + xBlock]->pointerTexture->render(xPixel, yPixel);
+			
+			xPixel += CONFIGURATION_LEVEL_BLOCK_SIZE;
 		}
+		yPixel += CONFIGURATION_LEVEL_BLOCK_SIZE;
 	}
 }
 
