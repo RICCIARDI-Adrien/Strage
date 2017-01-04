@@ -24,6 +24,7 @@ static void exitFreeResources()
 int main(void)
 {
 	SDL_Event event;
+	unsigned int Starting_Time, Elapsed_Time;
 	
 	// Engine initialization
 	if (Renderer::initialize() != 0) return -1;
@@ -43,6 +44,9 @@ int main(void)
 	
 	while (1)
 	{
+		// Store the time when the loop started
+		Starting_Time = SDL_GetTicks();
+		
 		// Handle all events
 		while (SDL_PollEvent(&event))
 		{
@@ -52,6 +56,10 @@ int main(void)
 					goto Exit;
 			}
 		}
+		
+		// Wait enough time to achieve a 60Hz refresh rate
+		Elapsed_Time = SDL_GetTicks() - Starting_Time;
+		if (Elapsed_Time < CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS) SDL_Delay(CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS - Elapsed_Time);
 	}
 	
 Exit:

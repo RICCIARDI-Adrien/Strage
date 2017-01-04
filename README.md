@@ -9,4 +9,4 @@ On Debian/Ubuntu systems, you have to install libsd2-dev package.
 ```
 sudo apt install libsd2-dev
 ```
-Simply type *make* in the Strage directory to build the game.
+Then simply type *make* in the Strage directory to build the game.
