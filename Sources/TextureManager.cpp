@@ -16,7 +16,7 @@ static Texture *_pointerTextureManagerTiles[TextureManager::TILE_IDS_COUNT];
 //-------------------------------------------------------------------------------------------------
 // Public functions
 //-------------------------------------------------------------------------------------------------
-int TextureManager::textureManagerInitialize()
+int TextureManager::initialize()
 {
 	int i;
 	char filePath[512];
@@ -41,7 +41,7 @@ int TextureManager::textureManagerInitialize()
 	return 0;
 }
 
-void TextureManager::textureManagerUninitialize()
+void TextureManager::uninitialize()
 {
 	int i;
 	

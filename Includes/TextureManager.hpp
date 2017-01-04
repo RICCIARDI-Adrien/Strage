@@ -26,10 +26,10 @@ typedef enum
  * @return 0 if all textures were successfully initialized,
  * @return -1 if an error occurred.
  */
-int textureManagerInitialize();
+int initialize();
 
 /** Free all allocated resources. */
-void textureManagerUninitialize();
+void uninitialize();
 
 }
 

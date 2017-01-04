@@ -30,7 +30,7 @@ SDL_Texture *Texture::loadFromBitmap(const char *fileName)
 	}
 	
 	// Convert the surface to a texture
-	SDL_Texture *pointerTexture = SDL_CreateTextureFromSurface(pointerMainRenderer, pointerSurface);
+	SDL_Texture *pointerTexture = SDL_CreateTextureFromSurface(Renderer::pointerMainRenderer, pointerSurface);
 	SDL_FreeSurface(pointerSurface);
 	
 	return pointerTexture;
