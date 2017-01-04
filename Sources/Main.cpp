@@ -40,6 +40,9 @@ int main(void)
 	atexit(exitFreeResources);
 	LOG("Information : game engine successfully initialized.\n");
 	
+	// TEST
+	LevelManager::loadLevel("Levels/Test_Scene.csv", "Levels/Test_Objects.csv");
+	
 	while (1)
 	{
 		// Store the time when the loop started
@@ -58,19 +61,19 @@ int main(void)
 					switch (event.key.keysym.scancode)
 					{
 						case SDL_SCANCODE_UP:
-							camY--;
+							camY -= 10;
 							break;
 							
 						case SDL_SCANCODE_DOWN:
-							camY++;
+							camY += 10;
 							break;
 						
 						case SDL_SCANCODE_LEFT:
-							camX--;
+							camX -= 10;
 							break;
 						
 						case SDL_SCANCODE_RIGHT:
-							camX++;
+							camX += 10;
 							break;
 							
 						default:

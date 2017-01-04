@@ -2,7 +2,9 @@
  * @see LevelManager.hpp for description.
  * @author Adrien RICCIARDI
  */
+#include <cerrno>
 #include <cstdio>
+#include <cstring>
 #include <LevelManager.hpp>
 #include <Log.hpp>
 #include <Texture.hpp>
@@ -74,15 +76,7 @@ int initialize()
 	_displayHeightBlocks = CONFIGURATION_DISPLAY_HEIGHT / CONFIGURATION_LEVEL_BLOCK_SIZE;
 	if (CONFIGURATION_DISPLAY_HEIGHT % CONFIGURATION_LEVEL_BLOCK_SIZE != 0) _displayHeightBlocks++;
 	LOG("Information : display height = %d pixels, %d blocks.\n", CONFIGURATION_DISPLAY_HEIGHT, _displayHeightBlocks);
-	
-	// TEST
-	_levelWidthBlocks = 100;
-	_levelHeightBlocks = 100;
-	for (int i = 0; i < 256*256; i++) _pointerLevelBlocks[i] = &_blocks[BLOCK_ID_RIVER_SAND];
-	_pointerLevelBlocks[1] = &_blocks[BLOCK_ID_DIRT_1];
-	_pointerLevelBlocks[6] = &_blocks[BLOCK_ID_GRASS];
-	_pointerLevelBlocks[23] = &_blocks[BLOCK_ID_GRASS];
-	
+
 	return 0;
 }
 
@@ -91,9 +85,64 @@ void uninitialize()
 	// TODO if needed
 }
 
-/*int loadLevel(const char *sceneFileName, const char *objectsFileName)
+int loadLevel(const char *sceneFileName, const char *objectsFileName)
 {
-}*/
+	FILE *pointerFile;
+	int x, y, character, i;
+	BlockId blockId;
+	
+	// Try to open the scene file
+	pointerFile = fopen(sceneFileName, "r");
+	if (pointerFile == NULL)
+	{
+		LOG("Error : could not open '%s' (%s).\n", sceneFileName, strerror(errno));
+		return -1;
+	}
+	
+	_levelWidthBlocks = 0;
+	_levelHeightBlocks = 0;
+	
+	// Parse the whole file considering it does not contain errors
+	i = 0;
+	for (y = 0; y < CONFIGURATION_LEVEL_MAXIMUM_HEIGHT; y++)
+	{
+		for (x = 0; x < CONFIGURATION_LEVEL_MAXIMUM_WIDTH; x++)
+		{
+			// Read a block index
+			if (fscanf(pointerFile, "%d", (int *) &blockId) != 1) goto Scene_Loading_End;
+			if (blockId == -1)
+			{
+				LOG("Error : block (%d, %d) has no defined texture index.\n", x, y);
+				fclose(pointerFile);
+				return -1;
+			}
+			
+			// Set the corresponding block
+			_pointerLevelBlocks[i] = &_blocks[blockId];
+			i++;
+			
+			// Discard the following comma
+			character = fgetc(pointerFile);
+			// Load next row if a newline character is found
+			if (character == '\n')
+			{
+				_levelWidthBlocks = x + 1; // Set level width in the same time
+				break;
+			}
+		}
+	}
+	
+Scene_Loading_End:
+	_levelHeightBlocks = y;
+	LOG("Debug : level width = %d blocks, level height = %d blocks.\n", _levelWidthBlocks, _levelHeightBlocks);
+	fclose(pointerFile);
+	
+	
+	
+	// TODO objects
+	
+	return 0;
+}
 
 void renderScene(int topLeftX, int topLeftY)
 {
@@ -126,7 +175,7 @@ void renderScene(int topLeftX, int topLeftY)
 			yBlock = yStartingBlock + yDisplayBlock;
 			
 			// Render the block only if it existing in the level
-			if ((xBlock >= 0) && (yBlock >= 0)) _pointerLevelBlocks[yBlock * _displayWidthBlocks + xBlock]->pointerTexture->render(xPixel, yPixel);
+			if ((xBlock >= 0) && (yBlock >= 0)) _pointerLevelBlocks[yBlock * _levelWidthBlocks + xBlock]->pointerTexture->render(xPixel, yPixel);
 			
 			xPixel += CONFIGURATION_LEVEL_BLOCK_SIZE;
 		}
