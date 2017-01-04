@@ -12,6 +12,11 @@ class Texture
 	private:
 		/** The texture. */
 		SDL_Texture *_pointerTexture;
+		
+		/** Texture width in pixels. */
+		int _width;
+		/** Texture height in pixels. */
+		int _height;
 	
 	protected:
 		/** Load a texture from a bitmap file.
@@ -30,16 +35,11 @@ class Texture
 		/** Free all allocated resources. */
 		virtual ~Texture();
 		
-		/** Render the texture using the main renderer. */
-		//void render();
-		
-		/** Get the corresponding SDL texture.
-		 * @return The texture.
+		/** Render the texture using the main renderer. The provided coordinates indicate texture's top left angle.
+		 * @param x X coordinate where to draw the texture on the display.
+		 * @param y Y coordinate where to draw the texture on the display.
 		 */
-		SDL_Texture *getTexture()
-		{
-			return _pointerTexture;
-		}
+		void render(int x, int y);
 };
 
 #endif

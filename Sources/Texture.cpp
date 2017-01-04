@@ -32,6 +32,11 @@ SDL_Texture *Texture::loadFromBitmap(const char *fileName)
 	// Convert the surface to a texture
 	SDL_Texture *pointerTexture = SDL_CreateTextureFromSurface(Renderer::pointerMainRenderer, pointerSurface);
 	SDL_FreeSurface(pointerSurface);
+	if (pointerTexture == NULL)
+	{
+		LOG("Error : failed to convert the surface to a texture (%s).\n", SDL_GetError());
+		return NULL;
+	}
 	
 	return pointerTexture;
 }
@@ -41,12 +46,34 @@ SDL_Texture *Texture::loadFromBitmap(const char *fileName)
 //-------------------------------------------------------------------------------------------------
 Texture::Texture(const char *fileName)
 {
+	unsigned int pixelFormat;
+	int access;
+	
 	// Try to load the texture
 	_pointerTexture = loadFromBitmap(fileName);
-	if (_pointerTexture == NULL) exit(EXIT_FAILURE);
+	if (_pointerTexture == NULL) exit(-1);
+	
+	// Cache width and height parameters
+	if (SDL_QueryTexture(_pointerTexture, &pixelFormat, &access, &_width, &_height) != 0)
+	{
+		LOG("Error : failed to query texture information (%s).\n", SDL_GetError());
+		exit(-1);
+	}
 }
 
 Texture::~Texture()
 {
 	SDL_DestroyTexture(_pointerTexture);
+}
+
+void Texture::render(int x, int y)
+{
+	SDL_Rect destinationRectangle;
+	
+	destinationRectangle.x = x;
+	destinationRectangle.y = y;
+	destinationRectangle.w = _width;
+	destinationRectangle.h = _height;
+	
+	SDL_RenderCopy(Renderer::pointerMainRenderer, _pointerTexture, NULL, &destinationRectangle);
 }
