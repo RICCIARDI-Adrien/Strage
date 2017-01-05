@@ -9,6 +9,9 @@
 #include <SDL2/SDL.h>
 #include <TextureManager.hpp>
 
+// TEST
+#include <PickableEntityMedipack.hpp>
+
 //-------------------------------------------------------------------------------------------------
 // Private functions
 //-------------------------------------------------------------------------------------------------
@@ -42,6 +45,7 @@ int main(void)
 	
 	// TEST
 	LevelManager::loadLevel("Levels/Test_Scene.csv", "Levels/Test_Objects.csv");
+	PickableEntityMedipack m1(0, 0);
 	
 	while (1)
 	{
@@ -89,6 +93,11 @@ int main(void)
 		
 		// Render the level walls
 		LevelManager::renderScene(camX, camY);
+		
+		// Display pickable entities (as they are laying on the floor, any other entity is walking on top of them)
+		// TODO
+		
+		m1.render();
 		
 		SDL_RenderPresent(Renderer::pointerMainRenderer);
 		

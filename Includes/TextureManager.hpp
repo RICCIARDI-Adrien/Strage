@@ -13,11 +13,15 @@ namespace TextureManager
 /** All available textures. */
 typedef enum
 {
+	// Scene tiles
 	TEXTURE_ID_RIVER_SAND,
 	TEXTURE_ID_GREEN_GRASS,
 	TEXTURE_ID_WALL_STONE_1,
 	TEXTURE_ID_DIRT_1,
 	TEXTURE_ID_DIRT_2,
+	
+	// Pickable objects
+	TEXTURE_ID_PICKABLE_ENTITY_MEDIPACK,
 	TEXTURE_IDS_COUNT
 } TextureId;
 

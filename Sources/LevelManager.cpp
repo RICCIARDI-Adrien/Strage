@@ -87,8 +87,7 @@ void uninitialize()
 int loadLevel(const char *sceneFileName, const char *objectsFileName)
 {
 	FILE *pointerFile;
-	int x, y, character, i;
-	BlockId blockId;
+	int x, y, character, i, blockId;
 	
 	// Try to open the scene file
 	pointerFile = fopen(sceneFileName, "r");
@@ -108,10 +107,11 @@ int loadLevel(const char *sceneFileName, const char *objectsFileName)
 		for (x = 0; x < CONFIGURATION_LEVEL_MAXIMUM_WIDTH; x++)
 		{
 			// Read a block index
-			if (fscanf(pointerFile, "%d", (int *) &blockId) != 1) goto Scene_Loading_End;
-			if (blockId == -1)
+			if (fscanf(pointerFile, "%d", &blockId) != 1) goto Scene_Loading_End;
+			// Make sure the block has been defined in the level editor
+			if ((blockId < 0) || (blockId >= BLOCK_IDS_COUNT))
 			{
-				LOG_ERROR("Block (%d, %d) has no defined texture index.\n", x, y);
+				LOG_ERROR("Block (%d, %d) ID is bad : %d.\n", x, y, blockId);
 				fclose(pointerFile);
 				return -1;
 			}

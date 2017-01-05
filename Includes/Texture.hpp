@@ -40,6 +40,22 @@ class Texture
 		 * @param y Y coordinate where to draw the texture on the display.
 		 */
 		void render(int x, int y);
+		
+		/** Get the texture width in pixels.
+		 * @return The texture width.
+		 */
+		inline int getWidth()
+		{
+			return _width;
+		}
+		
+		/** Get the texture height in pixels.
+		 * @return The texture height.
+		 */
+		inline int getHeight()
+		{
+			return _height;
+		}
 };
 
 #endif

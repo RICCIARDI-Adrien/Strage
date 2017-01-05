@@ -21,11 +21,15 @@ static Texture *_pointerTextureManagerTextures[TEXTURE_IDS_COUNT];
 //-------------------------------------------------------------------------------------------------
 int initialize()
 {
+	// Scene tiles
 	_pointerTextureManagerTextures[TEXTURE_ID_RIVER_SAND] = new Texture(CONFIGURATION_PATH_TEXTURES "/River_Sand.bmp");
 	_pointerTextureManagerTextures[TEXTURE_ID_GREEN_GRASS] = new Texture(CONFIGURATION_PATH_TEXTURES "/Grass.bmp");
 	_pointerTextureManagerTextures[TEXTURE_ID_WALL_STONE_1] = new Texture(CONFIGURATION_PATH_TEXTURES "/Wall_Stone_1.bmp");
 	_pointerTextureManagerTextures[TEXTURE_ID_DIRT_1] = new Texture(CONFIGURATION_PATH_TEXTURES "/Dirt_1.bmp");
 	_pointerTextureManagerTextures[TEXTURE_ID_DIRT_2] = new Texture(CONFIGURATION_PATH_TEXTURES "/Dirt_2.bmp");
+	
+	// Pickable objects
+	_pointerTextureManagerTextures[TEXTURE_ID_PICKABLE_ENTITY_MEDIPACK] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medipack.bmp");
 	
 	return 0;
 }
