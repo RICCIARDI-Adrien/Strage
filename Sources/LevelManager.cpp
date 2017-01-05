@@ -14,6 +14,16 @@ namespace LevelManager
 {
 
 //-------------------------------------------------------------------------------------------------
+// Private constants and macros
+//-------------------------------------------------------------------------------------------------
+/** Compute a block index according to its coordinates.
+ * @param x X coordinate (in blocks).
+ * @param y Y coordinate (in blocks).
+ * @return The corresponding index.
+ */
+#define COMPUTE_BLOCK_INDEX(x, y) (((y) * _levelWidthBlocks) + (x))
+
+//-------------------------------------------------------------------------------------------------
 // Private types
 //-------------------------------------------------------------------------------------------------
 /** All available blocks. */
@@ -31,7 +41,7 @@ typedef enum
 typedef struct
 {
 	Texture *pointerTexture; //!< The texture used to render the block.
-	int isColliding; //!< Set to 1 if the block can't be crossed, set to 0 if player and moveable objects can walk throughout the block.
+	int isColliding; //!< Set to 1 if the block can't be crossed, set to 0 if player and movable objects can walk throughout the block.
 } Block;
 
 //-------------------------------------------------------------------------------------------------
@@ -69,7 +79,7 @@ int initialize()
 	_blocks[BLOCK_ID_DIRT_2].pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_DIRT_2);
 	_blocks[BLOCK_ID_DIRT_2].isColliding = 0;
 	
-	// Compute the amount of blocks that can be simultanously displayed on the current display
+	// Compute the amount of blocks that can be simultaneously displayed on the current display
 	_displayWidthBlocks = CONFIGURATION_DISPLAY_WIDTH / CONFIGURATION_LEVEL_BLOCK_SIZE;
 	if (CONFIGURATION_DISPLAY_WIDTH % CONFIGURATION_LEVEL_BLOCK_SIZE != 0) _displayWidthBlocks++;
 	_displayHeightBlocks = CONFIGURATION_DISPLAY_HEIGHT / CONFIGURATION_LEVEL_BLOCK_SIZE;
@@ -174,12 +184,96 @@ void renderScene(int topLeftX, int topLeftY)
 			yBlock = yStartingBlock + yDisplayBlock;
 			
 			// Render the block only if it existing in the level
-			if ((xBlock >= 0) && (yBlock >= 0)) _pointerLevelBlocks[yBlock * _levelWidthBlocks + xBlock]->pointerTexture->render(xPixel, yPixel);
+			if ((xBlock >= 0) && (yBlock >= 0) && (xBlock < _levelWidthBlocks) && (yBlock < _levelHeightBlocks)) _pointerLevelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)]->pointerTexture->render(xPixel, yPixel);
 			
 			xPixel += CONFIGURATION_LEVEL_BLOCK_SIZE;
 		}
 		yPixel += CONFIGURATION_LEVEL_BLOCK_SIZE;
 	}
+}
+
+int getDistanceFromUpperWall(int x, int y)
+{
+	int xBlock, yBlock;
+	
+	// Convert to block coordinates
+	xBlock = x / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	yBlock = y / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	
+	// Tell that the walls are close if the requested coordinates are (out of) level bounds
+	if ((xBlock <= 0) || (xBlock >= _levelWidthBlocks - 1) || (yBlock <= 0) || (yBlock >= _levelWidthBlocks - 1)) return 0;
+	
+	// Is this block a wall ?
+	if (_pointerLevelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)]->isColliding) return 0;
+	
+	// Is upper block part of the floor ?
+	if (!_pointerLevelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock - 1)]->isColliding) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
+	
+	// The upper block is a wall, compute the amount of pixels separating the provided coordinates from the wall
+	return y % CONFIGURATION_LEVEL_BLOCK_SIZE;
+}
+
+int getDistanceFromDownerWall(int x, int y)
+{
+	int xBlock, yBlock;
+	
+	// Convert to block coordinates
+	xBlock = x / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	yBlock = y / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	
+	// Tell that the walls are close if the requested coordinates are (out of) level bounds
+	if ((xBlock <= 0) || (xBlock >= _levelWidthBlocks - 1) || (yBlock <= 0) || (yBlock >= _levelWidthBlocks - 1)) return 0;
+	
+	// Is this block a wall ?
+	if (_pointerLevelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)]->isColliding) return 0;
+	
+	// Is upper block part of the floor ?
+	if (!_pointerLevelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock + 1)]->isColliding) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
+	
+	// The upper block is a wall, compute the amount of pixels separating the provided coordinates from the wall
+	return CONFIGURATION_LEVEL_BLOCK_SIZE - (y % CONFIGURATION_LEVEL_BLOCK_SIZE);
+}
+
+int getDistanceFromLeftmostWall(int x, int y)
+{
+	int xBlock, yBlock;
+	
+	// Convert to block coordinates
+	xBlock = x / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	yBlock = y / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	
+	// Tell that the walls are close if the requested coordinates are (out of) level bounds
+	if ((xBlock <= 0) || (xBlock >= _levelWidthBlocks - 1) || (yBlock <= 0) || (yBlock >= _levelWidthBlocks - 1)) return 0;
+	
+	// Is this block a wall ?
+	if (_pointerLevelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)]->isColliding) return 0;
+	
+	// Is upper block part of the floor ?
+	if (!_pointerLevelBlocks[COMPUTE_BLOCK_INDEX(xBlock - 1, yBlock)]->isColliding) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
+	
+	// The upper block is a wall, compute the amount of pixels separating the provided coordinates from the wall
+	return x % CONFIGURATION_LEVEL_BLOCK_SIZE;
+}
+
+int getDistanceFromRightmostWall(int x, int y)
+{
+	int xBlock, yBlock;
+	
+	// Convert to block coordinates
+	xBlock = x / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	yBlock = y / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	
+	// Tell that the walls are close if the requested coordinates are (out of) level bounds
+	if ((xBlock <= 0) || (xBlock >= _levelWidthBlocks - 1) || (yBlock <= 0) || (yBlock >= _levelWidthBlocks - 1)) return 0;
+	
+	// Is this block a wall ?
+	if (_pointerLevelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)]->isColliding) return 0;
+	
+	// Is upper block part of the floor ?
+	if (!_pointerLevelBlocks[COMPUTE_BLOCK_INDEX(xBlock + 1, yBlock)]->isColliding) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
+	
+	// The upper block is a wall, compute the amount of pixels separating the provided coordinates from the wall
+	return CONFIGURATION_LEVEL_BLOCK_SIZE - (x % CONFIGURATION_LEVEL_BLOCK_SIZE);
 }
 
 }

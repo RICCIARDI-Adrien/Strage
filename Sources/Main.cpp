@@ -46,6 +46,7 @@ int main(void)
 	// TEST
 	LevelManager::loadLevel("Levels/Test_Scene.csv", "Levels/Test_Objects.csv");
 	PickableEntityMedipack m1(0, 0);
+	Texture player("Textures/Medipack.bmp");
 	
 	while (1)
 	{
@@ -66,18 +67,22 @@ int main(void)
 					{
 						case SDL_SCANCODE_UP:
 							camY -= 10;
+							printf("dist up : %d\n", LevelManager::getDistanceFromUpperWall(camX + CONFIGURATION_DISPLAY_WIDTH / 2 - 10, camY + CONFIGURATION_DISPLAY_HEIGHT / 2 - 10));
 							break;
 							
 						case SDL_SCANCODE_DOWN:
 							camY += 10;
+							printf("dist dw : %d\n", LevelManager::getDistanceFromDownerWall(camX + CONFIGURATION_DISPLAY_WIDTH / 2 - 10, camY + CONFIGURATION_DISPLAY_HEIGHT / 2 + 10));
 							break;
 						
 						case SDL_SCANCODE_LEFT:
 							camX -= 10;
+							printf("dist lf : %d\n", LevelManager::getDistanceFromLeftmostWall(camX + CONFIGURATION_DISPLAY_WIDTH / 2 - 10, camY + CONFIGURATION_DISPLAY_HEIGHT / 2 - 10));
 							break;
 						
 						case SDL_SCANCODE_RIGHT:
 							camX += 10;
+							printf("dist rg : %d\n", LevelManager::getDistanceFromRightmostWall(camX + CONFIGURATION_DISPLAY_WIDTH / 2 + 10, camY + CONFIGURATION_DISPLAY_HEIGHT / 2 - 10));
 							break;
 							
 						default:
@@ -98,6 +103,9 @@ int main(void)
 		// TODO
 		
 		m1.render();
+		
+		// TEST
+		player.render(CONFIGURATION_DISPLAY_WIDTH / 2 - 10, CONFIGURATION_DISPLAY_HEIGHT / 2 - 10);
 		
 		SDL_RenderPresent(Renderer::pointerMainRenderer);
 		

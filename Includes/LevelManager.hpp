@@ -34,6 +34,34 @@ int loadLevel(const char *sceneFileName, const char *objectsFileName);
  */
 void renderScene(int topLeftX, int topLeftY);
 
+/** Compute the distance in pixels separating the specified point from the upper wall.
+ * @param x Point x coordinate.
+ * @param y Point y coordinate.
+ * @return The distance in pixels. To be faster, the functions stops if the first wall is further than CONFIGURATION_LEVEL_BLOCK_SIZE pixels.
+ */
+int getDistanceFromUpperWall(int x, int y);
+
+/** Compute the distance in pixels separating the specified point from the downer wall.
+ * @param x Point x coordinate.
+ * @param y Point y coordinate.
+ * @return The distance in pixels. To be faster, the functions stops if the first wall is further than CONFIGURATION_LEVEL_BLOCK_SIZE pixels.
+ */
+int getDistanceFromDownerWall(int x, int y);
+
+/** Compute the distance in pixels separating the specified point from the leftmost wall.
+ * @param x Point x coordinate.
+ * @param y Point y coordinate.
+ * @return The distance in pixels. To be faster, the functions stops if the first wall is further than CONFIGURATION_LEVEL_BLOCK_SIZE pixels.
+ */
+int getDistanceFromLeftmostWall(int x, int y);
+
+/** Compute the distance in pixels separating the specified point from the rightmost wall.
+ * @param x Point x coordinate.
+ * @param y Point y coordinate.
+ * @return The distance in pixels. To be faster, the functions stops if the first wall is further than CONFIGURATION_LEVEL_BLOCK_SIZE pixels.
+ */
+int getDistanceFromRightmostWall(int x, int y);
+
 }
 
 #endif
