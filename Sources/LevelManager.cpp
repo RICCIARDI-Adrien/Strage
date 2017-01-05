@@ -133,7 +133,7 @@ int loadLevel(const char *sceneFileName, const char *objectsFileName)
 	
 Scene_Loading_End:
 	_levelHeightBlocks = y;
-	LOG_DEBUG("Level size = %dx%d blocks.\n", _levelWidthBlocks, _levelHeightBlocks);
+	LOG_DEBUG("Level size : %dx%d blocks.\n", _levelWidthBlocks, _levelHeightBlocks);
 	fclose(pointerFile);
 	
 	

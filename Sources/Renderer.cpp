@@ -15,10 +15,16 @@ namespace Renderer
 /** The game window. */
 static SDL_Window *_pointerMainWindow;
 
+/** Define the display area. */
+static SDL_Rect displayRectangle;
+
 //-------------------------------------------------------------------------------------------------
 // Public variables
 //-------------------------------------------------------------------------------------------------
 SDL_Renderer *pointerMainRenderer;
+
+int displayX;
+int displayY;
 
 //-------------------------------------------------------------------------------------------------
 // Public functions
@@ -48,6 +54,9 @@ int initialize()
 		goto Exit_Error_Destroy_Window;
 	}
 	
+	displayRectangle.w = CONFIGURATION_DISPLAY_WIDTH;
+	displayRectangle.h = CONFIGURATION_DISPLAY_HEIGHT;
+	
 	// Everything went fine
 	return 0;
 
@@ -66,6 +75,23 @@ void uninitialize()
 	SDL_DestroyRenderer(pointerMainRenderer);
 	SDL_DestroyWindow(_pointerMainWindow);
 	SDL_Quit();
+}
+
+void beginRendering(int x, int y)
+{
+	// Clean the rendering area
+	SDL_RenderClear(pointerMainRenderer);
+	
+	// Update the display location
+	displayRectangle.x = x;
+	displayRectangle.y = y;
+	displayX = x;
+	displayY = y;
+}
+
+int isDisplayable(SDL_Rect *pointerObjectPositionRectangle)
+{
+	return SDL_HasIntersection(&displayRectangle, pointerObjectPositionRectangle);
 }
 
 }

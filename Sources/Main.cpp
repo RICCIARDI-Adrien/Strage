@@ -89,7 +89,7 @@ int main(void)
 		}
 		
 		// Start rendering
-		SDL_RenderClear(Renderer::pointerMainRenderer);
+		Renderer::beginRendering(camX, camY);
 		
 		// Render the level walls
 		LevelManager::renderScene(camX, camY);

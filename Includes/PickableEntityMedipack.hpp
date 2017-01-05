@@ -39,6 +39,11 @@ class PickableEntityMedipack: public PickableEntity
 			// Set coordinates
 			_x = x;
 			_y = y;
+			
+			_renderingDestinationRectangle.x = x;
+			_renderingDestinationRectangle.y = y;
+			_renderingDestinationRectangle.w = _pointerTexture->getWidth();
+			_renderingDestinationRectangle.h = _pointerTexture->getHeight();
 		}
 		
 		// Nothing to clean

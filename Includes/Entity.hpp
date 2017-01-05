@@ -1,6 +1,8 @@
 #ifndef HPP_ENTITY_HPP
 #define HPP_ENTITY_HPP
 
+#include <Renderer.hpp>
+#include <SDL2/SDL.h>
 #include <Texture.hpp>
 
 /** @class Entity
@@ -12,10 +14,23 @@ class Entity
 		/** The texture used to render the entity. */
 		Texture *_pointerTexture;
 		
+		// TODO Useful with rectangle ?
 		/** The entity left coordinate on the map. */
 		int _x;
 		/** The entity top coordinate on the map. */
 		int _y;
+		
+		/** Use this destination rectangle (with x and y parameters updated) to render the entity. */
+		SDL_Rect _renderingDestinationRectangle;
+		
+		/** Tell if the entity can be displayed or not (it is out of the display area).
+		 * @return 1 if the entity can be displayed,
+		 * @return 0 if not.
+		 */
+		/*int isDisplayable()
+		{
+			
+		}*/
 		
 	public:
 		//Entity() {}

@@ -3,6 +3,7 @@
 
 #include <Entity.hpp>
 #include <Rectangle.hpp>
+#include <SDL2/SDL.h>
 
 /** @class PickableEntity
  * A still entity that can be picked up by the player by walking across the entity.
@@ -28,7 +29,8 @@ class PickableEntity: public Entity
 		/** @see Entity for description. */
 		void render()
 		{
-			_pointerTexture->render(_x, _y);
+			// Display the texture only if the entity is visible on screen
+			if (Renderer::isDisplayable(&_renderingDestinationRectangle)) _pointerTexture->render(_x - Renderer::displayX, _y - Renderer::displayY);
 		}
 	
 		/** @see Entity for description. */
