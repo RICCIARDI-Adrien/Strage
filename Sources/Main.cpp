@@ -13,6 +13,19 @@
 #include <PickableEntityMedipack.hpp>
 
 //-------------------------------------------------------------------------------------------------
+// Private types
+//-------------------------------------------------------------------------------------------------
+/** All keyboard keys that matter. */
+typedef enum
+{
+	KEYBOARD_KEY_ID_ARROW_UP,
+	KEYBOARD_KEY_ID_ARROW_DOWN,
+	KEYBOARD_KEY_ID_ARROW_LEFT,
+	KEYBOARD_KEY_ID_ARROW_RIGHT,
+	KEYBOARD_KEY_IDS_COUNT
+} KeyboardKeyId;
+
+//-------------------------------------------------------------------------------------------------
 // Private functions
 //-------------------------------------------------------------------------------------------------
 /** Automatically free allocated resources on program shutdown. */
@@ -30,6 +43,7 @@ int main(void)
 {
 	SDL_Event event;
 	unsigned int Starting_Time, Elapsed_Time;
+	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0};
 	
 	// TEST
 	int camX = 0, camY = 0;
@@ -53,36 +67,60 @@ int main(void)
 		// Store the time when the loop started
 		Starting_Time = SDL_GetTicks();
 		
-		// Handle all events
+		// Handle all relevant events
 		while (SDL_PollEvent(&event))
 		{
 			switch (event.type)
 			{
 				case SDL_QUIT:
 					goto Exit;
-					
+				
+				// Remember which key are pressed
 				case SDL_KEYDOWN:
 				{
 					switch (event.key.keysym.scancode)
 					{
 						case SDL_SCANCODE_UP:
-							camY -= 10;
-							printf("dist up : %d\n", LevelManager::getDistanceFromUpperWall(camX + CONFIGURATION_DISPLAY_WIDTH / 2 - 10, camY + CONFIGURATION_DISPLAY_HEIGHT / 2 - 10));
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP] = 1;
 							break;
 							
 						case SDL_SCANCODE_DOWN:
-							camY += 10;
-							printf("dist dw : %d\n", LevelManager::getDistanceFromDownerWall(camX + CONFIGURATION_DISPLAY_WIDTH / 2 - 10, camY + CONFIGURATION_DISPLAY_HEIGHT / 2 + 10));
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN] = 1;
 							break;
-						
+							
 						case SDL_SCANCODE_LEFT:
-							camX -= 10;
-							printf("dist lf : %d\n", LevelManager::getDistanceFromLeftmostWall(camX + CONFIGURATION_DISPLAY_WIDTH / 2 - 10, camY + CONFIGURATION_DISPLAY_HEIGHT / 2 - 10));
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT] = 1;
 							break;
-						
+							
 						case SDL_SCANCODE_RIGHT:
-							camX += 10;
-							printf("dist rg : %d\n", LevelManager::getDistanceFromRightmostWall(camX + CONFIGURATION_DISPLAY_WIDTH / 2 + 10, camY + CONFIGURATION_DISPLAY_HEIGHT / 2 - 10));
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT] = 1;
+							break;
+							
+						default:
+							break;
+					}
+					break;
+				}
+				
+				// Some key has been released
+				case SDL_KEYUP:
+				{
+					switch (event.key.keysym.scancode)
+					{
+						case SDL_SCANCODE_UP:
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP] = 0;
+							break;
+							
+						case SDL_SCANCODE_DOWN:
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN] = 0;
+							break;
+							
+						case SDL_SCANCODE_LEFT:
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT] = 0;
+							break;
+							
+						case SDL_SCANCODE_RIGHT:
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT] = 0;
 							break;
 							
 						default:
@@ -91,6 +129,29 @@ int main(void)
 					break;
 				}
 			}
+		}
+		
+		// React to player key press without depending of keyboard key repetition rate
+		if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP])
+		{
+			camY -= CONFIGURATION_PLAYER_MOVING_SPEED;
+			printf("dist up : %d\n", LevelManager::getDistanceFromUpperWall(camX + CONFIGURATION_DISPLAY_WIDTH / 2 - 10, camY + CONFIGURATION_DISPLAY_HEIGHT / 2 - 10));
+		}
+		else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN])
+		{
+			camY += CONFIGURATION_PLAYER_MOVING_SPEED;
+			printf("dist dw : %d\n", LevelManager::getDistanceFromDownerWall(camX + CONFIGURATION_DISPLAY_WIDTH / 2 - 10, camY + CONFIGURATION_DISPLAY_HEIGHT / 2 + 10));
+		}
+		
+		if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT])
+		{
+			camX -= CONFIGURATION_PLAYER_MOVING_SPEED;
+			printf("dist lf : %d\n", LevelManager::getDistanceFromLeftmostWall(camX + CONFIGURATION_DISPLAY_WIDTH / 2 - 10, camY + CONFIGURATION_DISPLAY_HEIGHT / 2 - 10));
+		}
+		else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT])
+		{
+			camX += CONFIGURATION_PLAYER_MOVING_SPEED;
+			printf("dist rg : %d\n", LevelManager::getDistanceFromRightmostWall(camX + CONFIGURATION_DISPLAY_WIDTH / 2 + 10, camY + CONFIGURATION_DISPLAY_HEIGHT / 2 - 10));
 		}
 		
 		// Start rendering
