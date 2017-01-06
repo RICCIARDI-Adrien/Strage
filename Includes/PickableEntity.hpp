@@ -4,6 +4,7 @@
 #include <Entity.hpp>
 #include <Rectangle.hpp>
 #include <SDL2/SDL.h>
+#include <TextureManager.hpp>
 
 /** @class PickableEntity
  * A still entity that can be picked up by the player by walking across the entity.
@@ -21,7 +22,10 @@ class PickableEntity: public Entity
 		int isCollidingWithPlayer();
 	
 	public:
-		//PickableEntity() {}
+		/** Call super class constructor to load the texture.
+		 * @param textureId The texture to use when rendering the entity.
+		 */
+		PickableEntity(TextureManager::TextureId textureId): Entity(textureId) {}
 		
 		/** Free entity resources. */
 		//virtual ~PickableEntity();

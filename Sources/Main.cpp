@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <Log.hpp>
 #include <LevelManager.hpp>
+#include <Player.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
 #include <TextureManager.hpp>
@@ -59,8 +60,8 @@ int main(void)
 	
 	// TEST
 	LevelManager::loadLevel("Levels/Test_Scene.csv", "Levels/Test_Objects.csv");
-	PickableEntityMedipack m1(0, 0);
-	Texture player("Textures/Medipack.bmp");
+	PickableEntityMedipack m1(81 + 64, 93);
+	Player player(5 * 64 + 20, 80);
 	
 	while (1)
 	{
@@ -132,27 +133,14 @@ int main(void)
 		}
 		
 		// React to player key press without depending of keyboard key repetition rate
-		if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP])
-		{
-			camY -= CONFIGURATION_PLAYER_MOVING_SPEED;
-			printf("dist up : %d\n", LevelManager::getDistanceFromUpperWall(camX + CONFIGURATION_DISPLAY_WIDTH / 2 - 10, camY + CONFIGURATION_DISPLAY_HEIGHT / 2 - 10));
-		}
-		else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN])
-		{
-			camY += CONFIGURATION_PLAYER_MOVING_SPEED;
-			printf("dist dw : %d\n", LevelManager::getDistanceFromDownerWall(camX + CONFIGURATION_DISPLAY_WIDTH / 2 - 10, camY + CONFIGURATION_DISPLAY_HEIGHT / 2 + 10));
-		}
+		if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP]) player.moveToUp();
+		else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN]) player.moveToDown();
+		// Up/down and left/right keys are separated to allow the player to go in both horizontal and vertical directions in the same time
+		if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT]) player.moveToLeft();
+		else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT]) player.moveToRight();
 		
-		if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT])
-		{
-			camX -= CONFIGURATION_PLAYER_MOVING_SPEED;
-			printf("dist lf : %d\n", LevelManager::getDistanceFromLeftmostWall(camX + CONFIGURATION_DISPLAY_WIDTH / 2 - 10, camY + CONFIGURATION_DISPLAY_HEIGHT / 2 - 10));
-		}
-		else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT])
-		{
-			camX += CONFIGURATION_PLAYER_MOVING_SPEED;
-			printf("dist rg : %d\n", LevelManager::getDistanceFromRightmostWall(camX + CONFIGURATION_DISPLAY_WIDTH / 2 + 10, camY + CONFIGURATION_DISPLAY_HEIGHT / 2 - 10));
-		}
+		camX = player.getX() - (CONFIGURATION_DISPLAY_WIDTH / 2) + 16;
+		camY = player.getY() - (CONFIGURATION_DISPLAY_HEIGHT / 2) + 16;
 		
 		// Start rendering
 		Renderer::beginRendering(camX, camY);
@@ -166,7 +154,8 @@ int main(void)
 		m1.render();
 		
 		// TEST
-		player.render(CONFIGURATION_DISPLAY_WIDTH / 2 - 10, CONFIGURATION_DISPLAY_HEIGHT / 2 - 10, 38);
+		//player.render(CONFIGURATION_DISPLAY_WIDTH / 2 - 10, CONFIGURATION_DISPLAY_HEIGHT / 2 - 10, 38);
+		player.render();
 		
 		SDL_RenderPresent(Renderer::pointerMainRenderer);
 		

@@ -29,7 +29,10 @@ int initialize()
 	_pointerTextureManagerTextures[TEXTURE_ID_DIRT_2] = new Texture(CONFIGURATION_PATH_TEXTURES "/Dirt_2.bmp");
 	
 	// Pickable objects
-	_pointerTextureManagerTextures[TEXTURE_ID_PICKABLE_ENTITY_MEDIPACK] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medipack.bmp");
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIPACK] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medipack.bmp");
+	
+	// Movable objects
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER] = new Texture(CONFIGURATION_PATH_TEXTURES "/Player.bmp");
 	
 	return 0;
 }

@@ -21,7 +21,10 @@ typedef enum
 	TEXTURE_ID_DIRT_2,
 	
 	// Pickable objects
-	TEXTURE_ID_PICKABLE_ENTITY_MEDIPACK,
+	TEXTURE_ID_MEDIPACK,
+	
+	// Moving objects
+	TEXTURE_ID_PLAYER,
 	TEXTURE_IDS_COUNT
 } TextureId;
 
