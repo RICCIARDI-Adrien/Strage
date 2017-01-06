@@ -1,8 +1,6 @@
 #ifndef HPP_PICKABLE_ENTITY_MEDIPACK_HPP
 #define HPP_PICKABLE_ENTITY_MEDIPACK_HPP
 
-//#include <cstdlib>
-//#include <Log.hpp>
 #include <PickableEntity.hpp>
 // include player
 #include <TextureManager.hpp>
@@ -28,19 +26,6 @@ class PickableEntityMedipack: public PickableEntity
 		 */
 		PickableEntityMedipack(int x, int y): PickableEntity(TextureManager::TEXTURE_ID_MEDIPACK)
 		{
-			// Set the rendering texture
-			/*_pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_MEDIPACK);
-			if (_pointerTexture == NULL)
-			{
-				LOG_ERROR("Could not get medipack texture.\n");
-				exit(-1);
-			}*/
-			
-			// TODO duplicate with render rect ?
-			// Set coordinates
-			_x = x;
-			_y = y;
-			
 			_renderingDestinationRectangle.x = x;
 			_renderingDestinationRectangle.y = y;
 			_renderingDestinationRectangle.w = _pointerTexture->getWidth();

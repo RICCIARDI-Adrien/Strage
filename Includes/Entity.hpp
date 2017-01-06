@@ -17,13 +17,7 @@ class Entity
 		/** The texture used to render the entity. */
 		Texture *_pointerTexture;
 		
-		// TODO Useful with rectangle ?
-		/** The entity left coordinate on the map. */
-		int _x;
-		/** The entity top coordinate on the map. */
-		int _y;
-		
-		/** Use this destination rectangle (with x and y parameters updated) to render the entity. */
+		/** Hold entity dimensions and location on the map. Use this destination rectangle to render the entity. */
 		SDL_Rect _renderingDestinationRectangle;
 		
 	public:
@@ -57,7 +51,7 @@ class Entity
 		 */
 		inline int getX()
 		{
-			return _x;
+			return _renderingDestinationRectangle.x;
 		}
 		
 		/** Get the entity Y coordinate.
@@ -65,7 +59,7 @@ class Entity
 		 */
 		inline int getY()
 		{
-			return _y;
+			return _renderingDestinationRectangle.y;
 		}
 };
 

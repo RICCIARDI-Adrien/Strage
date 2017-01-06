@@ -32,19 +32,9 @@ class MovableEntity: public Entity
 			if (leftSideDistanceToWall < rightSizeDistanceToWall) distanceToWall = leftSideDistanceToWall;
 			else distanceToWall = rightSizeDistanceToWall;
 			
-			//printf("up (%d,%d)=%d, (%d,%d)=%d, dist=%d\n", _renderingDestinationRectangle.x, _renderingDestinationRectangle.y, leftSideDistanceToWall, _renderingDestinationRectangle.x + _renderingDestinationRectangle.w - 1, _renderingDestinationRectangle.y, rightSizeDistanceToWall, distanceToWall);
-			
 			// Move if possible
-			if (distanceToWall >= _movingPixelsAmount)
-			{
-				_y -= _movingPixelsAmount;
-				_renderingDestinationRectangle.y -= _movingPixelsAmount;
-			}
-			else
-			{
-				_y -= distanceToWall;
-				_renderingDestinationRectangle.y -= distanceToWall;
-			}
+			if (distanceToWall >= _movingPixelsAmount) _renderingDestinationRectangle.y -= _movingPixelsAmount;
+			else _renderingDestinationRectangle.y -= distanceToWall;
 		}
 		
 		/** Move the entity to the down. */
@@ -60,19 +50,9 @@ class MovableEntity: public Entity
 			if (leftSideDistanceToWall < rightSizeDistanceToWall) distanceToWall = leftSideDistanceToWall;
 			else distanceToWall = rightSizeDistanceToWall;
 			
-			//printf("down (%d,%d)=%d, (%d,%d)=%d dist=%d\n", _renderingDestinationRectangle.x, _renderingDestinationRectangle.y + _renderingDestinationRectangle.h, leftSideDistanceToWall, _renderingDestinationRectangle.x + _renderingDestinationRectangle.w - 1, _renderingDestinationRectangle.y + _renderingDestinationRectangle.h, rightSizeDistanceToWall, distanceToWall);
-			
 			// Move if possible
-			if (distanceToWall >= _movingPixelsAmount)
-			{
-				_y += _movingPixelsAmount;
-				_renderingDestinationRectangle.y += _movingPixelsAmount;
-			}
-			else
-			{
-				_y += distanceToWall;
-				_renderingDestinationRectangle.y += distanceToWall;
-			}
+			if (distanceToWall >= _movingPixelsAmount) _renderingDestinationRectangle.y += _movingPixelsAmount;
+			else _renderingDestinationRectangle.y += distanceToWall;
 		}
 		
 		/** Move the entity to the left. */
@@ -88,19 +68,9 @@ class MovableEntity: public Entity
 			if (upperSideDistanceToWall < downerSizeDistanceToWall) distanceToWall = upperSideDistanceToWall;
 			else distanceToWall = downerSizeDistanceToWall;
 			
-			//printf("left (%d,%d)=%d, (%d,%d)=%d dist=%d\n", _renderingDestinationRectangle.x, _renderingDestinationRectangle.y, upperSideDistanceToWall, _renderingDestinationRectangle.x, _renderingDestinationRectangle.y + _renderingDestinationRectangle.h, downerSizeDistanceToWall, distanceToWall);
-			
 			// Move if possible
-			if (distanceToWall >= _movingPixelsAmount)
-			{
-				_x -= _movingPixelsAmount;
-				_renderingDestinationRectangle.x -= _movingPixelsAmount;
-			}
-			else
-			{
-				_x -= distanceToWall;
-				_renderingDestinationRectangle.x -= distanceToWall;
-			}
+			if (distanceToWall >= _movingPixelsAmount) _renderingDestinationRectangle.x -= _movingPixelsAmount;
+			else _renderingDestinationRectangle.x -= distanceToWall;
 		}
 		
 		/** Move the entity to the right. */
@@ -116,19 +86,9 @@ class MovableEntity: public Entity
 			if (upperSideDistanceToWall < downerSizeDistanceToWall) distanceToWall = upperSideDistanceToWall;
 			else distanceToWall = downerSizeDistanceToWall;
 			
-			//printf("right (%d,%d)=%d, (%d,%d)=%d dist=%d\n", _renderingDestinationRectangle.x + _renderingDestinationRectangle.w - 1, _renderingDestinationRectangle.y, upperSideDistanceToWall, _renderingDestinationRectangle.x + _renderingDestinationRectangle.w - 1, _renderingDestinationRectangle.y + _renderingDestinationRectangle.h -1, downerSizeDistanceToWall, distanceToWall);
-			
 			// Move if possible
-			if (distanceToWall >= _movingPixelsAmount)
-			{
-				_x += _movingPixelsAmount;
-				_renderingDestinationRectangle.x += _movingPixelsAmount;
-			}
-			else
-			{
-				_x += distanceToWall;
-				_renderingDestinationRectangle.x += distanceToWall;
-			}
+			if (distanceToWall >= _movingPixelsAmount) _renderingDestinationRectangle.x += _movingPixelsAmount;
+			else _renderingDestinationRectangle.x += distanceToWall;
 		}
 		
 		/** Gather some initialization common to all movable entities.
@@ -139,9 +99,6 @@ class MovableEntity: public Entity
 		 */
 		MovableEntity(TextureManager::TextureId textureId, int x, int y, int movingPixelsAmount): Entity(textureId)
 		{
-			_x = x;
-			_y = y;
-			
 			// Cache some parameters to fasten rendering
 			_renderingDestinationRectangle.x = x;
 			_renderingDestinationRectangle.y = y;
