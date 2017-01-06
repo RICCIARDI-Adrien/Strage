@@ -54,7 +54,7 @@ Texture::Texture(const char *fileName)
 	if (_pointerTexture == NULL) exit(-1);
 	
 	// Cache width and height parameters
-	if (SDL_QueryTexture(_pointerTexture, &pixelFormat, &access, &_width, &_height) != 0)
+	if (SDL_QueryTexture(_pointerTexture, &pixelFormat, &access, &_renderingDestinationRectangle.w, &_renderingDestinationRectangle.h) != 0)
 	{
 		LOG_ERROR("Failed to query texture information (%s).\n", SDL_GetError());
 		exit(-1);
@@ -68,12 +68,16 @@ Texture::~Texture()
 
 void Texture::render(int x, int y)
 {
-	SDL_Rect destinationRectangle;
+	_renderingDestinationRectangle.x = x;
+	_renderingDestinationRectangle.y = y;
 	
-	destinationRectangle.x = x;
-	destinationRectangle.y = y;
-	destinationRectangle.w = _width;
-	destinationRectangle.h = _height;
+	SDL_RenderCopy(Renderer::pointerMainRenderer, _pointerTexture, NULL, &_renderingDestinationRectangle);
+}
+
+void Texture::render(int x, int y, double rotationAngle)
+{
+	_renderingDestinationRectangle.x = x;
+	_renderingDestinationRectangle.y = y;
 	
-	SDL_RenderCopy(Renderer::pointerMainRenderer, _pointerTexture, NULL, &destinationRectangle);
+	SDL_RenderCopyEx(Renderer::pointerMainRenderer, _pointerTexture, NULL, &_renderingDestinationRectangle, rotationAngle, NULL, SDL_FLIP_NONE);
 }

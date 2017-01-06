@@ -13,10 +13,8 @@ class Texture
 		/** The texture. */
 		SDL_Texture *_pointerTexture;
 		
-		/** Texture width in pixels. */
-		int _width;
-		/** Texture height in pixels. */
-		int _height;
+		/** Use this rectangle to render the texture (some values are cached this way). */
+		SDL_Rect _renderingDestinationRectangle;
 	
 	protected:
 		/** Load a texture from a bitmap file.
@@ -41,12 +39,19 @@ class Texture
 		 */
 		void render(int x, int y);
 		
+		/** Render the texture using the main renderer. The provided coordinates indicate texture's top left angle. Texture is rotated the specified amount of degrees using its center as rotation point.
+		 * @param x X coordinate where to draw the texture on the display.
+		 * @param y Y coordinate where to draw the texture on the display.
+		 * @param rotationAngle Amount of degrees to rotate the texture arount its center.
+		 */
+		void render(int x, int y, double rotationAngle);
+		
 		/** Get the texture width in pixels.
 		 * @return The texture width.
 		 */
 		inline int getWidth()
 		{
-			return _width;
+			return _renderingDestinationRectangle.w;
 		}
 		
 		/** Get the texture height in pixels.
@@ -54,7 +59,7 @@ class Texture
 		 */
 		inline int getHeight()
 		{
-			return _height;
+			return _renderingDestinationRectangle.h;
 		}
 };
 

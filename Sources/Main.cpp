@@ -166,7 +166,7 @@ int main(void)
 		m1.render();
 		
 		// TEST
-		player.render(CONFIGURATION_DISPLAY_WIDTH / 2 - 10, CONFIGURATION_DISPLAY_HEIGHT / 2 - 10);
+		player.render(CONFIGURATION_DISPLAY_WIDTH / 2 - 10, CONFIGURATION_DISPLAY_HEIGHT / 2 - 10, 38);
 		
 		SDL_RenderPresent(Renderer::pointerMainRenderer);
 		
