@@ -1,8 +1,10 @@
 #ifndef HPP_PICKABLE_ENTITY_MEDIPACK_HPP
 #define HPP_PICKABLE_ENTITY_MEDIPACK_HPP
 
+#include <Log.hpp>
 #include <PickableEntity.hpp>
-// include player
+#include <Player.hpp>
+#include <Renderer.hpp>
 #include <TextureManager.hpp>
 
 //-------------------------------------------------------------------------------------------------
@@ -12,7 +14,7 @@
 #define PICKABLE_ENTITY_MEDIPACK_RESTORE_LIFE_POINTS_AMOUNT 20
 
 //-------------------------------------------------------------------------------------------------
-// Class
+// Types
 //-------------------------------------------------------------------------------------------------
 /** @class PickableEntityMedipack
  * A medipack restoring life when player picks it.
@@ -28,15 +30,26 @@ class PickableEntityMedipack: public PickableEntity
 		{
 			_renderingDestinationRectangle.x = x;
 			_renderingDestinationRectangle.y = y;
-			_renderingDestinationRectangle.w = _pointerTexture->getWidth();
-			_renderingDestinationRectangle.h = _pointerTexture->getHeight();
 		}
 		
 		// Nothing to clean
 		~PickableEntityMedipack() {}
 		
-		// TODO
-		int update() { return 1; }
+		// Check if the medipack can be taken by the player
+		int update()
+		{
+			// Nothing to do if the medipack is not visible on the display (i.e. the player can't grab it)
+			if (!Renderer::isDisplayable(&_renderingDestinationRectangle)) return 0;
+			
+			// Is the player colliding with the medipack ?
+			if (!SDL_HasIntersection(pointerPlayer->getPositionRectangle(), &_renderingDestinationRectangle)) return 0;
+			LOG_DEBUG("Player is colliding with medipack.\n");
+			
+			// The player is colliding, can he be healed ?
+			// TODO, return 1 if taken
+			
+			return 1;
+		}
 };
 
 #endif

@@ -8,6 +8,10 @@
 #include <SDL2/SDL.h>
 #include <TextureManager.hpp>
 
+// TODO rename to xxxEntityPlayer
+//-------------------------------------------------------------------------------------------------
+// Types
+//-------------------------------------------------------------------------------------------------
 class Player: public MovableEntity // TODO add additionnal class for movable objects with life points
 {
 	private:
@@ -28,6 +32,7 @@ class Player: public MovableEntity // TODO add additionnal class for movable obj
 			_renderingY = (CONFIGURATION_DISPLAY_HEIGHT - _renderingDestinationRectangle.h) / 2;
 		}
 		
+		/** Display the player at the screen center. */
 		virtual void render()
 		{
 			// Display the player at the screen center
@@ -36,5 +41,11 @@ class Player: public MovableEntity // TODO add additionnal class for movable obj
 		
 		virtual int update() { return 1; }
 };
+
+//-------------------------------------------------------------------------------------------------
+// Variables
+//-------------------------------------------------------------------------------------------------
+/** The unique player, which must be accessible to any other module. */
+extern Player *pointerPlayer;
 
 #endif

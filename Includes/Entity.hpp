@@ -18,7 +18,7 @@ class Entity
 		Texture *_pointerTexture;
 		
 		/** Hold entity dimensions and location on the map. Use this destination rectangle to render the entity. */
-		SDL_Rect _renderingDestinationRectangle;
+		SDL_Rect _renderingDestinationRectangle; // TODO rename (positionRectangle ?)
 		
 	public:
 		/** Load the entity texture.
@@ -26,12 +26,17 @@ class Entity
 		 */
 		Entity(TextureManager::TextureId id)
 		{
+			// Try to get the texture
 			_pointerTexture = TextureManager::getTextureFromId(id);
 			if (_pointerTexture == NULL)
 			{
 				LOG_ERROR("Could not retrieve texture.\n");
 				exit(-1);
 			}
+			
+			// Cache some values to fasten processing
+			_renderingDestinationRectangle.w = _pointerTexture->getWidth();
+			_renderingDestinationRectangle.h = _pointerTexture->getHeight();
 		}
 		
 		/** Free entity allocated resources. */
@@ -41,8 +46,8 @@ class Entity
 		virtual void render() = 0;
 		
 		/** Update the internal entity logic.
-		 * @return 1 if the entity must be kept alive,
-		 * @return 0 if the entity must be deleted.
+		 * @return 0 if the entity must be kept alive,
+		 * @return 1 if the entity must be deleted.
 		 */
 		virtual int update() = 0;
 		
@@ -60,6 +65,14 @@ class Entity
 		inline int getY()
 		{
 			return _renderingDestinationRectangle.y;
+		}
+		
+		/** Get a rectangle defining the entity bounds in the map.
+		 * @return The position rectangle.
+		 */
+		inline SDL_Rect *getPositionRectangle()
+		{
+			return &_renderingDestinationRectangle;
 		}
 };
 

@@ -35,6 +35,9 @@ class MovableEntity: public Entity
 			// Move if possible
 			if (distanceToWall >= _movingPixelsAmount) _renderingDestinationRectangle.y -= _movingPixelsAmount;
 			else _renderingDestinationRectangle.y -= distanceToWall;
+			
+			// Entity is facing up
+			_rotationAngle = 0;
 		}
 		
 		/** Move the entity to the down. */
@@ -53,6 +56,9 @@ class MovableEntity: public Entity
 			// Move if possible
 			if (distanceToWall >= _movingPixelsAmount) _renderingDestinationRectangle.y += _movingPixelsAmount;
 			else _renderingDestinationRectangle.y += distanceToWall;
+			
+			// Entity is facing down
+			_rotationAngle = 180;
 		}
 		
 		/** Move the entity to the left. */
@@ -71,6 +77,9 @@ class MovableEntity: public Entity
 			// Move if possible
 			if (distanceToWall >= _movingPixelsAmount) _renderingDestinationRectangle.x -= _movingPixelsAmount;
 			else _renderingDestinationRectangle.x -= distanceToWall;
+			
+			// Entity is facing left
+			_rotationAngle = 270;
 		}
 		
 		/** Move the entity to the right. */
@@ -89,6 +98,9 @@ class MovableEntity: public Entity
 			// Move if possible
 			if (distanceToWall >= _movingPixelsAmount) _renderingDestinationRectangle.x += _movingPixelsAmount;
 			else _renderingDestinationRectangle.x += distanceToWall;
+			
+			// Entity is facing right
+			_rotationAngle = 90;
 		}
 		
 		/** Gather some initialization common to all movable entities.
@@ -102,8 +114,6 @@ class MovableEntity: public Entity
 			// Cache some parameters to fasten rendering
 			_renderingDestinationRectangle.x = x;
 			_renderingDestinationRectangle.y = y;
-			_renderingDestinationRectangle.w = _pointerTexture->getWidth();
-			_renderingDestinationRectangle.h = _pointerTexture->getHeight();
 			
 			_movingPixelsAmount = movingPixelsAmount;
 		}
