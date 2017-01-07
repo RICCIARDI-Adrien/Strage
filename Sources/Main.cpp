@@ -3,13 +3,13 @@
  * @author Adrien RICCIARDI
  */
 #include <cstdlib>
+#include <FightingEntityPlayer.hpp>
 #include <list>
 #include <Log.hpp>
 #include <LevelManager.hpp>
-#include <Player.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
-#include <TextureManager.hpp>
+//#include <TextureManager.hpp>
 
 // TEST
 #include <PickableEntityMedipack.hpp>
@@ -36,7 +36,7 @@ static std::list<PickableEntity *> pickableEntitiesList;
 //-------------------------------------------------------------------------------------------------
 // Public variables
 //-------------------------------------------------------------------------------------------------
-Player *pointerPlayer;
+FightingEntityPlayer *pointerPlayer;
 
 //-------------------------------------------------------------------------------------------------
 // Private functions
@@ -112,7 +112,7 @@ int main(void)
 	pickableEntitiesList.push_front(&m1);
 	pickableEntitiesList.push_front(&m2);
 	pickableEntitiesList.push_front(&m3);
-	Player player(5 * 64 + 20, 80);
+	FightingEntityPlayer player(5 * 64 + 20, 80);
 	pointerPlayer = &player;
 	
 	while (1)
@@ -147,6 +147,11 @@ int main(void)
 							
 						case SDL_SCANCODE_RIGHT:
 							isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT] = 1;
+							break;
+							
+						case SDL_SCANCODE_Q:
+							player.modifyLife(-10);
+							printf("player life : %d\n", player.getLifePointsAmount());
 							break;
 							
 						default:

@@ -1,18 +1,21 @@
-#ifndef HPP_PLAYER_HPP
-#define HPP_PLAYER_HPP
+#ifndef HPP_FIGHTING_ENTITY_PLAYER_HPP
+#define HPP_FIGHTING_ENTITY_PLAYER_HPP
 
 #include <cstdlib>
+#include <FightingEntity.hpp>
 #include <Log.hpp>
-#include <MovableEntity.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
 #include <TextureManager.hpp>
 
-// TODO rename to xxxEntityPlayer
 //-------------------------------------------------------------------------------------------------
 // Types
 //-------------------------------------------------------------------------------------------------
-class Player: public MovableEntity // TODO add additionnal class for movable objects with life points
+/** @class FightingEntityPlayer
+ * The unique player, controller by the human player.
+ * @author Adrien RICCIARDI
+ */
+class FightingEntityPlayer: public FightingEntity
 {
 	private:
 		/** Display the player at this horizontal display coordinate. */
@@ -25,7 +28,7 @@ class Player: public MovableEntity // TODO add additionnal class for movable obj
 		 * @param x X coordinate where to spawn the player on the map.
 		 * @param y Y coordinate where to spawn the player on the map.
 		 */
-		Player(int x, int y): MovableEntity(TextureManager::TEXTURE_ID_PLAYER, x, y, 3)
+		FightingEntityPlayer(int x, int y): FightingEntity(TextureManager::TEXTURE_ID_PLAYER, x, y, 3, 100)
 		{
 			// Cache rendering coordinates
 			_renderingX = (CONFIGURATION_DISPLAY_WIDTH - _renderingDestinationRectangle.w) / 2;
@@ -39,13 +42,16 @@ class Player: public MovableEntity // TODO add additionnal class for movable obj
 			_pointerTexture->render(_renderingX, _renderingY, _rotationAngle);
 		}
 		
-		virtual int update() { return 1; }
+		/** Player does not need to be updated.
+		 * @return Always 0.
+		 */
+		virtual int update() { return 0; }
 };
 
 //-------------------------------------------------------------------------------------------------
 // Variables
 //-------------------------------------------------------------------------------------------------
 /** The unique player, which must be accessible to any other module. */
-extern Player *pointerPlayer;
+extern FightingEntityPlayer *pointerPlayer;
 
 #endif

@@ -1,23 +1,18 @@
 #ifndef HPP_PICKABLE_ENTITY_MEDIPACK_HPP
 #define HPP_PICKABLE_ENTITY_MEDIPACK_HPP
 
+#include <FightingEntityPlayer.hpp>
 #include <Log.hpp>
 #include <PickableEntity.hpp>
-#include <Player.hpp>
 #include <Renderer.hpp>
 #include <TextureManager.hpp>
-
-//-------------------------------------------------------------------------------------------------
-// Constants
-//-------------------------------------------------------------------------------------------------
-/** How much life does the medipack restores. */
-#define PICKABLE_ENTITY_MEDIPACK_RESTORE_LIFE_POINTS_AMOUNT 20
 
 //-------------------------------------------------------------------------------------------------
 // Types
 //-------------------------------------------------------------------------------------------------
 /** @class PickableEntityMedipack
  * A medipack restoring life when player picks it.
+ * @author Adrien RICCIARDI
  */
 class PickableEntityMedipack: public PickableEntity
 {
@@ -35,7 +30,10 @@ class PickableEntityMedipack: public PickableEntity
 		// Nothing to clean
 		~PickableEntityMedipack() {}
 		
-		// Check if the medipack can be taken by the player
+		/** Check if the medipack can be taken by the player.
+		 * @return 0 if the medipack must remain on the map,
+		 * @return 1 if the medipack must be removed from the map.
+		 */
 		int update()
 		{
 			// Nothing to do if the medipack is not visible on the display (i.e. the player can't grab it)
@@ -46,9 +44,13 @@ class PickableEntityMedipack: public PickableEntity
 			LOG_DEBUG("Player is colliding with medipack.\n");
 			
 			// The player is colliding, can he be healed ?
-			// TODO, return 1 if taken
-			
-			return 1;
+			if (pointerPlayer->isWounded())
+			{
+				pointerPlayer->modifyLife(20);
+				LOG_DEBUG("Healed player.\n");
+				return 1; // Remove the medipack as it has been used
+			}
+			else return 0; // Player is healthy, the medipack has not been used, so don't remove it
 		}
 };
 

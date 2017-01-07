@@ -10,8 +10,6 @@
 class MovableEntity: public Entity
 {
 	protected:
-		// TODO collision rectangle (pickabilility, impacts)
-		
 		/** Rotate the texture when rendering (degrees unit). */
 		double _rotationAngle;
 		
