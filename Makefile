@@ -5,7 +5,7 @@ PATH_INCLUDES = Includes
 PATH_SOURCES = Sources
 
 BINARY = Strage
-LIBRARIES = -lSDL2
+LIBRARIES = -lSDL2 -lSDL2_ttf
 SOURCES = $(shell find $(PATH_SOURCES) -name "*.cpp")
 
 # Program configuration
@@ -13,6 +13,8 @@ CPPFLAGS += -DCONFIGURATION_DISPLAY_WIDTH=1024
 CPPFLAGS += -DCONFIGURATION_DISPLAY_HEIGHT=768
 # For a 60Hz refresh frequency, the period is 1/60 = 0.016ms
 CPPFLAGS += -DCONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS=16
+CPPFLAGS += -DCONFIGURATION_DISPLAY_HUD_LIFE_POINTS_X=10
+CPPFLAGS += -DCONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y=10
 # Set which logs to display (error logs are always enabled) :
 # 0 : error messages
 # 1 : error and information messages

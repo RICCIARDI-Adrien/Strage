@@ -9,7 +9,6 @@
 #include <LevelManager.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
-//#include <TextureManager.hpp>
 
 // TEST
 #include <PickableEntityMedipack.hpp>
@@ -80,6 +79,14 @@ static void renderGame(int sceneX, int sceneY)
 	
 	// Display the player at the end, so it is always rendered on top on everything else and can always be visible
 	pointerPlayer->render();
+	
+	// Display HUD
+	char string[64];
+	// Life points
+	sprintf(string, "Life : %d%%", pointerPlayer->getLifePointsAmount());
+	Renderer::renderText(CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_X, CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y, string);
+	// Ammunitions count
+	// TODO
 	
 	// Display the rendered picture
 	SDL_RenderPresent(Renderer::pointerMainRenderer);
