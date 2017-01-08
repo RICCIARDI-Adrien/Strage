@@ -121,7 +121,7 @@ int main(void)
 {
 	SDL_Event event;
 	unsigned int Starting_Time, Elapsed_Time;
-	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0};
+	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0}, isLastDirectionVertical;
 	
 	// Engine initialization
 	if (Renderer::initialize() != 0) return -1;
@@ -165,29 +165,25 @@ int main(void)
 						case SDL_SCANCODE_UP:
 							isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP] = 1;
 							isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN] = 0;
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT] = 0;
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT] = 0;
+							isLastDirectionVertical = 1;
 							break;
 							
 						case SDL_SCANCODE_DOWN:
 							isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP] = 0;
 							isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN] = 1;
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT] = 0;
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT] = 0;
+							isLastDirectionVertical = 1;
 							break;
 							
 						case SDL_SCANCODE_LEFT:
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP] = 0;
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN] = 0;
 							isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT] = 1;
 							isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT] = 0;
+							isLastDirectionVertical = 0;
 							break;
 							
 						case SDL_SCANCODE_RIGHT:
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP] = 0;
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN] = 0;
 							isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT] = 0;
 							isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT] = 1;
+							isLastDirectionVertical = 0;
 							break;
 							
 						case SDL_SCANCODE_SPACE:
@@ -212,18 +208,22 @@ int main(void)
 					{
 						case SDL_SCANCODE_UP:
 							isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP] = 0;
+							isLastDirectionVertical = 0;
 							break;
 							
 						case SDL_SCANCODE_DOWN:
 							isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN] = 0;
+							isLastDirectionVertical = 0;
 							break;
 							
 						case SDL_SCANCODE_LEFT:
 							isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT] = 0;
+							isLastDirectionVertical = 1;
 							break;
 							
 						case SDL_SCANCODE_RIGHT:
 							isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT] = 0;
+							isLastDirectionVertical = 1;
 							break;
 							
 						case SDL_SCANCODE_SPACE:
@@ -239,10 +239,29 @@ int main(void)
 		}
 		
 		// React to player key press without depending of keyboard key repetition rate
-		if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP]) player.moveToUp();
-		else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN]) player.moveToDown();
-		else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT]) player.moveToLeft();
-		else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT]) player.moveToRight();
+		// Handle both vertical and horizontal direction movement
+		if ((isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP] || isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN]) && (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT] || isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT]))
+		{
+			// Keep trace of the last direction the player took to favor it, when this key will be released the previous direction will be favored
+			if (isLastDirectionVertical)
+			{
+				if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP]) player.moveToUp();
+				else player.moveToDown();
+			}
+			else
+			{
+				if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT]) player.moveToLeft();
+				else player.moveToRight();
+			}
+		}
+		// Handle a single key press
+		else
+		{
+			if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP]) player.moveToUp();
+			else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN]) player.moveToDown();
+			else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT]) player.moveToLeft();
+			else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT]) player.moveToRight();
+		}
 		
 		// Fire a bullet
 		if (isKeyPressed[KEYBOARD_KEY_ID_SPACE])
