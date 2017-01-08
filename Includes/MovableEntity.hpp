@@ -7,6 +7,10 @@
 #include <SDL2/SDL.h>
 #include <TextureManager.hpp>
 
+/** @class MovableEntity
+ * An entity that can move up, down, left and right onto the map. A movable entity can't go across a scene wall.
+ * @author Adrien RICCIARDI
+ */
 class MovableEntity: public Entity
 {
 	public:

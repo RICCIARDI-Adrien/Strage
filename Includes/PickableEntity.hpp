@@ -2,19 +2,16 @@
 #define HPP_PICKABLE_ENTITY_HPP
 
 #include <Entity.hpp>
-#include <Rectangle.hpp>
 #include <SDL2/SDL.h>
 #include <TextureManager.hpp>
 
 /** @class PickableEntity
  * A still entity that can be picked up by the player by walking across the entity.
+ * @author Adrien RICCIARDI
  */
 class PickableEntity: public Entity
 {
 	protected:
-		/** The pickable entity is picked up when the player enters this rectangle. */
-		Rectangle _pickingRectangle;
-		
 		/** Tell if the player entered the picking area of the entity.
 		 * @return 0 if the entity is not colliding with the player,
 		 * @return 1 if the entity is colliding with the player.

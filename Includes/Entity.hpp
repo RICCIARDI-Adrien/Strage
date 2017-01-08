@@ -9,7 +9,8 @@
 #include <TextureManager.hpp>
 
 /** @class Entity
- * Base class for all game entity.
+ * Base class for all game entities.
+ * @author Adrien RICCIARDI
  */
 class Entity
 {

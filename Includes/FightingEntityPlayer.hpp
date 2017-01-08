@@ -12,7 +12,7 @@
 // Types
 //-------------------------------------------------------------------------------------------------
 /** @class FightingEntityPlayer
- * The unique player, controller by the human player.
+ * The unique player, controlled by the human player.
  * @author Adrien RICCIARDI
  */
 class FightingEntityPlayer: public FightingEntity
