@@ -39,7 +39,7 @@ class MovableEntity: public Entity
 		 * @param y The Y coordinate where to spawn the entity.
 		 * @param movingPixelsAmount Entity moving speed.
 		 */
-		MovableEntity(TextureManager::TextureId textureId, int x, int y, int movingPixelsAmount): Entity(textureId) // TODO add facing direction here ?
+		MovableEntity(TextureManager::TextureId textureId, int x, int y, int movingPixelsAmount): Entity(textureId)
 		{
 			// Cache some parameters to fasten rendering
 			_positionRectangle.x = x;
@@ -52,8 +52,10 @@ class MovableEntity: public Entity
 			_facingDirection = FACING_DIRECTION_UP;
 		}
 		
-		/** Move the entity to the up. */
-		virtual void moveToUp()
+		/** Move the entity to the up.
+		 * @return How many pixels the entity moved.
+		 */
+		virtual int moveToUp()
 		{
 			int leftSideDistanceToWall, rightSizeDistanceToWall, distanceToWall;
 			
@@ -72,10 +74,14 @@ class MovableEntity: public Entity
 			// Entity is facing up
 			_rotationAngle = 0;
 			_facingDirection = FACING_DIRECTION_UP;
+			
+			return distanceToWall;
 		}
 		
-		/** Move the entity to the down. */
-		virtual void moveToDown()
+		/** Move the entity to the down.
+		 * @return How many pixels the entity moved.
+		 */
+		virtual int moveToDown()
 		{
 			int leftSideDistanceToWall, rightSizeDistanceToWall, distanceToWall;
 			
@@ -94,10 +100,14 @@ class MovableEntity: public Entity
 			// Entity is facing down
 			_rotationAngle = 180;
 			_facingDirection = FACING_DIRECTION_DOWN;
+			
+			return distanceToWall;
 		}
 		
-		/** Move the entity to the left. */
-		virtual void moveToLeft()
+		/** Move the entity to the left.
+		 * @return How many pixels the entity moved.
+		 */
+		virtual int moveToLeft()
 		{
 			int upperSideDistanceToWall, downerSizeDistanceToWall, distanceToWall;
 			
@@ -116,10 +126,14 @@ class MovableEntity: public Entity
 			// Entity is facing left
 			_rotationAngle = 270;
 			_facingDirection = FACING_DIRECTION_LEFT;
+			
+			return distanceToWall;
 		}
 		
-		/** Move the entity to the right. */
-		virtual void moveToRight()
+		/** Move the entity to the right.
+		 * @return How many pixels the entity moved.
+		 */
+		virtual int moveToRight()
 		{
 			int upperSideDistanceToWall, downerSizeDistanceToWall, distanceToWall;
 			
@@ -138,6 +152,8 @@ class MovableEntity: public Entity
 			// Entity is facing right
 			_rotationAngle = 90;
 			_facingDirection = FACING_DIRECTION_RIGHT;
+			
+			return distanceToWall;
 		}
 		
 		/** Display the texture and rotate it in the same time. */

@@ -28,34 +28,30 @@ class MovableEntityBullet: public MovableEntity
 		 */
 		virtual int update()
 		{
-			int previousX, previousY;
+			int movedPixelsCount;
 		
-			// Keep coordinates before move to easily determine if the bullet moved
-			previousX = _positionRectangle.x;
-			previousY = _positionRectangle.y;
-			
 			// Update position
 			switch (_facingDirection)
 			{
 				case FACING_DIRECTION_UP:
-					moveToUp();
+					movedPixelsCount = moveToUp();
 					break;
 					
 				case FACING_DIRECTION_DOWN:
-					moveToDown();
+					movedPixelsCount = moveToDown();
 					break;
 					
 				case FACING_DIRECTION_LEFT:
-					moveToLeft();
+					movedPixelsCount = moveToLeft();
 					break;
 					
 				case FACING_DIRECTION_RIGHT:
-					moveToRight();
+					movedPixelsCount = moveToRight();
 					break;
 			}
 			
 			// Did the bullet really moved ?
-			if ((previousX == _positionRectangle.x) && (previousY == _positionRectangle.y)) return 1; // It did not move, so it has hit a wall
+			if (movedPixelsCount == 0) return 1; // It did not move, so it has hit a wall
 			return 0;
 		}
 };
