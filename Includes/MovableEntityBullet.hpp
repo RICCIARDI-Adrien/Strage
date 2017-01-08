@@ -31,8 +31,8 @@ class MovableEntityBullet: public MovableEntity
 			int previousX, previousY;
 		
 			// Keep coordinates before move to easily determine if the bullet moved
-			previousX = _renderingDestinationRectangle.x;
-			previousY = _renderingDestinationRectangle.y;
+			previousX = _positionRectangle.x;
+			previousY = _positionRectangle.y;
 			
 			// Update position
 			switch (_facingDirection)
@@ -55,7 +55,7 @@ class MovableEntityBullet: public MovableEntity
 			}
 			
 			// Did the bullet really moved ?
-			if ((previousX == _renderingDestinationRectangle.x) && (previousY == _renderingDestinationRectangle.y)) return 1; // It did not move, so it has hit a wall
+			if ((previousX == _positionRectangle.x) && (previousY == _positionRectangle.y)) return 1; // It did not move, so it has hit a wall
 			return 0;
 		}
 };

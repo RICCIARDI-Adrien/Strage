@@ -14,7 +14,7 @@ class Texture
 		SDL_Texture *_pointerTexture;
 		
 		/** Use this rectangle to render the texture (some values are cached this way). */
-		SDL_Rect _renderingDestinationRectangle;
+		SDL_Rect _positionRectangle;
 	
 	protected:
 		/** Load a texture from a bitmap file.
@@ -51,7 +51,7 @@ class Texture
 		 */
 		inline int getWidth()
 		{
-			return _renderingDestinationRectangle.w;
+			return _positionRectangle.w;
 		}
 		
 		/** Get the texture height in pixels.
@@ -59,7 +59,7 @@ class Texture
 		 */
 		inline int getHeight()
 		{
-			return _renderingDestinationRectangle.h;
+			return _positionRectangle.h;
 		}
 };
 

@@ -23,8 +23,8 @@ class PickableEntityMedipack: public PickableEntity
 		 */
 		PickableEntityMedipack(int x, int y): PickableEntity(TextureManager::TEXTURE_ID_MEDIPACK)
 		{
-			_renderingDestinationRectangle.x = x;
-			_renderingDestinationRectangle.y = y;
+			_positionRectangle.x = x;
+			_positionRectangle.y = y;
 		}
 		
 		// Nothing to clean
@@ -37,10 +37,10 @@ class PickableEntityMedipack: public PickableEntity
 		int update()
 		{
 			// Nothing to do if the medipack is not visible on the display (i.e. the player can't grab it)
-			if (!Renderer::isDisplayable(&_renderingDestinationRectangle)) return 0;
+			if (!Renderer::isDisplayable(&_positionRectangle)) return 0;
 			
 			// Is the player colliding with the medipack ?
-			if (!SDL_HasIntersection(pointerPlayer->getPositionRectangle(), &_renderingDestinationRectangle)) return 0;
+			if (!SDL_HasIntersection(pointerPlayer->getPositionRectangle(), &_positionRectangle)) return 0;
 			LOG_DEBUG("Player is colliding with medipack.\n");
 			
 			// The player is colliding, can he be healed ?

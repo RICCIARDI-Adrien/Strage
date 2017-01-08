@@ -42,8 +42,8 @@ class MovableEntity: public Entity
 		MovableEntity(TextureManager::TextureId textureId, int x, int y, int movingPixelsAmount): Entity(textureId) // TODO add facing direction here ?
 		{
 			// Cache some parameters to fasten rendering
-			_renderingDestinationRectangle.x = x;
-			_renderingDestinationRectangle.y = y;
+			_positionRectangle.x = x;
+			_positionRectangle.y = y;
 			
 			_movingPixelsAmount = movingPixelsAmount;
 			
@@ -58,16 +58,16 @@ class MovableEntity: public Entity
 			int leftSideDistanceToWall, rightSizeDistanceToWall, distanceToWall;
 			
 			// Check upper border distance against level walls
-			leftSideDistanceToWall = LevelManager::getDistanceFromUpperWall(_renderingDestinationRectangle.x, _renderingDestinationRectangle.y);
-			rightSizeDistanceToWall = LevelManager::getDistanceFromUpperWall(_renderingDestinationRectangle.x + _renderingDestinationRectangle.w - 1, _renderingDestinationRectangle.y);
+			leftSideDistanceToWall = LevelManager::getDistanceFromUpperWall(_positionRectangle.x, _positionRectangle.y);
+			rightSizeDistanceToWall = LevelManager::getDistanceFromUpperWall(_positionRectangle.x + _positionRectangle.w - 1, _positionRectangle.y);
 			
 			// Keep the smaller distance
 			if (leftSideDistanceToWall < rightSizeDistanceToWall) distanceToWall = leftSideDistanceToWall;
 			else distanceToWall = rightSizeDistanceToWall;
 			
 			// Move if possible
-			if (distanceToWall >= _movingPixelsAmount) _renderingDestinationRectangle.y -= _movingPixelsAmount;
-			else _renderingDestinationRectangle.y -= distanceToWall;
+			if (distanceToWall >= _movingPixelsAmount) _positionRectangle.y -= _movingPixelsAmount;
+			else _positionRectangle.y -= distanceToWall;
 			
 			// Entity is facing up
 			_rotationAngle = 0;
@@ -80,16 +80,16 @@ class MovableEntity: public Entity
 			int leftSideDistanceToWall, rightSizeDistanceToWall, distanceToWall;
 			
 			// Check downer border distance against level walls
-			leftSideDistanceToWall = LevelManager::getDistanceFromDownerWall(_renderingDestinationRectangle.x, _renderingDestinationRectangle.y + _renderingDestinationRectangle.h);
-			rightSizeDistanceToWall = LevelManager::getDistanceFromDownerWall(_renderingDestinationRectangle.x + _renderingDestinationRectangle.w - 1, _renderingDestinationRectangle.y + _renderingDestinationRectangle.h);
+			leftSideDistanceToWall = LevelManager::getDistanceFromDownerWall(_positionRectangle.x, _positionRectangle.y + _positionRectangle.h);
+			rightSizeDistanceToWall = LevelManager::getDistanceFromDownerWall(_positionRectangle.x + _positionRectangle.w - 1, _positionRectangle.y + _positionRectangle.h);
 			
 			// Keep the smaller distance
 			if (leftSideDistanceToWall < rightSizeDistanceToWall) distanceToWall = leftSideDistanceToWall;
 			else distanceToWall = rightSizeDistanceToWall;
 			
 			// Move if possible
-			if (distanceToWall >= _movingPixelsAmount) _renderingDestinationRectangle.y += _movingPixelsAmount;
-			else _renderingDestinationRectangle.y += distanceToWall;
+			if (distanceToWall >= _movingPixelsAmount) _positionRectangle.y += _movingPixelsAmount;
+			else _positionRectangle.y += distanceToWall;
 			
 			// Entity is facing down
 			_rotationAngle = 180;
@@ -102,16 +102,16 @@ class MovableEntity: public Entity
 			int upperSideDistanceToWall, downerSizeDistanceToWall, distanceToWall;
 			
 			// Check leftmost border distance against level walls
-			upperSideDistanceToWall = LevelManager::getDistanceFromLeftmostWall(_renderingDestinationRectangle.x, _renderingDestinationRectangle.y);
-			downerSizeDistanceToWall = LevelManager::getDistanceFromLeftmostWall(_renderingDestinationRectangle.x, _renderingDestinationRectangle.y + _renderingDestinationRectangle.h - 1);
+			upperSideDistanceToWall = LevelManager::getDistanceFromLeftmostWall(_positionRectangle.x, _positionRectangle.y);
+			downerSizeDistanceToWall = LevelManager::getDistanceFromLeftmostWall(_positionRectangle.x, _positionRectangle.y + _positionRectangle.h - 1);
 			
 			// Keep the smaller distance
 			if (upperSideDistanceToWall < downerSizeDistanceToWall) distanceToWall = upperSideDistanceToWall;
 			else distanceToWall = downerSizeDistanceToWall;
 			
 			// Move if possible
-			if (distanceToWall >= _movingPixelsAmount) _renderingDestinationRectangle.x -= _movingPixelsAmount;
-			else _renderingDestinationRectangle.x -= distanceToWall;
+			if (distanceToWall >= _movingPixelsAmount) _positionRectangle.x -= _movingPixelsAmount;
+			else _positionRectangle.x -= distanceToWall;
 			
 			// Entity is facing left
 			_rotationAngle = 270;
@@ -124,16 +124,16 @@ class MovableEntity: public Entity
 			int upperSideDistanceToWall, downerSizeDistanceToWall, distanceToWall;
 			
 			// Check rightmost border distance against level walls
-			upperSideDistanceToWall = LevelManager::getDistanceFromRightmostWall(_renderingDestinationRectangle.x + _renderingDestinationRectangle.w, _renderingDestinationRectangle.y);
-			downerSizeDistanceToWall = LevelManager::getDistanceFromRightmostWall(_renderingDestinationRectangle.x + _renderingDestinationRectangle.w, _renderingDestinationRectangle.y + _renderingDestinationRectangle.h - 1);
+			upperSideDistanceToWall = LevelManager::getDistanceFromRightmostWall(_positionRectangle.x + _positionRectangle.w, _positionRectangle.y);
+			downerSizeDistanceToWall = LevelManager::getDistanceFromRightmostWall(_positionRectangle.x + _positionRectangle.w, _positionRectangle.y + _positionRectangle.h - 1);
 			
 			// Keep the smaller distance
 			if (upperSideDistanceToWall < downerSizeDistanceToWall) distanceToWall = upperSideDistanceToWall;
 			else distanceToWall = downerSizeDistanceToWall;
 			
 			// Move if possible
-			if (distanceToWall >= _movingPixelsAmount) _renderingDestinationRectangle.x += _movingPixelsAmount;
-			else _renderingDestinationRectangle.x += distanceToWall;
+			if (distanceToWall >= _movingPixelsAmount) _positionRectangle.x += _movingPixelsAmount;
+			else _positionRectangle.x += distanceToWall;
 			
 			// Entity is facing right
 			_rotationAngle = 90;
@@ -144,7 +144,7 @@ class MovableEntity: public Entity
 		virtual void render()
 		{
 			// Display the texture only if the entity is visible on screen
-			if (Renderer::isDisplayable(&_renderingDestinationRectangle)) _pointerTexture->render(_renderingDestinationRectangle.x - Renderer::displayX, _renderingDestinationRectangle.y - Renderer::displayY, _rotationAngle);
+			if (Renderer::isDisplayable(&_positionRectangle)) _pointerTexture->render(_positionRectangle.x - Renderer::displayX, _positionRectangle.y - Renderer::displayY, _rotationAngle);
 		}
 		
 		/** Tell in which direction the entity is facing.

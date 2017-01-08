@@ -31,7 +31,7 @@ class PickableEntity: public Entity
 		void render()
 		{
 			// Display the texture only if the entity is visible on screen
-			if (Renderer::isDisplayable(&_renderingDestinationRectangle)) _pointerTexture->render(_renderingDestinationRectangle.x - Renderer::displayX, _renderingDestinationRectangle.y - Renderer::displayY);
+			if (Renderer::isDisplayable(&_positionRectangle)) _pointerTexture->render(_positionRectangle.x - Renderer::displayX, _positionRectangle.y - Renderer::displayY);
 		}
 	
 		/** @see Entity for description. */

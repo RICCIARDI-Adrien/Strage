@@ -19,7 +19,7 @@ class Entity
 		Texture *_pointerTexture;
 		
 		/** Hold entity dimensions and location on the map. Use this destination rectangle to render the entity. */
-		SDL_Rect _renderingDestinationRectangle; // TODO rename (positionRectangle ?)
+		SDL_Rect _positionRectangle;
 		
 	public:
 		/** Load the entity texture.
@@ -36,8 +36,8 @@ class Entity
 			}
 			
 			// Cache some values to fasten processing
-			_renderingDestinationRectangle.w = _pointerTexture->getWidth();
-			_renderingDestinationRectangle.h = _pointerTexture->getHeight();
+			_positionRectangle.w = _pointerTexture->getWidth();
+			_positionRectangle.h = _pointerTexture->getHeight();
 		}
 		
 		/** Free entity allocated resources. */
@@ -57,7 +57,7 @@ class Entity
 		 */
 		inline int getX()
 		{
-			return _renderingDestinationRectangle.x;
+			return _positionRectangle.x;
 		}
 		
 		/** Get the entity Y coordinate.
@@ -65,7 +65,7 @@ class Entity
 		 */
 		inline int getY()
 		{
-			return _renderingDestinationRectangle.y;
+			return _positionRectangle.y;
 		}
 		
 		/** Get a rectangle defining the entity bounds in the map.
@@ -73,7 +73,7 @@ class Entity
 		 */
 		inline SDL_Rect *getPositionRectangle()
 		{
-			return &_renderingDestinationRectangle;
+			return &_positionRectangle;
 		}
 };
 

@@ -87,7 +87,7 @@ class FightingEntity: public MovableEntity
 			// Allow to shoot only if enough time elapsed since last shot
 			if (SDL_GetTicks() - _lastShotTime >= _timeBetweenShots)
 			{
-				MovableEntityBullet *pointerBullet = new MovableEntityBullet(_renderingDestinationRectangle.x + _bulletStartingPositionOffset, _renderingDestinationRectangle.y + _bulletStartingPositionOffset, _facingDirection);
+				MovableEntityBullet *pointerBullet = new MovableEntityBullet(_positionRectangle.x + _bulletStartingPositionOffset, _positionRectangle.y + _bulletStartingPositionOffset, _facingDirection);
 				
 				// Get time after having generated the bullet, in case this takes more than 1 millisecond
 				_lastShotTime = SDL_GetTicks();

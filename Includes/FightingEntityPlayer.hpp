@@ -31,8 +31,8 @@ class FightingEntityPlayer: public FightingEntity
 		FightingEntityPlayer(int x, int y): FightingEntity(TextureManager::TEXTURE_ID_PLAYER, x, y, 3, 100)
 		{
 			// Cache rendering coordinates
-			_renderingX = (CONFIGURATION_DISPLAY_WIDTH - _renderingDestinationRectangle.w) / 2;
-			_renderingY = (CONFIGURATION_DISPLAY_HEIGHT - _renderingDestinationRectangle.h) / 2;
+			_renderingX = (CONFIGURATION_DISPLAY_WIDTH - _positionRectangle.w) / 2;
+			_renderingY = (CONFIGURATION_DISPLAY_HEIGHT - _positionRectangle.h) / 2;
 			
 			// TODO constructor ?
 			_timeBetweenShots = 150;
