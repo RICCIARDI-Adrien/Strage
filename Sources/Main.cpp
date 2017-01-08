@@ -12,6 +12,7 @@
 
 // TEST
 #include <PickableEntityMedipack.hpp>
+#include <MovableEntityBullet.hpp>
 
 //-------------------------------------------------------------------------------------------------
 // Private types
@@ -23,6 +24,7 @@ typedef enum
 	KEYBOARD_KEY_ID_ARROW_DOWN,
 	KEYBOARD_KEY_ID_ARROW_LEFT,
 	KEYBOARD_KEY_ID_ARROW_RIGHT,
+	KEYBOARD_KEY_ID_SPACE,
 	KEYBOARD_KEY_IDS_COUNT
 } KeyboardKeyId;
 
@@ -31,6 +33,9 @@ typedef enum
 //-------------------------------------------------------------------------------------------------
 /** All pickable entities. */
 static std::list<PickableEntity *> pickableEntitiesList;
+
+/** All bullets shot by the player. */
+static std::list<MovableEntityBullet *> playerBulletsList;
 
 //-------------------------------------------------------------------------------------------------
 // Public variables
@@ -59,6 +64,19 @@ static void updateGameLogic()
 		pointerPickableEntity = *pickableListIterator;
 		if (pointerPickableEntity->update() != 0) pickableListIterator = pickableEntitiesList.erase(pickableListIterator);
 	}
+	
+	// Check if player bullets have hit a wall or an enemy
+	std::list<MovableEntityBullet *>::iterator playerBulletsListIterator;
+	MovableEntityBullet *pointerPlayerBullet;
+	for (playerBulletsListIterator = playerBulletsList.begin(); playerBulletsListIterator != playerBulletsList.end(); ++playerBulletsListIterator)
+	{
+		pointerPlayerBullet = *playerBulletsListIterator;
+		
+		// Remove the bullet if it hit a wall
+		if (pointerPlayerBullet->update() != 0) playerBulletsListIterator = playerBulletsList.erase(playerBulletsListIterator);
+		
+		// TODO check with all enemies for a collision
+	}
 }
 
 /** Display everything to the screen.
@@ -76,6 +94,10 @@ static void renderGame(int sceneX, int sceneY)
 	// Display pickable entities (as they are laying on the floor, any other entity is walking on top of them)
 	std::list<PickableEntity *>::iterator pickableListIterator;
 	for (pickableListIterator = pickableEntitiesList.begin(); pickableListIterator != pickableEntitiesList.end(); ++pickableListIterator) (*pickableListIterator)->render();
+	
+	// Display bullets before enemies, so they are hidden by enemies if the come across them
+	std::list<MovableEntityBullet *>::iterator playerBulletsListIterator;
+	for (playerBulletsListIterator = playerBulletsList.begin(); playerBulletsListIterator != playerBulletsList.end(); ++playerBulletsListIterator) (*playerBulletsListIterator)->render();
 	
 	// Display the player at the end, so it is always rendered on top on everything else and can always be visible
 	pointerPlayer->render();
@@ -99,7 +121,7 @@ int main(void)
 {
 	SDL_Event event;
 	unsigned int Starting_Time, Elapsed_Time;
-	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0};
+	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0}, bulletStartingPositionOffset;
 	
 	// Engine initialization
 	if (Renderer::initialize() != 0) return -1;
@@ -109,6 +131,13 @@ int main(void)
 	// Automatically dispose of allocated resources on program exit (allowing to use exit() elsewhere in the program)
 	atexit(exitFreeResources);
 	LOG_INFORMATION("Game engine successfully initialized.\n");
+	
+	// Cache the offset to add to player coordinates to make fired bullets start from player center
+	Texture *pointerPlayerTexture, *pointerBulletTexture;
+	// Use textures because player is not instantiated, and it's heavy to create a bullet just for that
+	pointerPlayerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER);
+	pointerBulletTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_BULLET);
+	bulletStartingPositionOffset = (pointerPlayerTexture->getWidth() - pointerBulletTexture->getWidth()) / 2; // This works in all player facing directions because player texture is a circle
 	
 	// TEST
 	int camX = 0, camY = 0;
@@ -142,18 +171,34 @@ int main(void)
 					{
 						case SDL_SCANCODE_UP:
 							isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP] = 1;
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN] = 0;
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT] = 0;
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT] = 0;
 							break;
 							
 						case SDL_SCANCODE_DOWN:
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP] = 0;
 							isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN] = 1;
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT] = 0;
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT] = 0;
 							break;
 							
 						case SDL_SCANCODE_LEFT:
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP] = 0;
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN] = 0;
 							isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT] = 1;
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT] = 0;
 							break;
 							
 						case SDL_SCANCODE_RIGHT:
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP] = 0;
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN] = 0;
+							isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT] = 0;
 							isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT] = 1;
+							break;
+							
+						case SDL_SCANCODE_SPACE:
+							isKeyPressed[KEYBOARD_KEY_ID_SPACE] = 1;
 							break;
 							
 						case SDL_SCANCODE_Q:
@@ -188,6 +233,10 @@ int main(void)
 							isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT] = 0;
 							break;
 							
+						case SDL_SCANCODE_SPACE:
+							isKeyPressed[KEYBOARD_KEY_ID_SPACE] = 0;
+							break;
+							
 						default:
 							break;
 					}
@@ -199,9 +248,11 @@ int main(void)
 		// React to player key press without depending of keyboard key repetition rate
 		if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP]) player.moveToUp();
 		else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN]) player.moveToDown();
-		// Up/down and left/right keys are separated to allow the player to go in both horizontal and vertical directions in the same time
-		if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT]) player.moveToLeft();
+		else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT]) player.moveToLeft();
 		else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT]) player.moveToRight();
+		
+		// Fire a bullet
+		if (isKeyPressed[KEYBOARD_KEY_ID_SPACE]) playerBulletsList.push_front(new MovableEntityBullet(player.getX() + bulletStartingPositionOffset, player.getY() + bulletStartingPositionOffset, player.getFacingDirection()));
 		
 		// TEST
 		camX = player.getX() - (CONFIGURATION_DISPLAY_WIDTH / 2) + 16;

@@ -9,14 +9,41 @@
 
 class MovableEntity: public Entity
 {
+	public:
+		/** All entity possible facing directions. */
+		typedef enum
+		{
+			FACING_DIRECTION_UP,
+			FACING_DIRECTION_DOWN,
+			FACING_DIRECTION_LEFT,
+			FACING_DIRECTION_RIGHT
+		} FacingDirection; // Must be declared before usage in protected section
+		
 	protected:
 		/** Rotate the texture when rendering (degrees unit). */
 		double _rotationAngle;
+		/** Tell in which direction the entity is facing. */
+		FacingDirection _facingDirection;
 		
 		/** How many pixels to move the entity. */
 		int _movingPixelsAmount;
 	
 	public:
+		/** Gather some initialization common to all movable entities.
+		 * @param textureId The texture to use on rendering.
+		 * @param x The X coordinate where to spawn the entity.
+		 * @param y The Y coordinate where to spawn the entity.
+		 * @param movingPixelsAmount Entity moving speed.
+		 */
+		MovableEntity(TextureManager::TextureId textureId, int x, int y, int movingPixelsAmount): Entity(textureId) // TODO add facing direction here ?
+		{
+			// Cache some parameters to fasten rendering
+			_renderingDestinationRectangle.x = x;
+			_renderingDestinationRectangle.y = y;
+			
+			_movingPixelsAmount = movingPixelsAmount;
+		}
+		
 		/** Move the entity to the up. */
 		virtual void moveToUp()
 		{
@@ -36,6 +63,7 @@ class MovableEntity: public Entity
 			
 			// Entity is facing up
 			_rotationAngle = 0;
+			_facingDirection = FACING_DIRECTION_UP;
 		}
 		
 		/** Move the entity to the down. */
@@ -57,6 +85,7 @@ class MovableEntity: public Entity
 			
 			// Entity is facing down
 			_rotationAngle = 180;
+			_facingDirection = FACING_DIRECTION_DOWN;
 		}
 		
 		/** Move the entity to the left. */
@@ -78,6 +107,7 @@ class MovableEntity: public Entity
 			
 			// Entity is facing left
 			_rotationAngle = 270;
+			_facingDirection = FACING_DIRECTION_LEFT;
 		}
 		
 		/** Move the entity to the right. */
@@ -99,21 +129,7 @@ class MovableEntity: public Entity
 			
 			// Entity is facing right
 			_rotationAngle = 90;
-		}
-		
-		/** Gather some initialization common to all movable entities.
-		 * @param textureId The texture to use on rendering.
-		 * @param x The X coordinate where to spawn the entity.
-		 * @param y The Y coordinate where to spawn the entity.
-		 * @param movingPixelsAmount Entity moving speed.
-		 */
-		MovableEntity(TextureManager::TextureId textureId, int x, int y, int movingPixelsAmount): Entity(textureId)
-		{
-			// Cache some parameters to fasten rendering
-			_renderingDestinationRectangle.x = x;
-			_renderingDestinationRectangle.y = y;
-			
-			_movingPixelsAmount = movingPixelsAmount;
+			_facingDirection = FACING_DIRECTION_RIGHT;
 		}
 		
 		/** Display the texture and rotate it in the same time. */
@@ -121,6 +137,14 @@ class MovableEntity: public Entity
 		{
 			// Display the texture only if the entity is visible on screen
 			if (Renderer::isDisplayable(&_renderingDestinationRectangle)) _pointerTexture->render(_renderingDestinationRectangle.x - Renderer::displayX, _renderingDestinationRectangle.y - Renderer::displayY, _rotationAngle);
+		}
+		
+		/** Tell in which direction the entity is facing.
+		 * @return The entity facing direction.
+		 */
+		inline FacingDirection getFacingDirection()
+		{
+			return _facingDirection;
 		}
 };
 
