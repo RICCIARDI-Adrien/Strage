@@ -121,7 +121,7 @@ int main(void)
 {
 	SDL_Event event;
 	unsigned int Starting_Time, Elapsed_Time;
-	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0}, bulletStartingPositionOffset;
+	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0};
 	
 	// Engine initialization
 	if (Renderer::initialize() != 0) return -1;
@@ -131,13 +131,6 @@ int main(void)
 	// Automatically dispose of allocated resources on program exit (allowing to use exit() elsewhere in the program)
 	atexit(exitFreeResources);
 	LOG_INFORMATION("Game engine successfully initialized.\n");
-	
-	// Cache the offset to add to player coordinates to make fired bullets start from player center
-	Texture *pointerPlayerTexture, *pointerBulletTexture;
-	// Use textures because player is not instantiated, and it's heavy to create a bullet just for that
-	pointerPlayerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER);
-	pointerBulletTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_BULLET);
-	bulletStartingPositionOffset = (pointerPlayerTexture->getWidth() - pointerBulletTexture->getWidth()) / 2; // This works in all player facing directions because player texture is a circle
 	
 	// TEST
 	int camX = 0, camY = 0;
@@ -252,7 +245,13 @@ int main(void)
 		else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT]) player.moveToRight();
 		
 		// Fire a bullet
-		if (isKeyPressed[KEYBOARD_KEY_ID_SPACE]) playerBulletsList.push_front(new MovableEntityBullet(player.getX() + bulletStartingPositionOffset, player.getY() + bulletStartingPositionOffset, player.getFacingDirection()));
+		if (isKeyPressed[KEYBOARD_KEY_ID_SPACE])
+		{
+			MovableEntityBullet *pointerBullet = player.shoot();
+			
+			// Is the player allowed to shoot ?
+			if (pointerBullet != NULL) playerBulletsList.push_front(pointerBullet);
+		}
 		
 		// TEST
 		camX = player.getX() - (CONFIGURATION_DISPLAY_WIDTH / 2) + 16;

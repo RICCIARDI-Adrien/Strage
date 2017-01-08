@@ -2,6 +2,8 @@
 #define HPP_FIGHTING_ENTITY_HPP
 
 #include <MovableEntity.hpp>
+#include <MovableEntityBullet.hpp>
+#include <SDL2/SDL.h>
 #include <TextureManager.hpp>
 
 /** @class FightingEntity
@@ -19,6 +21,14 @@ class FightingEntity: public MovableEntity
 		/** How many ammunitions the entity owns. */
 		int _ammunitionsAmount;
 		
+		/** Add this offset to the entity coordinates to make the fired bullet start from the entity center. */
+		int _bulletStartingPositionOffset;
+		
+		/** When was the last shot fired (in milliseconds). This is part of the fire rate mechanism. */
+		unsigned int _lastShotTime;
+		/** How many milliseconds to wait between two shots. */
+		unsigned int _timeBetweenShots;
+		
 	public:
 		/** Initialize life points in addition to parent classes fields.
 		 * @param textureId The texture to use on rendering.
@@ -27,10 +37,15 @@ class FightingEntity: public MovableEntity
 		 * @param movingPixelsAmount Entity moving speed.
 		 * @param maximumLifePointsAmount Entity maximum life points count.
 		 */
-		FightingEntity(TextureManager::TextureId textureId, int x, int y, int movingPixelsAmount, int maximumLifePointsAmount): MovableEntity(textureId, x, y, movingPixelsAmount)
+		FightingEntity(TextureManager::TextureId textureId, int x, int y, int movingPixelsAmount, int maximumLifePointsAmount): MovableEntity(textureId, x, y, movingPixelsAmount) // TODO _timeBetweenShots
 		{
 			_lifePointsAmount = maximumLifePointsAmount;
 			_maximumLifePointsAmount = maximumLifePointsAmount;
+			
+			// Cache the offset to add to entity coordinates to make fired bullets start from entity center
+			Texture *pointerBulletTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_BULLET); // Use textures to avoid instantiate a bullet to get its dimensions
+			_bulletStartingPositionOffset = (_pointerTexture->getWidth() - pointerBulletTexture->getWidth()) / 2; // This works in all fighting entity facing directions because fighting entity textures are appositely circular
+			_lastShotTime = 0; // Allow to shoot immediately
 		}
 		
 		/** The the entity life points.
@@ -61,6 +76,25 @@ class FightingEntity: public MovableEntity
 		{
 			if (_lifePointsAmount < _maximumLifePointsAmount) return 1;
 			return 0;
+		}
+		
+		/** Generate a bullet facing the entity direction.
+		 * @return A valid pointer if the entity was allowed to shot,
+		 * @return NULL if the entity could not shoot (no more ammunitions, slower fire rate...).
+		 */
+		MovableEntityBullet *shoot()
+		{
+			// Allow to shoot only if enough time elapsed since last shot
+			if (SDL_GetTicks() - _lastShotTime >= _timeBetweenShots)
+			{
+				MovableEntityBullet *pointerBullet = new MovableEntityBullet(_renderingDestinationRectangle.x + _bulletStartingPositionOffset, _renderingDestinationRectangle.y + _bulletStartingPositionOffset, _facingDirection);
+				
+				// Get time after having generated the bullet, in case this takes more than 1 millisecond
+				_lastShotTime = SDL_GetTicks();
+				
+				return pointerBullet;
+			}
+			else return NULL; // No shot allowed
 		}
 };
 

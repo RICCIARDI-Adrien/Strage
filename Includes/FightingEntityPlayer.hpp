@@ -33,6 +33,9 @@ class FightingEntityPlayer: public FightingEntity
 			// Cache rendering coordinates
 			_renderingX = (CONFIGURATION_DISPLAY_WIDTH - _renderingDestinationRectangle.w) / 2;
 			_renderingY = (CONFIGURATION_DISPLAY_HEIGHT - _renderingDestinationRectangle.h) / 2;
+			
+			// TODO constructor ?
+			_timeBetweenShots = 150;
 		}
 		
 		/** Display the player at the screen center. */

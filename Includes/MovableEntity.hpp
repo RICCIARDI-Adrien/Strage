@@ -42,6 +42,10 @@ class MovableEntity: public Entity
 			_renderingDestinationRectangle.y = y;
 			
 			_movingPixelsAmount = movingPixelsAmount;
+			
+			// Entity is facing up on spawn
+			_rotationAngle = 0;
+			_facingDirection = FACING_DIRECTION_UP;
 		}
 		
 		/** Move the entity to the up. */
