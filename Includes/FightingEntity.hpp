@@ -19,7 +19,7 @@ class FightingEntity: public MovableEntity
 		int _maximumLifePointsAmount;
 		
 		/** How many ammunitions the entity owns. */
-		int _ammunitionsAmount;
+		int _ammunitionsAmount; // TODO unlimited ammo ?
 		
 		/** Add this offset to the entity coordinates to make the fired bullet start from the entity center. */
 		int _bulletStartingPositionOffset;
@@ -36,8 +36,9 @@ class FightingEntity: public MovableEntity
 		 * @param y The Y coordinate where to spawn the entity.
 		 * @param movingPixelsAmount Entity moving speed.
 		 * @param maximumLifePointsAmount Entity maximum life points count.
+		 * @param timeBetweenShots How many milliseconds to wait between two shots.
 		 */
-		FightingEntity(TextureManager::TextureId textureId, int x, int y, int movingPixelsAmount, int maximumLifePointsAmount): MovableEntity(textureId, x, y, movingPixelsAmount) // TODO _timeBetweenShots
+		FightingEntity(TextureManager::TextureId textureId, int x, int y, int movingPixelsAmount, int maximumLifePointsAmount, int timeBetweenShots): MovableEntity(textureId, x, y, movingPixelsAmount)
 		{
 			_lifePointsAmount = maximumLifePointsAmount;
 			_maximumLifePointsAmount = maximumLifePointsAmount;
@@ -45,6 +46,7 @@ class FightingEntity: public MovableEntity
 			// Cache the offset to add to entity coordinates to make fired bullets start from entity center
 			Texture *pointerBulletTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_BULLET); // Use textures to avoid instantiate a bullet to get its dimensions
 			_bulletStartingPositionOffset = (_pointerTexture->getWidth() - pointerBulletTexture->getWidth()) / 2; // This works in all fighting entity facing directions because fighting entity textures are appositely circular
+			_timeBetweenShots = timeBetweenShots;
 			_lastShotTime = 0; // Allow to shoot immediately
 		}
 		
@@ -75,6 +77,16 @@ class FightingEntity: public MovableEntity
 		inline int isWounded()
 		{
 			if (_lifePointsAmount < _maximumLifePointsAmount) return 1;
+			return 0;
+		}
+		
+		/** Tell if the entity is dead or alive.
+		 * @return 1 if the entity has no more life point,
+		 * @return 0 if the entity is still alive.
+		 */
+		inline int isDead()
+		{
+			if (_lifePointsAmount == 0) return 1;
 			return 0;
 		}
 		

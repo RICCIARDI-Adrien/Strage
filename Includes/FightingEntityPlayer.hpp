@@ -28,14 +28,11 @@ class FightingEntityPlayer: public FightingEntity
 		 * @param x X coordinate where to spawn the player on the map.
 		 * @param y Y coordinate where to spawn the player on the map.
 		 */
-		FightingEntityPlayer(int x, int y): FightingEntity(TextureManager::TEXTURE_ID_PLAYER, x, y, 3, 100)
+		FightingEntityPlayer(int x, int y): FightingEntity(TextureManager::TEXTURE_ID_PLAYER, x, y, 3, 100, 300)
 		{
 			// Cache rendering coordinates
 			_renderingX = (CONFIGURATION_DISPLAY_WIDTH - _positionRectangle.w) / 2;
 			_renderingY = (CONFIGURATION_DISPLAY_HEIGHT - _positionRectangle.h) / 2;
-			
-			// TODO constructor ?
-			_timeBetweenShots = 150;
 		}
 		
 		/** Display the player at the screen center. */

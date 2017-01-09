@@ -13,6 +13,7 @@
 // TEST
 #include <PickableEntityMedipack.hpp>
 #include <MovableEntityBullet.hpp>
+#include <FightingEntityEnemy.hpp>
 
 //-------------------------------------------------------------------------------------------------
 // Private types
@@ -36,6 +37,9 @@ static std::list<PickableEntity *> pickableEntitiesList;
 
 /** All bullets shot by the player. */
 static std::list<MovableEntityBullet *> playerBulletsList;
+
+/** All enemies. */
+static std::list<FightingEntityEnemy *> enemiesList;
 
 //-------------------------------------------------------------------------------------------------
 // Public variables
@@ -67,15 +71,54 @@ static void updateGameLogic()
 	
 	// Check if player bullets have hit a wall or an enemy
 	std::list<MovableEntityBullet *>::iterator playerBulletsListIterator;
+	std::list<FightingEntityEnemy *>::iterator enemiesListIterator;
 	MovableEntityBullet *pointerPlayerBullet;
+	FightingEntityEnemy *pointerEnemy;
 	for (playerBulletsListIterator = playerBulletsList.begin(); playerBulletsListIterator != playerBulletsList.end(); ++playerBulletsListIterator)
 	{
 		pointerPlayerBullet = *playerBulletsListIterator;
 		
 		// Remove the bullet if it hit a wall
-		if (pointerPlayerBullet->update() != 0) playerBulletsListIterator = playerBulletsList.erase(playerBulletsListIterator);
+		if (pointerPlayerBullet->update() != 0)
+		{
+			playerBulletsListIterator = playerBulletsList.erase(playerBulletsListIterator);
+			continue;
+		}
 		
-		// TODO check with all enemies for a collision
+		// Check with all enemies for a collision
+		for (enemiesListIterator = enemiesList.begin(); enemiesListIterator != enemiesList.end(); ++enemiesListIterator)
+		{
+			pointerEnemy = *enemiesListIterator;
+			
+			// Did the bullet hit this enemy ?
+			if (SDL_HasIntersection(pointerPlayerBullet->getPositionRectangle(), pointerEnemy->getPositionRectangle()))
+			{
+				// Remove the bullet
+				playerBulletsListIterator = playerBulletsList.erase(playerBulletsListIterator);
+				
+				// Wound the enemy
+				pointerEnemy->modifyLife(-5); // TODO put bullet damage in bullet if more bullet types are to be created
+				
+				LOG_DEBUG("Enemy hit.\n");
+			}
+		}
+	}
+	
+	// Update enemies artificial intelligence
+	for (enemiesListIterator = enemiesList.begin(); enemiesListIterator != enemiesList.end(); ++enemiesListIterator)
+	{
+		pointerEnemy = *enemiesListIterator;
+		
+		// Remove the enemy if it is dead
+		if (pointerEnemy->isDead())
+		{
+			enemiesListIterator = enemiesList.erase(enemiesListIterator);
+			continue;
+		}
+		
+		// TODO spawn explosion effect
+		
+		// Do not update IA if the enemy did not spotted the player (i.e. the enemy is not visible, as the spotting rectangle is huge)
 	}
 }
 
@@ -98,6 +141,10 @@ static void renderGame(int sceneX, int sceneY)
 	// Display bullets before enemies, so they are hidden by enemies if the come across them
 	std::list<MovableEntityBullet *>::iterator playerBulletsListIterator;
 	for (playerBulletsListIterator = playerBulletsList.begin(); playerBulletsListIterator != playerBulletsList.end(); ++playerBulletsListIterator) (*playerBulletsListIterator)->render();
+	
+	// Display enemies
+	std::list<FightingEntityEnemy *>::iterator enemiesListIterator;
+	for (enemiesListIterator = enemiesList.begin(); enemiesListIterator != enemiesList.end(); ++enemiesListIterator) (*enemiesListIterator)->render();
 	
 	// Display the player at the end, so it is always rendered on top on everything else and can always be visible
 	pointerPlayer->render();
@@ -143,6 +190,8 @@ int main(void)
 	pickableEntitiesList.push_front(&m3);
 	FightingEntityPlayer player(5 * 64 + 20, 80);
 	pointerPlayer = &player;
+	FightingEntityEnemy e1(64*8 + 13, 64 * 3 + 35);
+	enemiesList.push_front(&e1);
 	
 	while (1)
 	{

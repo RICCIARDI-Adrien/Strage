@@ -25,6 +25,7 @@ typedef enum
 	
 	// Moving objects
 	TEXTURE_ID_PLAYER,
+	TEXTURE_ID_ENEMY,
 	TEXTURE_ID_BULLET,
 	TEXTURE_IDS_COUNT
 } TextureId;
