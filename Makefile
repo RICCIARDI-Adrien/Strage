@@ -19,6 +19,7 @@ CPPFLAGS += -DCONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y=10
 # 0 : error messages
 # 1 : error and information messages
 # 2 : error, information and debug messages
+# 3 : all previous stuff plus in-game displaying of some meaningful collision rectangles
 CPPFLAGS += -DCONFIGURATION_LOG_LEVEL=2
 CPPFLAGS += -DCONFIGURATION_PATH_LEVELS=\"Levels\"
 CPPFLAGS += -DCONFIGURATION_PATH_TEXTURES=\"Textures\"

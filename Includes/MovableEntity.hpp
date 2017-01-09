@@ -14,20 +14,21 @@
 class MovableEntity: public Entity
 {
 	public:
-		/** All entity possible facing directions. */
+		/** All entity possible directions. */
 		typedef enum
 		{
-			FACING_DIRECTION_UP,
-			FACING_DIRECTION_DOWN,
-			FACING_DIRECTION_LEFT,
-			FACING_DIRECTION_RIGHT
-		} FacingDirection; // Must be declared before usage in protected section
+			DIRECTION_UP,
+			DIRECTION_DOWN,
+			DIRECTION_LEFT,
+			DIRECTION_RIGHT,
+			DIRECTIONS_COUNT
+		} Direction; // Must be declared before usage in protected section
 		
 	protected:
 		/** Rotate the texture when rendering (degrees unit). */
 		double _rotationAngle;
 		/** Tell in which direction the entity is facing. */
-		FacingDirection _facingDirection;
+		Direction _facingDirection;
 		
 		/** How many pixels to move the entity. */
 		int _movingPixelsAmount;
@@ -49,7 +50,7 @@ class MovableEntity: public Entity
 			
 			// Entity is facing up on spawn
 			_rotationAngle = 0;
-			_facingDirection = FACING_DIRECTION_UP;
+			_facingDirection = DIRECTION_UP;
 		}
 		
 		/** Move the entity to the up.
@@ -73,7 +74,7 @@ class MovableEntity: public Entity
 			
 			// Entity is facing up
 			_rotationAngle = 0;
-			_facingDirection = FACING_DIRECTION_UP;
+			_facingDirection = DIRECTION_UP;
 			
 			return distanceToWall;
 		}
@@ -99,7 +100,7 @@ class MovableEntity: public Entity
 			
 			// Entity is facing down
 			_rotationAngle = 180;
-			_facingDirection = FACING_DIRECTION_DOWN;
+			_facingDirection = DIRECTION_DOWN;
 			
 			return distanceToWall;
 		}
@@ -125,7 +126,7 @@ class MovableEntity: public Entity
 			
 			// Entity is facing left
 			_rotationAngle = 270;
-			_facingDirection = FACING_DIRECTION_LEFT;
+			_facingDirection = DIRECTION_LEFT;
 			
 			return distanceToWall;
 		}
@@ -151,9 +152,37 @@ class MovableEntity: public Entity
 			
 			// Entity is facing right
 			_rotationAngle = 90;
-			_facingDirection = FACING_DIRECTION_RIGHT;
+			_facingDirection = DIRECTION_RIGHT;
 			
 			return distanceToWall;
+		}
+		
+		/** Turn the entity to the up direction. */
+		void turnToUp()
+		{
+			_rotationAngle = 0;
+			_facingDirection = DIRECTION_UP;
+		}
+		
+		/** Turn the entity to the down direction. */
+		void turnToDown()
+		{
+			_rotationAngle = 180;
+			_facingDirection = DIRECTION_DOWN;
+		}
+		
+		/** Turn the entity to the left direction. */
+		void turnToLeft()
+		{
+			_rotationAngle = 270;
+			_facingDirection = DIRECTION_LEFT;
+		}
+		
+		/** Turn the entity to the right direction. */
+		void turnToRight()
+		{
+			_rotationAngle = 90;
+			_facingDirection = DIRECTION_RIGHT;
 		}
 		
 		/** Display the texture and rotate it in the same time. */
@@ -166,7 +195,7 @@ class MovableEntity: public Entity
 		/** Tell in which direction the entity is facing.
 		 * @return The entity facing direction.
 		 */
-		inline FacingDirection getFacingDirection()
+		inline Direction getFacingDirection()
 		{
 			return _facingDirection;
 		}

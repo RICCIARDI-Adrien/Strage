@@ -16,7 +16,7 @@ class MovableEntityBullet: public MovableEntity
 		 * @param y Spawning Y coordinate.
 		 * @param facingDirection In which direction the bullet will move.
 		 */
-		MovableEntityBullet(int x, int y, FacingDirection facingDirection): MovableEntity(TextureManager::TEXTURE_ID_BULLET, x, y, 6)
+		MovableEntityBullet(int x, int y, Direction facingDirection): MovableEntity(TextureManager::TEXTURE_ID_BULLET, x, y, 6)
 		{
 			_facingDirection = facingDirection;
 		}
@@ -28,25 +28,28 @@ class MovableEntityBullet: public MovableEntity
 		 */
 		virtual int update()
 		{
-			int movedPixelsCount;
+			int movedPixelsCount = 0;
 		
 			// Update position
 			switch (_facingDirection)
 			{
-				case FACING_DIRECTION_UP:
+				case DIRECTION_UP:
 					movedPixelsCount = moveToUp();
 					break;
 					
-				case FACING_DIRECTION_DOWN:
+				case DIRECTION_DOWN:
 					movedPixelsCount = moveToDown();
 					break;
 					
-				case FACING_DIRECTION_LEFT:
+				case DIRECTION_LEFT:
 					movedPixelsCount = moveToLeft();
 					break;
 					
-				case FACING_DIRECTION_RIGHT:
+				case DIRECTION_RIGHT:
 					movedPixelsCount = moveToRight();
+					break;
+					
+				default:
 					break;
 			}
 			
