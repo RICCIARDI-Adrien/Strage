@@ -46,6 +46,7 @@ static std::list<FightingEntityEnemy *> enemiesList;
 //-------------------------------------------------------------------------------------------------
 // Public variables
 //-------------------------------------------------------------------------------------------------
+// The variable must be outside of any namespace
 FightingEntityPlayer *pointerPlayer;
 
 //-------------------------------------------------------------------------------------------------
@@ -226,8 +227,6 @@ int main(void)
 	pickableEntitiesList.push_front(&m1);
 	pickableEntitiesList.push_front(&m2);
 	pickableEntitiesList.push_front(&m3);
-	FightingEntityPlayer player(5 * 64 + 20, 80);
-	pointerPlayer = &player;
 	FightingEntityEnemy e1(64*8 + 13, 64 * 3 + 35);
 	FightingEntityEnemy e2(64*13 + 13, 64 * 3 + 22);
 	enemiesList.push_front(&e1);
@@ -277,11 +276,6 @@ int main(void)
 							
 						case SDL_SCANCODE_SPACE:
 							isKeyPressed[KEYBOARD_KEY_ID_SPACE] = 1;
-							break;
-							
-						case SDL_SCANCODE_Q:
-							player.modifyLife(-10);
-							printf("player life : %d\n", player.getLifePointsAmount());
 							break;
 							
 						default:
@@ -334,36 +328,36 @@ int main(void)
 			// Keep trace of the last direction the player took to favor it, when this key will be released the previous direction will be favored
 			if (isLastDirectionVertical)
 			{
-				if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP]) player.moveToUp();
-				else player.moveToDown();
+				if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP]) pointerPlayer->moveToUp();
+				else pointerPlayer->moveToDown();
 			}
 			else
 			{
-				if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT]) player.moveToLeft();
-				else player.moveToRight();
+				if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT]) pointerPlayer->moveToLeft();
+				else pointerPlayer->moveToRight();
 			}
 		}
 		// Handle a single key press
 		else
 		{
-			if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP]) player.moveToUp();
-			else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN]) player.moveToDown();
-			else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT]) player.moveToLeft();
-			else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT]) player.moveToRight();
+			if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP]) pointerPlayer->moveToUp();
+			else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN]) pointerPlayer->moveToDown();
+			else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT]) pointerPlayer->moveToLeft();
+			else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT]) pointerPlayer->moveToRight();
 		}
 		
 		// Fire a bullet
 		if (isKeyPressed[KEYBOARD_KEY_ID_SPACE])
 		{
-			MovableEntityBullet *pointerBullet = player.shoot();
+			MovableEntityBullet *pointerBullet = pointerPlayer->shoot();
 			
 			// Is the player allowed to shoot ?
 			if (pointerBullet != NULL) playerBulletsList.push_front(pointerBullet);
 		}
 		
 		// TEST
-		camX = player.getX() - (CONFIGURATION_DISPLAY_WIDTH / 2) + 16;
-		camY = player.getY() - (CONFIGURATION_DISPLAY_HEIGHT / 2) + 16;
+		camX = pointerPlayer->getX() - (CONFIGURATION_DISPLAY_WIDTH / 2) + 16;
+		camY = pointerPlayer->getY() - (CONFIGURATION_DISPLAY_HEIGHT / 2) + 16;
 		
 		updateGameLogic();
 		

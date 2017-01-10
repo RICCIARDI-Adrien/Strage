@@ -5,6 +5,7 @@
 #include <cerrno>
 #include <cstdio>
 #include <cstring>
+#include <FightingEntityPlayer.hpp>
 #include <LevelManager.hpp>
 #include <Log.hpp>
 #include <Texture.hpp>
@@ -43,6 +44,15 @@ typedef struct
 	Texture *pointerTexture; //!< The texture used to render the block.
 	int isColliding; //!< Set to 1 if the block can't be crossed, set to 0 if player and movable objects can walk throughout the block.
 } Block;
+
+/** All available spawnable objects. */
+typedef enum
+{
+	OBJECT_ID_PLAYER,
+	OBJECT_ID_ENEMIES_SPAWNER,
+	// TODO medipack ?
+	OBJECT_IDS_COUNT
+} ObjectId;
 
 //-------------------------------------------------------------------------------------------------
 // Private variables
@@ -97,7 +107,7 @@ void uninitialize()
 int loadLevel(const char *sceneFileName, const char *objectsFileName)
 {
 	FILE *pointerFile;
-	int x, y, character, i, blockId;
+	int x, y, character, i, blockId, objectId, isPlayerSpawned = 0;
 	
 	// Try to open the scene file
 	pointerFile = fopen(sceneFileName, "r");
@@ -146,18 +156,81 @@ Scene_Loading_End:
 	LOG_DEBUG("Level size : %dx%d blocks.\n", _levelWidthBlocks, _levelHeightBlocks);
 	fclose(pointerFile);
 	
+	// Try to open the objects file
+	pointerFile = fopen(objectsFileName, "r");
+	if (pointerFile == NULL)
+	{
+		LOG_ERROR("Could not open '%s' (%s).\n", objectsFileName, strerror(errno));
+		return -1;
+	}
 	
+	// Spawn objects
+	for (y = 0; y < _levelHeightBlocks; y++)
+	{
+		for (x = 0; x < _levelWidthBlocks; x++)
+		{
+			// Read an object index
+			if (fscanf(pointerFile, "%d", &objectId) != 1)
+			{
+				LOG_ERROR("Failed to read the object (%d, %d) value. Make sure the objects file has the same dimensions than the scene file.\n", x, y);
+				goto Objects_Loading_Error;
+			}
+			
+			// Is it the player ?
+			if (objectId == OBJECT_ID_PLAYER)
+			{
+				// Make sure the player is unique
+				if (isPlayerSpawned)
+				{
+					LOG_ERROR("More than one player are present on the map. Make sure to have only one player.\n");
+					goto Objects_Loading_Error;
+				}
+				else
+				{
+					// Get the player dimensions from its texture
+					Texture *pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER);
+					int playerWidth = pointerTexture->getWidth();
+					int playerHeight = pointerTexture->getHeight();
+					
+					// Spawn the player at the block center
+					pointerPlayer = new FightingEntityPlayer((x * CONFIGURATION_LEVEL_BLOCK_SIZE) + (playerWidth / 2), (y * CONFIGURATION_LEVEL_BLOCK_SIZE) + (playerHeight / 2));
+					isPlayerSpawned = 1;
+					LOG_DEBUG("Spawned player on block (%d, %d).\n", x, y);
+				}
+			}
+			
+			// TODO other objects
+			
+			// Discard the following comma
+			character = fgetc(pointerFile);
+		}
+	}
 	
-	// TODO objects
+	// Make sure there is a player
+	if (!isPlayerSpawned)
+	{
+		LOG_ERROR("Map does not contain any player.\n");
+		goto Objects_Loading_Error;
+	}
 	
+	fclose(pointerFile);
 	return 0;
+	
+Objects_Loading_Error:
+	fclose(pointerFile);
+	return -1;
+}
+
+// TODO clean a loaded level to allow a new level to be loaded
+void unloadLevel()
+{
 }
 
 void renderScene(int topLeftX, int topLeftY)
 {
 	int xDisplayBlock, xStartingBlock, yStartingBlock, yDisplayBlock, xBlock, yBlock, xDisplayBlocksCount, yDisplayBlocksCount, xStartingPixel, yStartingPixel, xPixel, yPixel;
 	
-	// Get the amount of pixels the rendering must be shifted about in the begining blocks
+	// Get the amount of pixels the rendering must be shifted about in the beginning blocks
 	xStartingPixel = -(topLeftX % CONFIGURATION_LEVEL_BLOCK_SIZE); // Invert result sign to make negative camera coordinates go to left and positive camera coordinates go to right
 	yStartingPixel = -(topLeftY % CONFIGURATION_LEVEL_BLOCK_SIZE);
 	
