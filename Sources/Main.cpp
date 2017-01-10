@@ -133,12 +133,14 @@ static void updateGameLogic()
 	
 	// Update enemies artificial intelligence
 	MovableEntityBullet *pointerBullet;
+	int result;
 	for (enemiesListIterator = enemiesList.begin(); enemiesListIterator != enemiesList.end(); ++enemiesListIterator)
 	{
 		pointerEnemy = *enemiesListIterator;
 		
+		result = pointerEnemy->update();
 		// Remove the enemy if it is dead
-		if (pointerEnemy->update(&pointerBullet) != 0)
+		if (result == 1)
 		{
 			enemiesListIterator = enemiesList.erase(enemiesListIterator);
 			
@@ -146,11 +148,14 @@ static void updateGameLogic()
 			
 			continue;
 		}
-		
-		// Do not update IA if the enemy did not spotted the player (i.e. the enemy is not visible, as the spotting rectangle is huge)
-		
-		// Did the enemy fired ?
-		if (pointerBullet != NULL) enemiesBulletsList.push_front(pointerBullet);
+		// The enemy wants to shoot
+		else if (result == 2)
+		{
+			pointerBullet = pointerEnemy->shoot();
+			
+			// Was the enemy allowed to fire ?
+			if (pointerBullet != NULL) enemiesBulletsList.push_front(pointerBullet);
+		}
 	}
 }
 
@@ -224,7 +229,9 @@ int main(void)
 	FightingEntityPlayer player(5 * 64 + 20, 80);
 	pointerPlayer = &player;
 	FightingEntityEnemy e1(64*8 + 13, 64 * 3 + 35);
+	FightingEntityEnemy e2(64*13 + 13, 64 * 3 + 22);
 	enemiesList.push_front(&e1);
+	enemiesList.push_front(&e2);
 	
 	while (1)
 	{

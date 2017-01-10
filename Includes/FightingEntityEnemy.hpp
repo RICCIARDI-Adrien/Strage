@@ -26,7 +26,7 @@ class FightingEntityEnemy: public FightingEntity
 		 * @param x Enemy X coordinate.
 		 * @param y Enemy Y coordinate.
 		 */
-		FightingEntityEnemy(int x, int y): FightingEntity(TextureManager::TEXTURE_ID_ENEMY, x, y, 3, 20, 500)
+		FightingEntityEnemy(int x, int y): FightingEntity(TextureManager::TEXTURE_ID_ENEMY, x, y, 3, 20, 1000)
 		{
 			// Initialize spotting rectangle to around the entity
 			_spottingRectangle.w = CONFIGURATION_DISPLAY_WIDTH * 2; // Thus, the player staying at on side of the display will be spotted by an enemy located at the display other side
@@ -61,11 +61,12 @@ class FightingEntityEnemy: public FightingEntity
 			_shootingRectangles[DIRECTION_RIGHT].h = bulletWidth;
 		}
 		
-		// TODO
-		virtual int update() { return 0; }
-		
-		// TODO
-		virtual int update(MovableEntityBullet **pointerBullet)
+		/** Update enemy artificial intelligence.
+		 * @return 0 if the enemy must be kept alive,
+		 * @return 1 if the enemy is dead and must be removed,
+		 * @return 2 if the enemy is alive and wants to shoot (call the shoot() method).
+		 */
+		virtual int update()
 		{
 			int isShootPossible = 0;
 			
@@ -95,10 +96,8 @@ class FightingEntityEnemy: public FightingEntity
 				if (_facingDirection == DIRECTION_RIGHT) isShootPossible = 1;
 				else turnToRight();
 			}
-			
 			// Shoot if the player is at sight
-			if (isShootPossible) *pointerBullet = shoot();
-			else *pointerBullet = NULL;
+			if (isShootPossible) return 2;
 			
 			// TODO update all rectangles x and y when the entity moves
 			
