@@ -3,6 +3,7 @@
  * @author Adrien RICCIARDI
  */
 #include <cstdlib>
+#include <ctime>
 #include <FightingEntityEnemy.hpp>
 #include <FightingEntityPlayer.hpp>
 #include <list>
@@ -217,6 +218,9 @@ int main(void)
 	// Automatically dispose of allocated resources on program exit (allowing to use exit() elsewhere in the program)
 	atexit(exitFreeResources);
 	LOG_INFORMATION("Game engine successfully initialized.\n");
+	
+	// Initialize pseudo-random numbers generator
+	srand(time(NULL));
 	
 	// TEST
 	int camX = 0, camY = 0;

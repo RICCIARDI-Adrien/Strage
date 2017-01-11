@@ -157,6 +157,31 @@ class MovableEntity: public Entity
 			return movingPixelsAmount;
 		}
 		
+		/** Make the entity move at its speed to the specified direction.
+		 * @param movingDirection The direction to move to.
+		 * @return How many pixels the entity moved.
+		 */
+		virtual int move(Direction movingDirection)
+		{
+			switch (movingDirection)
+			{
+				case DIRECTION_UP:
+					return moveToUp();
+					
+				case DIRECTION_DOWN:
+					return moveToDown();
+					
+				case DIRECTION_LEFT:
+					return moveToLeft();
+					
+				case DIRECTION_RIGHT:
+					return moveToRight();
+					
+				default:
+					return 0; // Tell that the entity did not move
+			}
+		}
+		
 		/** Turn the entity to the up direction. */
 		void turnToUp()
 		{

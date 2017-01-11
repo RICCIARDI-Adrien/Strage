@@ -34,27 +34,7 @@ class MovableEntityBullet: public MovableEntity
 			int movedPixelsCount = 0;
 		
 			// Update position
-			switch (_facingDirection)
-			{
-				case DIRECTION_UP:
-					movedPixelsCount = moveToUp();
-					break;
-					
-				case DIRECTION_DOWN:
-					movedPixelsCount = moveToDown();
-					break;
-					
-				case DIRECTION_LEFT:
-					movedPixelsCount = moveToLeft();
-					break;
-					
-				case DIRECTION_RIGHT:
-					movedPixelsCount = moveToRight();
-					break;
-					
-				default:
-					break;
-			}
+			movedPixelsCount = move(_facingDirection);
 			
 			// Did the bullet really moved ?
 			if (movedPixelsCount == 0) return 1; // It did not move, so it has hit a wall

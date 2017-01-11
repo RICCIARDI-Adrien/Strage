@@ -1,6 +1,7 @@
 #ifndef HPP_FIGHTING_ENTITY_ENEMY_HPP
 #define HPP_FIGHTING_ENTITY_ENEMY_HPP
 
+#include <cstdlib>
 #include <FightingEntity.hpp>
 #include <FightingEntityPlayer.hpp>
 #include <MovableEntityBullet.hpp>
@@ -99,6 +100,11 @@ class FightingEntityEnemy: public FightingEntity
 		
 		/** The enemy will shoot if the player enters this rectangles. */
 		SDL_Rect _shootingRectangles[DIRECTIONS_COUNT];
+		
+		/** Tell if a replacement direction has been chosen or not. */
+		int _isReplacementDirectionChosen;
+		/** The direction to use when the player direction is blocked by a wall. */
+		Direction _replacementDirection;
 		
 	public:
 		/** Spawn a new enemy.
@@ -203,6 +209,7 @@ class FightingEntityEnemy: public FightingEntity
 		virtual int update()
 		{
 			Direction playerDirection;
+			int movedPixelsAmount;
 			
 			// The entity is dead, remove it
 			if (_lifePointsAmount == 0) return 1;
@@ -214,34 +221,30 @@ class FightingEntityEnemy: public FightingEntity
 			if (isShootPossible()) return 2;
 			
 			// If the enemy can't shoot, it must move to come close enough to the player
-			if (!getPlayerDirection(&playerDirection))
+			if (!getPlayerDirection(&playerDirection)) // The best direction is the one to reach the player
 			{
 				LOG_INFORMATION("Enemy can't shoot but can't move either.\n");
 				return 0;
 			}
 			
-			// TODO handle wall collisions and avoidance
-			// TEST
-			switch (playerDirection)
+			// Try to move in the best direction
+			movedPixelsAmount = move(playerDirection);
+			if (movedPixelsAmount > 0) _isReplacementDirectionChosen = 0; // Enemy can move in its preferred direction, no need to use a replacement one
+			else
 			{
-				case DIRECTION_UP:
-					moveToUp();
-					break;
-					
-				case DIRECTION_DOWN:
-					moveToDown();
-					break;
-					
-				case DIRECTION_LEFT:
-					moveToLeft();
-					break;
-					
-				case DIRECTION_RIGHT:
-					moveToRight();
-					break;
-					
-				default:
-					break;
+				// Choose a replacement direction different from the best one (which is obstructed by a wall)
+				if (!_isReplacementDirectionChosen)
+				{
+					do
+					{
+						_replacementDirection = (Direction) (rand() % DIRECTIONS_COUNT);
+					} while (_replacementDirection == playerDirection);
+				}
+				
+				// Try to move in the chosen direction
+				movedPixelsAmount = move(_replacementDirection);
+				if (movedPixelsAmount == 0) _isReplacementDirectionChosen = 0; // There is a wall here too... More luck next tick ! TODO : for loop to make sure all enemies move at each tick ?
+				else _isReplacementDirectionChosen = 1;
 			}
 			
 			return 0;
