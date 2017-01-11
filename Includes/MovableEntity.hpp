@@ -58,7 +58,7 @@ class MovableEntity: public Entity
 		 */
 		virtual int moveToUp()
 		{
-			int leftSideDistanceToWall, rightSizeDistanceToWall, distanceToWall;
+			int leftSideDistanceToWall, rightSizeDistanceToWall, distanceToWall, movingPixelsAmount;
 			
 			// Check upper border distance against level walls
 			leftSideDistanceToWall = LevelManager::getDistanceFromUpperWall(_positionRectangle.x, _positionRectangle.y);
@@ -69,14 +69,15 @@ class MovableEntity: public Entity
 			else distanceToWall = rightSizeDistanceToWall;
 			
 			// Move if possible
-			if (distanceToWall >= _movingPixelsAmount) _positionRectangle.y -= _movingPixelsAmount;
-			else _positionRectangle.y -= distanceToWall;
+			if (distanceToWall >= _movingPixelsAmount) movingPixelsAmount = _movingPixelsAmount;
+			else movingPixelsAmount = distanceToWall;
+			_positionRectangle.y -= movingPixelsAmount;
 			
 			// Entity is facing up
 			_rotationAngle = 0;
 			_facingDirection = DIRECTION_UP;
 			
-			return distanceToWall;
+			return movingPixelsAmount;
 		}
 		
 		/** Move the entity to the down.
@@ -84,7 +85,7 @@ class MovableEntity: public Entity
 		 */
 		virtual int moveToDown()
 		{
-			int leftSideDistanceToWall, rightSizeDistanceToWall, distanceToWall;
+			int leftSideDistanceToWall, rightSizeDistanceToWall, distanceToWall, movingPixelsAmount;
 			
 			// Check downer border distance against level walls
 			leftSideDistanceToWall = LevelManager::getDistanceFromDownerWall(_positionRectangle.x, _positionRectangle.y + _positionRectangle.h);
@@ -95,14 +96,15 @@ class MovableEntity: public Entity
 			else distanceToWall = rightSizeDistanceToWall;
 			
 			// Move if possible
-			if (distanceToWall >= _movingPixelsAmount) _positionRectangle.y += _movingPixelsAmount;
-			else _positionRectangle.y += distanceToWall;
+			if (distanceToWall >= _movingPixelsAmount) movingPixelsAmount = _movingPixelsAmount;
+			else movingPixelsAmount = distanceToWall;
+			_positionRectangle.y += movingPixelsAmount;
 			
 			// Entity is facing down
 			_rotationAngle = 180;
 			_facingDirection = DIRECTION_DOWN;
 			
-			return distanceToWall;
+			return movingPixelsAmount;
 		}
 		
 		/** Move the entity to the left.
@@ -110,25 +112,26 @@ class MovableEntity: public Entity
 		 */
 		virtual int moveToLeft()
 		{
-			int upperSideDistanceToWall, downerSizeDistanceToWall, distanceToWall;
+			int upperSideDistanceToWall, downerSideDistanceToWall, distanceToWall, movingPixelsAmount;
 			
 			// Check leftmost border distance against level walls
 			upperSideDistanceToWall = LevelManager::getDistanceFromLeftmostWall(_positionRectangle.x, _positionRectangle.y);
-			downerSizeDistanceToWall = LevelManager::getDistanceFromLeftmostWall(_positionRectangle.x, _positionRectangle.y + _positionRectangle.h - 1);
+			downerSideDistanceToWall = LevelManager::getDistanceFromLeftmostWall(_positionRectangle.x, _positionRectangle.y + _positionRectangle.h - 1);
 			
 			// Keep the smaller distance
-			if (upperSideDistanceToWall < downerSizeDistanceToWall) distanceToWall = upperSideDistanceToWall;
-			else distanceToWall = downerSizeDistanceToWall;
+			if (upperSideDistanceToWall < downerSideDistanceToWall) distanceToWall = upperSideDistanceToWall;
+			else distanceToWall = downerSideDistanceToWall;
 			
 			// Move if possible
-			if (distanceToWall >= _movingPixelsAmount) _positionRectangle.x -= _movingPixelsAmount;
-			else _positionRectangle.x -= distanceToWall;
+			if (distanceToWall >= _movingPixelsAmount) movingPixelsAmount = _movingPixelsAmount;
+			else movingPixelsAmount = distanceToWall;
+			_positionRectangle.x -= movingPixelsAmount;
 			
 			// Entity is facing left
 			_rotationAngle = 270;
 			_facingDirection = DIRECTION_LEFT;
 			
-			return distanceToWall;
+			return movingPixelsAmount;
 		}
 		
 		/** Move the entity to the right.
@@ -136,25 +139,26 @@ class MovableEntity: public Entity
 		 */
 		virtual int moveToRight()
 		{
-			int upperSideDistanceToWall, downerSizeDistanceToWall, distanceToWall;
+			int upperSideDistanceToWall, downerSideDistanceToWall, distanceToWall, movingPixelsAmount;
 			
 			// Check rightmost border distance against level walls
 			upperSideDistanceToWall = LevelManager::getDistanceFromRightmostWall(_positionRectangle.x + _positionRectangle.w, _positionRectangle.y);
-			downerSizeDistanceToWall = LevelManager::getDistanceFromRightmostWall(_positionRectangle.x + _positionRectangle.w, _positionRectangle.y + _positionRectangle.h - 1);
+			downerSideDistanceToWall = LevelManager::getDistanceFromRightmostWall(_positionRectangle.x + _positionRectangle.w, _positionRectangle.y + _positionRectangle.h - 1);
 			
 			// Keep the smaller distance
-			if (upperSideDistanceToWall < downerSizeDistanceToWall) distanceToWall = upperSideDistanceToWall;
-			else distanceToWall = downerSizeDistanceToWall;
+			if (upperSideDistanceToWall < downerSideDistanceToWall) distanceToWall = upperSideDistanceToWall;
+			else distanceToWall = downerSideDistanceToWall;
 			
 			// Move if possible
-			if (distanceToWall >= _movingPixelsAmount) _positionRectangle.x += _movingPixelsAmount;
-			else _positionRectangle.x += distanceToWall;
+			if (distanceToWall >= _movingPixelsAmount) movingPixelsAmount = _movingPixelsAmount;
+			else movingPixelsAmount = distanceToWall;
+			_positionRectangle.x += movingPixelsAmount;
 			
 			// Entity is facing right
 			_rotationAngle = 90;
 			_facingDirection = DIRECTION_RIGHT;
 			
-			return distanceToWall;
+			return movingPixelsAmount;
 		}
 		
 		/** Turn the entity to the up direction. */
