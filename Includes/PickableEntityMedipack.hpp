@@ -27,8 +27,8 @@ class PickableEntityMedipack: public PickableEntity
 			_positionRectangle.y = y;
 		}
 		
-		// Nothing to clean
-		~PickableEntityMedipack() {}
+		/** Free entity allocated resources. */
+		virtual ~PickableEntityMedipack() {} // Nothing to free
 		
 		/** Check if the medipack can be taken by the player.
 		 * @return 0 if the medipack must remain on the map,

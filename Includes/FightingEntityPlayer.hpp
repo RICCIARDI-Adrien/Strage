@@ -34,6 +34,9 @@ class FightingEntityPlayer: public FightingEntity
 			_renderingY = (CONFIGURATION_DISPLAY_HEIGHT - _positionRectangle.h) / 2;
 		}
 		
+		/** Free entity allocated resources. */
+		virtual ~FightingEntityPlayer() {} // Nothing to free
+		
 		/** Display the player at the screen center. */
 		virtual void render()
 		{

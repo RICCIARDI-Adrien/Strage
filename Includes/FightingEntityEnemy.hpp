@@ -140,6 +140,9 @@ class FightingEntityEnemy: public FightingEntity
 			_shootingRectangles[DIRECTION_RIGHT].h = bulletWidth;
 		}
 		
+		/** Free entity allocated resources. */
+		virtual ~FightingEntityEnemy() {} // Nothing to free
+		
 		virtual int moveToUp()
 		{
 			int movedPixelsAmount, i;

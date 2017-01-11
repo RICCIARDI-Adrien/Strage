@@ -24,9 +24,6 @@ class PickableEntity: public Entity
 		 */
 		PickableEntity(TextureManager::TextureId textureId): Entity(textureId) {}
 		
-		/** Free entity resources. */
-		//virtual ~PickableEntity();
-		
 		/** @see Entity for description. */
 		void render()
 		{

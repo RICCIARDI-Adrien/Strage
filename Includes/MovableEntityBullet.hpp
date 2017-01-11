@@ -21,6 +21,9 @@ class MovableEntityBullet: public MovableEntity
 			_facingDirection = facingDirection;
 		}
 		
+		/** Free entity allocated resources. */
+		virtual ~MovableEntityBullet() {} // Nothing to free
+		
 		/** Check if a scene wall has been hit.
 		 * @return 0 if nothing was hit,
 		 * @return 1 if scene wall was hit and the bullet must be destroyed.
