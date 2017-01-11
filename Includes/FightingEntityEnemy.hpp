@@ -55,7 +55,7 @@ class FightingEntityEnemy: public FightingEntity
 		 */
 		int getPlayerDirection(Direction *pointerDirection)
 		{
-			int enemyCenterX, enemyCenterY;
+			int enemyCenterX, enemyCenterY, horizontalDistance, verticalDistance;
 			SDL_Rect *pointerPlayerPositionRectangle;
 			
 			// Compute both player and enemy centers
@@ -63,32 +63,43 @@ class FightingEntityEnemy: public FightingEntity
 			enemyCenterX = _positionRectangle.x + (_positionRectangle.w / 2);
 			enemyCenterY = _positionRectangle.y + (_positionRectangle.h / 2);
 			
-			// Prefer horizontal moves because PC screens are wider than large, so the player can see enemies move better and longer than if they were moving vertically
-			// The enemy is too much on the player left to shoot
-			if (enemyCenterX < pointerPlayerPositionRectangle->x)
-			{
-				*pointerDirection = DIRECTION_RIGHT;
-				return 1;
-			}
-			// The enemy if too much on the player right to shoot
-			if (enemyCenterX >= pointerPlayerPositionRectangle->x + pointerPlayerPositionRectangle->w)
-			{
-				*pointerDirection = DIRECTION_LEFT;
-				return 1;
-			}
+			// Compute a fast distance-like to know if the player is farther horizontally or vertically
+			horizontalDistance = enemyCenterX - (pointerPlayerPositionRectangle->x + (pointerPlayerPositionRectangle->w / 2));
+			// Remove sign to allow comparison
+			if (horizontalDistance < 0) horizontalDistance = -horizontalDistance;
+			verticalDistance = enemyCenterY - (pointerPlayerPositionRectangle->y + (pointerPlayerPositionRectangle->h / 2));
+			if (verticalDistance < 0) verticalDistance = -verticalDistance;
 			
-			// If enemy is horizontally aligned with the player, make vertical move
-			// The enemy if too much on the player top to shoot
-			if (enemyCenterY < pointerPlayerPositionRectangle->y)
+			// Try to come the most closer to the player by moving on the farther direction
+			if (horizontalDistance >= verticalDistance)
 			{
-				*pointerDirection = DIRECTION_DOWN;
-				return 1;
+				// The enemy is too much on the player left to shoot
+				if (enemyCenterX < pointerPlayerPositionRectangle->x)
+				{
+					*pointerDirection = DIRECTION_RIGHT;
+					return 1;
+				}
+				// The enemy if too much on the player right to shoot
+				if (enemyCenterX >= pointerPlayerPositionRectangle->x + pointerPlayerPositionRectangle->w)
+				{
+					*pointerDirection = DIRECTION_LEFT;
+					return 1;
+				}
 			}
-			// The enemy if too much on the player bottom to shoot
-			if (enemyCenterY >= pointerPlayerPositionRectangle->y + pointerPlayerPositionRectangle->h)
+			else
 			{
-				*pointerDirection = DIRECTION_UP;
-				return 1;
+				// The enemy if too much on the player top to shoot
+				if (enemyCenterY < pointerPlayerPositionRectangle->y)
+				{
+					*pointerDirection = DIRECTION_DOWN;
+					return 1;
+				}
+				// The enemy if too much on the player bottom to shoot
+				if (enemyCenterY >= pointerPlayerPositionRectangle->y + pointerPlayerPositionRectangle->h)
+				{
+					*pointerDirection = DIRECTION_UP;
+					return 1;
+				}
 			}
 			
 			return 0;
