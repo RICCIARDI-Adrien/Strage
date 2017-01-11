@@ -21,11 +21,7 @@ class PickableEntityAmmunition: public PickableEntity
 		 * @param x Vertical spawn coordinate.
 		 * @param y Horizontal spawn coordinate.
 		 */
-		PickableEntityAmmunition(int x, int y): PickableEntity(TextureManager::TEXTURE_ID_AMMUNITION) // TODO put x and y in Entity
-		{
-			_positionRectangle.x = x;
-			_positionRectangle.y = y;
-		}
+		PickableEntityAmmunition(int x, int y): PickableEntity(TextureManager::TEXTURE_ID_AMMUNITION, x, y) {}
 		
 		/** Free entity allocated resources. */
 		virtual ~PickableEntityAmmunition() {} // Nothing to free

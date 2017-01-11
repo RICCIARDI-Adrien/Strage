@@ -21,11 +21,7 @@ class PickableEntityMedipack: public PickableEntity
 		 * @param x Vertical spawn coordinate.
 		 * @param y Horizontal spawn coordinate.
 		 */
-		PickableEntityMedipack(int x, int y): PickableEntity(TextureManager::TEXTURE_ID_MEDIPACK)
-		{
-			_positionRectangle.x = x;
-			_positionRectangle.y = y;
-		}
+		PickableEntityMedipack(int x, int y): PickableEntity(TextureManager::TEXTURE_ID_MEDIPACK, x, y) {}
 		
 		/** Free entity allocated resources. */
 		virtual ~PickableEntityMedipack() {} // Nothing to free

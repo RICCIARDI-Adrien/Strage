@@ -40,12 +40,8 @@ class MovableEntity: public Entity
 		 * @param y The Y coordinate where to spawn the entity.
 		 * @param movingPixelsAmount Entity moving speed.
 		 */
-		MovableEntity(TextureManager::TextureId textureId, int x, int y, int movingPixelsAmount): Entity(textureId)
+		MovableEntity(TextureManager::TextureId textureId, int x, int y, int movingPixelsAmount): Entity(textureId, x, y)
 		{
-			// Cache some parameters to fasten rendering
-			_positionRectangle.x = x;
-			_positionRectangle.y = y;
-			
 			_movingPixelsAmount = movingPixelsAmount;
 			
 			// Entity is facing up on spawn

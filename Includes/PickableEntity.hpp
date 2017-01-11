@@ -21,8 +21,10 @@ class PickableEntity: public Entity
 	public:
 		/** Call super class constructor to load the texture.
 		 * @param textureId The texture to use when rendering the entity.
+		 * @param x Entity X coordinate.
+		 * @param y Entity Y coordinate.
 		 */
-		PickableEntity(TextureManager::TextureId textureId): Entity(textureId) {}
+		PickableEntity(TextureManager::TextureId textureId, int x, int y): Entity(textureId, x, y) {}
 		
 		/** @see Entity for description. */
 		void render()

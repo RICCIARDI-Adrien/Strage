@@ -23,17 +23,22 @@ class Entity
 		
 	public:
 		/** Load the entity texture.
-		 * @param id The texture ID to use.
+		 * @param textureId The texture ID to use.
+		 * @param x Entity X coordinate.
+		 * @param y Entity Y coordinate.
 		 */
-		Entity(TextureManager::TextureId id)
+		Entity(TextureManager::TextureId textureId, int x, int y)
 		{
 			// Try to get the texture
-			_pointerTexture = TextureManager::getTextureFromId(id);
+			_pointerTexture = TextureManager::getTextureFromId(textureId);
 			if (_pointerTexture == NULL)
 			{
 				LOG_ERROR("Could not retrieve texture.\n");
 				exit(-1);
 			}
+			
+			_positionRectangle.x = x;
+			_positionRectangle.y = y;
 			
 			// Cache some values to fasten processing
 			_positionRectangle.w = _pointerTexture->getWidth();
