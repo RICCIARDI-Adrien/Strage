@@ -31,9 +31,6 @@ typedef enum
 //-------------------------------------------------------------------------------------------------
 // Private variables
 //-------------------------------------------------------------------------------------------------
-/** All pickable entities. */
-static std::list<PickableEntity *> pickableEntitiesList;
-
 /** All bullets shot by the player. */
 static std::list<MovableEntityBullet *> playerBulletsList;
 /** All bullets shot by the enemies. */
@@ -65,10 +62,10 @@ static void updateGameLogic()
 	// Check if pickable objects can be taken by the player
 	std::list<PickableEntity *>::iterator pickableListIterator;
 	PickableEntity *pointerPickableEntity;
-	for (pickableListIterator = pickableEntitiesList.begin(); pickableListIterator != pickableEntitiesList.end(); ++pickableListIterator)
+	for (pickableListIterator = LevelManager::pickableEntitiesList.begin(); pickableListIterator != LevelManager::pickableEntitiesList.end(); ++pickableListIterator)
 	{
 		pointerPickableEntity = *pickableListIterator;
-		if (pointerPickableEntity->update() != 0) pickableListIterator = pickableEntitiesList.erase(pickableListIterator);
+		if (pointerPickableEntity->update() != 0) pickableListIterator = LevelManager::pickableEntitiesList.erase(pickableListIterator);
 	}
 	
 	// Check if player bullets have hit a wall or an enemy
@@ -176,7 +173,7 @@ static void renderGame(int sceneX, int sceneY)
 	
 	// Display pickable entities (as they are laying on the floor, any other entity is walking on top of them)
 	std::list<PickableEntity *>::iterator pickableListIterator;
-	for (pickableListIterator = pickableEntitiesList.begin(); pickableListIterator != pickableEntitiesList.end(); ++pickableListIterator) (*pickableListIterator)->render();
+	for (pickableListIterator = LevelManager::pickableEntitiesList.begin(); pickableListIterator != LevelManager::pickableEntitiesList.end(); ++pickableListIterator) (*pickableListIterator)->render();
 	
 	// Display enemies
 	std::list<FightingEntityEnemy *>::iterator enemiesListIterator;
@@ -224,14 +221,6 @@ int main(void)
 	// TEST
 	int camX = 0, camY = 0;
 	LevelManager::loadLevel("Levels/Test_Scene.csv", "Levels/Test_Objects.csv");
-	PickableEntityMedipack m1(81 + 64, 93);
-	PickableEntityMedipack m2(64 * 10 + 25, 64 * 5 + 47);
-	PickableEntityMedipack m3(64 * 6 + 25, 64 * 12 + 47);
-	PickableEntityAmmunition a1(64 * 2 + 15, 64 * 6 + 21);
-	pickableEntitiesList.push_front(&m1);
-	pickableEntitiesList.push_front(&m2);
-	pickableEntitiesList.push_front(&m3);
-	pickableEntitiesList.push_front(&a1);
 	FightingEntityEnemy e1(64*8 + 13, 64 * 3 + 35);
 	FightingEntityEnemy e2(64*13 + 13, 64 * 3 + 22);
 	enemiesList.push_front(&e1);

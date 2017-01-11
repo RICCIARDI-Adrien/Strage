@@ -5,8 +5,17 @@
 #ifndef HPP_LEVEL_MANAGER_HPP
 #define HPP_LEVEL_MANAGER_HPP
 
+#include <list>
+#include <PickableEntity.hpp>
+
 namespace LevelManager
 {
+
+//-------------------------------------------------------------------------------------------------
+// Variables
+//-------------------------------------------------------------------------------------------------
+/** All pickable entities. */
+extern std::list<PickableEntity *> pickableEntitiesList;
 
 //-------------------------------------------------------------------------------------------------
 // Functions

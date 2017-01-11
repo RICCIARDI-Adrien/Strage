@@ -7,7 +7,11 @@
 #include <cstring>
 #include <FightingEntityPlayer.hpp>
 #include <LevelManager.hpp>
+#include <list>
 #include <Log.hpp>
+#include <PickableEntity.hpp>
+#include <PickableEntityAmmunition.hpp>
+#include <PickableEntityMedipack.hpp>
 #include <Texture.hpp>
 #include <TextureManager.hpp>
 
@@ -49,8 +53,9 @@ typedef struct
 typedef enum
 {
 	OBJECT_ID_PLAYER,
+	OBJECT_ID_MEDIPACK,
+	OBJECT_ID_AMMUNITION,
 	OBJECT_ID_ENEMIES_SPAWNER,
-	// TODO medipack ?
 	OBJECT_IDS_COUNT
 } ObjectId;
 
@@ -71,6 +76,11 @@ static int _displayHeightBlocks;
 static Block _blocks[BLOCK_IDS_COUNT];
 /** Contain all level blocks. */
 static Block *_pointerLevelBlocks[CONFIGURATION_LEVEL_MAXIMUM_WIDTH * CONFIGURATION_LEVEL_MAXIMUM_HEIGHT];
+
+//-------------------------------------------------------------------------------------------------
+// Public variables
+//-------------------------------------------------------------------------------------------------
+std::list<PickableEntity *> pickableEntitiesList;
 
 //-------------------------------------------------------------------------------------------------
 // Public functions
@@ -164,6 +174,20 @@ Scene_Loading_End:
 		return -1;
 	}
 	
+	// Cache some objects size
+	// Player
+	Texture *pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER);
+	int playerWidth = pointerTexture->getWidth();
+	int playerHeight = pointerTexture->getHeight();
+	// Medipack
+	pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_MEDIPACK);
+	int medipackWidth = pointerTexture->getWidth();
+	int medipackHeight = pointerTexture->getHeight();
+	// Ammunition
+	pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_AMMUNITION);
+	int ammunitionWidth = pointerTexture->getWidth();
+	int ammunitionHeight = pointerTexture->getHeight();
+	
 	// Spawn objects
 	for (y = 0; y < _levelHeightBlocks; y++)
 	{
@@ -176,27 +200,42 @@ Scene_Loading_End:
 				goto Objects_Loading_Error;
 			}
 			
-			// Is it the player ?
-			if (objectId == OBJECT_ID_PLAYER)
+			// Spawn the requested object
+			switch (objectId)
 			{
-				// Make sure the player is unique
-				if (isPlayerSpawned)
-				{
-					LOG_ERROR("More than one player are present on the map. Make sure to have only one player.\n");
-					goto Objects_Loading_Error;
-				}
-				else
-				{
-					// Get the player dimensions from its texture
-					Texture *pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER);
-					int playerWidth = pointerTexture->getWidth();
-					int playerHeight = pointerTexture->getHeight();
+				// Ignore unset blocks
+				case -1:
+					break;
+				
+				case OBJECT_ID_PLAYER:
+					// Make sure the player is unique
+					if (isPlayerSpawned)
+					{
+						LOG_ERROR("More than one player are present on the map. Make sure to have only one player.\n");
+						goto Objects_Loading_Error;
+					}
+					else
+					{
+						// Spawn the player at the block center
+						pointerPlayer = new FightingEntityPlayer((x * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - playerWidth) / 2), (y * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - playerHeight) / 2));
+						isPlayerSpawned = 1;
+						LOG_DEBUG("Spawned player on block (%d, %d).\n", x, y);
+					}
+					break;
 					
-					// Spawn the player at the block center
-					pointerPlayer = new FightingEntityPlayer((x * CONFIGURATION_LEVEL_BLOCK_SIZE) + (playerWidth / 2), (y * CONFIGURATION_LEVEL_BLOCK_SIZE) + (playerHeight / 2));
-					isPlayerSpawned = 1;
-					LOG_DEBUG("Spawned player on block (%d, %d).\n", x, y);
-				}
+				case OBJECT_ID_MEDIPACK:
+					pickableEntitiesList.push_front(new PickableEntityMedipack((x * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - medipackWidth) / 2), (y * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - medipackHeight) / 2)));
+					LOG_DEBUG("Spawned medipack on block (%d, %d).\n", x, y);
+					break;
+					
+				case OBJECT_ID_AMMUNITION:
+					pickableEntitiesList.push_front(new PickableEntityAmmunition((x * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - ammunitionWidth) / 2), (y * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - ammunitionHeight) / 2)));
+					LOG_DEBUG("Spawned ammunition on block (%d, %d).\n", x, y);
+					break;
+					
+				default:
+					LOG_INFORMATION("Unhandled object (object ID : %d) at block (%d, %d).\n", objectId, x, y);
+					break;
 			}
 			
 			// TODO other objects
@@ -224,6 +263,7 @@ Objects_Loading_Error:
 // TODO clean a loaded level to allow a new level to be loaded
 void unloadLevel()
 {
+	// TODO clean lists
 }
 
 void renderScene(int topLeftX, int topLeftY)
