@@ -147,6 +147,9 @@ static void updateGameLogic()
 			
 			// TODO spawn explosion effect
 			
+			// Spawn item if player is lucky
+			
+			
 			continue;
 		}
 		// The enemy wants to shoot
@@ -194,7 +197,8 @@ static void renderGame(int sceneX, int sceneY)
 	sprintf(string, "Life : %d%%", pointerPlayer->getLifePointsAmount());
 	Renderer::renderText(CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_X, CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y, string);
 	// Ammunitions count
-	// TODO
+	sprintf(string, "Ammo : %d", pointerPlayer->getAmmunitionsAmount());
+	Renderer::renderText(CONFIGURATION_DISPLAY_HUD_AMMUNITIONS_X, CONFIGURATION_DISPLAY_HUD_AMMUNITIONS_Y, string);
 	
 	// Display the rendered picture
 	SDL_RenderPresent(Renderer::pointerMainRenderer);

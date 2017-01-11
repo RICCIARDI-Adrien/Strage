@@ -21,6 +21,9 @@ class FightingEntityPlayer: public FightingEntity
 		int _renderingX;
 		/** Display the player at this vertical display coordinate. */
 		int _renderingY;
+		
+		/** How many ammunitions the player owns. */
+		int _ammunitionsAmount; // Only player has limited ammunitions, because what could do a munitions-less enemy ?
 	
 	public:
 		/** Create the player.
@@ -32,10 +35,35 @@ class FightingEntityPlayer: public FightingEntity
 			// Cache rendering coordinates
 			_renderingX = (CONFIGURATION_DISPLAY_WIDTH - _positionRectangle.w) / 2;
 			_renderingY = (CONFIGURATION_DISPLAY_HEIGHT - _positionRectangle.h) / 2;
+			
+			_ammunitionsAmount = 100;
 		}
 		
 		/** Free entity allocated resources. */
 		virtual ~FightingEntityPlayer() {} // Nothing to free
+		
+		/** @see FightingEntity for description. */
+		virtual MovableEntityBullet *shoot()
+		{
+			MovableEntityBullet *pointerBullet;
+			
+			// The player can't shoot if it has no more ammunitions
+			if (_ammunitionsAmount == 0) return NULL;
+			
+			// Decrement ammunitions count if the player shot
+			pointerBullet = FightingEntity::shoot();
+			if (pointerBullet != NULL) _ammunitionsAmount--;
+			
+			return pointerBullet;
+		}
+		
+		/** Get the remaining ammunitions count.
+		 * @return The ammunitions amount.
+		 */
+		inline int getAmmunitionsAmount()
+		{
+			return _ammunitionsAmount;
+		}
 		
 		/** Display the player at the screen center. */
 		virtual void render()

@@ -18,9 +18,6 @@ class FightingEntity: public MovableEntity
 		/** The maximum entity life value. */
 		int _maximumLifePointsAmount;
 		
-		/** How many ammunitions the entity owns. */
-		int _ammunitionsAmount; // TODO unlimited ammo ?
-		
 		/** Add this offset to the entity coordinates to make the fired bullet start from the entity center. */
 		int _bulletStartingPositionOffset;
 		
@@ -94,7 +91,7 @@ class FightingEntity: public MovableEntity
 		 * @return A valid pointer if the entity was allowed to shot,
 		 * @return NULL if the entity could not shoot (no more ammunitions, slower fire rate...).
 		 */
-		MovableEntityBullet *shoot()
+		virtual MovableEntityBullet *shoot()
 		{
 			// Allow to shoot only if enough time elapsed since last shot
 			if (SDL_GetTicks() - _lastShotTime >= _timeBetweenShots)
