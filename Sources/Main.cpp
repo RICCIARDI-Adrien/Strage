@@ -3,17 +3,16 @@
  * @author Adrien RICCIARDI
  */
 #include <cstdlib>
+#include <FightingEntityEnemy.hpp>
 #include <FightingEntityPlayer.hpp>
 #include <list>
 #include <Log.hpp>
 #include <LevelManager.hpp>
+#include <MovableEntityBullet.hpp>
+#include <PickableEntityAmmunition.hpp>
+#include <PickableEntityMedipack.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
-
-// TEST
-#include <PickableEntityMedipack.hpp>
-#include <MovableEntityBullet.hpp>
-#include <FightingEntityEnemy.hpp>
 
 //-------------------------------------------------------------------------------------------------
 // Private types
@@ -196,9 +195,9 @@ static void renderGame(int sceneX, int sceneY)
 	// Life points
 	sprintf(string, "Life : %d%%", pointerPlayer->getLifePointsAmount());
 	Renderer::renderText(CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_X, CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y, string);
-	// Ammunitions count
-	sprintf(string, "Ammo : %d", pointerPlayer->getAmmunitionsAmount());
-	Renderer::renderText(CONFIGURATION_DISPLAY_HUD_AMMUNITIONS_X, CONFIGURATION_DISPLAY_HUD_AMMUNITIONS_Y, string);
+	// Ammunition count
+	sprintf(string, "Ammo : %d", pointerPlayer->getAmmunitionAmount());
+	Renderer::renderText(CONFIGURATION_DISPLAY_HUD_AMMUNITION_X, CONFIGURATION_DISPLAY_HUD_AMMUNITION_Y, string);
 	
 	// Display the rendered picture
 	SDL_RenderPresent(Renderer::pointerMainRenderer);
@@ -228,9 +227,11 @@ int main(void)
 	PickableEntityMedipack m1(81 + 64, 93);
 	PickableEntityMedipack m2(64 * 10 + 25, 64 * 5 + 47);
 	PickableEntityMedipack m3(64 * 6 + 25, 64 * 12 + 47);
+	PickableEntityAmmunition a1(64 * 2 + 15, 64 * 6 + 21);
 	pickableEntitiesList.push_front(&m1);
 	pickableEntitiesList.push_front(&m2);
 	pickableEntitiesList.push_front(&m3);
+	pickableEntitiesList.push_front(&a1);
 	FightingEntityEnemy e1(64*8 + 13, 64 * 3 + 35);
 	FightingEntityEnemy e2(64*13 + 13, 64 * 3 + 22);
 	enemiesList.push_front(&e1);

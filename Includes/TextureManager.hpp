@@ -22,6 +22,7 @@ typedef enum
 	
 	// Pickable objects
 	TEXTURE_ID_MEDIPACK,
+	TEXTURE_ID_AMMUNITION,
 	
 	// Moving objects
 	TEXTURE_ID_PLAYER,

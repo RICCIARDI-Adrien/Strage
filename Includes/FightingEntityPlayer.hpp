@@ -22,8 +22,8 @@ class FightingEntityPlayer: public FightingEntity
 		/** Display the player at this vertical display coordinate. */
 		int _renderingY;
 		
-		/** How many ammunitions the player owns. */
-		int _ammunitionsAmount; // Only player has limited ammunitions, because what could do a munitions-less enemy ?
+		/** How many ammunition the player owns. */
+		int _ammunitionAmount; // Only player has limited ammunition, because what could do a munitions-less enemy ?
 	
 	public:
 		/** Create the player.
@@ -36,7 +36,7 @@ class FightingEntityPlayer: public FightingEntity
 			_renderingX = (CONFIGURATION_DISPLAY_WIDTH - _positionRectangle.w) / 2;
 			_renderingY = (CONFIGURATION_DISPLAY_HEIGHT - _positionRectangle.h) / 2;
 			
-			_ammunitionsAmount = 100;
+			_ammunitionAmount = 100;
 		}
 		
 		/** Free entity allocated resources. */
@@ -47,22 +47,30 @@ class FightingEntityPlayer: public FightingEntity
 		{
 			MovableEntityBullet *pointerBullet;
 			
-			// The player can't shoot if it has no more ammunitions
-			if (_ammunitionsAmount == 0) return NULL;
+			// The player can't shoot if it has no more ammunition
+			if (_ammunitionAmount == 0) return NULL;
 			
-			// Decrement ammunitions count if the player shot
+			// Decrement ammunition count if the player shot
 			pointerBullet = FightingEntity::shoot();
-			if (pointerBullet != NULL) _ammunitionsAmount--;
+			if (pointerBullet != NULL) _ammunitionAmount--;
 			
 			return pointerBullet;
 		}
 		
-		/** Get the remaining ammunitions count.
-		 * @return The ammunitions amount.
+		/** Get the remaining ammunition count.
+		 * @return The ammunition amount.
 		 */
-		inline int getAmmunitionsAmount()
+		inline int getAmmunitionAmount()
 		{
-			return _ammunitionsAmount;
+			return _ammunitionAmount;
+		}
+		
+		/** Add ammunition to the player owned ones.
+		 * @param amount How many ammunition to add (do not use negative numbers, there is no check...).
+		 */
+		inline void addAmmunition(int amount)
+		{
+			_ammunitionAmount += amount;
 		}
 		
 		/** Display the player at the screen center. */

@@ -7,7 +7,7 @@
 #include <TextureManager.hpp>
 
 /** @class FightingEntity
- * A movable entity that has ammunitions and life points.
+ * A movable entity that has life points and can shoot bullets.
  * @author Adrien RICCIARDI
  */
 class FightingEntity: public MovableEntity
@@ -89,7 +89,7 @@ class FightingEntity: public MovableEntity
 		
 		/** Generate a bullet facing the entity direction.
 		 * @return A valid pointer if the entity was allowed to shot,
-		 * @return NULL if the entity could not shoot (no more ammunitions, slower fire rate...).
+		 * @return NULL if the entity could not shoot (no more ammunition, slower fire rate...).
 		 */
 		virtual MovableEntityBullet *shoot()
 		{
