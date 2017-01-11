@@ -5,7 +5,6 @@
 #include <FightingEntity.hpp>
 #include <Log.hpp>
 #include <Renderer.hpp>
-#include <SDL2/SDL.h>
 #include <TextureManager.hpp>
 
 //-------------------------------------------------------------------------------------------------
