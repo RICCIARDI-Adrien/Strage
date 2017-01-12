@@ -19,16 +19,18 @@ class Texture
 	protected:
 		/** Load a texture from a bitmap file.
 		 * @param fileName The bitmap file.
+		 * @param isRleCompressionEnabled Set to 1 to enable the RLE compression, resulting in faster rendering on highly transparent pictures.
 		 * @return a valid pointer if the texture was successfully loaded,
 		 * @return NULL if an error occurred.
 		 */
-		SDL_Texture *loadFromBitmap(const char *fileName);
+		SDL_Texture *loadFromBitmap(const char *fileName, int isRleCompressionEnabled);
 	
 	public:
 		/** Create a SDL texture from a picture file.
 		 * @param fileName The picture file.
+		 * @param isRleCompressionEnabled Set to 1 to enable the RLE compression, resulting in faster rendering on highly transparent pictures.
 		 */
-		Texture(const char *fileName);
+		Texture(const char *fileName, int isRleCompressionEnabled);
 		
 		/** Free all allocated resources. */
 		virtual ~Texture();
@@ -42,7 +44,7 @@ class Texture
 		/** Render the texture using the main renderer. The provided coordinates indicate texture's top left angle. Texture is rotated the specified amount of degrees using its center as rotation point.
 		 * @param x X coordinate where to draw the texture on the display.
 		 * @param y Y coordinate where to draw the texture on the display.
-		 * @param rotationAngle Amount of degrees to rotate the texture arount its center.
+		 * @param rotationAngle Amount of degrees to rotate the texture around its center.
 		 */
 		void render(int x, int y, double rotationAngle);
 		

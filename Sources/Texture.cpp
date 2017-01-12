@@ -11,7 +11,7 @@
 //-------------------------------------------------------------------------------------------------
 // Private functions
 //-------------------------------------------------------------------------------------------------
-SDL_Texture *Texture::loadFromBitmap(const char *fileName)
+SDL_Texture *Texture::loadFromBitmap(const char *fileName, int isRleCompressionEnabled)
 {
 	// Try to load bitmap
 	SDL_Surface *pointerSurface = SDL_LoadBMP(fileName);
@@ -29,6 +29,16 @@ SDL_Texture *Texture::loadFromBitmap(const char *fileName)
 		return NULL;
 	}
 	
+	// Enable RLE compression if requested to
+	if (isRleCompressionEnabled)
+	{
+		if (SDL_SetSurfaceRLE(pointerSurface, 1) != 0)
+		{
+			LOG_ERROR("Failed to enable RLE compression (%s).\n", SDL_GetError());
+			return NULL;
+		}
+	}
+	
 	// Convert the surface to a texture
 	SDL_Texture *pointerTexture = SDL_CreateTextureFromSurface(Renderer::pointerMainRenderer, pointerSurface);
 	SDL_FreeSurface(pointerSurface);
@@ -44,13 +54,13 @@ SDL_Texture *Texture::loadFromBitmap(const char *fileName)
 //-------------------------------------------------------------------------------------------------
 // Public functions
 //-------------------------------------------------------------------------------------------------
-Texture::Texture(const char *fileName)
+Texture::Texture(const char *fileName, int isRleCompressionEnabled)
 {
 	unsigned int pixelFormat;
 	int access;
 	
 	// Try to load the texture
-	_pointerTexture = loadFromBitmap(fileName);
+	_pointerTexture = loadFromBitmap(fileName, isRleCompressionEnabled);
 	if (_pointerTexture == NULL) exit(-1);
 	
 	// Cache width and height parameters
