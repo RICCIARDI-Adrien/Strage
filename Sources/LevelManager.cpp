@@ -7,11 +7,7 @@
 #include <cstring>
 #include <FightingEntityPlayer.hpp>
 #include <LevelManager.hpp>
-#include <list>
 #include <Log.hpp>
-#include <PickableEntity.hpp>
-#include <PickableEntityAmmunition.hpp>
-#include <PickableEntityMedipack.hpp>
 #include <Texture.hpp>
 #include <TextureManager.hpp>
 
@@ -72,15 +68,8 @@ static int _displayWidthBlocks;
 /** The display height in blocks (rounded to the upper to make sure all the display is filled). */
 static int _displayHeightBlocks;
 
-/** Contain all existing blocks. */
-//static Block _blocks[BLOCK_IDS_COUNT];
 /** Contain all level blocks. */
 static Block _levelBlocks[CONFIGURATION_LEVEL_MAXIMUM_WIDTH * CONFIGURATION_LEVEL_MAXIMUM_HEIGHT];
-
-//-------------------------------------------------------------------------------------------------
-// Public variables
-//-------------------------------------------------------------------------------------------------
-std::list<PickableEntity *> pickableEntitiesList;
 
 //-------------------------------------------------------------------------------------------------
 // Private functions
@@ -137,18 +126,6 @@ static int _setBlockFromId(BlockId blockId, Block *pointerBlock)
 //-------------------------------------------------------------------------------------------------
 int initialize()
 {
-	// Create all blocks
-	/*_blocks[BLOCK_ID_RIVER_SAND].pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_RIVER_SAND);
-	_blocks[BLOCK_ID_RIVER_SAND].isColliding = 0;
-	_blocks[BLOCK_ID_GRASS].pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_GREEN_GRASS);
-	_blocks[BLOCK_ID_GRASS].isColliding = 0;
-	_blocks[BLOCK_ID_WALL_STONE_1].pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_WALL_STONE_1);
-	_blocks[BLOCK_ID_WALL_STONE_1].isColliding = 1;
-	_blocks[BLOCK_ID_DIRT_1].pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_DIRT_1);
-	_blocks[BLOCK_ID_DIRT_1].isColliding = 0;
-	_blocks[BLOCK_ID_DIRT_2].pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_DIRT_2);
-	_blocks[BLOCK_ID_DIRT_2].isColliding = 0;*/
-	
 	// Compute the amount of blocks that can be simultaneously displayed on the current display
 	_displayWidthBlocks = CONFIGURATION_DISPLAY_WIDTH / CONFIGURATION_LEVEL_BLOCK_SIZE;
 	if (CONFIGURATION_DISPLAY_WIDTH % CONFIGURATION_LEVEL_BLOCK_SIZE != 0) _displayWidthBlocks++;
@@ -168,7 +145,6 @@ int loadLevel(const char *sceneFileName, const char *objectsFileName)
 {
 	FILE *pointerFile;
 	int x, y, character, i, blockId, objectId, isPlayerSpawned = 0;
-	Block *pointerBlock;
 	
 	// Try to open the scene file
 	pointerFile = fopen(sceneFileName, "r");
@@ -223,20 +199,6 @@ Scene_Loading_End:
 		return -1;
 	}
 	
-	// Cache some objects size
-	// Player
-	Texture *pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER);
-	int playerWidth = pointerTexture->getWidth();
-	int playerHeight = pointerTexture->getHeight();
-	// Medipack
-	pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_MEDIPACK);
-	int medipackWidth = pointerTexture->getWidth();
-	int medipackHeight = pointerTexture->getHeight();
-	// Ammunition
-	pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_AMMUNITION);
-	int ammunitionWidth = pointerTexture->getWidth();
-	int ammunitionHeight = pointerTexture->getHeight();
-	
 	// Spawn objects
 	for (y = 0; y < _levelHeightBlocks; y++)
 	{
@@ -265,6 +227,11 @@ Scene_Loading_End:
 					}
 					else
 					{
+						// Get player size from its texture
+						Texture *pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER);
+						int playerWidth = pointerTexture->getWidth();
+						int playerHeight = pointerTexture->getHeight();
+						
 						// Spawn the player at the block center
 						pointerPlayer = new FightingEntityPlayer((x * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - playerWidth) / 2), (y * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - playerHeight) / 2));
 						isPlayerSpawned = 1;
@@ -274,13 +241,11 @@ Scene_Loading_End:
 					
 				case OBJECT_ID_MEDIPACK:
 					_levelBlocks[COMPUTE_BLOCK_INDEX(x, y)].content |= BLOCK_CONTENT_MEDIPACK;
-					//pickableEntitiesList.push_front(new PickableEntityMedipack((x * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - medipackWidth) / 2), (y * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - medipackHeight) / 2)));
 					LOG_DEBUG("Spawned medipack on block (%d, %d).\n", x, y);
 					break;
 					
 				case OBJECT_ID_AMMUNITION:
 					_levelBlocks[COMPUTE_BLOCK_INDEX(x, y)].content |= BLOCK_CONTENT_AMMUNITION;
-					//pickableEntitiesList.push_front(new PickableEntityAmmunition((x * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - ammunitionWidth) / 2), (y * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - ammunitionHeight) / 2)));
 					LOG_DEBUG("Spawned ammunition on block (%d, %d).\n", x, y);
 					break;
 					
@@ -288,8 +253,6 @@ Scene_Loading_End:
 					LOG_INFORMATION("Unhandled object (object ID : %d) at block (%d, %d).\n", objectId, x, y);
 					break;
 			}
-			
-			// TODO other objects
 			
 			// Discard the following comma
 			character = fgetc(pointerFile);

@@ -5,9 +5,6 @@
 #ifndef HPP_LEVEL_MANAGER_HPP
 #define HPP_LEVEL_MANAGER_HPP
 
-#include <list>
-#include <PickableEntity.hpp>
-
 namespace LevelManager
 {
 
@@ -22,12 +19,6 @@ typedef enum
 	BLOCK_CONTENT_AMMUNITION = 1 << 2, //!< If set, tell that ammunition are present on top of this block.
 	BLOCK_CONTENT_ENEMY = 1 << 3 //!< If set, tell that an enemy is walking on this block, so no other enemy can go through this block to avoid collisions.
 } BlockContent;
-
-//-------------------------------------------------------------------------------------------------
-// Variables
-//-------------------------------------------------------------------------------------------------
-/** All pickable entities. */
-extern std::list<PickableEntity *> pickableEntitiesList;
 
 //-------------------------------------------------------------------------------------------------
 // Functions

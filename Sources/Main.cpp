@@ -10,8 +10,6 @@
 #include <Log.hpp>
 #include <LevelManager.hpp>
 #include <MovableEntityBullet.hpp>
-#include <PickableEntityAmmunition.hpp>
-#include <PickableEntityMedipack.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
 
@@ -60,14 +58,7 @@ static void exitFreeResources()
 /** Update all game actors. */
 static void updateGameLogic()
 {
-	// Check if pickable objects can be taken by the player
-	std::list<PickableEntity *>::iterator pickableListIterator;
-	PickableEntity *pointerPickableEntity;
-	for (pickableListIterator = LevelManager::pickableEntitiesList.begin(); pickableListIterator != LevelManager::pickableEntitiesList.end(); ++pickableListIterator)
-	{
-		pointerPickableEntity = *pickableListIterator;
-		if (pointerPickableEntity->update() != 0) pickableListIterator = LevelManager::pickableEntitiesList.erase(pickableListIterator);
-	}
+	// Check if pickable objects can be taken by the player TODO here if entity spawns under immobile player (enemy died too close)
 	
 	// Check if player bullets have hit a wall or an enemy
 	std::list<MovableEntityBullet *>::iterator bulletsListIterator;
@@ -171,10 +162,6 @@ static void renderGame(int sceneX, int sceneY)
 	
 	// Render the level walls
 	LevelManager::renderScene(sceneX, sceneY);
-	
-	// Display pickable entities (as they are laying on the floor, any other entity is walking on top of them)
-	std::list<PickableEntity *>::iterator pickableListIterator;
-	for (pickableListIterator = LevelManager::pickableEntitiesList.begin(); pickableListIterator != LevelManager::pickableEntitiesList.end(); ++pickableListIterator) (*pickableListIterator)->render();
 	
 	// Display enemies
 	std::list<FightingEntityEnemy *>::iterator enemiesListIterator;
