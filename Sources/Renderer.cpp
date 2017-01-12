@@ -164,6 +164,7 @@ void renderText(int x, int y, const char *stringText)
 	destinationRectangle.x = x;
 	destinationRectangle.y = y;
 	SDL_RenderCopy(pointerMainRenderer, pointerTexture, NULL, &destinationRectangle);
+	SDL_DestroyTexture(pointerTexture);
 }
 
 }
