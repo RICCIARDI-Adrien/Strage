@@ -46,7 +46,7 @@ typedef enum
 typedef struct
 {
 	Texture *pointerTexture; //!< The texture used to render the block.
-	int isColliding; //!< Set to 1 if the block can't be crossed, set to 0 if player and movable objects can walk throughout the block.
+	int content; //!< A bit field telling what the block contains (objects or scene details). Use values from BlockContent to handle the bit field.
 } Block;
 
 /** All available spawnable objects. */
@@ -73,9 +73,9 @@ static int _displayWidthBlocks;
 static int _displayHeightBlocks;
 
 /** Contain all existing blocks. */
-static Block _blocks[BLOCK_IDS_COUNT];
+//static Block _blocks[BLOCK_IDS_COUNT];
 /** Contain all level blocks. */
-static Block *_pointerLevelBlocks[CONFIGURATION_LEVEL_MAXIMUM_WIDTH * CONFIGURATION_LEVEL_MAXIMUM_HEIGHT];
+static Block _levelBlocks[CONFIGURATION_LEVEL_MAXIMUM_WIDTH * CONFIGURATION_LEVEL_MAXIMUM_HEIGHT];
 
 //-------------------------------------------------------------------------------------------------
 // Public variables
@@ -83,12 +83,62 @@ static Block *_pointerLevelBlocks[CONFIGURATION_LEVEL_MAXIMUM_WIDTH * CONFIGURAT
 std::list<PickableEntity *> pickableEntitiesList;
 
 //-------------------------------------------------------------------------------------------------
+// Private functions
+//-------------------------------------------------------------------------------------------------
+/** Set a block texture and wall collision.
+ * @param blockId The block identifier.
+ * @param pointerBlock On output, fill this block with the right values.
+ * @return 0 if the block was successfully set,
+ * @return -1 if the provided block ID is unknown.
+ */
+static int _setBlockFromId(BlockId blockId, Block *pointerBlock)
+{
+	TextureManager::TextureId textureId;
+	
+	switch (blockId)
+	{
+		case BLOCK_ID_RIVER_SAND:
+			textureId = TextureManager::TEXTURE_ID_RIVER_SAND;
+			pointerBlock->content = 0;
+			break;
+			
+		case BLOCK_ID_GRASS:
+			textureId = TextureManager::TEXTURE_ID_GREEN_GRASS;
+			pointerBlock->content = 0;
+			break;
+			
+		case BLOCK_ID_WALL_STONE_1:
+			textureId = TextureManager::TEXTURE_ID_WALL_STONE_1;
+			pointerBlock->content = BLOCK_CONTENT_WALL;
+			break;
+			
+		case BLOCK_ID_DIRT_1:
+			textureId = TextureManager::TEXTURE_ID_DIRT_1;
+			pointerBlock->content = 0;
+			break;
+			
+		case BLOCK_ID_DIRT_2:
+			textureId = TextureManager::TEXTURE_ID_DIRT_2;
+			pointerBlock->content = 0;
+			break;
+			
+		default:
+			return -1;
+	}
+	
+	// Set block texture
+	pointerBlock->pointerTexture = TextureManager::getTextureFromId(textureId);
+	
+	return 0;
+}
+
+//-------------------------------------------------------------------------------------------------
 // Public functions
 //-------------------------------------------------------------------------------------------------
 int initialize()
 {
 	// Create all blocks
-	_blocks[BLOCK_ID_RIVER_SAND].pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_RIVER_SAND);
+	/*_blocks[BLOCK_ID_RIVER_SAND].pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_RIVER_SAND);
 	_blocks[BLOCK_ID_RIVER_SAND].isColliding = 0;
 	_blocks[BLOCK_ID_GRASS].pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_GREEN_GRASS);
 	_blocks[BLOCK_ID_GRASS].isColliding = 0;
@@ -97,7 +147,7 @@ int initialize()
 	_blocks[BLOCK_ID_DIRT_1].pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_DIRT_1);
 	_blocks[BLOCK_ID_DIRT_1].isColliding = 0;
 	_blocks[BLOCK_ID_DIRT_2].pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_DIRT_2);
-	_blocks[BLOCK_ID_DIRT_2].isColliding = 0;
+	_blocks[BLOCK_ID_DIRT_2].isColliding = 0;*/
 	
 	// Compute the amount of blocks that can be simultaneously displayed on the current display
 	_displayWidthBlocks = CONFIGURATION_DISPLAY_WIDTH / CONFIGURATION_LEVEL_BLOCK_SIZE;
@@ -118,6 +168,7 @@ int loadLevel(const char *sceneFileName, const char *objectsFileName)
 {
 	FILE *pointerFile;
 	int x, y, character, i, blockId, objectId, isPlayerSpawned = 0;
+	Block *pointerBlock;
 	
 	// Try to open the scene file
 	pointerFile = fopen(sceneFileName, "r");
@@ -138,16 +189,14 @@ int loadLevel(const char *sceneFileName, const char *objectsFileName)
 		{
 			// Read a block index
 			if (fscanf(pointerFile, "%d", &blockId) != 1) goto Scene_Loading_End;
-			// Make sure the block has been defined in the level editor
-			if ((blockId < 0) || (blockId >= BLOCK_IDS_COUNT))
+			
+			// Set the corresponding block texture and wall collision
+			if (_setBlockFromId((BlockId) blockId, &_levelBlocks[i]) != 0)
 			{
 				LOG_ERROR("Block (%d, %d) ID is bad : %d.\n", x, y, blockId);
 				fclose(pointerFile);
 				return -1;
 			}
-			
-			// Set the corresponding block
-			_pointerLevelBlocks[i] = &_blocks[blockId];
 			i++;
 			
 			// Discard the following comma
@@ -224,12 +273,14 @@ Scene_Loading_End:
 					break;
 					
 				case OBJECT_ID_MEDIPACK:
-					pickableEntitiesList.push_front(new PickableEntityMedipack((x * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - medipackWidth) / 2), (y * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - medipackHeight) / 2)));
+					_levelBlocks[COMPUTE_BLOCK_INDEX(x, y)].content |= BLOCK_CONTENT_MEDIPACK;
+					//pickableEntitiesList.push_front(new PickableEntityMedipack((x * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - medipackWidth) / 2), (y * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - medipackHeight) / 2)));
 					LOG_DEBUG("Spawned medipack on block (%d, %d).\n", x, y);
 					break;
 					
 				case OBJECT_ID_AMMUNITION:
-					pickableEntitiesList.push_front(new PickableEntityAmmunition((x * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - ammunitionWidth) / 2), (y * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - ammunitionHeight) / 2)));
+					_levelBlocks[COMPUTE_BLOCK_INDEX(x, y)].content |= BLOCK_CONTENT_AMMUNITION;
+					//pickableEntitiesList.push_front(new PickableEntityAmmunition((x * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - ammunitionWidth) / 2), (y * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - ammunitionHeight) / 2)));
 					LOG_DEBUG("Spawned ammunition on block (%d, %d).\n", x, y);
 					break;
 					
@@ -269,6 +320,7 @@ void unloadLevel()
 void renderScene(int topLeftX, int topLeftY)
 {
 	int xDisplayBlock, xStartingBlock, yStartingBlock, yDisplayBlock, xBlock, yBlock, xDisplayBlocksCount, yDisplayBlocksCount, xStartingPixel, yStartingPixel, xPixel, yPixel;
+	Block *pointerBlock;
 	
 	// Get the amount of pixels the rendering must be shifted about in the beginning blocks
 	xStartingPixel = -(topLeftX % CONFIGURATION_LEVEL_BLOCK_SIZE); // Invert result sign to make negative camera coordinates go to left and positive camera coordinates go to right
@@ -296,8 +348,17 @@ void renderScene(int topLeftX, int topLeftY)
 			xBlock = xStartingBlock + xDisplayBlock;
 			yBlock = yStartingBlock + yDisplayBlock;
 			
-			// Render the block only if it existing in the level
-			if ((xBlock >= 0) && (yBlock >= 0) && (xBlock < _levelWidthBlocks) && (yBlock < _levelHeightBlocks)) _pointerLevelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)]->pointerTexture->render(xPixel, yPixel);
+			// Render the block only if it is existing in the level
+			if ((xBlock >= 0) && (yBlock >= 0) && (xBlock < _levelWidthBlocks) && (yBlock < _levelHeightBlocks))
+			{
+				// Display the block texture
+				pointerBlock = &_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)]; // Compute the block index only once
+				pointerBlock->pointerTexture->render(xPixel, yPixel);
+				
+				// Display an eventual item which can be on the block
+				if (pointerBlock->content & BLOCK_CONTENT_MEDIPACK) TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_MEDIPACK)->render(xPixel, yPixel);
+				else if (pointerBlock->content & BLOCK_CONTENT_AMMUNITION) TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_AMMUNITION)->render(xPixel, yPixel);
+			}
 			
 			xPixel += CONFIGURATION_LEVEL_BLOCK_SIZE;
 		}
@@ -317,10 +378,10 @@ int getDistanceFromUpperWall(int x, int y)
 	if ((xBlock <= 0) || (xBlock >= _levelWidthBlocks - 1) || (yBlock <= 0) || (yBlock >= _levelWidthBlocks - 1)) return 0;
 	
 	// Is this block a wall ?
-	if (_pointerLevelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)]->isColliding) return 0;
+	if (_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)].content & BLOCK_CONTENT_WALL) return 0;
 	
 	// Is upper block part of the floor ?
-	if (!_pointerLevelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock - 1)]->isColliding) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
+	if (!(_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock - 1)].content & BLOCK_CONTENT_WALL)) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
 	
 	// The upper block is a wall, compute the amount of pixels separating the provided coordinates from the wall
 	return y % CONFIGURATION_LEVEL_BLOCK_SIZE;
@@ -338,10 +399,10 @@ int getDistanceFromDownerWall(int x, int y)
 	if ((xBlock <= 0) || (xBlock >= _levelWidthBlocks - 1) || (yBlock <= 0) || (yBlock >= _levelWidthBlocks - 1)) return 0;
 	
 	// Is this block a wall ?
-	if (_pointerLevelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)]->isColliding) return 0;
+	if (_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)].content & BLOCK_CONTENT_WALL) return 0;
 	
 	// Is upper block part of the floor ?
-	if (!_pointerLevelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock + 1)]->isColliding) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
+	if (!(_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock + 1)].content & BLOCK_CONTENT_WALL)) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
 	
 	// The upper block is a wall, compute the amount of pixels separating the provided coordinates from the wall
 	return CONFIGURATION_LEVEL_BLOCK_SIZE - (y % CONFIGURATION_LEVEL_BLOCK_SIZE);
@@ -359,10 +420,10 @@ int getDistanceFromLeftmostWall(int x, int y)
 	if ((xBlock <= 0) || (xBlock >= _levelWidthBlocks - 1) || (yBlock <= 0) || (yBlock >= _levelWidthBlocks - 1)) return 0;
 	
 	// Is this block a wall ?
-	if (_pointerLevelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)]->isColliding) return 0;
+	if (_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)].content & BLOCK_CONTENT_WALL) return 0;
 	
 	// Is upper block part of the floor ?
-	if (!_pointerLevelBlocks[COMPUTE_BLOCK_INDEX(xBlock - 1, yBlock)]->isColliding) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
+	if (!(_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock - 1, yBlock)].content & BLOCK_CONTENT_WALL)) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
 	
 	// The upper block is a wall, compute the amount of pixels separating the provided coordinates from the wall
 	return x % CONFIGURATION_LEVEL_BLOCK_SIZE;
@@ -380,13 +441,47 @@ int getDistanceFromRightmostWall(int x, int y)
 	if ((xBlock <= 0) || (xBlock >= _levelWidthBlocks - 1) || (yBlock <= 0) || (yBlock >= _levelWidthBlocks - 1)) return 0;
 	
 	// Is this block a wall ?
-	if (_pointerLevelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)]->isColliding) return 0;
+	if (_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)].content & BLOCK_CONTENT_WALL) return 0;
 	
 	// Is upper block part of the floor ?
-	if (!_pointerLevelBlocks[COMPUTE_BLOCK_INDEX(xBlock + 1, yBlock)]->isColliding) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
+	if (!(_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock + 1, yBlock)].content & BLOCK_CONTENT_WALL)) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
 	
 	// The upper block is a wall, compute the amount of pixels separating the provided coordinates from the wall
 	return CONFIGURATION_LEVEL_BLOCK_SIZE - (x % CONFIGURATION_LEVEL_BLOCK_SIZE);
+}
+
+int getBlockContent(int x, int y)
+{
+	int xBlock, yBlock;
+	
+	// Convert coordinates to blocks
+	xBlock = x / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	yBlock = y / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	
+	if ((xBlock < 0) || (xBlock >= _levelWidthBlocks) || (yBlock < 0) || (yBlock >= _levelHeightBlocks))
+	{
+		LOG_INFORMATION("Bad block pixel coordinates (%d, %d).\n", x, y);
+		return 0;
+	}
+	
+	return _levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)].content;
+}
+
+void setBlockContent(int x, int y, int content)
+{
+	int xBlock, yBlock;
+	
+	// Convert coordinates to blocks
+	xBlock = x / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	yBlock = y / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	
+	if ((xBlock < 0) || (xBlock >= _levelWidthBlocks) || (yBlock < 0) || (yBlock >= _levelHeightBlocks))
+	{
+		LOG_INFORMATION("Bad block pixel coordinates (%d, %d).\n", x, y);
+		return;
+	}
+	
+	_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)].content = content;
 }
 
 }

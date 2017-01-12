@@ -24,6 +24,43 @@ class FightingEntityPlayer: public FightingEntity
 		
 		/** How many ammunition the player owns. */
 		int _ammunitionAmount; // Only player has limited ammunition, because what could do a munitions-less enemy ?
+		
+		/** Check for a pickable item on the underlaying block and get it if possible. */
+		void _handlePickableItem()
+		{
+			int blockContent;
+			
+			// Get block under player center content
+			blockContent = LevelManager::getBlockContent(_positionRectangle.x + (_positionRectangle.w / 2), _positionRectangle.y + (_positionRectangle.h / 2));
+				
+			// Is there a medipack ?
+			if (blockContent & LevelManager::BLOCK_CONTENT_MEDIPACK)
+			{
+				LOG_DEBUG("Player is crossing a block containing a medipack.\n");
+				
+				if (isWounded())
+				{
+					modifyLife(20);
+					LOG_DEBUG("Healed player.\n");
+					
+					// Remove the medipack as it has been used
+					blockContent &= ~LevelManager::BLOCK_CONTENT_MEDIPACK;
+					LevelManager::setBlockContent(_positionRectangle.x + (_positionRectangle.w / 2), _positionRectangle.y + (_positionRectangle.h / 2), blockContent);
+				}
+			}
+			// Is there ammunition ?
+			else if (blockContent & LevelManager::BLOCK_CONTENT_AMMUNITION)
+			{
+				LOG_DEBUG("Player is crossing a block containing ammunition.\n");
+				
+				addAmmunition(30);
+				LOG_DEBUG("Player got ammunition.\n");
+				
+				// Remove the ammunitions item
+				blockContent &= ~LevelManager::BLOCK_CONTENT_AMMUNITION;
+				LevelManager::setBlockContent(_positionRectangle.x + (_positionRectangle.w / 2), _positionRectangle.y + (_positionRectangle.h / 2), blockContent);
+			}
+		}
 	
 	public:
 		/** Create the player.
@@ -73,6 +110,66 @@ class FightingEntityPlayer: public FightingEntity
 			_ammunitionAmount += amount;
 		}
 		
+		/** Move the player to the up and check for a pickable item on the new location.
+		 * @return How many pixels the player moved.
+		 */
+		virtual int moveToUp()
+		{
+			int movedPixelsAmount;
+			
+			movedPixelsAmount = MovableEntity::moveToUp();
+			
+			// If the player really moved, check for a pickable item on the new location
+			if (movedPixelsAmount) _handlePickableItem();
+			
+			return movedPixelsAmount;
+		}
+		
+		/** Move the player to the down and check for a pickable item on the new location.
+		 * @return How many pixels the player moved.
+		 */
+		virtual int moveToDown()
+		{
+			int movedPixelsAmount;
+			
+			movedPixelsAmount = MovableEntity::moveToDown();
+			
+			// If the player really moved, check for a pickable item on the new location
+			if (movedPixelsAmount) _handlePickableItem();
+			
+			return movedPixelsAmount;
+		}
+		
+		/** Move the player to the left and check for a pickable item on the new location.
+		 * @return How many pixels the player moved.
+		 */
+		virtual int moveToLeft()
+		{
+			int movedPixelsAmount;
+			
+			movedPixelsAmount = MovableEntity::moveToLeft();
+			
+			// If the player really moved, check for a pickable item on the new location
+			if (movedPixelsAmount) _handlePickableItem();
+			
+			return movedPixelsAmount;
+		}
+		
+		/** Move the player to the right and check for a pickable item on the new location.
+		 * @return How many pixels the player moved.
+		 */
+		virtual int moveToRight()
+		{
+			int movedPixelsAmount;
+			
+			movedPixelsAmount = MovableEntity::moveToRight();
+			
+			// If the player really moved, check for a pickable item on the new location
+			if (movedPixelsAmount) _handlePickableItem();
+			
+			return movedPixelsAmount;
+		}
+
 		/** Display the player at the screen center. */
 		virtual void render()
 		{

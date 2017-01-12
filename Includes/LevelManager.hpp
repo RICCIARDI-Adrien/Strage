@@ -12,6 +12,18 @@ namespace LevelManager
 {
 
 //-------------------------------------------------------------------------------------------------
+// Types
+//-------------------------------------------------------------------------------------------------
+/** All available bits to use in the content bit field of a block. */
+typedef enum
+{
+	BLOCK_CONTENT_WALL = 1 << 0, //!< If set, tell that this block is a scene wall, so no entity can cross it.
+	BLOCK_CONTENT_MEDIPACK = 1 << 1, //!< If set, tell that a medipack is present on top of this block.
+	BLOCK_CONTENT_AMMUNITION = 1 << 2, //!< If set, tell that ammunition are present on top of this block.
+	BLOCK_CONTENT_ENEMY = 1 << 3 //!< If set, tell that an enemy is walking on this block, so no other enemy can go through this block to avoid collisions.
+} BlockContent;
+
+//-------------------------------------------------------------------------------------------------
 // Variables
 //-------------------------------------------------------------------------------------------------
 /** All pickable entities. */
@@ -70,6 +82,20 @@ int getDistanceFromLeftmostWall(int x, int y);
  * @return The distance in pixels. To be faster, the functions stops if the first wall is further than CONFIGURATION_LEVEL_BLOCK_SIZE pixels.
  */
 int getDistanceFromRightmostWall(int x, int y);
+
+/** Get a block content.
+ * @param x X coordinate in pixels.
+ * @param y Y coordinate in pixels.
+ * @return The block content, or 0 if the provided coordinates were bad.
+ */
+int getBlockContent(int x, int y);
+
+/** Set a block content.
+ * @param x X coordinate in pixels.
+ * @param y Y coordinate in pixels.
+ * @param content The new block content, fully overwriting the previous one. Use values from BlockContent to fill it.
+ */
+void setBlockContent(int x, int y, int content);
 
 }
 
