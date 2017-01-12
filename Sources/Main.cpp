@@ -58,7 +58,8 @@ static void exitFreeResources()
 /** Update all game actors. */
 static void updateGameLogic()
 {
-	// Check if pickable objects can be taken by the player TODO here if entity spawns under immobile player (enemy died too close)
+	// Check if pickable objects can be taken by the player
+	pointerPlayer->update();
 	
 	// Check if player bullets have hit a wall or an enemy
 	std::list<MovableEntityBullet *>::iterator bulletsListIterator;
