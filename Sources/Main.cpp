@@ -55,6 +55,45 @@ static void exitFreeResources()
 	Renderer::uninitialize(); // Must be called at the end because it stops SDL
 }
 
+/** Spawn a random item (or nothing) on the block into which coordinates are contained.
+ * @param x X coordinate in pixels.
+ * @param y Y coordinate in pixels.
+ */
+static void spawnItem(int x, int y)
+{
+	int blockContent;
+	
+	// Spawn nothing if the block contains an item yet
+	blockContent = LevelManager::getBlockContent(x, y);
+	if ((blockContent & LevelManager::BLOCK_CONTENT_MEDIPACK) || (blockContent & LevelManager::BLOCK_CONTENT_AMMUNITION)) return;
+	
+	// Select which item to spawn
+	if (rand() % 2 == 0)
+	{
+		// Spawn a medipack
+		if (rand() % 100 < CONFIGURATION_GAMEPLAY_MEDIPACK_ITEM_SPAWN_PROBABILITY_PERCENTAGE)
+		{
+			// Spawn the item
+			blockContent |= LevelManager::BLOCK_CONTENT_MEDIPACK;
+			LevelManager::setBlockContent(x, y, blockContent);
+			
+			LOG_DEBUG("Enemy dropped a medipack.\n");
+		}
+	}
+	else
+	{
+		// Spawn ammunition
+		if (rand() % 100 < CONFIGURATION_GAMEPLAY_AMMUNITION_ITEM_SPAWN_PROBABILITY_PERCENTAGE)
+		{
+			// Spawn the item
+			blockContent |= LevelManager::BLOCK_CONTENT_AMMUNITION;
+			LevelManager::setBlockContent(x, y, blockContent);
+			
+			LOG_DEBUG("Enemy dropped ammunition.\n");
+		}
+	}
+}
+
 /** Update all game actors. */
 static void updateGameLogic()
 {
@@ -124,6 +163,7 @@ static void updateGameLogic()
 	// Update enemies artificial intelligence
 	MovableEntityBullet *pointerBullet;
 	int result;
+	SDL_Rect *pointerEnemyPositionRectangle;
 	for (enemiesListIterator = enemiesList.begin(); enemiesListIterator != enemiesList.end(); ++enemiesListIterator)
 	{
 		pointerEnemy = *enemiesListIterator;
@@ -136,8 +176,9 @@ static void updateGameLogic()
 			
 			// TODO spawn explosion effect
 			
-			// Spawn item if player is lucky
-			
+			// Spawn an item on the current block if player is lucky
+			pointerEnemyPositionRectangle = pointerEnemy->getPositionRectangle();
+			spawnItem(pointerEnemyPositionRectangle->x + (pointerEnemyPositionRectangle->w / 2), pointerEnemyPositionRectangle->y + (pointerEnemyPositionRectangle->h / 2)); // Use enemy center coordinates to avoid favoring one block among others
 			
 			continue;
 		}
@@ -215,8 +256,16 @@ int main(void)
 	LevelManager::loadLevel("Levels/Test_Scene.csv", "Levels/Test_Objects.csv");
 	FightingEntityEnemy e1(64*8 + 13, 64 * 3 + 35);
 	FightingEntityEnemy e2(64*13 + 13, 64 * 3 + 22);
+	FightingEntityEnemy e3(64*13 + 13, 64 * 4 + 22);
+	FightingEntityEnemy e4(64*13 + 13, 64 * 5 + 22);
+	FightingEntityEnemy e5(64*12 + 13, 64 * 5 + 22);
+	FightingEntityEnemy e6(64*12 + 13, 64 * 4 + 22);
 	enemiesList.push_front(&e1);
 	enemiesList.push_front(&e2);
+	enemiesList.push_front(&e3);
+	enemiesList.push_front(&e4);
+	enemiesList.push_front(&e5);
+	enemiesList.push_front(&e6);
 	
 	while (1)
 	{
