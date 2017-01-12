@@ -130,6 +130,8 @@ static void updateGameLogic()
 				// Wound the enemy
 				pointerEnemy->modifyLife(-5); // TODO put bullet damage in bullet if more bullet types are to be created
 				LOG_DEBUG("Enemy hit.\n");
+				
+				break;
 			}
 		}
 	}
