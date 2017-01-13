@@ -54,7 +54,7 @@ FightingEntityPlayer *pointerPlayer;
 // Private functions
 //-------------------------------------------------------------------------------------------------
 /** Automatically free allocated resources on program shutdown. */
-static void exitFreeResources()
+static void _exitFreeResources()
 {
 	LevelManager::uninitialize();
 	TextureManager::uninitialize();
@@ -65,7 +65,7 @@ static void exitFreeResources()
  * @param x X coordinate in pixels.
  * @param y Y coordinate in pixels.
  */
-static void spawnItem(int x, int y)
+static inline void _spawnItem(int x, int y)
 {
 	int blockContent;
 	
@@ -124,7 +124,7 @@ int _isBlockAvailableForSpawn(int x, int y)
  * @return NULL if no enemy could be spawned,
  * @return a valid pointer if an enemy was spawned.
  */
-static FightingEntityEnemy *spawnEnemy(int enemySpawnerX, int enemySpawnerY) // This code should be in EnemySpawnerEntity, but due to circular inclusions it can't
+static inline FightingEntityEnemy *_spawnEnemy(int enemySpawnerX, int enemySpawnerY)
 {
 	int x, y;
 	
@@ -171,7 +171,7 @@ Spawn_Enemy:
 }
 
 /** Update all game actors. */
-static void updateGameLogic()
+static inline void _updateGameLogic()
 {
 	// Check if pickable objects can be taken by the player
 	pointerPlayer->update();
@@ -279,7 +279,7 @@ static void updateGameLogic()
 			
 			// Spawn an item on the current block if player is lucky
 			pointerPositionRectangle = pointerEnemy->getPositionRectangle();
-			spawnItem(pointerPositionRectangle->x + (pointerPositionRectangle->w / 2), pointerPositionRectangle->y + (pointerPositionRectangle->h / 2)); // Use enemy center coordinates to avoid favoring one block among others
+			_spawnItem(pointerPositionRectangle->x + (pointerPositionRectangle->w / 2), pointerPositionRectangle->y + (pointerPositionRectangle->h / 2)); // Use enemy center coordinates to avoid favoring one block among others
 			
 			continue;
 		}
@@ -316,7 +316,7 @@ static void updateGameLogic()
 		else if (result == 2)
 		{
 			pointerPositionRectangle = pointerEnemySpawner->getPositionRectangle();
-			pointerEnemy = spawnEnemy(pointerPositionRectangle->x, pointerPositionRectangle->y);
+			pointerEnemy = _spawnEnemy(pointerPositionRectangle->x, pointerPositionRectangle->y);
 			if (pointerEnemy != NULL) _enemiesList.push_front(pointerEnemy);
 		}
 	}
@@ -326,7 +326,7 @@ static void updateGameLogic()
  * @param sceneX The "camera" will render the scene starting from this scene horizontal coordinate.
  * @param sceneY The "camera" will render the scene starting from this scene vertical coordinate.
  */
-static void renderGame(int sceneX, int sceneY)
+static inline void _renderGame(int sceneX, int sceneY)
 {
 	// Start rendering
 	Renderer::beginRendering(sceneX, sceneY);
@@ -378,7 +378,7 @@ int main(void)
 	if (LevelManager::initialize() != 0) return -1;
 	
 	// Automatically dispose of allocated resources on program exit (allowing to use exit() elsewhere in the program)
-	atexit(exitFreeResources);
+	atexit(_exitFreeResources);
 	
 	// Cache some values
 	_enemySpawnOffsetX = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY)->getWidth() / 2;
@@ -520,9 +520,9 @@ int main(void)
 		camX = pointerPlayer->getX() - (CONFIGURATION_DISPLAY_WIDTH / 2) + 16;
 		camY = pointerPlayer->getY() - (CONFIGURATION_DISPLAY_HEIGHT / 2) + 16;
 		
-		updateGameLogic();
+		_updateGameLogic();
 		
-		renderGame(camX, camY);
+		_renderGame(camX, camY);
 		
 		// Wait enough time to achieve a 60Hz refresh rate
 		Elapsed_Time = SDL_GetTicks() - Starting_Time;

@@ -1,7 +1,6 @@
 #ifndef HPP_FIGHTING_ENTITY_PLAYER_HPP
 #define HPP_FIGHTING_ENTITY_PLAYER_HPP
 
-#include <cstdlib>
 #include <FightingEntity.hpp>
 #include <Log.hpp>
 #include <Renderer.hpp>
