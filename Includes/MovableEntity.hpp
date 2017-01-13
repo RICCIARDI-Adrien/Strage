@@ -32,6 +32,9 @@ class MovableEntity: public Entity
 		
 		/** How many pixels to move the entity. */
 		int _movingPixelsAmount;
+		
+		/** The block content bit mask to search against for collision. */
+		int _collisionBlockContent;
 	
 	public:
 		/** Gather some initialization common to all movable entities.
@@ -43,6 +46,9 @@ class MovableEntity: public Entity
 		MovableEntity(TextureManager::TextureId textureId, int x, int y, int movingPixelsAmount): Entity(textureId, x, y)
 		{
 			_movingPixelsAmount = movingPixelsAmount;
+			
+			// Collide with walls by default
+			_collisionBlockContent = LevelManager::BLOCK_CONTENT_WALL;
 			
 			// Entity is facing up on spawn
 			_rotationAngle = 0;
@@ -57,8 +63,8 @@ class MovableEntity: public Entity
 			int leftSideDistanceToWall, rightSizeDistanceToWall, distanceToWall, movingPixelsAmount;
 			
 			// Check upper border distance against level walls
-			leftSideDistanceToWall = LevelManager::getDistanceFromUpperWall(_positionRectangle.x, _positionRectangle.y);
-			rightSizeDistanceToWall = LevelManager::getDistanceFromUpperWall(_positionRectangle.x + _positionRectangle.w - 1, _positionRectangle.y);
+			leftSideDistanceToWall = LevelManager::getDistanceFromUpperBlock(_positionRectangle.x, _positionRectangle.y, _collisionBlockContent);
+			rightSizeDistanceToWall = LevelManager::getDistanceFromUpperBlock(_positionRectangle.x + _positionRectangle.w - 1, _positionRectangle.y, _collisionBlockContent);
 			
 			// Keep the smaller distance
 			if (leftSideDistanceToWall < rightSizeDistanceToWall) distanceToWall = leftSideDistanceToWall;
@@ -84,8 +90,8 @@ class MovableEntity: public Entity
 			int leftSideDistanceToWall, rightSizeDistanceToWall, distanceToWall, movingPixelsAmount;
 			
 			// Check downer border distance against level walls
-			leftSideDistanceToWall = LevelManager::getDistanceFromDownerWall(_positionRectangle.x, _positionRectangle.y + _positionRectangle.h);
-			rightSizeDistanceToWall = LevelManager::getDistanceFromDownerWall(_positionRectangle.x + _positionRectangle.w - 1, _positionRectangle.y + _positionRectangle.h);
+			leftSideDistanceToWall = LevelManager::getDistanceFromDownerBlock(_positionRectangle.x, _positionRectangle.y + _positionRectangle.h, _collisionBlockContent);
+			rightSizeDistanceToWall = LevelManager::getDistanceFromDownerBlock(_positionRectangle.x + _positionRectangle.w - 1, _positionRectangle.y + _positionRectangle.h, _collisionBlockContent);
 			
 			// Keep the smaller distance
 			if (leftSideDistanceToWall < rightSizeDistanceToWall) distanceToWall = leftSideDistanceToWall;
@@ -111,8 +117,8 @@ class MovableEntity: public Entity
 			int upperSideDistanceToWall, downerSideDistanceToWall, distanceToWall, movingPixelsAmount;
 			
 			// Check leftmost border distance against level walls
-			upperSideDistanceToWall = LevelManager::getDistanceFromLeftmostWall(_positionRectangle.x, _positionRectangle.y);
-			downerSideDistanceToWall = LevelManager::getDistanceFromLeftmostWall(_positionRectangle.x, _positionRectangle.y + _positionRectangle.h - 1);
+			upperSideDistanceToWall = LevelManager::getDistanceFromLeftmostBlock(_positionRectangle.x, _positionRectangle.y, _collisionBlockContent);
+			downerSideDistanceToWall = LevelManager::getDistanceFromLeftmostBlock(_positionRectangle.x, _positionRectangle.y + _positionRectangle.h - 1, _collisionBlockContent);
 			
 			// Keep the smaller distance
 			if (upperSideDistanceToWall < downerSideDistanceToWall) distanceToWall = upperSideDistanceToWall;
@@ -138,8 +144,8 @@ class MovableEntity: public Entity
 			int upperSideDistanceToWall, downerSideDistanceToWall, distanceToWall, movingPixelsAmount;
 			
 			// Check rightmost border distance against level walls
-			upperSideDistanceToWall = LevelManager::getDistanceFromRightmostWall(_positionRectangle.x + _positionRectangle.w, _positionRectangle.y);
-			downerSideDistanceToWall = LevelManager::getDistanceFromRightmostWall(_positionRectangle.x + _positionRectangle.w, _positionRectangle.y + _positionRectangle.h - 1);
+			upperSideDistanceToWall = LevelManager::getDistanceFromRightmostBlock(_positionRectangle.x + _positionRectangle.w, _positionRectangle.y, _collisionBlockContent);
+			downerSideDistanceToWall = LevelManager::getDistanceFromRightmostBlock(_positionRectangle.x + _positionRectangle.w, _positionRectangle.y + _positionRectangle.h - 1, _collisionBlockContent);
 			
 			// Keep the smaller distance
 			if (upperSideDistanceToWall < downerSideDistanceToWall) distanceToWall = upperSideDistanceToWall;

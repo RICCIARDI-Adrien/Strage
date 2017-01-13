@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset name="Objects" tilewidth="64" tileheight="64" tilecount="3">
+<tileset name="Objects" tilewidth="64" tileheight="64" tilecount="4">
  <tile id="0">
   <image width="64" height="64" source="Player.png"/>
  </tile>
@@ -8,5 +8,8 @@
  </tile>
  <tile id="2">
   <image width="64" height="64" source="Ammunition.png"/>
+ </tile>
+ <tile id="3">
+  <image width="64" height="64" source="Enemy_Spawner.png"/>
  </tile>
 </tileset>

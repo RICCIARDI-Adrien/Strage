@@ -20,9 +20,10 @@ typedef enum
 	TEXTURE_ID_DIRT_1,
 	TEXTURE_ID_DIRT_2,
 	
-	// Pickable objects
+	// Static objects
 	TEXTURE_ID_MEDIPACK,
 	TEXTURE_ID_AMMUNITION,
+	TEXTURE_ID_ENEMY_SPAWNER,
 	
 	// Moving objects
 	TEXTURE_ID_PLAYER,

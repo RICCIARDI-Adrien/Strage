@@ -4,6 +4,7 @@
  */
 #include <cstdlib>
 #include <ctime>
+#include <EnemySpawnerEntity.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <FightingEntityPlayer.hpp>
 #include <list>
@@ -31,12 +32,12 @@ typedef enum
 // Private variables
 //-------------------------------------------------------------------------------------------------
 /** All bullets shot by the player. */
-static std::list<MovableEntityBullet *> playerBulletsList;
+static std::list<MovableEntityBullet *> _playerBulletsList;
 /** All bullets shot by the enemies. */
-static std::list<MovableEntityBullet *> enemiesBulletsList;
+static std::list<MovableEntityBullet *> _enemiesBulletsList;
 
 /** All enemies. */
-static std::list<FightingEntityEnemy *> enemiesList;
+static std::list<FightingEntityEnemy *> _enemiesList;
 
 //-------------------------------------------------------------------------------------------------
 // Public variables
@@ -103,21 +104,23 @@ static void updateGameLogic()
 	// Check if player bullets have hit a wall or an enemy
 	std::list<MovableEntityBullet *>::iterator bulletsListIterator;
 	std::list<FightingEntityEnemy *>::iterator enemiesListIterator;
+	std::list<EnemySpawnerEntity *>::iterator enemySpawnersListIterator;
 	MovableEntityBullet *pointerPlayerBullet;
 	FightingEntityEnemy *pointerEnemy;
-	for (bulletsListIterator = playerBulletsList.begin(); bulletsListIterator != playerBulletsList.end(); ++bulletsListIterator)
+	EnemySpawnerEntity *pointerEnemySpawner;
+	for (bulletsListIterator = _playerBulletsList.begin(); bulletsListIterator != _playerBulletsList.end(); ++bulletsListIterator)
 	{
 		pointerPlayerBullet = *bulletsListIterator;
 		
 		// Remove the bullet if it hit a wall
 		if (pointerPlayerBullet->update() != 0)
 		{
-			bulletsListIterator = playerBulletsList.erase(bulletsListIterator);
+			bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
 			continue;
 		}
 		
 		// Check with all enemies for a collision
-		for (enemiesListIterator = enemiesList.begin(); enemiesListIterator != enemiesList.end(); ++enemiesListIterator)
+		for (enemiesListIterator = _enemiesList.begin(); enemiesListIterator != _enemiesList.end(); ++enemiesListIterator)
 		{
 			pointerEnemy = *enemiesListIterator;
 			
@@ -125,12 +128,33 @@ static void updateGameLogic()
 			if (SDL_HasIntersection(pointerPlayerBullet->getPositionRectangle(), pointerEnemy->getPositionRectangle()))
 			{
 				// Remove the bullet
-				bulletsListIterator = playerBulletsList.erase(bulletsListIterator);
+				bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
 				
 				// Wound the enemy
 				pointerEnemy->modifyLife(-5); // TODO put bullet damage in bullet if more bullet types are to be created
-				LOG_DEBUG("Enemy hit.\n");
 				
+				LOG_DEBUG("Enemy hit.\n");
+				break;
+			}
+		}
+		
+		// The bullet collided an enemy and was destroyed, check next bullet
+		if (enemiesListIterator != _enemiesList.end()) continue;
+		
+		// Check with all spawners for a collision
+		for (enemySpawnersListIterator = LevelManager::enemySpawnersList.begin(); enemySpawnersListIterator != LevelManager::enemySpawnersList.end(); ++enemySpawnersListIterator)
+		{
+			pointerEnemySpawner = *enemySpawnersListIterator;
+			
+			if (SDL_HasIntersection(pointerPlayerBullet->getPositionRectangle(), pointerEnemySpawner->getPositionRectangle()))
+			{
+				// Remove the bullet
+				bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
+				
+				// Damage the enemy spawner
+				pointerEnemySpawner->modifyLife(-10); // TODO put bullet damage in bullet if more bullet types are to be created
+				
+				LOG_DEBUG("Enemy spawner hit.\n");
 				break;
 			}
 		}
@@ -138,21 +162,21 @@ static void updateGameLogic()
 	
 	// Check if enemies bullets have hit the player
 	MovableEntityBullet *pointerEnemyBullet;
-	for (bulletsListIterator = enemiesBulletsList.begin(); bulletsListIterator != enemiesBulletsList.end(); ++bulletsListIterator)
+	for (bulletsListIterator = _enemiesBulletsList.begin(); bulletsListIterator != _enemiesBulletsList.end(); ++bulletsListIterator)
 	{
 		pointerEnemyBullet = *bulletsListIterator;
 		
 		// Remove the bullet if it hit a wall
 		if (pointerEnemyBullet->update() != 0)
 		{
-			bulletsListIterator = playerBulletsList.erase(bulletsListIterator);
+			bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
 			continue;
 		}
 		
 		if (SDL_HasIntersection(pointerPlayer->getPositionRectangle(), pointerEnemyBullet->getPositionRectangle()))
 		{
 			// Remove the bullet
-			bulletsListIterator = enemiesBulletsList.erase(bulletsListIterator);
+			bulletsListIterator = _enemiesBulletsList.erase(bulletsListIterator);
 			
 			// Wound the player
 			pointerPlayer->modifyLife(-1);
@@ -165,8 +189,8 @@ static void updateGameLogic()
 	// Update enemies artificial intelligence
 	MovableEntityBullet *pointerBullet;
 	int result;
-	SDL_Rect *pointerEnemyPositionRectangle;
-	for (enemiesListIterator = enemiesList.begin(); enemiesListIterator != enemiesList.end(); ++enemiesListIterator)
+	SDL_Rect *pointerPositionRectangle;
+	for (enemiesListIterator = _enemiesList.begin(); enemiesListIterator != _enemiesList.end(); ++enemiesListIterator)
 	{
 		pointerEnemy = *enemiesListIterator;
 		
@@ -174,13 +198,13 @@ static void updateGameLogic()
 		// Remove the enemy if it is dead
 		if (result == 1)
 		{
-			enemiesListIterator = enemiesList.erase(enemiesListIterator);
+			enemiesListIterator = _enemiesList.erase(enemiesListIterator);
 			
 			// TODO spawn explosion effect
 			
 			// Spawn an item on the current block if player is lucky
-			pointerEnemyPositionRectangle = pointerEnemy->getPositionRectangle();
-			spawnItem(pointerEnemyPositionRectangle->x + (pointerEnemyPositionRectangle->w / 2), pointerEnemyPositionRectangle->y + (pointerEnemyPositionRectangle->h / 2)); // Use enemy center coordinates to avoid favoring one block among others
+			pointerPositionRectangle = pointerEnemy->getPositionRectangle();
+			spawnItem(pointerPositionRectangle->x + (pointerPositionRectangle->w / 2), pointerPositionRectangle->y + (pointerPositionRectangle->h / 2)); // Use enemy center coordinates to avoid favoring one block among others
 			
 			continue;
 		}
@@ -190,7 +214,26 @@ static void updateGameLogic()
 			pointerBullet = pointerEnemy->shoot();
 			
 			// Was the enemy allowed to fire ?
-			if (pointerBullet != NULL) enemiesBulletsList.push_front(pointerBullet);
+			if (pointerBullet != NULL) _enemiesBulletsList.push_front(pointerBullet);
+		}
+	}
+	
+	// Update enemy spawners at the end, to avoid new enemies being spawned in the middle of the update function
+	int blockContent;
+	for (enemySpawnersListIterator = LevelManager::enemySpawnersList.begin(); enemySpawnersListIterator != LevelManager::enemySpawnersList.end(); ++enemySpawnersListIterator)
+	{
+		pointerEnemySpawner = *enemySpawnersListIterator;
+		
+		if (pointerEnemySpawner->update() != 0)
+		{
+			// Remove the spawner
+			enemySpawnersListIterator = LevelManager::enemySpawnersList.erase(enemySpawnersListIterator);
+			
+			// Remove the spawner indicator from the block
+			pointerPositionRectangle = pointerEnemySpawner->getPositionRectangle();
+			blockContent = LevelManager::getBlockContent(pointerPositionRectangle->x, pointerPositionRectangle->y);
+			blockContent &= ~LevelManager::BLOCK_CONTENT_ENEMY_SPAWNER;
+			LevelManager::setBlockContent(pointerPositionRectangle->x, pointerPositionRectangle->y, blockContent);
 		}
 	}
 }
@@ -209,12 +252,16 @@ static void renderGame(int sceneX, int sceneY)
 	
 	// Display enemies
 	std::list<FightingEntityEnemy *>::iterator enemiesListIterator;
-	for (enemiesListIterator = enemiesList.begin(); enemiesListIterator != enemiesList.end(); ++enemiesListIterator) (*enemiesListIterator)->render();
+	for (enemiesListIterator = _enemiesList.begin(); enemiesListIterator != _enemiesList.end(); ++enemiesListIterator) (*enemiesListIterator)->render();
+	
+	// Display enemy spawners
+	std::list<EnemySpawnerEntity *>::iterator enemySpawnersListIterator;
+	for (enemySpawnersListIterator = LevelManager::enemySpawnersList.begin(); enemySpawnersListIterator != LevelManager::enemySpawnersList.end(); ++enemySpawnersListIterator) (*enemySpawnersListIterator)->render();
 	
 	// Display bullets after enemies, so when multiple enemies fire on themselves bullets are visible on top of enemies
 	std::list<MovableEntityBullet *>::iterator bulletsListIterator;
-	for (bulletsListIterator = playerBulletsList.begin(); bulletsListIterator != playerBulletsList.end(); ++bulletsListIterator) (*bulletsListIterator)->render();
-	for (bulletsListIterator = enemiesBulletsList.begin(); bulletsListIterator != enemiesBulletsList.end(); ++bulletsListIterator) (*bulletsListIterator)->render();
+	for (bulletsListIterator = _playerBulletsList.begin(); bulletsListIterator != _playerBulletsList.end(); ++bulletsListIterator) (*bulletsListIterator)->render();
+	for (bulletsListIterator = _enemiesBulletsList.begin(); bulletsListIterator != _enemiesBulletsList.end(); ++bulletsListIterator) (*bulletsListIterator)->render();
 	
 	// Display the player at the end, so it is always rendered on top on everything else and can always be visible
 	pointerPlayer->render();
@@ -262,12 +309,12 @@ int main(void)
 	FightingEntityEnemy e4(64*13 + 13, 64 * 5 + 22);
 	FightingEntityEnemy e5(64*12 + 13, 64 * 5 + 22);
 	FightingEntityEnemy e6(64*12 + 13, 64 * 4 + 22);
-	enemiesList.push_front(&e1);
-	enemiesList.push_front(&e2);
-	enemiesList.push_front(&e3);
-	enemiesList.push_front(&e4);
-	enemiesList.push_front(&e5);
-	enemiesList.push_front(&e6);
+	_enemiesList.push_front(&e1);
+	_enemiesList.push_front(&e2);
+	_enemiesList.push_front(&e3);
+	_enemiesList.push_front(&e4);
+	_enemiesList.push_front(&e5);
+	_enemiesList.push_front(&e6);
 	
 	while (1)
 	{
@@ -389,7 +436,7 @@ int main(void)
 			MovableEntityBullet *pointerBullet = pointerPlayer->shoot();
 			
 			// Is the player allowed to shoot ?
-			if (pointerBullet != NULL) playerBulletsList.push_front(pointerBullet);
+			if (pointerBullet != NULL) _playerBulletsList.push_front(pointerBullet);
 		}
 		
 		// TEST

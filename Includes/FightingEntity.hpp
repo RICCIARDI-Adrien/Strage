@@ -40,6 +40,9 @@ class FightingEntity: public MovableEntity
 			_lifePointsAmount = maximumLifePointsAmount;
 			_maximumLifePointsAmount = maximumLifePointsAmount;
 			
+			// Player and enemies collide with walls and enemy spawners
+			_collisionBlockContent = (LevelManager::BLOCK_CONTENT_WALL) - (LevelManager::BLOCK_CONTENT_ENEMY_SPAWNER);
+			
 			// Cache the offset to add to entity coordinates to make fired bullets start from entity center
 			Texture *pointerBulletTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_BULLET); // Use textures to avoid instantiate a bullet to get its dimensions
 			_bulletStartingPositionOffset = (_pointerTexture->getWidth() - pointerBulletTexture->getWidth()) / 2; // This works in all fighting entity facing directions because fighting entity textures are appositely circular

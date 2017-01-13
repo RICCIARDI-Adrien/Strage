@@ -5,8 +5,10 @@
 #include <cerrno>
 #include <cstdio>
 #include <cstring>
+#include <EnemySpawnerEntity.hpp>
 #include <FightingEntityPlayer.hpp>
 #include <LevelManager.hpp>
+#include <list>
 #include <Log.hpp>
 #include <Texture.hpp>
 #include <TextureManager.hpp>
@@ -51,7 +53,7 @@ typedef enum
 	OBJECT_ID_PLAYER,
 	OBJECT_ID_MEDIPACK,
 	OBJECT_ID_AMMUNITION,
-	OBJECT_ID_ENEMIES_SPAWNER,
+	OBJECT_ID_ENEMY_SPAWNER,
 	OBJECT_IDS_COUNT
 } ObjectId;
 
@@ -70,6 +72,11 @@ static int _displayHeightBlocks;
 
 /** Contain all level blocks. */
 static Block _levelBlocks[CONFIGURATION_LEVEL_MAXIMUM_WIDTH * CONFIGURATION_LEVEL_MAXIMUM_HEIGHT];
+
+//-------------------------------------------------------------------------------------------------
+// Public variables
+//-------------------------------------------------------------------------------------------------
+std::list<EnemySpawnerEntity *> enemySpawnersList;
 
 //-------------------------------------------------------------------------------------------------
 // Private functions
@@ -249,6 +256,12 @@ Scene_Loading_End:
 					LOG_DEBUG("Spawned ammunition on block (%d, %d).\n", x, y);
 					break;
 					
+				case OBJECT_ID_ENEMY_SPAWNER:
+					enemySpawnersList.push_front(new EnemySpawnerEntity(x * CONFIGURATION_LEVEL_BLOCK_SIZE, y * CONFIGURATION_LEVEL_BLOCK_SIZE));
+					_levelBlocks[COMPUTE_BLOCK_INDEX(x, y)].content |= BLOCK_CONTENT_ENEMY_SPAWNER;
+					LOG_DEBUG("Spawned enemy spawner on block (%d, %d).\n", x, y);
+					break;
+					
 				default:
 					LOG_INFORMATION("Unhandled object (object ID : %d) at block (%d, %d).\n", objectId, x, y);
 					break;
@@ -267,6 +280,8 @@ Scene_Loading_End:
 	}
 	
 	fclose(pointerFile);
+	
+	LOG_INFORMATION("Level '%s' successfully loaded.\n", sceneFileName);
 	return 0;
 	
 Objects_Loading_Error:
@@ -329,7 +344,7 @@ void renderScene(int topLeftX, int topLeftY)
 	}
 }
 
-int getDistanceFromUpperWall(int x, int y)
+int getDistanceFromUpperBlock(int x, int y, int blockContent)
 {
 	int xBlock, yBlock;
 	
@@ -341,16 +356,16 @@ int getDistanceFromUpperWall(int x, int y)
 	if ((xBlock <= 0) || (xBlock >= _levelWidthBlocks - 1) || (yBlock <= 0) || (yBlock >= _levelWidthBlocks - 1)) return 0;
 	
 	// Is this block a wall ?
-	if (_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)].content & BLOCK_CONTENT_WALL) return 0;
+	if (_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)].content & blockContent) return 0;
 	
 	// Is upper block part of the floor ?
-	if (!(_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock - 1)].content & BLOCK_CONTENT_WALL)) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
+	if (!(_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock - 1)].content & blockContent)) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
 	
 	// The upper block is a wall, compute the amount of pixels separating the provided coordinates from the wall
 	return y % CONFIGURATION_LEVEL_BLOCK_SIZE;
 }
 
-int getDistanceFromDownerWall(int x, int y)
+int getDistanceFromDownerBlock(int x, int y, int blockContent)
 {
 	int xBlock, yBlock;
 	
@@ -362,16 +377,16 @@ int getDistanceFromDownerWall(int x, int y)
 	if ((xBlock <= 0) || (xBlock >= _levelWidthBlocks - 1) || (yBlock <= 0) || (yBlock >= _levelWidthBlocks - 1)) return 0;
 	
 	// Is this block a wall ?
-	if (_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)].content & BLOCK_CONTENT_WALL) return 0;
+	if (_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)].content & blockContent) return 0;
 	
 	// Is upper block part of the floor ?
-	if (!(_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock + 1)].content & BLOCK_CONTENT_WALL)) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
+	if (!(_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock + 1)].content & blockContent)) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
 	
 	// The upper block is a wall, compute the amount of pixels separating the provided coordinates from the wall
 	return CONFIGURATION_LEVEL_BLOCK_SIZE - (y % CONFIGURATION_LEVEL_BLOCK_SIZE);
 }
 
-int getDistanceFromLeftmostWall(int x, int y)
+int getDistanceFromLeftmostBlock(int x, int y, int blockContent)
 {
 	int xBlock, yBlock;
 	
@@ -383,16 +398,16 @@ int getDistanceFromLeftmostWall(int x, int y)
 	if ((xBlock <= 0) || (xBlock >= _levelWidthBlocks - 1) || (yBlock <= 0) || (yBlock >= _levelWidthBlocks - 1)) return 0;
 	
 	// Is this block a wall ?
-	if (_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)].content & BLOCK_CONTENT_WALL) return 0;
+	if (_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)].content & blockContent) return 0;
 	
 	// Is upper block part of the floor ?
-	if (!(_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock - 1, yBlock)].content & BLOCK_CONTENT_WALL)) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
+	if (!(_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock - 1, yBlock)].content & blockContent)) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
 	
 	// The upper block is a wall, compute the amount of pixels separating the provided coordinates from the wall
 	return x % CONFIGURATION_LEVEL_BLOCK_SIZE;
 }
 
-int getDistanceFromRightmostWall(int x, int y)
+int getDistanceFromRightmostBlock(int x, int y, int blockContent)
 {
 	int xBlock, yBlock;
 	
@@ -404,10 +419,10 @@ int getDistanceFromRightmostWall(int x, int y)
 	if ((xBlock <= 0) || (xBlock >= _levelWidthBlocks - 1) || (yBlock <= 0) || (yBlock >= _levelWidthBlocks - 1)) return 0;
 	
 	// Is this block a wall ?
-	if (_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)].content & BLOCK_CONTENT_WALL) return 0;
+	if (_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)].content & blockContent) return 0;
 	
 	// Is upper block part of the floor ?
-	if (!(_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock + 1, yBlock)].content & BLOCK_CONTENT_WALL)) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
+	if (!(_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock + 1, yBlock)].content & blockContent)) return CONFIGURATION_LEVEL_BLOCK_SIZE; // Do not check further to optimize function speed
 	
 	// The upper block is a wall, compute the amount of pixels separating the provided coordinates from the wall
 	return CONFIGURATION_LEVEL_BLOCK_SIZE - (x % CONFIGURATION_LEVEL_BLOCK_SIZE);

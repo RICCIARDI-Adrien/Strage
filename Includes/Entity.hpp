@@ -46,7 +46,11 @@ class Entity
 		}
 		
 		/** Display the entity at its current location on the map. */
-		virtual void render() = 0;
+		virtual void render()
+		{
+			// Display the texture only if the entity is visible on screen
+			if (Renderer::isDisplayable(&_positionRectangle)) _pointerTexture->render(_positionRectangle.x - Renderer::displayX, _positionRectangle.y - Renderer::displayY);
+		}
 		
 		/** Update the internal entity logic.
 		 * @return 0 if the entity must be kept alive,

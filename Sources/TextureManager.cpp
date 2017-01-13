@@ -28,9 +28,10 @@ int initialize()
 	_pointerTextureManagerTextures[TEXTURE_ID_DIRT_1] = new Texture(CONFIGURATION_PATH_TEXTURES "/Dirt_1.bmp", 0);
 	_pointerTextureManagerTextures[TEXTURE_ID_DIRT_2] = new Texture(CONFIGURATION_PATH_TEXTURES "/Dirt_2.bmp", 0);
 	
-	// Pickable objects
+	// Static objects
 	_pointerTextureManagerTextures[TEXTURE_ID_MEDIPACK] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medipack.bmp", 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_AMMUNITION] = new Texture(CONFIGURATION_PATH_TEXTURES "/Ammunition.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_ENEMY_SPAWNER] = new Texture(CONFIGURATION_PATH_TEXTURES "/Enemy_Spawner.bmp", 0);
 	
 	// Movable objects
 	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER] = new Texture(CONFIGURATION_PATH_TEXTURES "/Player.bmp", 0);
