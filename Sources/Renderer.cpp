@@ -38,6 +38,8 @@ int displayY;
 //-------------------------------------------------------------------------------------------------
 int initialize()
 {
+	unsigned int flags;
+	
 	// Initialize the needed subsystems
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0)
 	{
@@ -46,7 +48,12 @@ int initialize()
 	}
 	
 	// Create the game window (fullscreen mode)
-	_pointerMainWindow = SDL_CreateWindow("Strage", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, CONFIGURATION_DISPLAY_WIDTH, CONFIGURATION_DISPLAY_HEIGHT, /*SDL_WINDOW_FULLSCREEN*/ 0); // TODO enable fullscreen, TODO runtime configurable resolution
+	#if CONFIGURATION_DISPLAY_IS_FULLSCREEN_ENABLED == 1
+		flags = SDL_WINDOW_FULLSCREEN;
+	#else
+		flags = 0;
+	#endif
+	_pointerMainWindow = SDL_CreateWindow("Strage", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, CONFIGURATION_DISPLAY_WIDTH, CONFIGURATION_DISPLAY_HEIGHT, flags); // TODO runtime configurable resolution
 	if (_pointerMainWindow == NULL)
 	{
 		LOG_ERROR("Failed to create the main window (%s).\n", SDL_GetError());
