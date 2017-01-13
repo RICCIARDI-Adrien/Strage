@@ -19,7 +19,9 @@ class EnemySpawnerEntity: public Entity
 		
 		/** Hold the time when the last enemy was spawned. */
 		unsigned int _lastEnemySpawnTime;
-	
+		/** How many time to wait between two spawns. */
+		const unsigned int _timeBetweenSpawns = 3000;
+		
 	public:
 		/** Spawn an enemy spawner at the specified coordinates.
 		 * @param x X coordinate in pixels.
@@ -29,6 +31,9 @@ class EnemySpawnerEntity: public Entity
 		{
 			_lifePointsAmount = 100;
 			_maximumLifePointsAmount = 100;
+			
+			// Allow to spawn immediately an enemy
+			_lastEnemySpawnTime = -_timeBetweenSpawns;
 		}
 		
 		/** Change entity life value by adding or removing some life points.
@@ -44,14 +49,21 @@ class EnemySpawnerEntity: public Entity
 		}
 		
 		/** Spawn an enemy if enough time elapsed and if there is a free block around the spawner.
+		 * @return 0 if the spawner must be kept,
 		 * @return 1 if the spawner is destroyed and must be removed,
-		 * @return 0 if the spawner must be kept.
+		 * @return 2 if the spawner wants to spawn an enemy.
 		 */
 		virtual int update()
 		{
 			// Remove the spawner if it is destroyed
 			if (_lifePointsAmount == 0) return 1;
-
+			
+			// Is it time to spawn an enemy ?
+			if (SDL_GetTicks() - _lastEnemySpawnTime >= _timeBetweenSpawns)
+			{
+				_lastEnemySpawnTime = SDL_GetTicks();
+				return 2;
+			}
 			return 0;
 		}
 };

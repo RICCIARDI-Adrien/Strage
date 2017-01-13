@@ -39,6 +39,11 @@ static std::list<MovableEntityBullet *> _enemiesBulletsList;
 /** All enemies. */
 static std::list<FightingEntityEnemy *> _enemiesList;
 
+/** How many pixels to add to spawn X coordinate to make the enemy spawn on block center. */
+static int _enemySpawnOffsetX;
+/** How many pixels to add to spawn Y coordinate to make the enemy spawn on block center. */
+static int _enemySpawnOffsetY;
+
 //-------------------------------------------------------------------------------------------------
 // Public variables
 //-------------------------------------------------------------------------------------------------
@@ -93,6 +98,76 @@ static void spawnItem(int x, int y)
 			LOG_DEBUG("Enemy dropped ammunition.\n");
 		}
 	}
+}
+
+/** Tell whether an enemy can be spawned on the block located at the provided map coordinates.
+ * @param x X map coordinate in the block.
+ * @param y Y map coordinate in the block.
+ * @return 0 if an enemy can't be spawned on this block,
+ * @return 1 if the block is available.
+ */
+int _isBlockAvailableForSpawn(int x, int y)
+{
+	int blockContent;
+	
+	// Get the block content
+	blockContent = LevelManager::getBlockContent(x, y);
+	
+	// No room to spawn an enemy
+	if (blockContent & (LevelManager::BLOCK_CONTENT_WALL | LevelManager::BLOCK_CONTENT_ENEMY_SPAWNER)) return 0;
+	return 1;
+}
+
+/** Try to spawn an enemy around a spawner.
+ * @param enemySpawnerX Spawner X map coordinate.
+ * @param enemySpawnerY Spawner Y map coordinate.
+ * @return NULL if no enemy could be spawned,
+ * @return a valid pointer if an enemy was spawned.
+ */
+static FightingEntityEnemy *spawnEnemy(int enemySpawnerX, int enemySpawnerY) // This code should be in EnemySpawnerEntity, but due to circular inclusions it can't
+{
+	int x, y;
+	
+	// Find a free block to spawn the enemy onto
+	// North-west block
+	x = enemySpawnerX - CONFIGURATION_LEVEL_BLOCK_SIZE;
+	y = enemySpawnerY - CONFIGURATION_LEVEL_BLOCK_SIZE;
+	if (_isBlockAvailableForSpawn(x, y)) goto Spawn_Enemy;
+	// North block
+	x = enemySpawnerX;
+	if (_isBlockAvailableForSpawn(x, y)) goto Spawn_Enemy;
+	// North-east block
+	x = enemySpawnerX + CONFIGURATION_LEVEL_BLOCK_SIZE;
+	if (_isBlockAvailableForSpawn(x, y)) goto Spawn_Enemy;
+	// West block
+	x = enemySpawnerX - CONFIGURATION_LEVEL_BLOCK_SIZE;
+	y = enemySpawnerY;
+	if (_isBlockAvailableForSpawn(x, y)) goto Spawn_Enemy;
+	// East block
+	x = enemySpawnerX + CONFIGURATION_LEVEL_BLOCK_SIZE;
+	if (_isBlockAvailableForSpawn(x, y)) goto Spawn_Enemy;
+	// South-west block
+	x = enemySpawnerX - CONFIGURATION_LEVEL_BLOCK_SIZE;
+	y = enemySpawnerY + CONFIGURATION_LEVEL_BLOCK_SIZE;
+	if (_isBlockAvailableForSpawn(x, y)) goto Spawn_Enemy;
+	// South block
+	x = enemySpawnerX;
+	if (_isBlockAvailableForSpawn(x, y)) goto Spawn_Enemy;
+	// South-east block
+	x = enemySpawnerX + CONFIGURATION_LEVEL_BLOCK_SIZE;
+	if (_isBlockAvailableForSpawn(x, y)) goto Spawn_Enemy;
+	
+	// No room to spawn an enemy
+	return NULL;
+	
+Spawn_Enemy:
+	// Adjust coordinates to spawn the enemy at the block center
+	x += _enemySpawnOffsetX;
+	y += _enemySpawnOffsetY;
+	
+	LOG_DEBUG("Spawned an enemy on map coordinates (%d, %d).\n", x, y);
+	
+	return new FightingEntityEnemy(x, y);
 }
 
 /** Update all game actors. */
@@ -224,7 +299,9 @@ static void updateGameLogic()
 	{
 		pointerEnemySpawner = *enemySpawnersListIterator;
 		
-		if (pointerEnemySpawner->update() != 0)
+		result = pointerEnemySpawner->update();
+		// Remove the spawner if it is destroyed
+		if (result == 1)
 		{
 			// Remove the spawner
 			enemySpawnersListIterator = LevelManager::enemySpawnersList.erase(enemySpawnersListIterator);
@@ -234,6 +311,13 @@ static void updateGameLogic()
 			blockContent = LevelManager::getBlockContent(pointerPositionRectangle->x, pointerPositionRectangle->y);
 			blockContent &= ~LevelManager::BLOCK_CONTENT_ENEMY_SPAWNER;
 			LevelManager::setBlockContent(pointerPositionRectangle->x, pointerPositionRectangle->y, blockContent);
+		}
+		// Try to spawn an enemy if the spawner requested to
+		else if (result == 2)
+		{
+			pointerPositionRectangle = pointerEnemySpawner->getPositionRectangle();
+			pointerEnemy = spawnEnemy(pointerPositionRectangle->x, pointerPositionRectangle->y);
+			if (pointerEnemy != NULL) _enemiesList.push_front(pointerEnemy);
 		}
 	}
 }
@@ -295,26 +379,19 @@ int main(void)
 	
 	// Automatically dispose of allocated resources on program exit (allowing to use exit() elsewhere in the program)
 	atexit(exitFreeResources);
-	LOG_INFORMATION("Game engine successfully initialized.\n");
+	
+	// Cache some values
+	_enemySpawnOffsetX = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY)->getWidth() / 2;
+	_enemySpawnOffsetY = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY)->getHeight() / 2;
 	
 	// Initialize pseudo-random numbers generator
 	srand(time(NULL));
 	
+	LOG_INFORMATION("Game engine successfully initialized.\n");
+	
 	// TEST
 	int camX = 0, camY = 0;
 	LevelManager::loadLevel("Levels/Test_Scene.csv", "Levels/Test_Objects.csv");
-	FightingEntityEnemy e1(64*8 + 13, 64 * 3 + 35);
-	FightingEntityEnemy e2(64*13 + 13, 64 * 3 + 22);
-	FightingEntityEnemy e3(64*13 + 13, 64 * 4 + 22);
-	FightingEntityEnemy e4(64*13 + 13, 64 * 5 + 22);
-	FightingEntityEnemy e5(64*12 + 13, 64 * 5 + 22);
-	FightingEntityEnemy e6(64*12 + 13, 64 * 4 + 22);
-	_enemiesList.push_front(&e1);
-	_enemiesList.push_front(&e2);
-	_enemiesList.push_front(&e3);
-	_enemiesList.push_front(&e4);
-	_enemiesList.push_front(&e5);
-	_enemiesList.push_front(&e6);
 	
 	while (1)
 	{
