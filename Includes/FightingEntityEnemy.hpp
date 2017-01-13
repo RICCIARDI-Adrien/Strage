@@ -71,7 +71,7 @@ class FightingEntityEnemy: public FightingEntity
 			if (verticalDistance < 0) verticalDistance = -verticalDistance;
 			
 			// Try to come the most closer to the player by moving on the farther direction
-			if (horizontalDistance >= verticalDistance)
+			if (horizontalDistance + 50 >= verticalDistance) // Add some distance to the player to avoid enemies collide with player
 			{
 				// The enemy is too much on the player left to shoot
 				if (enemyCenterX < pointerPlayerPositionRectangle->x)
