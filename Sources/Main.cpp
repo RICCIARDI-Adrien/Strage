@@ -6,6 +6,7 @@
 #include <ctime>
 #include <EntityAnimatedTexture.hpp>
 #include <EntityAnimatedTextureEnemySpawnerExplosion.hpp>
+#include <EntityAnimatedTextureShipExplosion.hpp>
 #include <EntityEnemySpawner.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <FightingEntityPlayer.hpp>
@@ -280,10 +281,11 @@ static inline void _updateGameLogic()
 		{
 			enemiesListIterator = _enemiesList.erase(enemiesListIterator);
 			
-			// TODO spawn explosion effect
+			// Spawn an explosion effect
+			pointerPositionRectangle = pointerEnemy->getPositionRectangle();
+			_animatedTexturesList.push_front(new EntityAnimatedTextureShipExplosion(pointerPositionRectangle->x, pointerPositionRectangle->y));
 			
 			// Spawn an item on the current block if player is lucky
-			pointerPositionRectangle = pointerEnemy->getPositionRectangle();
 			_spawnItem(pointerPositionRectangle->x + (pointerPositionRectangle->w / 2), pointerPositionRectangle->y + (pointerPositionRectangle->h / 2)); // Use enemy center coordinates to avoid favoring one block among others
 			
 			continue;
