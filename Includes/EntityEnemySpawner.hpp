@@ -1,15 +1,15 @@
-#ifndef HPP_ENEMY_SPAWNER_ENTITY_HPP
-#define HPP_ENEMY_SPAWNER_ENTITY_HPP
+#ifndef HPP_ENTITY_ENEMY_SPAWNER_HPP
+#define HPP_ENTITY_ENEMY_SPAWNER_HPP
 
 #include <Entity.hpp>
 #include <SDL2/SDL.h>
 #include <TextureManager.hpp>
 
-/** @class EnemySpawnerEntity
+/** @class EntityEnemySpawner
  * A destructible still entity spawning enemies all around.
  * @author Adrien RICCIARDI
  */
-class EnemySpawnerEntity: public Entity
+class EntityEnemySpawner: public Entity
 {
 	private:
 		/** How many life points the entity owns. */
@@ -27,7 +27,7 @@ class EnemySpawnerEntity: public Entity
 		 * @param x X coordinate in pixels.
 		 * @param y Y coordinate in pixels.
 		 */
-		EnemySpawnerEntity(int x, int y): Entity(TextureManager::TEXTURE_ID_ENEMY_SPAWNER, x, y)
+		EntityEnemySpawner(int x, int y): Entity(TextureManager::TEXTURE_ID_ENEMY_SPAWNER, x, y)
 		{
 			_lifePointsAmount = 100;
 			_maximumLifePointsAmount = 100;

@@ -5,7 +5,7 @@
 #include <cerrno>
 #include <cstdio>
 #include <cstring>
-#include <EnemySpawnerEntity.hpp>
+#include <EntityEnemySpawner.hpp>
 #include <FightingEntityPlayer.hpp>
 #include <LevelManager.hpp>
 #include <list>
@@ -76,7 +76,7 @@ static Block _levelBlocks[CONFIGURATION_LEVEL_MAXIMUM_WIDTH * CONFIGURATION_LEVE
 //-------------------------------------------------------------------------------------------------
 // Public variables
 //-------------------------------------------------------------------------------------------------
-std::list<EnemySpawnerEntity *> enemySpawnersList;
+std::list<EntityEnemySpawner *> enemySpawnersList;
 
 //-------------------------------------------------------------------------------------------------
 // Private functions
@@ -257,7 +257,7 @@ Scene_Loading_End:
 					break;
 					
 				case OBJECT_ID_ENEMY_SPAWNER:
-					enemySpawnersList.push_front(new EnemySpawnerEntity(x * CONFIGURATION_LEVEL_BLOCK_SIZE, y * CONFIGURATION_LEVEL_BLOCK_SIZE));
+					enemySpawnersList.push_front(new EntityEnemySpawner(x * CONFIGURATION_LEVEL_BLOCK_SIZE, y * CONFIGURATION_LEVEL_BLOCK_SIZE));
 					_levelBlocks[COMPUTE_BLOCK_INDEX(x, y)].content |= BLOCK_CONTENT_ENEMY_SPAWNER;
 					LOG_DEBUG("Spawned enemy spawner on block (%d, %d).\n", x, y);
 					break;

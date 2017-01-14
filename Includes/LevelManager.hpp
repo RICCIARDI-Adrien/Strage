@@ -5,7 +5,7 @@
 #ifndef HPP_LEVEL_MANAGER_HPP
 #define HPP_LEVEL_MANAGER_HPP
 
-#include <EnemySpawnerEntity.hpp>
+#include <EntityEnemySpawner.hpp>
 #include <list>
 
 namespace LevelManager
@@ -28,7 +28,7 @@ typedef enum
 // Variables
 //-------------------------------------------------------------------------------------------------
 /** Contain all living enemy spawners. */
-extern std::list<EnemySpawnerEntity *> enemySpawnersList;
+extern std::list<EntityEnemySpawner *> enemySpawnersList;
 
 //-------------------------------------------------------------------------------------------------
 // Functions

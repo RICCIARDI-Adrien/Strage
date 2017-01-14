@@ -4,7 +4,7 @@
  */
 #include <cstdlib>
 #include <ctime>
-#include <EnemySpawnerEntity.hpp>
+#include <EntityEnemySpawner.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <FightingEntityPlayer.hpp>
 #include <list>
@@ -179,10 +179,10 @@ static inline void _updateGameLogic()
 	// Check if player bullets have hit a wall or an enemy
 	std::list<MovableEntityBullet *>::iterator bulletsListIterator;
 	std::list<FightingEntityEnemy *>::iterator enemiesListIterator;
-	std::list<EnemySpawnerEntity *>::iterator enemySpawnersListIterator;
+	std::list<EntityEnemySpawner *>::iterator enemySpawnersListIterator;
 	MovableEntityBullet *pointerPlayerBullet;
 	FightingEntityEnemy *pointerEnemy;
-	EnemySpawnerEntity *pointerEnemySpawner;
+	EntityEnemySpawner *pointerEnemySpawner;
 	for (bulletsListIterator = _playerBulletsList.begin(); bulletsListIterator != _playerBulletsList.end(); ++bulletsListIterator)
 	{
 		pointerPlayerBullet = *bulletsListIterator;
@@ -339,7 +339,7 @@ static inline void _renderGame(int sceneX, int sceneY)
 	for (enemiesListIterator = _enemiesList.begin(); enemiesListIterator != _enemiesList.end(); ++enemiesListIterator) (*enemiesListIterator)->render();
 	
 	// Display enemy spawners
-	std::list<EnemySpawnerEntity *>::iterator enemySpawnersListIterator;
+	std::list<EntityEnemySpawner *>::iterator enemySpawnersListIterator;
 	for (enemySpawnersListIterator = LevelManager::enemySpawnersList.begin(); enemySpawnersListIterator != LevelManager::enemySpawnersList.end(); ++enemySpawnersListIterator) (*enemySpawnersListIterator)->render();
 	
 	// Display bullets after enemies, so when multiple enemies fire on themselves bullets are visible on top of enemies
