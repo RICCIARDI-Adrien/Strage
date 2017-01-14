@@ -32,7 +32,7 @@ class EntityAnimatedTexture: public Entity
 		 * @note Texture ID must follow from initial to ending, because every texture in this interval will be displayed.
 		 * @warning All textures must have the same dimensions, or it will lead to an unpredictable behavior.
 		 */
-		EntityAnimatedTexture(int x, int y, TextureManager::TextureId initialTextureId, TextureManager::TextureId finalTextureId, int framesPerTexture): Entity(initialTextureId, x, y) // Start animation with the first texture
+		EntityAnimatedTexture(int x, int y, TextureManager::TextureId initialTextureId, TextureManager::TextureId finalTextureId, int framesPerTexture): Entity(x, y, initialTextureId) // Start animation with the first texture
 		{
 			_currentTextureId = initialTextureId;
 			_finalTextureId = finalTextureId;

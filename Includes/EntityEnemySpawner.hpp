@@ -27,7 +27,7 @@ class EntityEnemySpawner: public Entity
 		 * @param x X coordinate in pixels.
 		 * @param y Y coordinate in pixels.
 		 */
-		EntityEnemySpawner(int x, int y): Entity(TextureManager::TEXTURE_ID_ENEMY_SPAWNER, x, y)
+		EntityEnemySpawner(int x, int y): Entity(x, y, TextureManager::TEXTURE_ID_ENEMY_SPAWNER)
 		{
 			_lifePointsAmount = 100;
 			_maximumLifePointsAmount = 100;

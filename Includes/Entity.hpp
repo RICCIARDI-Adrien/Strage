@@ -23,11 +23,11 @@ class Entity
 		
 	public:
 		/** Load the entity texture.
-		 * @param textureId The texture ID to use.
 		 * @param x Entity X coordinate.
 		 * @param y Entity Y coordinate.
+		 * @param textureId The texture ID to use.
 		 */
-		Entity(TextureManager::TextureId textureId, int x, int y)
+		Entity(int x, int y, TextureManager::TextureId textureId)
 		{
 			// Try to get the texture
 			_pointerTexture = TextureManager::getTextureFromId(textureId);
