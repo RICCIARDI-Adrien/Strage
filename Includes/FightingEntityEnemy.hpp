@@ -104,6 +104,28 @@ class FightingEntityEnemy: public FightingEntity
 			
 			return 0;
 		}
+		
+		/** Set or reset a block flag telling whether an enemy is present on the block.
+		 * @param isEnemyPresent Set to 1 to set the flag, set to 0 to reset the flag.
+		 */
+		void _setBlockEnemyContent(int isEnemyPresent)
+		{
+			int blockContent, enemyCenterX, enemyCenterY;
+			
+			// Cache enemy center coordinates
+			enemyCenterX = _positionRectangle.x + (_positionRectangle.w / 2);
+			enemyCenterY = _positionRectangle.y + (_positionRectangle.h / 2);
+			
+			// Get current block content
+			blockContent = LevelManager::getBlockContent(enemyCenterX, enemyCenterY);
+			
+			// Set or reset enemy flag
+			if (isEnemyPresent) blockContent |= LevelManager::BLOCK_CONTENT_ENEMY;
+			else blockContent &= ~LevelManager::BLOCK_CONTENT_ENEMY;
+			
+			// Set new block content
+			LevelManager::setBlockContent(enemyCenterX, enemyCenterY, blockContent);
+		}
 	
 	protected:
 		/** The player will be spotted by the enemy if he enters this area. */
@@ -124,6 +146,9 @@ class FightingEntityEnemy: public FightingEntity
 		 */
 		FightingEntityEnemy(int x, int y): FightingEntity(TextureManager::TEXTURE_ID_ENEMY, x, y, 2, 20, 1000)
 		{
+			// Enemies collide between them too
+			_collisionBlockContent |= LevelManager::BLOCK_CONTENT_ENEMY;
+			
 			// Initialize spotting rectangle to around the entity
 			_spottingRectangle.w = CONFIGURATION_DISPLAY_WIDTH * 2; // Thus, the player staying at on side of the display will be spotted by an enemy located at the display other side
 			_spottingRectangle.h = CONFIGURATION_DISPLAY_HEIGHT * 2;
@@ -155,6 +180,9 @@ class FightingEntityEnemy: public FightingEntity
 			_shootingRectangles[DIRECTION_RIGHT].y = _positionRectangle.y + ((_positionRectangle.h - bulletWidth) / 2);
 			_shootingRectangles[DIRECTION_RIGHT].w = CONFIGURATION_DISPLAY_WIDTH / 2;
 			_shootingRectangles[DIRECTION_RIGHT].h = bulletWidth;
+			
+			// Set block under enemy center as containing an enemy
+			_setBlockEnemyContent(1);
 		}
 		
 		/** Free entity allocated resources. */
@@ -164,7 +192,11 @@ class FightingEntityEnemy: public FightingEntity
 		{
 			int movedPixelsAmount, i;
 			
+			// Remove enemy presence from current block
+			_setBlockEnemyContent(0);
 			movedPixelsAmount = MovableEntity::moveToUp();
+			// Set enemy presence in new block
+			_setBlockEnemyContent(1);
 			
 			// Adjust rectangles coordinates to take this move into account
 			_spottingRectangle.y -= movedPixelsAmount;
@@ -177,7 +209,11 @@ class FightingEntityEnemy: public FightingEntity
 		{
 			int movedPixelsAmount, i;
 			
+			// Remove enemy presence from current block
+			_setBlockEnemyContent(0);
 			movedPixelsAmount = MovableEntity::moveToDown();
+			// Set enemy presence in new block
+			_setBlockEnemyContent(1);
 			
 			// Adjust rectangles coordinates to take this move into account
 			_spottingRectangle.y += movedPixelsAmount;
@@ -190,7 +226,11 @@ class FightingEntityEnemy: public FightingEntity
 		{
 			int movedPixelsAmount, i;
 			
+			// Remove enemy presence from current block
+			_setBlockEnemyContent(0);
 			movedPixelsAmount = MovableEntity::moveToLeft();
+			// Set enemy presence in new block
+			_setBlockEnemyContent(1);
 			
 			// Adjust rectangles coordinates to take this move into account
 			_spottingRectangle.x -= movedPixelsAmount;
@@ -203,7 +243,11 @@ class FightingEntityEnemy: public FightingEntity
 		{
 			int movedPixelsAmount, i;
 			
+			// Remove enemy presence from current block
+			_setBlockEnemyContent(0);
 			movedPixelsAmount = MovableEntity::moveToRight();
+			// Set enemy presence in new block
+			_setBlockEnemyContent(1);
 			
 			// Adjust rectangles coordinates to take this move into account
 			_spottingRectangle.x += movedPixelsAmount;
@@ -223,7 +267,12 @@ class FightingEntityEnemy: public FightingEntity
 			int movedPixelsAmount;
 			
 			// The entity is dead, remove it
-			if (_lifePointsAmount == 0) return 1;
+			if (_lifePointsAmount == 0)
+			{
+				// Remove enemy presence from the block
+				_setBlockEnemyContent(0);
+				return 1;
+			}
 			
 			// Nothing to do if the player is not spotted
 			if (!SDL_HasIntersection(pointerPlayer->getPositionRectangle(), &_spottingRectangle)) return 0;

@@ -120,7 +120,7 @@ int _isBlockAvailableForSpawn(int x, int y)
 	blockContent = LevelManager::getBlockContent(x, y);
 	
 	// No room to spawn an enemy
-	if (blockContent & (LevelManager::BLOCK_CONTENT_WALL | LevelManager::BLOCK_CONTENT_ENEMY_SPAWNER)) return 0;
+	if (blockContent & (LevelManager::BLOCK_CONTENT_WALL | LevelManager::BLOCK_CONTENT_ENEMY_SPAWNER | LevelManager::BLOCK_CONTENT_ENEMY)) return 0;
 	return 1;
 }
 
