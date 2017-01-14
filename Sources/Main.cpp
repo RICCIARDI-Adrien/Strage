@@ -4,6 +4,8 @@
  */
 #include <cstdlib>
 #include <ctime>
+#include <EntityAnimatedTexture.hpp>
+#include <EntityAnimatedTextureEnemySpawnerExplosion.hpp>
 #include <EntityEnemySpawner.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <FightingEntityPlayer.hpp>
@@ -38,6 +40,9 @@ static std::list<MovableEntityBullet *> _enemiesBulletsList;
 
 /** All enemies. */
 static std::list<FightingEntityEnemy *> _enemiesList;
+
+/** All animated textures. */
+static std::list<EntityAnimatedTexture *> _animatedTexturesList;
 
 /** How many pixels to add to spawn X coordinate to make the enemy spawn on block center. */
 static int _enemySpawnOffsetX;
@@ -311,6 +316,9 @@ static inline void _updateGameLogic()
 			blockContent = LevelManager::getBlockContent(pointerPositionRectangle->x, pointerPositionRectangle->y);
 			blockContent &= ~LevelManager::BLOCK_CONTENT_ENEMY_SPAWNER;
 			LevelManager::setBlockContent(pointerPositionRectangle->x, pointerPositionRectangle->y, blockContent);
+			
+			// Display an explosion
+			_animatedTexturesList.push_front(new EntityAnimatedTextureEnemySpawnerExplosion(pointerPositionRectangle->x, pointerPositionRectangle->y));
 		}
 		// Try to spawn an enemy if the spawner requested to
 		else if (result == 2)
@@ -319,6 +327,16 @@ static inline void _updateGameLogic()
 			pointerEnemy = _spawnEnemy(pointerPositionRectangle->x, pointerPositionRectangle->y);
 			if (pointerEnemy != NULL) _enemiesList.push_front(pointerEnemy);
 		}
+	}
+	
+	// Update animated textures at the end, because they can be spawned by previous updates
+	std::list<EntityAnimatedTexture *>::iterator animatedTexturesListIterator;
+	EntityAnimatedTexture *pointerAnimatedTexture;
+	for (animatedTexturesListIterator = _animatedTexturesList.begin(); animatedTexturesListIterator != _animatedTexturesList.end(); ++animatedTexturesListIterator)
+	{
+		pointerAnimatedTexture = *animatedTexturesListIterator;
+		
+		if (pointerAnimatedTexture->update() != 0) animatedTexturesListIterator = _animatedTexturesList.erase(animatedTexturesListIterator);
 	}
 }
 
@@ -347,8 +365,12 @@ static inline void _renderGame(int sceneX, int sceneY)
 	for (bulletsListIterator = _playerBulletsList.begin(); bulletsListIterator != _playerBulletsList.end(); ++bulletsListIterator) (*bulletsListIterator)->render();
 	for (bulletsListIterator = _enemiesBulletsList.begin(); bulletsListIterator != _enemiesBulletsList.end(); ++bulletsListIterator) (*bulletsListIterator)->render();
 	
-	// Display the player at the end, so it is always rendered on top on everything else and can always be visible
+	// Display the player now, so it is always rendered on top on everything else and can always be visible
 	pointerPlayer->render();
+	
+	// Display special effects at the end, so they can recover everything
+	std::list<EntityAnimatedTexture *>::iterator animatedTexturesListIterator;
+	for (animatedTexturesListIterator = _animatedTexturesList.begin(); animatedTexturesListIterator != _animatedTexturesList.end(); ++animatedTexturesListIterator) (*animatedTexturesListIterator)->render();
 	
 	// Display HUD
 	char string[64];
