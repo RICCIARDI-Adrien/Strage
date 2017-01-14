@@ -41,7 +41,7 @@ class FightingEntity: public MovableEntity
 			_maximumLifePointsAmount = maximumLifePointsAmount;
 			
 			// Player and enemies collide with walls and enemy spawners
-			_collisionBlockContent = (LevelManager::BLOCK_CONTENT_WALL) - (LevelManager::BLOCK_CONTENT_ENEMY_SPAWNER);
+			_collisionBlockContent = LevelManager::BLOCK_CONTENT_WALL | LevelManager::BLOCK_CONTENT_ENEMY_SPAWNER;
 			
 			// Cache the offset to add to entity coordinates to make fired bullets start from entity center
 			Texture *pointerBulletTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_BULLET); // Use textures to avoid instantiate a bullet to get its dimensions
