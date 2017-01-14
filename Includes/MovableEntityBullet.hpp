@@ -22,7 +22,7 @@ class MovableEntityBullet: public MovableEntity
 		 * @param y Spawning Y coordinate.
 		 * @param facingDirection In which direction the bullet will move.
 		 */
-		MovableEntityBullet(int x, int y, Direction facingDirection): MovableEntity(TextureManager::TEXTURE_ID_BULLET, x, y, 6)
+		MovableEntityBullet(int x, int y, Direction facingDirection): MovableEntity(x, y, TextureManager::TEXTURE_ID_BULLET, 6)
 		{
 			_facingDirection = facingDirection;
 			_movedDistance = 0;

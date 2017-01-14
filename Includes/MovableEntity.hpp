@@ -43,7 +43,7 @@ class MovableEntity: public Entity
 		 * @param y The Y coordinate where to spawn the entity.
 		 * @param movingPixelsAmount Entity moving speed.
 		 */
-		MovableEntity(TextureManager::TextureId textureId, int x, int y, int movingPixelsAmount): Entity(x, y, textureId)
+		MovableEntity(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount): Entity(x, y, textureId)
 		{
 			_movingPixelsAmount = movingPixelsAmount;
 			

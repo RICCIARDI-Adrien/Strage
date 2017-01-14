@@ -20,7 +20,7 @@ class FightingEntityEnemy: public FightingEntity
 		 * @return 1 if the enemy can shoot,
 		 * @return 0 if the player is out of range.
 		 */
-		int isShootPossible()
+		int _isShootPossible()
 		{
 			// Is the player in line of sight ? // TODO do not fire if there is a wall between the player and the enemy
 			if (SDL_HasIntersection(pointerPlayer->getPositionRectangle(), &_shootingRectangles[DIRECTION_UP]))
@@ -53,7 +53,7 @@ class FightingEntityEnemy: public FightingEntity
 		 * @return 1 if the enemy should move,
 		 * @return 0 if the enemy can remain still.
 		 */
-		int getPlayerDirection(Direction *pointerDirection)
+		int _getPlayerDirection(Direction *pointerDirection)
 		{
 			int enemyCenterX, enemyCenterY, horizontalDistance, verticalDistance;
 			SDL_Rect *pointerPlayerPositionRectangle;
@@ -144,7 +144,7 @@ class FightingEntityEnemy: public FightingEntity
 		 * @param x Enemy X coordinate.
 		 * @param y Enemy Y coordinate.
 		 */
-		FightingEntityEnemy(int x, int y): FightingEntity(TextureManager::TEXTURE_ID_ENEMY, x, y, 2, 20, 1000)
+		FightingEntityEnemy(int x, int y): FightingEntity(x, y, TextureManager::TEXTURE_ID_ENEMY, 2, 20, 1000)
 		{
 			// Enemies collide between them too
 			_collisionBlockContent |= LevelManager::BLOCK_CONTENT_ENEMY;
@@ -278,10 +278,10 @@ class FightingEntityEnemy: public FightingEntity
 			if (!SDL_HasIntersection(pointerPlayer->getPositionRectangle(), &_spottingRectangle)) return 0;
 			
 			// Shoot if the player is at sight
-			if (isShootPossible()) return 2;
+			if (_isShootPossible()) return 2;
 			
 			// If the enemy can't shoot, it must move to come close enough to the player
-			if (!getPlayerDirection(&playerDirection)) // The best direction is the one to reach the player
+			if (!_getPlayerDirection(&playerDirection)) // The best direction is the one to reach the player
 			{
 				LOG_INFORMATION("Enemy can't shoot but can't move either.\n");
 				return 0;

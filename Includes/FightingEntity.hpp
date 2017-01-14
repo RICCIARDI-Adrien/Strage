@@ -35,7 +35,7 @@ class FightingEntity: public MovableEntity
 		 * @param maximumLifePointsAmount Entity maximum life points count.
 		 * @param timeBetweenShots How many milliseconds to wait between two shots.
 		 */
-		FightingEntity(TextureManager::TextureId textureId, int x, int y, int movingPixelsAmount, int maximumLifePointsAmount, int timeBetweenShots): MovableEntity(textureId, x, y, movingPixelsAmount)
+		FightingEntity(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, int maximumLifePointsAmount, int timeBetweenShots): MovableEntity(x, y, textureId, movingPixelsAmount)
 		{
 			_lifePointsAmount = maximumLifePointsAmount;
 			_maximumLifePointsAmount = maximumLifePointsAmount;
