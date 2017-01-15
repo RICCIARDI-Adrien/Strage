@@ -1,6 +1,7 @@
 #ifndef HPP_FIGHTING_ENTITY_PLAYER_HPP
 #define HPP_FIGHTING_ENTITY_PLAYER_HPP
 
+#include <AudioManager.hpp>
 #include <FightingEntity.hpp>
 #include <Log.hpp>
 #include <Renderer.hpp>
@@ -101,6 +102,7 @@ class FightingEntityPlayer: public FightingEntity
 				if (isWounded())
 				{
 					modifyLife(20);
+					AudioManager::playSound(AudioManager::SOUND_ID_PLAYER_HEALED);
 					LOG_DEBUG("Healed player.\n");
 					
 					// Remove the medipack as it has been used
@@ -114,6 +116,7 @@ class FightingEntityPlayer: public FightingEntity
 				LOG_DEBUG("Player is crossing a block containing ammunition.\n");
 				
 				addAmmunition(30);
+				AudioManager::playSound(AudioManager::SOUND_ID_AMMUNITION_TAKEN);
 				LOG_DEBUG("Player got ammunition.\n");
 				
 				// Remove the ammunitions item

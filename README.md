@@ -23,3 +23,6 @@ Levels are made using [Tiled](http://www.mapeditor.org/) editor. They are consti
 * The *objects* layer telling where player, spawners and other interactive objects are located on the map.
 
 Scene textures and objects are gathered in two Tiled tilesets (Scene.tsx and Objects.tsx) located in the Tiled_Resources directory.
+
+## Credits
+* Sounds : [universal-soundbank.com](http://www.universal-soundbank.com), [soundbible.com](http://soundbible.com)

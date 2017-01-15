@@ -216,6 +216,7 @@ static inline void _updateGameLogic()
 				// Wound the enemy
 				pointerEnemy->modifyLife(-5); // TODO put bullet damage in bullet if more bullet types are to be created
 				
+				AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_BULLET_IMPACT);
 				LOG_DEBUG("Enemy hit.\n");
 				break;
 			}
@@ -237,6 +238,7 @@ static inline void _updateGameLogic()
 				// Damage the enemy spawner
 				pointerEnemySpawner->modifyLife(-10); // TODO put bullet damage in bullet if more bullet types are to be created
 				
+				AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_SPAWNER_BULLET_IMPACT);
 				LOG_DEBUG("Enemy spawner hit.\n");
 				break;
 			}
@@ -286,6 +288,7 @@ static inline void _updateGameLogic()
 			// Spawn an explosion effect
 			pointerPositionRectangle = pointerEnemy->getPositionRectangle();
 			_animatedTexturesList.push_front(new EntityAnimatedTextureShipExplosion(pointerPositionRectangle->x, pointerPositionRectangle->y));
+			AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_EXPLOSION);
 			
 			// Spawn an item on the current block if player is lucky
 			_spawnItem(pointerPositionRectangle->x + (pointerPositionRectangle->w / 2), pointerPositionRectangle->y + (pointerPositionRectangle->h / 2)); // Use enemy center coordinates to avoid favoring one block among others
@@ -298,7 +301,11 @@ static inline void _updateGameLogic()
 			pointerBullet = pointerEnemy->shoot();
 			
 			// Was the enemy allowed to fire ?
-			if (pointerBullet != NULL) _enemiesBulletsList.push_front(pointerBullet);
+			if (pointerBullet != NULL)
+			{
+				_enemiesBulletsList.push_front(pointerBullet);
+				AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_FIRESHOT);
+			}
 		}
 	}
 	
@@ -323,6 +330,7 @@ static inline void _updateGameLogic()
 			
 			// Display an explosion
 			_animatedTexturesList.push_front(new EntityAnimatedTextureEnemySpawnerExplosion(pointerPositionRectangle->x, pointerPositionRectangle->y));
+			AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_SPAWNER_EXPLOSION);
 		}
 		// Try to spawn an enemy if the spawner requested to
 		else if (result == 2)
@@ -463,8 +471,6 @@ int main(void)
 							break;
 							
 						case SDL_SCANCODE_SPACE:
-							// TEST
-							AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_SPAWNER_EXPLOSION);
 							isKeyPressed[KEYBOARD_KEY_ID_SPACE] = 1;
 							break;
 							
@@ -542,7 +548,11 @@ int main(void)
 			MovableEntityBullet *pointerBullet = pointerPlayer->shoot();
 			
 			// Is the player allowed to shoot ?
-			if (pointerBullet != NULL) _playerBulletsList.push_front(pointerBullet);
+			if (pointerBullet != NULL)
+			{
+				_playerBulletsList.push_front(pointerBullet);
+				AudioManager::playSound(AudioManager::SOUND_ID_PLAYER_FIRESHOT);
+			}
 		}
 		
 		// TEST
