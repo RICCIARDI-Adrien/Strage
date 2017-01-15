@@ -2,6 +2,7 @@
  * Initialize the game engine and run the game.
  * @author Adrien RICCIARDI
  */
+#include <AudioManager.hpp>
 #include <cstdlib>
 #include <ctime>
 #include <EntityAnimatedTexture.hpp>
@@ -62,6 +63,7 @@ FightingEntityPlayer *pointerPlayer;
 /** Automatically free allocated resources on program shutdown. */
 static void _exitFreeResources()
 {
+	AudioManager::uninitialize();
 	LevelManager::uninitialize();
 	TextureManager::uninitialize();
 	Renderer::uninitialize(); // Must be called at the end because it stops SDL
@@ -400,6 +402,7 @@ int main(void)
 	if (Renderer::initialize() != 0) return -1;
 	if (TextureManager::initialize() != 0) return -1;
 	if (LevelManager::initialize() != 0) return -1;
+	if (AudioManager::initialize() != 0) return -1;
 	
 	// Automatically dispose of allocated resources on program exit (allowing to use exit() elsewhere in the program)
 	atexit(_exitFreeResources);
@@ -460,6 +463,8 @@ int main(void)
 							break;
 							
 						case SDL_SCANCODE_SPACE:
+							// TEST
+							AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_SPAWNER_EXPLOSION);
 							isKeyPressed[KEYBOARD_KEY_ID_SPACE] = 1;
 							break;
 							
