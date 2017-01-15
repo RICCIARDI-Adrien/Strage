@@ -51,6 +51,11 @@ static int _enemySpawnOffsetX;
 /** How many pixels to add to spawn Y coordinate to make the enemy spawn on block center. */
 static int _enemySpawnOffsetY;
 
+/** How many pixels to subtract to the player X coordinate to obtain the scene camera X coordinate. */
+static int _cameraOffsetX;
+/** How many pixels to subtract to the player Y coordinate to obtain the scene camera Y coordinate. */
+static int _cameraOffsetY;
+
 //-------------------------------------------------------------------------------------------------
 // Public variables
 //-------------------------------------------------------------------------------------------------
@@ -348,12 +353,15 @@ static inline void _updateGameLogic()
 	}
 }
 
-/** Display everything to the screen.
- * @param sceneX The "camera" will render the scene starting from this scene horizontal coordinate.
- * @param sceneY The "camera" will render the scene starting from this scene vertical coordinate.
- */
-static inline void _renderGame(int sceneX, int sceneY)
+/** Display everything to the screen. */
+static inline void _renderGame()
 {
+	int sceneX, sceneY;
+	
+	// Compute rendering top left coordinates
+	sceneX = pointerPlayer->getX() - _cameraOffsetX;
+	sceneY = pointerPlayer->getY() - _cameraOffsetY;
+	
 	// Start rendering
 	Renderer::beginRendering(sceneX, sceneY);
 	
@@ -414,6 +422,9 @@ int main(void)
 	// Cache some values
 	_enemySpawnOffsetX = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY)->getWidth() / 2;
 	_enemySpawnOffsetY = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY)->getHeight() / 2;
+	// Offset to subtract to the player position to have the scene camera coordinates
+	_cameraOffsetX = (CONFIGURATION_DISPLAY_WIDTH / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER)->getWidth() / 2);
+	_cameraOffsetY = (CONFIGURATION_DISPLAY_HEIGHT / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER)->getHeight() / 2);
 	
 	// Initialize pseudo-random numbers generator
 	srand(time(NULL));
@@ -421,7 +432,6 @@ int main(void)
 	LOG_INFORMATION("Game engine successfully initialized.\n");
 	
 	// TEST
-	int camX = 0, camY = 0;
 	LevelManager::loadLevel("Levels/Test_Scene.csv", "Levels/Test_Objects.csv");
 	
 	while (1)
@@ -547,13 +557,9 @@ int main(void)
 			if (pointerBullet != NULL) _playerBulletsList.push_front(pointerBullet);
 		}
 		
-		// TEST
-		camX = pointerPlayer->getX() - (CONFIGURATION_DISPLAY_WIDTH / 2) + 16;
-		camY = pointerPlayer->getY() - (CONFIGURATION_DISPLAY_HEIGHT / 2) + 16;
-		
 		_updateGameLogic();
 		
-		_renderGame(camX, camY);
+		_renderGame();
 		
 		// Wait enough time to achieve a 60Hz refresh rate
 		Elapsed_Time = SDL_GetTicks() - Starting_Time;
