@@ -33,8 +33,8 @@ class FightingEntityPlayer: public FightingEntity
 		FightingEntityPlayer(int x, int y): FightingEntity(x, y, TextureManager::TEXTURE_ID_PLAYER, 3, 100, 300, AudioManager::SOUND_ID_PLAYER_FIRESHOT)
 		{
 			// Cache rendering coordinates
-			_renderingX = (CONFIGURATION_DISPLAY_WIDTH - _positionRectangle.w) / 2;
-			_renderingY = (CONFIGURATION_DISPLAY_HEIGHT - _positionRectangle.h) / 2;
+			_renderingX = (Renderer::displayWidth - _positionRectangle.w) / 2;
+			_renderingY = (Renderer::displayHeight - _positionRectangle.h) / 2;
 			
 			_ammunitionAmount = 100;
 		}

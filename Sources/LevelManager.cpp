@@ -134,11 +134,11 @@ static int _setBlockFromId(BlockId blockId, Block *pointerBlock)
 int initialize()
 {
 	// Compute the amount of blocks that can be simultaneously displayed on the current display
-	_displayWidthBlocks = CONFIGURATION_DISPLAY_WIDTH / CONFIGURATION_LEVEL_BLOCK_SIZE;
-	if (CONFIGURATION_DISPLAY_WIDTH % CONFIGURATION_LEVEL_BLOCK_SIZE != 0) _displayWidthBlocks++;
-	_displayHeightBlocks = CONFIGURATION_DISPLAY_HEIGHT / CONFIGURATION_LEVEL_BLOCK_SIZE;
-	if (CONFIGURATION_DISPLAY_HEIGHT % CONFIGURATION_LEVEL_BLOCK_SIZE != 0) _displayHeightBlocks++;
-	LOG_DEBUG("Display size : %dx%d pixels, %dx%d blocks.\n", CONFIGURATION_DISPLAY_WIDTH, CONFIGURATION_DISPLAY_HEIGHT, _displayWidthBlocks, _displayHeightBlocks);
+	_displayWidthBlocks = Renderer::displayWidth / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	if (Renderer::displayWidth % CONFIGURATION_LEVEL_BLOCK_SIZE != 0) _displayWidthBlocks++;
+	_displayHeightBlocks = Renderer::displayHeight / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	if (Renderer::displayHeight % CONFIGURATION_LEVEL_BLOCK_SIZE != 0) _displayHeightBlocks++;
+	LOG_DEBUG("Display size : %dx%d pixels, %dx%d blocks.\n", Renderer::displayWidth, Renderer::displayHeight, _displayWidthBlocks, _displayHeightBlocks);
 
 	return 0;
 }

@@ -21,14 +21,20 @@ extern int displayX;
 /** On rendering, contains the visible display topmost coordinate. */
 extern int displayY;
 
+/** The display width in pixels. */
+extern int displayWidth;
+/** The display height in pixels. */
+extern int displayHeight;
+
 //-------------------------------------------------------------------------------------------------
 // Functions
 //-------------------------------------------------------------------------------------------------
 /** Initialize the SDL2 library and create a window with a renderer.
+ * @param isFullScreenEnabled Set to 1 to start the game in full screen, set to 0 to start it in windowed mode.
  * @return 0 if all went successful,
  * @return -1 if an error occurred.
  */
-int initialize();
+int initialize(int isFullScreenEnabled);
 
 /** Free all allocated resources.
  * @note This function must be called after all SDL resources have been freed.

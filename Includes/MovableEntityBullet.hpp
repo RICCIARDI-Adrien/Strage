@@ -12,7 +12,7 @@ class MovableEntityBullet: public MovableEntity
 {
 	private:
 		/** A bullet maximum traveling distance, the bullet will be destroyed if it has traveled this distance without colliding with something. */
-		const int _range = 2 * CONFIGURATION_DISPLAY_WIDTH;
+		const int _range = 2 * Renderer::displayWidth;
 		/** How many distance was traveled. */
 		int _movedDistance;
 	

@@ -404,14 +404,28 @@ static inline void _renderGame()
 //-------------------------------------------------------------------------------------------------
 // Entry point
 //-------------------------------------------------------------------------------------------------
-int main(void)
+int main(int argc, char *argv[])
 {
 	SDL_Event event;
 	unsigned int Starting_Time, Elapsed_Time;
-	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0}, isLastDirectionVertical;
+	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0}, isLastDirectionVertical, isFullScreenEnabled = 0;
+	
+	// Check parameters
+	if (argc > 1)
+	{
+		// Is full screen mode requested ?
+		if (strcmp("-f", argv[1]) == 0) isFullScreenEnabled = 1;
+		else
+		{
+			printf("Unknown parameter(s).\n"
+				"Usage : %s [-f]\n"
+				" -f : enable full screen\n", argv[0]);
+			return -1;
+		}
+	}
 	
 	// Engine initialization
-	if (Renderer::initialize() != 0) return -1;
+	if (Renderer::initialize(isFullScreenEnabled) != 0) return -1;
 	if (TextureManager::initialize() != 0) return -1;
 	if (LevelManager::initialize() != 0) return -1;
 	if (AudioManager::initialize() != 0) return -1;
@@ -423,8 +437,8 @@ int main(void)
 	_enemySpawnOffsetX = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY)->getWidth() / 2;
 	_enemySpawnOffsetY = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY)->getHeight() / 2;
 	// Offset to subtract to the player position to have the scene camera coordinates
-	_cameraOffsetX = (CONFIGURATION_DISPLAY_WIDTH / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER)->getWidth() / 2);
-	_cameraOffsetY = (CONFIGURATION_DISPLAY_HEIGHT / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER)->getHeight() / 2);
+	_cameraOffsetX = (Renderer::displayWidth / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER)->getWidth() / 2);
+	_cameraOffsetY = (Renderer::displayHeight / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER)->getHeight() / 2);
 	
 	// Initialize pseudo-random numbers generator
 	srand(time(NULL));

@@ -151,8 +151,8 @@ class FightingEntityEnemy: public FightingEntity
 			_collisionBlockContent |= LevelManager::BLOCK_CONTENT_ENEMY;
 			
 			// Initialize spotting rectangle to around the entity
-			_spottingRectangle.w = CONFIGURATION_DISPLAY_WIDTH * 2; // Thus, the player staying at on side of the display will be spotted by an enemy located at the display other side
-			_spottingRectangle.h = CONFIGURATION_DISPLAY_HEIGHT * 2;
+			_spottingRectangle.w = Renderer::displayWidth * 2; // Thus, the player staying at on side of the display will be spotted by an enemy located at the display other side
+			_spottingRectangle.h = Renderer::displayHeight * 2;
 			_spottingRectangle.x = _positionRectangle.x - ((_spottingRectangle.w - _positionRectangle.w) / 2);
 			_spottingRectangle.y = _positionRectangle.y - ((_spottingRectangle.h - _positionRectangle.h) / 2);
 			
@@ -163,23 +163,23 @@ class FightingEntityEnemy: public FightingEntity
 			// Cache all shooting rectangles
 			// Up direction
 			_shootingRectangles[DIRECTION_UP].x = _positionRectangle.x + ((_positionRectangle.w - bulletWidth) / 2);
-			_shootingRectangles[DIRECTION_UP].y = (_positionRectangle.y + (_positionRectangle.h / 2)) - (CONFIGURATION_DISPLAY_HEIGHT / 2);
+			_shootingRectangles[DIRECTION_UP].y = (_positionRectangle.y + (_positionRectangle.h / 2)) - (Renderer::displayHeight / 2);
 			_shootingRectangles[DIRECTION_UP].w = bulletWidth;
-			_shootingRectangles[DIRECTION_UP].h = CONFIGURATION_DISPLAY_HEIGHT / 2; // Make the enemy always visible when it starts shooting the player
+			_shootingRectangles[DIRECTION_UP].h = Renderer::displayHeight / 2; // Make the enemy always visible when it starts shooting the player
 			// Down direction
 			_shootingRectangles[DIRECTION_DOWN].x = _positionRectangle.x + ((_positionRectangle.w - bulletWidth) / 2);
 			_shootingRectangles[DIRECTION_DOWN].y = _positionRectangle.y + (_positionRectangle.h / 2);
 			_shootingRectangles[DIRECTION_DOWN].w = bulletWidth;
-			_shootingRectangles[DIRECTION_DOWN].h = CONFIGURATION_DISPLAY_HEIGHT / 2;
+			_shootingRectangles[DIRECTION_DOWN].h = Renderer::displayHeight / 2;
 			// Left direction
-			_shootingRectangles[DIRECTION_LEFT].x = _positionRectangle.x + (_positionRectangle.w / 2) - (CONFIGURATION_DISPLAY_WIDTH / 2);
+			_shootingRectangles[DIRECTION_LEFT].x = _positionRectangle.x + (_positionRectangle.w / 2) - (Renderer::displayWidth / 2);
 			_shootingRectangles[DIRECTION_LEFT].y = _positionRectangle.y + ((_positionRectangle.h - bulletWidth) / 2);
-			_shootingRectangles[DIRECTION_LEFT].w = CONFIGURATION_DISPLAY_WIDTH / 2;
+			_shootingRectangles[DIRECTION_LEFT].w = Renderer::displayWidth / 2;
 			_shootingRectangles[DIRECTION_LEFT].h = bulletWidth;
 			// Right direction
 			_shootingRectangles[DIRECTION_RIGHT].x = _positionRectangle.x + (_positionRectangle.w / 2);
 			_shootingRectangles[DIRECTION_RIGHT].y = _positionRectangle.y + ((_positionRectangle.h - bulletWidth) / 2);
-			_shootingRectangles[DIRECTION_RIGHT].w = CONFIGURATION_DISPLAY_WIDTH / 2;
+			_shootingRectangles[DIRECTION_RIGHT].w = Renderer::displayWidth / 2;
 			_shootingRectangles[DIRECTION_RIGHT].h = bulletWidth;
 			
 			// Set block under enemy center as containing an enemy
