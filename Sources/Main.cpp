@@ -301,11 +301,7 @@ static inline void _updateGameLogic()
 			pointerBullet = pointerEnemy->shoot();
 			
 			// Was the enemy allowed to fire ?
-			if (pointerBullet != NULL)
-			{
-				_enemiesBulletsList.push_front(pointerBullet);
-				AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_FIRESHOT);
-			}
+			if (pointerBullet != NULL) _enemiesBulletsList.push_front(pointerBullet);
 		}
 	}
 	
@@ -548,11 +544,7 @@ int main(void)
 			MovableEntityBullet *pointerBullet = pointerPlayer->shoot();
 			
 			// Is the player allowed to shoot ?
-			if (pointerBullet != NULL)
-			{
-				_playerBulletsList.push_front(pointerBullet);
-				AudioManager::playSound(AudioManager::SOUND_ID_PLAYER_FIRESHOT);
-			}
+			if (pointerBullet != NULL) _playerBulletsList.push_front(pointerBullet);
 		}
 		
 		// TEST

@@ -30,7 +30,7 @@ class FightingEntityPlayer: public FightingEntity
 		 * @param x X coordinate where to spawn the player on the map.
 		 * @param y Y coordinate where to spawn the player on the map.
 		 */
-		FightingEntityPlayer(int x, int y): FightingEntity(x, y, TextureManager::TEXTURE_ID_PLAYER, 3, 100, 300)
+		FightingEntityPlayer(int x, int y): FightingEntity(x, y, TextureManager::TEXTURE_ID_PLAYER, 3, 100, 300, AudioManager::SOUND_ID_PLAYER_FIRESHOT)
 		{
 			// Cache rendering coordinates
 			_renderingX = (CONFIGURATION_DISPLAY_WIDTH - _positionRectangle.w) / 2;

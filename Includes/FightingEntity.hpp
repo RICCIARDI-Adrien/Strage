@@ -1,6 +1,7 @@
 #ifndef HPP_FIGHTING_ENTITY_HPP
 #define HPP_FIGHTING_ENTITY_HPP
 
+#include <AudioManager.hpp>
 #include <MovableEntity.hpp>
 #include <MovableEntityBullet.hpp>
 #include <SDL2/SDL.h>
@@ -26,6 +27,9 @@ class FightingEntity: public MovableEntity
 		/** How many milliseconds to wait between two shots. */
 		unsigned int _timeBetweenShots;
 		
+		/** The sound to play when the entity shoots. */
+		AudioManager::SoundId _firingSoundId;
+		
 	public:
 		/** Initialize life points in addition to parent classes fields.
 		 * @param textureId The texture to use on rendering.
@@ -34,8 +38,9 @@ class FightingEntity: public MovableEntity
 		 * @param movingPixelsAmount Entity moving speed.
 		 * @param maximumLifePointsAmount Entity maximum life points count.
 		 * @param timeBetweenShots How many milliseconds to wait between two shots.
+		 * @param firingSoundId The sound to play when the entity shoots.
 		 */
-		FightingEntity(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, int maximumLifePointsAmount, int timeBetweenShots): MovableEntity(x, y, textureId, movingPixelsAmount)
+		FightingEntity(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, int maximumLifePointsAmount, int timeBetweenShots, AudioManager::SoundId firingSoundId): MovableEntity(x, y, textureId, movingPixelsAmount)
 		{
 			_lifePointsAmount = maximumLifePointsAmount;
 			_maximumLifePointsAmount = maximumLifePointsAmount;
@@ -48,6 +53,7 @@ class FightingEntity: public MovableEntity
 			_bulletStartingPositionOffset = (_pointerTexture->getWidth() - pointerBulletTexture->getWidth()) / 2; // This works in all fighting entity facing directions because fighting entity textures are appositely circular
 			_timeBetweenShots = timeBetweenShots;
 			_lastShotTime = 0; // Allow to shoot immediately
+			_firingSoundId = firingSoundId;
 		}
 		
 		/** The the entity life points.
@@ -103,6 +109,9 @@ class FightingEntity: public MovableEntity
 				
 				// Get time after having generated the bullet, in case this takes more than 1 millisecond
 				_lastShotTime = SDL_GetTicks();
+				
+				// Play firing sound
+				AudioManager::playSound(_firingSoundId);
 				
 				return pointerBullet;
 			}

@@ -1,6 +1,7 @@
 #ifndef HPP_FIGHTING_ENTITY_ENEMY_HPP
 #define HPP_FIGHTING_ENTITY_ENEMY_HPP
 
+#include <AudioManager.hpp>
 #include <cstdlib>
 #include <FightingEntity.hpp>
 #include <FightingEntityPlayer.hpp>
@@ -144,7 +145,7 @@ class FightingEntityEnemy: public FightingEntity
 		 * @param x Enemy X coordinate.
 		 * @param y Enemy Y coordinate.
 		 */
-		FightingEntityEnemy(int x, int y): FightingEntity(x, y, TextureManager::TEXTURE_ID_ENEMY, 2, 20, 1000)
+		FightingEntityEnemy(int x, int y): FightingEntity(x, y, TextureManager::TEXTURE_ID_ENEMY, 2, 20, 1000, AudioManager::SOUND_ID_ENEMY_FIRESHOT)
 		{
 			// Enemies collide between them too
 			_collisionBlockContent |= LevelManager::BLOCK_CONTENT_ENEMY;
