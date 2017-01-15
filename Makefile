@@ -1,11 +1,15 @@
 CPP = g++
-CPPFLAGS = -W -Wall -g
+CPPFLAGS = -W -Wall -g -std=c++11
 
 PATH_INCLUDES = Includes
 PATH_SOURCES = Sources
 
 BINARY = Strage
-LIBRARIES = -lSDL2 -lSDL2_mixer -lSDL2_ttf
+# Windows needs custom libraries to provide WinMain()
+ifeq ($(OS),Windows_NT)
+	LIBRARIES = -lmingw32 -lSDL2main
+endif
+LIBRARIES += -lSDL2 -lSDL2_mixer -lSDL2_ttf
 SOURCES = $(shell find $(PATH_SOURCES) -name "*.cpp")
 
 # Program configuration

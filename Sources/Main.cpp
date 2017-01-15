@@ -4,6 +4,7 @@
  */
 #include <AudioManager.hpp>
 #include <cstdlib>
+#include <cstring>
 #include <ctime>
 #include <EntityAnimatedTexture.hpp>
 #include <EntityAnimatedTextureEnemySpawnerExplosion.hpp>
