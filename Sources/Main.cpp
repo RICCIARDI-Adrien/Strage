@@ -409,7 +409,7 @@ int main(int argc, char *argv[])
 {
 	SDL_Event event;
 	unsigned int Starting_Time, Elapsed_Time;
-	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0}, isLastDirectionVertical, isFullScreenEnabled = 0;
+	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0}, isLastDirectionVertical = 1, isFullScreenEnabled = 0;
 	
 	// Check parameters
 	if (argc > 1)
