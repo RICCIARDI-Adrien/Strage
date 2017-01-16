@@ -1,5 +1,5 @@
 CPP = g++
-CPPFLAGS = -W -Wall -g -std=c++11
+CPPFLAGS = -W -Wall -std=c++11
 
 PATH_INCLUDES = Includes
 PATH_SOURCES = Sources
@@ -43,6 +43,12 @@ CPPFLAGS += -DCONFIGURATION_LEVEL_BLOCK_SIZE=64
 # The probability (in range 0% to 100%) to spawn an item when an enemy dies
 CPPFLAGS += -DCONFIGURATION_GAMEPLAY_MEDIPACK_ITEM_SPAWN_PROBABILITY_PERCENTAGE=10
 CPPFLAGS += -DCONFIGURATION_GAMEPLAY_AMMUNITION_ITEM_SPAWN_PROBABILITY_PERCENTAGE=20
+
+debug: CPPFLAGS += -g
+debug: all
+
+release: CPPFLAGS += -Werror -O2
+release: all
 
 all:
 	$(CPP) $(CPPFLAGS) -I$(PATH_INCLUDES) $(SOURCES) $(LIBRARIES) -o $(BINARY)
