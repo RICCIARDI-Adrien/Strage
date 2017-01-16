@@ -8,7 +8,7 @@ BINARY = Strage
 # Windows specific
 ifeq ($(OS),Windows_NT)
 	# Avoid shipping MinGW libgcc and libstdc++
-	CPPFLAGS += -static-libgcc -static-libstdc++
+	CPPFLAGS += -static-libgcc -static-libstdc++ -mwindows
 	# Windows needs custom libraries to provide WinMain()
 	LIBRARIES = -lmingw32 -lSDL2main
 endif
