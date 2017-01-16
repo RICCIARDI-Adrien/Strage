@@ -5,8 +5,11 @@ PATH_INCLUDES = Includes
 PATH_SOURCES = Sources
 
 BINARY = Strage
-# Windows needs custom libraries to provide WinMain()
+# Windows specific
 ifeq ($(OS),Windows_NT)
+	# Avoid shipping MinGW libgcc and libstdc++
+	CPPFLAGS += -static-libgcc -static-libstdc++
+	# Windows needs custom libraries to provide WinMain()
 	LIBRARIES = -lmingw32 -lSDL2main
 endif
 LIBRARIES += -lSDL2 -lSDL2_mixer -lSDL2_ttf
@@ -45,4 +48,4 @@ all:
 	$(CPP) $(CPPFLAGS) -I$(PATH_INCLUDES) $(SOURCES) $(LIBRARIES) -o $(BINARY)
 
 clean:
-	rm -f $(BINARY)
+	rm -f $(BINARY) $(BINARY).exe
