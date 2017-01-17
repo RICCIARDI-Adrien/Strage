@@ -1,19 +1,19 @@
-#ifndef HPP_FIGHTING_ENTITY_ENEMY_SMALL_HPP
-#define HPP_FIGHTING_ENTITY_ENEMY_SMALL_HPP
+#ifndef HPP_FIGHTING_ENTITY_ENEMY_MEDIUM_HPP
+#define HPP_FIGHTING_ENTITY_ENEMY_MEDIUM_HPP
 
 #include <AudioManager.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <MovableEntityBullet.hpp> // TODO replace with real one
 #include <TextureManager.hpp>
 
-/** @class FightingEntityEnemySmall
- * A small enemy moving quickly (but no so fast as the player) and shooting small caliber ammunition.
+/** @class FightingEntityEnemyMedium
+ * A medium enemy moving a little slower than small enemy but shooting bigger caliber ammunition.
  * @author Adrien RICCIARDI
  */
-class FightingEntityEnemySmall: public FightingEntityEnemy
+class FightingEntityEnemyMedium: public FightingEntityEnemy
 {
 	protected:
-		/** Fire small caliber ammunition.
+		/** Fire medium caliber ammunition.
 		 * @param x Ammunition X coordinate.
 		 * @param y Ammunition Y coordinate.
 		 * @return The fired ammunition.
@@ -24,11 +24,11 @@ class FightingEntityEnemySmall: public FightingEntityEnemy
 		}
 		
 	public:
-		/** Spawn a small enemy.
+		/** Spawn a medium enemy.
 		 * @param x Enemy X coordinate.
 		 * @param y Enemy Y coordinate.
 		 */
-		FightingEntityEnemySmall(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_SMALL_ENEMY, 3, 1, 1000, AudioManager::SOUND_ID_SMALL_ENEMY_FIRESHOT) {}
+		FightingEntityEnemyMedium(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_MEDIUM_ENEMY, 2, 3, 2000, AudioManager::SOUND_ID_MEDIUM_ENEMY_FIRESHOT) {}
 };
 
 #endif

@@ -26,3 +26,4 @@ Scene textures and objects are gathered in two Tiled tilesets (Scene.tsx and Obj
 
 ## Credits
 * Sounds : [universal-soundbank.com](http://www.universal-soundbank.com), [soundbible.com](http://soundbible.com)
+* Textures : [textures.com](http://www.textures.com)
