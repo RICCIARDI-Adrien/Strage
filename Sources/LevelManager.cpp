@@ -79,56 +79,6 @@ static Block _levelBlocks[CONFIGURATION_LEVEL_MAXIMUM_WIDTH * CONFIGURATION_LEVE
 std::list<EntityEnemySpawner *> enemySpawnersList;
 
 //-------------------------------------------------------------------------------------------------
-// Private functions
-//-------------------------------------------------------------------------------------------------
-/** Set a block texture and wall collision.
- * @param blockId The block identifier.
- * @param pointerBlock On output, fill this block with the right values.
- * @return 0 if the block was successfully set,
- * @return -1 if the provided block ID is unknown.
- */
-static int _setBlockFromId(BlockId blockId, Block *pointerBlock)
-{
-	TextureManager::TextureId textureId;
-	
-	switch (blockId)
-	{
-		case BLOCK_ID_RIVER_SAND:
-			textureId = TextureManager::TEXTURE_ID_RIVER_SAND;
-			pointerBlock->content = 0;
-			break;
-			
-		case BLOCK_ID_GRASS:
-			textureId = TextureManager::TEXTURE_ID_GREEN_GRASS;
-			pointerBlock->content = 0;
-			break;
-			
-		case BLOCK_ID_WALL_STONE_1:
-			textureId = TextureManager::TEXTURE_ID_WALL_STONE_1;
-			pointerBlock->content = BLOCK_CONTENT_WALL;
-			break;
-			
-		case BLOCK_ID_DIRT_1:
-			textureId = TextureManager::TEXTURE_ID_DIRT_1;
-			pointerBlock->content = 0;
-			break;
-			
-		case BLOCK_ID_DIRT_2:
-			textureId = TextureManager::TEXTURE_ID_DIRT_2;
-			pointerBlock->content = 0;
-			break;
-			
-		default:
-			return -1;
-	}
-	
-	// Set block texture
-	pointerBlock->pointerTexture = TextureManager::getTextureFromId(textureId);
-	
-	return 0;
-}
-
-//-------------------------------------------------------------------------------------------------
 // Public functions
 //-------------------------------------------------------------------------------------------------
 int initialize()
@@ -151,7 +101,8 @@ void uninitialize()
 int loadLevel(const char *sceneFileName, const char *objectsFileName)
 {
 	FILE *pointerFile;
-	int x, y, character, i, blockId, objectId, isPlayerSpawned = 0;
+	int x, y, character, i, objectId, isPlayerSpawned = 0;
+	TextureManager::TextureId textureId;
 	
 	// Try to open the scene file
 	pointerFile = fopen(sceneFileName, "r");
@@ -171,12 +122,17 @@ int loadLevel(const char *sceneFileName, const char *objectsFileName)
 		for (x = 0; x < CONFIGURATION_LEVEL_MAXIMUM_WIDTH; x++)
 		{
 			// Read a block index
-			if (fscanf(pointerFile, "%d", &blockId) != 1) goto Scene_Loading_End;
+			if (fscanf(pointerFile, "%d", (int *) &textureId) != 1) goto Scene_Loading_End;
 			
-			// Set the corresponding block texture and wall collision
-			if (_setBlockFromId((BlockId) blockId, &_levelBlocks[i]) != 0)
+			// Set block texture
+			_levelBlocks[i].pointerTexture = TextureManager::getTextureFromId(textureId);
+			
+			// Set block collision
+			if (textureId < TextureManager::TEXTURE_ID_SCENE_WALL_0) _levelBlocks[i].content = 0; // This is a floor block, it does not collide with nothing
+			else if (textureId < TextureManager::TEXTURE_ID_MEDIPACK) _levelBlocks[i].content = BLOCK_CONTENT_WALL; // This is a wall block
+			else
 			{
-				LOG_ERROR("Block (%d, %d) ID is bad : %d.\n", x, y, blockId);
+				LOG_ERROR("Block (%d, %d) ID is bad : %d.\n", x, y, (int) textureId);
 				fclose(pointerFile);
 				return -1;
 			}

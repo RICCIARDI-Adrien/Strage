@@ -21,12 +21,18 @@ static Texture *_pointerTextureManagerTextures[TEXTURE_IDS_COUNT];
 //-------------------------------------------------------------------------------------------------
 int initialize()
 {
-	// Scene tiles
-	_pointerTextureManagerTextures[TEXTURE_ID_RIVER_SAND] = new Texture(CONFIGURATION_PATH_TEXTURES "/River_Sand.bmp", 0);
-	_pointerTextureManagerTextures[TEXTURE_ID_GREEN_GRASS] = new Texture(CONFIGURATION_PATH_TEXTURES "/Grass.bmp", 0);
-	_pointerTextureManagerTextures[TEXTURE_ID_WALL_STONE_1] = new Texture(CONFIGURATION_PATH_TEXTURES "/Wall_Stone_1.bmp", 0);
-	_pointerTextureManagerTextures[TEXTURE_ID_DIRT_1] = new Texture(CONFIGURATION_PATH_TEXTURES "/Dirt_1.bmp", 0);
-	_pointerTextureManagerTextures[TEXTURE_ID_DIRT_2] = new Texture(CONFIGURATION_PATH_TEXTURES "/Dirt_2.bmp", 0);
+	// Scene floors
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_0] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Dirt_0.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_1] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Dirt_1.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_2] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Grass_0.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_3] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Grass_1.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_4] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Metal_Grid_0.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_5] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Metal_Plate_0.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_6] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Metal_Plate_1.bmp", 0);
+	
+	// Scene walls
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_WALL_0] = new Texture(CONFIGURATION_PATH_TEXTURES "/Wall_Stone_0.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_WALL_1] = new Texture(CONFIGURATION_PATH_TEXTURES "/Wall_White_Bricks_0.bmp", 0);
 	
 	// Static objects
 	_pointerTextureManagerTextures[TEXTURE_ID_MEDIPACK] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medipack.bmp", 1);
