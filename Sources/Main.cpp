@@ -12,6 +12,7 @@
 #include <EntityEnemySpawner.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <FightingEntityPlayer.hpp>
+#include <FightingEntityEnemyBig.hpp>
 #include <FightingEntityEnemyMedium.hpp>
 #include <FightingEntityEnemySmall.hpp>
 #include <list>
@@ -187,8 +188,9 @@ Spawn_Enemy:
 	LOG_DEBUG("Spawned an enemy on map coordinates (%d, %d).\n", x, y);
 	
 	// Select which enemy to spawn
-	spawningPercentage = rand() % 101;
+	spawningPercentage = rand() % 100;
 	// Start with the smaller percentage and continue so on
+	if (spawningPercentage <= CONFIGURATION_GAMEPLAY_BIG_ENEMY_SPAWN_PROBABILITY_PERCENTAGE) return new FightingEntityEnemyBig(x, y);
 	if (spawningPercentage <= CONFIGURATION_GAMEPLAY_MEDIUM_ENEMY_SPAWN_PROBABILITY_PERCENTAGE) return new FightingEntityEnemyMedium(x, y);
 	return new FightingEntityEnemySmall(x, y);
 }
