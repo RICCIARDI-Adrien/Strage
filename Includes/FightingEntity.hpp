@@ -30,6 +30,13 @@ class FightingEntity: public MovableEntity
 		/** The sound to play when the entity shoots. */
 		AudioManager::SoundId _firingSoundId;
 		
+		/** Generate a bullet from the type the enemy fires.
+		 * @param x Bullet X coordinate.
+		 * @param y Bullet Y coordinate.
+		 * @return An enemy-specific bullet.
+		 */
+		virtual MovableEntityBullet *_fireBullet(int x, int y) = 0;
+		
 	public:
 		/** Initialize life points in addition to parent classes fields.
 		 * @param textureId The texture to use on rendering.
@@ -105,7 +112,7 @@ class FightingEntity: public MovableEntity
 			// Allow to shoot only if enough time elapsed since last shot
 			if (SDL_GetTicks() - _lastShotTime >= _timeBetweenShots)
 			{
-				MovableEntityBullet *pointerBullet = new MovableEntityBullet(_positionRectangle.x + _bulletStartingPositionOffset, _positionRectangle.y + _bulletStartingPositionOffset, _facingDirection);
+				MovableEntityBullet *pointerBullet = _fireBullet(_positionRectangle.x + _bulletStartingPositionOffset, _positionRectangle.y + _bulletStartingPositionOffset);
 				
 				// Get time after having generated the bullet, in case this takes more than 1 millisecond
 				_lastShotTime = SDL_GetTicks();

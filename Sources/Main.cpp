@@ -12,6 +12,7 @@
 #include <EntityEnemySpawner.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <FightingEntityPlayer.hpp>
+#include <FightingEntityEnemySmall.hpp>
 #include <list>
 #include <Log.hpp>
 #include <LevelManager.hpp>
@@ -184,7 +185,8 @@ Spawn_Enemy:
 	
 	LOG_DEBUG("Spawned an enemy on map coordinates (%d, %d).\n", x, y);
 	
-	return new FightingEntityEnemy(x, y);
+	// TODO select enemy to spawn
+	return new FightingEntityEnemySmall(x, y);
 }
 
 /** Update all game actors. */
@@ -447,8 +449,8 @@ int main(int argc, char *argv[])
 	atexit(_exitFreeResources);
 	
 	// Cache some values
-	_enemySpawnOffsetX = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY)->getWidth() / 2;
-	_enemySpawnOffsetY = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY)->getHeight() / 2;
+	_enemySpawnOffsetX = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SMALL)->getWidth() / 2; // All enemies have same dimensions
+	_enemySpawnOffsetY = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SMALL)->getHeight() / 2;
 	// Offset to subtract to the player position to have the scene camera coordinates
 	_cameraOffsetX = (Renderer::displayWidth / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER)->getWidth() / 2);
 	_cameraOffsetY = (Renderer::displayHeight / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER)->getHeight() / 2);

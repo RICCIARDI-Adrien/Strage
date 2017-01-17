@@ -142,10 +142,15 @@ class FightingEntityEnemy: public FightingEntity
 		
 	public:
 		/** Spawn a new enemy.
-		 * @param x Enemy X coordinate.
-		 * @param y Enemy Y coordinate.
+		 * @param textureId The texture to use on rendering.
+		 * @param x The X coordinate where to spawn the entity.
+		 * @param y The Y coordinate where to spawn the entity.
+		 * @param movingPixelsAmount Entity moving speed.
+		 * @param maximumLifePointsAmount Entity maximum life points count.
+		 * @param timeBetweenShots How many milliseconds to wait between two shots.
+		 * @param firingSoundId The sound to play when the entity shoots.
 		 */
-		FightingEntityEnemy(int x, int y): FightingEntity(x, y, TextureManager::TEXTURE_ID_ENEMY, 2, 20, 1000, AudioManager::SOUND_ID_ENEMY_FIRESHOT)
+		FightingEntityEnemy(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, int maximumLifePointsAmount, int timeBetweenShots, AudioManager::SoundId firingSoundId): FightingEntity(x, y, textureId, movingPixelsAmount, maximumLifePointsAmount, timeBetweenShots, firingSoundId)
 		{
 			// Enemies collide between them too
 			_collisionBlockContent |= LevelManager::BLOCK_CONTENT_ENEMY;

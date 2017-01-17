@@ -41,7 +41,7 @@ int initialize()
 	
 	// Movable objects
 	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER] = new Texture(CONFIGURATION_PATH_TEXTURES "/Player.bmp", 1);
-	_pointerTextureManagerTextures[TEXTURE_ID_ENEMY] = new Texture(CONFIGURATION_PATH_TEXTURES "/Enemy.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_ENEMY_SMALL] = new Texture(CONFIGURATION_PATH_TEXTURES "/Enemy_Small.bmp", 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_BULLET] = new Texture(CONFIGURATION_PATH_TEXTURES "/Bullet.bmp", 0);
 	
 	// Animated textures

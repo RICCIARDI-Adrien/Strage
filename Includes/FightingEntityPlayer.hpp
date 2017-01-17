@@ -4,6 +4,7 @@
 #include <AudioManager.hpp>
 #include <FightingEntity.hpp>
 #include <Log.hpp>
+#include <MovableEntityBullet.hpp> // TODO replace with real bullet
 #include <Renderer.hpp>
 #include <TextureManager.hpp>
 
@@ -24,6 +25,13 @@ class FightingEntityPlayer: public FightingEntity
 		
 		/** How many ammunition the player owns. */
 		int _ammunitionAmount; // Only player has limited ammunition, because what could do a munitions-less enemy ?
+	
+	protected:
+		/** TODO */
+		virtual MovableEntityBullet *_fireBullet(int x, int y)
+		{
+			return new MovableEntityBullet(x, y, _facingDirection);
+		}
 	
 	public:
 		/** Create the player.

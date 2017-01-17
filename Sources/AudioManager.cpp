@@ -58,7 +58,7 @@ int initialize()
 	_pointerSounds[SOUND_ID_AMMUNITION_TAKEN] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Ammunition_Taken.wav");
 	_pointerSounds[SOUND_ID_PLAYER_FIRESHOT] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Player_Fireshot.wav");
 	_pointerSounds[SOUND_ID_PLAYER_HEALED] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Player_Healed.wav");
-	_pointerSounds[SOUND_ID_ENEMY_FIRESHOT] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Enemy_Fireshot.wav");
+	_pointerSounds[SOUND_ID_ENEMY_SMALL_FIRESHOT] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Enemy_Small_Fireshot.wav");
 	_pointerSounds[SOUND_ID_ENEMY_BULLET_IMPACT] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Enemy_Bullet_Impact.wav");
 	_pointerSounds[SOUND_ID_ENEMY_EXPLOSION] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Enemy_Explosion.wav");
 	_pointerSounds[SOUND_ID_ENEMY_SPAWNER_BULLET_IMPACT] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Enemy_Spawner_Bullet_Impact.wav");
