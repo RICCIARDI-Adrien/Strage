@@ -55,11 +55,16 @@ void beginRendering(int x, int y);
 int isDisplayable(SDL_Rect *pointerObjectPositionRectangle);
 
 /** Display the provided text at the specified display position.
+ * @param pointerText The text to display.
  * @param x Horizontal coordinate of the text top left corner.
  * @param y Vertical coordinate of the text top left corner.
- * @param stringText The text to display.
  */
-void renderText(int x, int y, const char *stringText);
+void renderText(const char *pointerText, int x, int y);
+
+/** Display the provided text at the display vertical and horizontal center.
+ * @param pointerText The text to display.
+ */
+void renderCentererText(const char *pointerText);
 
 }
 

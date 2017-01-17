@@ -57,6 +57,9 @@ static int _cameraOffsetX;
 /** How many pixels to subtract to the player Y coordinate to obtain the scene camera Y coordinate. */
 static int _cameraOffsetY;
 
+/** When set to 1, stop game updating and display a text saying that the player is dead. */
+static int _isPlayerDead = 0;
+
 //-------------------------------------------------------------------------------------------------
 // Public variables
 //-------------------------------------------------------------------------------------------------
@@ -273,7 +276,13 @@ static inline void _updateGameLogic()
 			pointerPlayer->modifyLife(-1);
 			LOG_DEBUG("Player hit.\n");
 			
-			// TODO player dead
+			// Instantly stop game updating
+			if (pointerPlayer->isDead())
+			{
+				_isPlayerDead = 1;
+				LOG_DEBUG("Player died.\n");
+				return;
+			}
 		}
 	}
 	
@@ -393,10 +402,13 @@ static inline void _renderGame()
 	char string[64];
 	// Life points
 	sprintf(string, "Life : %d%%", pointerPlayer->getLifePointsAmount());
-	Renderer::renderText(CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_X, CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y, string);
+	Renderer::renderText(string, CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_X, CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y);
 	// Ammunition count
 	sprintf(string, "Ammo : %d", pointerPlayer->getAmmunitionAmount());
-	Renderer::renderText(CONFIGURATION_DISPLAY_HUD_AMMUNITION_X, CONFIGURATION_DISPLAY_HUD_AMMUNITION_Y, string);
+	Renderer::renderText(string, CONFIGURATION_DISPLAY_HUD_AMMUNITION_X, CONFIGURATION_DISPLAY_HUD_AMMUNITION_Y);
+	
+	// Tell the player that he died
+	if (_isPlayerDead) Renderer::renderCentererText("You are dead !");
 	
 	// Display the rendered picture
 	SDL_RenderPresent(Renderer::pointerMainRenderer);
@@ -538,41 +550,45 @@ int main(int argc, char *argv[])
 			}
 		}
 		
-		// React to player key press without depending of keyboard key repetition rate
-		// Handle both vertical and horizontal direction movement
-		if ((isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP] || isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN]) && (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT] || isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT]))
+		// Do not update the game anymore if the player died
+		if (!_isPlayerDead)
 		{
-			// Keep trace of the last direction the player took to favor it, when this key will be released the previous direction will be favored
-			if (isLastDirectionVertical)
+			// React to player key press without depending of keyboard key repetition rate
+			// Handle both vertical and horizontal direction movement
+			if ((isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP] || isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN]) && (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT] || isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT]))
 			{
-				if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP]) pointerPlayer->moveToUp();
-				else pointerPlayer->moveToDown();
+				// Keep trace of the last direction the player took to favor it, when this key will be released the previous direction will be favored
+				if (isLastDirectionVertical)
+				{
+					if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP]) pointerPlayer->moveToUp();
+					else pointerPlayer->moveToDown();
+				}
+				else
+				{
+					if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT]) pointerPlayer->moveToLeft();
+					else pointerPlayer->moveToRight();
+				}
 			}
+			// Handle a single key press
 			else
 			{
-				if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT]) pointerPlayer->moveToLeft();
-				else pointerPlayer->moveToRight();
+				if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP]) pointerPlayer->moveToUp();
+				else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN]) pointerPlayer->moveToDown();
+				else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT]) pointerPlayer->moveToLeft();
+				else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT]) pointerPlayer->moveToRight();
 			}
-		}
-		// Handle a single key press
-		else
-		{
-			if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP]) pointerPlayer->moveToUp();
-			else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN]) pointerPlayer->moveToDown();
-			else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT]) pointerPlayer->moveToLeft();
-			else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT]) pointerPlayer->moveToRight();
-		}
-		
-		// Fire a bullet
-		if (isKeyPressed[KEYBOARD_KEY_ID_SPACE])
-		{
-			MovableEntityBullet *pointerBullet = pointerPlayer->shoot();
 			
-			// Is the player allowed to shoot ?
-			if (pointerBullet != NULL) _playerBulletsList.push_front(pointerBullet);
+			// Fire a bullet
+			if (isKeyPressed[KEYBOARD_KEY_ID_SPACE])
+			{
+				MovableEntityBullet *pointerBullet = pointerPlayer->shoot();
+				
+				// Is the player allowed to shoot ?
+				if (pointerBullet != NULL) _playerBulletsList.push_front(pointerBullet);
+			}
+			
+			_updateGameLogic();
 		}
-		
-		_updateGameLogic();
 		
 		_renderGame();
 		
