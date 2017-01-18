@@ -4,7 +4,8 @@
 #include <AudioManager.hpp>
 #include <FightingEntity.hpp>
 #include <Log.hpp>
-#include <MovableEntityBullet.hpp> // TODO replace with real bullet
+#include <MovableEntityBullet.hpp>
+#include <MovableEntityBulletPlayer.hpp>
 #include <Renderer.hpp>
 #include <TextureManager.hpp>
 
@@ -27,10 +28,13 @@ class FightingEntityPlayer: public FightingEntity
 		int _ammunitionAmount; // Only player has limited ammunition, because what could do a munitions-less enemy ?
 	
 	protected:
-		/** TODO */
+		/** Shoot a player ammunition.
+		 * @param x Bullet X coordinate on the map.
+		 * @param y Bullet Y coordinate on the map.
+		 */
 		virtual MovableEntityBullet *_fireBullet(int x, int y)
 		{
-			return new MovableEntityBullet(x, y, _facingDirection);
+			return new MovableEntityBulletPlayer(x, y, _facingDirection);
 		}
 	
 	public:

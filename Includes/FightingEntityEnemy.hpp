@@ -162,7 +162,7 @@ class FightingEntityEnemy: public FightingEntity
 			_spottingRectangle.y = _positionRectangle.y - ((_spottingRectangle.h - _positionRectangle.h) / 2);
 			
 			// Get a bullet width
-			Texture *pointerBulletTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_BULLET); // Use textures to avoid instantiate a bullet to get its dimensions
+			Texture *pointerBulletTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLET); // Use textures to avoid instantiate a bullet to get its dimensions
 			int bulletWidth = pointerBulletTexture->getWidth();
 			
 			// Cache all shooting rectangles

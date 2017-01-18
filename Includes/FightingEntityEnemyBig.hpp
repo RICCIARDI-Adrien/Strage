@@ -3,7 +3,7 @@
 
 #include <AudioManager.hpp>
 #include <FightingEntityEnemy.hpp>
-#include <MovableEntityBullet.hpp> // TODO replace with real one
+#include <MovableEntityBulletPlayer.hpp> // TODO replace with real one
 #include <TextureManager.hpp>
 
 /** @class FightingEntityEnemyBig
@@ -20,7 +20,7 @@ class FightingEntityEnemyBig: public FightingEntityEnemy
 		 */
 		virtual MovableEntityBullet *_fireBullet(int x, int y)
 		{
-			return new MovableEntityBullet(x, y, _facingDirection);
+			return new MovableEntityBulletPlayer(x, y, _facingDirection);
 		}
 		
 	public:

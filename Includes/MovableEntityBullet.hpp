@@ -15,21 +15,36 @@ class MovableEntityBullet: public MovableEntity
 		const int _range = 2 * Renderer::displayWidth;
 		/** How many distance was traveled. */
 		int _movedDistance;
+		
+		/** How many life points the bullet removes when it hits an entity. */
+		int _damageAmount;
 	
 	public:
 		/** Spawn a bullet.
 		 * @param x Spawning X coordinate.
 		 * @param y Spawning Y coordinate.
+		 * @param textureId The texture to display.
+		 * @param movingPixelsAmount Bullet moving speed in pixels.
 		 * @param facingDirection In which direction the bullet will move.
+		 * @param damageAmount How many life points the bullet removes when it hits an entity.
 		 */
-		MovableEntityBullet(int x, int y, Direction facingDirection): MovableEntity(x, y, TextureManager::TEXTURE_ID_BULLET, 6)
+		MovableEntityBullet(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, Direction facingDirection, int damageAmount): MovableEntity(x, y, textureId, movingPixelsAmount)
 		{
 			_facingDirection = facingDirection;
 			_movedDistance = 0;
+			_damageAmount = damageAmount;
 		}
 		
 		/** Free entity allocated resources. */
 		virtual ~MovableEntityBullet() {} // Nothing to free
+		
+		/** How many life points the bullet removes.
+		 * @return Life points to subtract to hit entity.
+		 */
+		int getDamageAmount()
+		{
+			return _damageAmount;
+		}
 		
 		/** Check if a scene wall has been hit.
 		 * @return 0 if nothing was hit,
