@@ -33,7 +33,7 @@ CPPFLAGS += -DCONFIGURATION_AUDIO_CHANNELS_COUNT=48
 # 1 : error and information messages
 # 2 : error, information and debug messages
 # 3 : all previous stuff plus in-game displaying of some meaningful collision rectangles
-CPPFLAGS += -DCONFIGURATION_LOG_LEVEL=2
+CPPFLAGS += -DCONFIGURATION_LOG_LEVEL=1
 CPPFLAGS += -DCONFIGURATION_PATH_LEVELS=\"Levels\"
 CPPFLAGS += -DCONFIGURATION_PATH_SOUNDS=\"Sounds\"
 CPPFLAGS += -DCONFIGURATION_PATH_TEXTURES=\"Textures\"

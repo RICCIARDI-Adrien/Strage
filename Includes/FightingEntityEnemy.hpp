@@ -289,7 +289,7 @@ class FightingEntityEnemy: public FightingEntity
 			// If the enemy can't shoot, it must move to come close enough to the player
 			if (!_getPlayerDirection(&playerDirection)) // The best direction is the one to reach the player
 			{
-				LOG_INFORMATION("Enemy can't shoot but can't move either.\n");
+				LOG_DEBUG("Enemy can't shoot but can't move either.\n");
 				return 0;
 			}
 			
