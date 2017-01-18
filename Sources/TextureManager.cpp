@@ -46,6 +46,7 @@ int initialize()
 	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY] = new Texture(CONFIGURATION_PATH_TEXTURES "/Big_Enemy.bmp", 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_BULLET] = new Texture(CONFIGURATION_PATH_TEXTURES "/Player_Bullet.bmp", 0);
 	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_BULLET] = new Texture(CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Bullet.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIUM_ENEMY_BULLET] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Bullet.bmp", 0);
 	
 	// Animated textures
 	_pointerTextureManagerTextures[TEXTURE_ID_ENEMY_SPAWNER_EXPLOSION_0] = new Texture(CONFIGURATION_PATH_TEXTURES "/Enemy_Spawner_Explosion_0.bmp", 1);
