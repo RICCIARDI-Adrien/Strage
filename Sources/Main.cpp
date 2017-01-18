@@ -231,7 +231,7 @@ static inline void _updateGameLogic()
 				bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
 				
 				// Wound the enemy
-				pointerEnemy->modifyLife(-1); // TODO put bullet damage in bullet if more bullet types are to be created
+				pointerEnemy->modifyLife(pointerPlayerBullet->getDamageAmount());
 				
 				AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_BULLET_IMPACT);
 				LOG_DEBUG("Enemy hit.\n");
@@ -253,7 +253,7 @@ static inline void _updateGameLogic()
 				bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
 				
 				// Damage the enemy spawner
-				pointerEnemySpawner->modifyLife(-10); // TODO put bullet damage in bullet if more bullet types are to be created
+				pointerEnemySpawner->modifyLife(pointerPlayerBullet->getDamageAmount());
 				
 				AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_SPAWNER_BULLET_IMPACT);
 				LOG_DEBUG("Enemy spawner hit.\n");
@@ -281,7 +281,7 @@ static inline void _updateGameLogic()
 			bulletsListIterator = _enemiesBulletsList.erase(bulletsListIterator);
 			
 			// Wound the player
-			pointerPlayer->modifyLife(-1);
+			pointerPlayer->modifyLife(pointerEnemyBullet->getDamageAmount());
 			LOG_DEBUG("Player hit.\n");
 			
 			// Instantly stop game updating

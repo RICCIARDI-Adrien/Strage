@@ -14,8 +14,6 @@ class EntityEnemySpawner: public Entity
 	private:
 		/** How many life points the entity owns. */
 		int _lifePointsAmount;
-		/** The maximum entity life value. */
-		int _maximumLifePointsAmount;
 		
 		/** Hold the time when the last enemy was spawned. */
 		unsigned int _lastEnemySpawnTime;
@@ -29,8 +27,7 @@ class EntityEnemySpawner: public Entity
 		 */
 		EntityEnemySpawner(int x, int y): Entity(x, y, TextureManager::TEXTURE_ID_ENEMY_SPAWNER)
 		{
-			_lifePointsAmount = 100;
-			_maximumLifePointsAmount = 100;
+			_lifePointsAmount = 10;
 			
 			// Allow to spawn immediately an enemy
 			_lastEnemySpawnTime = -_timeBetweenSpawns;
@@ -43,9 +40,8 @@ class EntityEnemySpawner: public Entity
 		{
 			_lifePointsAmount += lifePointsAmount;
 			
-			// Clamp life points to [0; _maximumLifePointsAmount]
+			// Make sure life points do not become negative
 			if (_lifePointsAmount < 0) _lifePointsAmount = 0;
-			else if (_lifePointsAmount > _maximumLifePointsAmount) _lifePointsAmount = _maximumLifePointsAmount;
 		}
 		
 		/** Spawn an enemy if enough time elapsed and if there is a free block around the spawner.

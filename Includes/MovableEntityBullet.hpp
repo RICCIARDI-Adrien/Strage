@@ -32,14 +32,14 @@ class MovableEntityBullet: public MovableEntity
 		{
 			_facingDirection = facingDirection;
 			_movedDistance = 0;
-			_damageAmount = damageAmount;
+			_damageAmount = -damageAmount;
 		}
 		
 		/** Free entity allocated resources. */
 		virtual ~MovableEntityBullet() {} // Nothing to free
 		
 		/** How many life points the bullet removes.
-		 * @return Life points to subtract to hit entity.
+		 * @return Life points to ADD to hit entity (the value is negative yet to directly use with modifyLife() functions).
 		 */
 		int getDamageAmount()
 		{
