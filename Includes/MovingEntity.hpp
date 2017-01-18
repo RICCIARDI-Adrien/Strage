@@ -1,5 +1,5 @@
-#ifndef HPP_MOVABLE_ENTITY_HPP
-#define HPP_MOVABLE_ENTITY_HPP
+#ifndef HPP_MOVING_ENTITY_HPP
+#define HPP_MOVING_ENTITY_HPP
 
 #include <Entity.hpp>
 #include <LevelManager.hpp>
@@ -7,11 +7,11 @@
 #include <SDL2/SDL.h>
 #include <TextureManager.hpp>
 
-/** @class MovableEntity
- * An entity that can move up, down, left and right onto the map. A movable entity can't go across a scene wall.
+/** @class MovingEntity
+ * An entity that can move up, down, left and right onto the map. A moving entity can't walk across a scene wall.
  * @author Adrien RICCIARDI
  */
-class MovableEntity: public Entity
+class MovingEntity: public Entity
 {
 	public:
 		/** All entity possible directions. */
@@ -37,13 +37,13 @@ class MovableEntity: public Entity
 		int _collisionBlockContent;
 	
 	public:
-		/** Gather some initialization common to all movable entities.
+		/** Gather some initialization common to all moving entities.
 		 * @param textureId The texture to use on rendering.
 		 * @param x The X coordinate where to spawn the entity.
 		 * @param y The Y coordinate where to spawn the entity.
 		 * @param movingPixelsAmount Entity moving speed.
 		 */
-		MovableEntity(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount): Entity(x, y, textureId)
+		MovingEntity(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount): Entity(x, y, textureId)
 		{
 			_movingPixelsAmount = movingPixelsAmount;
 			

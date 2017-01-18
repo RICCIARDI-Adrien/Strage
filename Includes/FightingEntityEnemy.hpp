@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <FightingEntity.hpp>
 #include <FightingEntityPlayer.hpp>
-#include <MovableEntityBullet.hpp>
+#include <MovingEntityBullet.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
 #include <TextureManager.hpp>
@@ -200,7 +200,7 @@ class FightingEntityEnemy: public FightingEntity
 			
 			// Remove enemy presence from current block
 			_setBlockEnemyContent(0);
-			movedPixelsAmount = MovableEntity::moveToUp();
+			movedPixelsAmount = MovingEntity::moveToUp();
 			// Set enemy presence in new block
 			_setBlockEnemyContent(1);
 			
@@ -217,7 +217,7 @@ class FightingEntityEnemy: public FightingEntity
 			
 			// Remove enemy presence from current block
 			_setBlockEnemyContent(0);
-			movedPixelsAmount = MovableEntity::moveToDown();
+			movedPixelsAmount = MovingEntity::moveToDown();
 			// Set enemy presence in new block
 			_setBlockEnemyContent(1);
 			
@@ -234,7 +234,7 @@ class FightingEntityEnemy: public FightingEntity
 			
 			// Remove enemy presence from current block
 			_setBlockEnemyContent(0);
-			movedPixelsAmount = MovableEntity::moveToLeft();
+			movedPixelsAmount = MovingEntity::moveToLeft();
 			// Set enemy presence in new block
 			_setBlockEnemyContent(1);
 			
@@ -251,7 +251,7 @@ class FightingEntityEnemy: public FightingEntity
 			
 			// Remove enemy presence from current block
 			_setBlockEnemyContent(0);
-			movedPixelsAmount = MovableEntity::moveToRight();
+			movedPixelsAmount = MovingEntity::moveToRight();
 			// Set enemy presence in new block
 			_setBlockEnemyContent(1);
 			
@@ -318,7 +318,7 @@ class FightingEntityEnemy: public FightingEntity
 		
 		virtual void render()
 		{
-			MovableEntity::render();
+			MovingEntity::render();
 			
 			// Display the various rectangles in debug mode
 			#if CONFIGURATION_LOG_LEVEL == 3

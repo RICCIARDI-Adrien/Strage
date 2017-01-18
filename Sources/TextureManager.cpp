@@ -39,7 +39,7 @@ int initialize()
 	_pointerTextureManagerTextures[TEXTURE_ID_AMMUNITION] = new Texture(CONFIGURATION_PATH_TEXTURES "/Ammunition.bmp", 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_ENEMY_SPAWNER] = new Texture(CONFIGURATION_PATH_TEXTURES "/Enemy_Spawner.bmp", 1);
 	
-	// Movable objects
+	// Moving objects
 	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER] = new Texture(CONFIGURATION_PATH_TEXTURES "/Player.bmp", 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY] = new Texture(CONFIGURATION_PATH_TEXTURES "/Small_Enemy.bmp", 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_MEDIUM_ENEMY] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medium_Enemy.bmp", 1);

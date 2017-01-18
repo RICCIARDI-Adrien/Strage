@@ -18,7 +18,7 @@
 #include <list>
 #include <Log.hpp>
 #include <LevelManager.hpp>
-#include <MovableEntityBullet.hpp>
+#include <MovingEntityBullet.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
 
@@ -40,9 +40,9 @@ typedef enum
 // Private variables
 //-------------------------------------------------------------------------------------------------
 /** All bullets shot by the player. */
-static std::list<MovableEntityBullet *> _playerBulletsList;
+static std::list<MovingEntityBullet *> _playerBulletsList;
 /** All bullets shot by the enemies. */
-static std::list<MovableEntityBullet *> _enemiesBulletsList;
+static std::list<MovingEntityBullet *> _enemiesBulletsList;
 
 /** All enemies. */
 static std::list<FightingEntityEnemy *> _enemiesList;
@@ -202,10 +202,10 @@ static inline void _updateGameLogic()
 	pointerPlayer->update();
 	
 	// Check if player bullets have hit a wall or an enemy
-	std::list<MovableEntityBullet *>::iterator bulletsListIterator;
+	std::list<MovingEntityBullet *>::iterator bulletsListIterator;
 	std::list<FightingEntityEnemy *>::iterator enemiesListIterator;
 	std::list<EntityEnemySpawner *>::iterator enemySpawnersListIterator;
-	MovableEntityBullet *pointerPlayerBullet;
+	MovingEntityBullet *pointerPlayerBullet;
 	FightingEntityEnemy *pointerEnemy;
 	EntityEnemySpawner *pointerEnemySpawner;
 	for (bulletsListIterator = _playerBulletsList.begin(); bulletsListIterator != _playerBulletsList.end(); ++bulletsListIterator)
@@ -263,7 +263,7 @@ static inline void _updateGameLogic()
 	}
 	
 	// Check if enemies bullets have hit the player
-	MovableEntityBullet *pointerEnemyBullet;
+	MovingEntityBullet *pointerEnemyBullet;
 	for (bulletsListIterator = _enemiesBulletsList.begin(); bulletsListIterator != _enemiesBulletsList.end(); ++bulletsListIterator)
 	{
 		pointerEnemyBullet = *bulletsListIterator;
@@ -295,7 +295,7 @@ static inline void _updateGameLogic()
 	}
 	
 	// Update enemies artificial intelligence
-	MovableEntityBullet *pointerBullet;
+	MovingEntityBullet *pointerBullet;
 	int result;
 	SDL_Rect *pointerPositionRectangle;
 	for (enemiesListIterator = _enemiesList.begin(); enemiesListIterator != _enemiesList.end(); ++enemiesListIterator)
@@ -395,7 +395,7 @@ static inline void _renderGame()
 	for (enemySpawnersListIterator = LevelManager::enemySpawnersList.begin(); enemySpawnersListIterator != LevelManager::enemySpawnersList.end(); ++enemySpawnersListIterator) (*enemySpawnersListIterator)->render();
 	
 	// Display bullets after enemies, so when multiple enemies fire on themselves bullets are visible on top of enemies
-	std::list<MovableEntityBullet *>::iterator bulletsListIterator;
+	std::list<MovingEntityBullet *>::iterator bulletsListIterator;
 	for (bulletsListIterator = _playerBulletsList.begin(); bulletsListIterator != _playerBulletsList.end(); ++bulletsListIterator) (*bulletsListIterator)->render();
 	for (bulletsListIterator = _enemiesBulletsList.begin(); bulletsListIterator != _enemiesBulletsList.end(); ++bulletsListIterator) (*bulletsListIterator)->render();
 	
@@ -589,7 +589,7 @@ int main(int argc, char *argv[])
 			// Fire a bullet
 			if (isKeyPressed[KEYBOARD_KEY_ID_SPACE])
 			{
-				MovableEntityBullet *pointerBullet = pointerPlayer->shoot();
+				MovingEntityBullet *pointerBullet = pointerPlayer->shoot();
 				
 				// Is the player allowed to shoot ?
 				if (pointerBullet != NULL) _playerBulletsList.push_front(pointerBullet);

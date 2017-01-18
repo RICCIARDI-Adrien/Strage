@@ -2,16 +2,16 @@
 #define HPP_FIGHTING_ENTITY_HPP
 
 #include <AudioManager.hpp>
-#include <MovableEntity.hpp>
-#include <MovableEntityBullet.hpp>
+#include <MovingEntity.hpp>
+#include <MovingEntityBullet.hpp>
 #include <SDL2/SDL.h>
 #include <TextureManager.hpp>
 
 /** @class FightingEntity
- * A movable entity that has life points and can shoot bullets.
+ * A moving entity that has life points and can shoot bullets.
  * @author Adrien RICCIARDI
  */
-class FightingEntity: public MovableEntity
+class FightingEntity: public MovingEntity
 {
 	protected:
 		/** How many life points the entity owns. */
@@ -35,7 +35,7 @@ class FightingEntity: public MovableEntity
 		 * @param y Bullet Y coordinate.
 		 * @return An enemy-specific bullet.
 		 */
-		virtual MovableEntityBullet *_fireBullet(int x, int y) = 0;
+		virtual MovingEntityBullet *_fireBullet(int x, int y) = 0;
 		
 	public:
 		/** Initialize life points in addition to parent classes fields.
@@ -47,7 +47,7 @@ class FightingEntity: public MovableEntity
 		 * @param timeBetweenShots How many milliseconds to wait between two shots.
 		 * @param firingSoundId The sound to play when the entity shoots.
 		 */
-		FightingEntity(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, int maximumLifePointsAmount, int timeBetweenShots, AudioManager::SoundId firingSoundId): MovableEntity(x, y, textureId, movingPixelsAmount)
+		FightingEntity(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, int maximumLifePointsAmount, int timeBetweenShots, AudioManager::SoundId firingSoundId): MovingEntity(x, y, textureId, movingPixelsAmount)
 		{
 			_lifePointsAmount = maximumLifePointsAmount;
 			_maximumLifePointsAmount = maximumLifePointsAmount;
@@ -107,12 +107,12 @@ class FightingEntity: public MovableEntity
 		 * @return A valid pointer if the entity was allowed to shot,
 		 * @return NULL if the entity could not shoot (no more ammunition, slower fire rate...).
 		 */
-		virtual MovableEntityBullet *shoot()
+		virtual MovingEntityBullet *shoot()
 		{
 			// Allow to shoot only if enough time elapsed since last shot
 			if (SDL_GetTicks() - _lastShotTime >= _timeBetweenShots)
 			{
-				MovableEntityBullet *pointerBullet = _fireBullet(_positionRectangle.x + _bulletStartingPositionOffset, _positionRectangle.y + _bulletStartingPositionOffset);
+				MovingEntityBullet *pointerBullet = _fireBullet(_positionRectangle.x + _bulletStartingPositionOffset, _positionRectangle.y + _bulletStartingPositionOffset);
 				
 				// Get time after having generated the bullet, in case this takes more than 1 millisecond
 				_lastShotTime = SDL_GetTicks();

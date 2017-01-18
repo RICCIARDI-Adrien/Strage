@@ -1,14 +1,14 @@
-#ifndef HPP_MOVABLE_ENTITY_BULLET_HPP
-#define HPP_MOVABLE_ENTITY_BULLET_HPP
+#ifndef HPP_MOVING_ENTITY_BULLET_HPP
+#define HPP_MOVING_ENTITY_BULLET_HPP
 
-#include <MovableEntity.hpp>
+#include <MovingEntity.hpp>
 #include <TextureManager.hpp>
 
-/** @class MovableEntityBullet
+/** @class MovingEntityBullet
  * A bullet fired by the player or the enemies.
  * @author Adrien RICCIARDI
  */
-class MovableEntityBullet: public MovableEntity
+class MovingEntityBullet: public MovingEntity
 {
 	private:
 		/** A bullet maximum traveling distance, the bullet will be destroyed if it has traveled this distance without colliding with something. */
@@ -28,15 +28,12 @@ class MovableEntityBullet: public MovableEntity
 		 * @param facingDirection In which direction the bullet will move.
 		 * @param damageAmount How many life points the bullet removes when it hits an entity.
 		 */
-		MovableEntityBullet(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, Direction facingDirection, int damageAmount): MovableEntity(x, y, textureId, movingPixelsAmount)
+		MovingEntityBullet(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, Direction facingDirection, int damageAmount): MovingEntity(x, y, textureId, movingPixelsAmount)
 		{
 			_facingDirection = facingDirection;
 			_movedDistance = 0;
 			_damageAmount = -damageAmount;
 		}
-		
-		/** Free entity allocated resources. */
-		virtual ~MovableEntityBullet() {} // Nothing to free
 		
 		/** How many life points the bullet removes.
 		 * @return Life points to ADD to hit entity (the value is negative yet to directly use with modifyLife() functions).

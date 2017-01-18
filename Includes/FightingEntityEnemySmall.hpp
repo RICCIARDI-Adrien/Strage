@@ -3,7 +3,7 @@
 
 #include <AudioManager.hpp>
 #include <FightingEntityEnemy.hpp>
-#include <MovableEntityBulletSmallEnemy.hpp>
+#include <MovingEntityBulletSmallEnemy.hpp>
 #include <TextureManager.hpp>
 
 /** @class FightingEntityEnemySmall
@@ -18,9 +18,9 @@ class FightingEntityEnemySmall: public FightingEntityEnemy
 		 * @param y Ammunition Y coordinate.
 		 * @return The fired ammunition.
 		 */
-		virtual MovableEntityBullet *_fireBullet(int x, int y)
+		virtual MovingEntityBullet *_fireBullet(int x, int y)
 		{
-			return new MovableEntityBulletSmallEnemy(x, y, _facingDirection);
+			return new MovingEntityBulletSmallEnemy(x, y, _facingDirection);
 		}
 		
 	public:

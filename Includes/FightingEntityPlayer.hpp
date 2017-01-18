@@ -4,8 +4,8 @@
 #include <AudioManager.hpp>
 #include <FightingEntity.hpp>
 #include <Log.hpp>
-#include <MovableEntityBullet.hpp>
-#include <MovableEntityBulletPlayer.hpp>
+#include <MovingEntityBullet.hpp>
+#include <MovingEntityBulletPlayer.hpp>
 #include <Renderer.hpp>
 #include <TextureManager.hpp>
 
@@ -32,9 +32,9 @@ class FightingEntityPlayer: public FightingEntity
 		 * @param x Bullet X coordinate on the map.
 		 * @param y Bullet Y coordinate on the map.
 		 */
-		virtual MovableEntityBullet *_fireBullet(int x, int y)
+		virtual MovingEntityBullet *_fireBullet(int x, int y)
 		{
-			return new MovableEntityBulletPlayer(x, y, _facingDirection);
+			return new MovingEntityBulletPlayer(x, y, _facingDirection);
 		}
 	
 	public:
@@ -55,9 +55,9 @@ class FightingEntityPlayer: public FightingEntity
 		virtual ~FightingEntityPlayer() {} // Nothing to free
 		
 		/** @see FightingEntity for description. */
-		virtual MovableEntityBullet *shoot()
+		virtual MovingEntityBullet *shoot()
 		{
-			MovableEntityBullet *pointerBullet;
+			MovingEntityBullet *pointerBullet;
 			
 			// The player can't shoot if it has no more ammunition
 			if (_ammunitionAmount == 0) return NULL;
