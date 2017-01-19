@@ -29,6 +29,7 @@ int initialize()
 	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_4] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Metal_Grid_0.bmp", 0);
 	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_5] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Metal_Plate_0.bmp", 0);
 	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_6] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Metal_Plate_1.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_7] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Level_Exit.bmp", 0);
 	
 	// Scene walls
 	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_WALL_0] = new Texture(CONFIGURATION_PATH_TEXTURES "/Wall_Stone_0.bmp", 0);

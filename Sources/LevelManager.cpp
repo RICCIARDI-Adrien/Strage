@@ -224,7 +224,7 @@ Scene_Loading_End:
 					
 				case OBJECT_ID_LEVEL_EXIT:
 					_levelBlocks[COMPUTE_BLOCK_INDEX(x, y)].content |= BLOCK_CONTENT_LEVEL_EXIT;
-					LOG_DEBUG("Put level end on block (%d, %d).\n", x, y);
+					LOG_DEBUG("Spawned level exit on block (%d, %d).\n", x, y);
 					break;
 					
 				default:
