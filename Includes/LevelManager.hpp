@@ -42,13 +42,19 @@ int initialize();
 /** Free all allocated resources. */
 void uninitialize();
 
-/** Load a level.
- * @param sceneFileName The Comma Separated Value file describing the map decor.
- * @param objectsFileName The Comma Separated Value file telling where objects are located.
- * @return 0 if the level was successfully loaded,
- * @return -1 if an error occurred.
+/** Load a level from two Comma Separated Value files (\<level name\>_Scene.csv and \<level name\>_Objects.csv).
+ * @param levelName The level files name prefix (without _Scene.csv or _Objects.csv).
+ * @return -1 if an error occurred,
+ * @return 0 if the level was successfully loaded.
+ * @note This function is public to be used when debugging.
  */
-int loadLevel(const char *sceneFileName, const char *objectsFileName);
+int loadLevel(const char *levelName);
+
+/** Load the next level on the list.
+ * @return -1 if an error occurred,
+ * @return 0 if the level was successfully loaded. // TODO value to signal last level ?
+ */
+int loadNextLevel();
 
 /** Display the scene (decor) to the main renderer.
  * @param topLeftX This is the scene horizontal coordinate to start drawing from.

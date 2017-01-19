@@ -422,6 +422,29 @@ static inline void _renderGame()
 	SDL_RenderPresent(Renderer::pointerMainRenderer);
 }
 
+/** Load next level. */
+static inline void _loadNextLevel()
+{
+	// Stop all sounds
+	// TODO
+	
+	// Clear all lists
+	LevelManager::enemySpawnersList.clear();
+	_playerBulletsList.clear();
+	_enemiesBulletsList.clear();
+	_enemiesList.clear();
+	_animatedTexturesList.clear();
+	
+	// Restore player life
+	// TODO
+	
+	if (LevelManager::loadNextLevel() != 0)
+	{
+		LOG_ERROR("Failed to load next level.\n");
+		exit(-1);
+	}
+}
+
 //-------------------------------------------------------------------------------------------------
 // Entry point
 //-------------------------------------------------------------------------------------------------
@@ -466,8 +489,8 @@ int main(int argc, char *argv[])
 	
 	LOG_INFORMATION("Game engine successfully initialized.\n");
 	
-	// TEST
-	LevelManager::loadLevel("Levels/Test_Scene.csv", "Levels/Test_Objects.csv");
+	// Load first level
+	_loadNextLevel();
 	
 	while (1)
 	{
