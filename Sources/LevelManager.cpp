@@ -54,6 +54,7 @@ typedef enum
 	OBJECT_ID_MEDIPACK,
 	OBJECT_ID_AMMUNITION,
 	OBJECT_ID_ENEMY_SPAWNER,
+	OBJECT_ID_LEVEL_EXIT,
 	OBJECT_IDS_COUNT
 } ObjectId;
 
@@ -219,6 +220,11 @@ Scene_Loading_End:
 					enemySpawnersList.push_front(new EntityEnemySpawner(x * CONFIGURATION_LEVEL_BLOCK_SIZE, y * CONFIGURATION_LEVEL_BLOCK_SIZE));
 					_levelBlocks[COMPUTE_BLOCK_INDEX(x, y)].content |= BLOCK_CONTENT_ENEMY_SPAWNER;
 					LOG_DEBUG("Spawned enemy spawner on block (%d, %d).\n", x, y);
+					break;
+					
+				case OBJECT_ID_LEVEL_EXIT:
+					_levelBlocks[COMPUTE_BLOCK_INDEX(x, y)].content |= BLOCK_CONTENT_LEVEL_EXIT;
+					LOG_DEBUG("Put level end on block (%d, %d).\n", x, y);
 					break;
 					
 				default:

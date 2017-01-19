@@ -93,7 +93,8 @@ class FightingEntityPlayer: public FightingEntity
 		}
 		
 		/** Check for a pickable item on the underlaying block and get it if possible.
-		 * @return Always 0 because player MUST NOT be removed.
+		 * @return 0 if the game should continue,
+		 * @return 2 if the next level must be loaded.
 		 */
 		virtual int update()
 		{
@@ -131,10 +132,12 @@ class FightingEntityPlayer: public FightingEntity
 				AudioManager::playSound(AudioManager::SOUND_ID_AMMUNITION_TAKEN);
 				LOG_DEBUG("Player got ammunition.\n");
 				
-				// Remove the ammunitions item
+				// Remove the ammunition item
 				blockContent &= ~LevelManager::BLOCK_CONTENT_AMMUNITION;
 				LevelManager::setBlockContent(playerCenterX, playerCenterY, blockContent);
 			}
+			// Is it the level end ?
+			else if (blockContent & LevelManager::BLOCK_CONTENT_LEVEL_EXIT) return 2;
 			
 			return 0;
 		}

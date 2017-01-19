@@ -195,11 +195,39 @@ Spawn_Enemy:
 	return new FightingEntityEnemySmall(x, y);
 }
 
+/** Load next level. */
+static inline void _loadNextLevel()
+{
+	// Stop all sounds
+	// TODO
+	
+	// Clear all lists
+	LevelManager::enemySpawnersList.clear();
+	_playerBulletsList.clear();
+	_enemiesBulletsList.clear();
+	_enemiesList.clear();
+	_animatedTexturesList.clear();
+	
+	// Try to load next level
+	if (LevelManager::loadNextLevel() != 0)
+	{
+		LOG_ERROR("Failed to load next level.\n");
+		exit(-1);
+	}
+}
+
 /** Update all game actors. */
 static inline void _updateGameLogic()
 {
-	// Check if pickable objects can be taken by the player
-	pointerPlayer->update();
+	// Check if pickable objects can be taken by the player or if the level end has been reached
+	if (pointerPlayer->update() == 2)
+	{
+		// Restore player life
+		pointerPlayer->modifyLife(100);
+		
+		_loadNextLevel();
+		return;
+	}
 	
 	// Check if player bullets have hit a wall or an enemy
 	std::list<MovingEntityBullet *>::iterator bulletsListIterator;
@@ -420,29 +448,6 @@ static inline void _renderGame()
 	
 	// Display the rendered picture
 	SDL_RenderPresent(Renderer::pointerMainRenderer);
-}
-
-/** Load next level. */
-static inline void _loadNextLevel()
-{
-	// Stop all sounds
-	// TODO
-	
-	// Clear all lists
-	LevelManager::enemySpawnersList.clear();
-	_playerBulletsList.clear();
-	_enemiesBulletsList.clear();
-	_enemiesList.clear();
-	_animatedTexturesList.clear();
-	
-	// Restore player life
-	// TODO
-	
-	if (LevelManager::loadNextLevel() != 0)
-	{
-		LOG_ERROR("Failed to load next level.\n");
-		exit(-1);
-	}
 }
 
 //-------------------------------------------------------------------------------------------------

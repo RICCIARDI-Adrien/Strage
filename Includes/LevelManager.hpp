@@ -21,7 +21,8 @@ typedef enum
 	BLOCK_CONTENT_MEDIPACK = 1 << 1, //!< If set, tell that a medipack is present on top of this block.
 	BLOCK_CONTENT_AMMUNITION = 1 << 2, //!< If set, tell that ammunition are present on top of this block.
 	BLOCK_CONTENT_ENEMY = 1 << 3, //!< If set, tell that an enemy is walking on this block, so no other enemy can go through this block to avoid collisions.
-	BLOCK_CONTENT_ENEMY_SPAWNER = 1 << 4 //!< If set, tell that the whole block is occupied by an enemy spawner. Player and enemies can't cross the block, but bullets can.
+	BLOCK_CONTENT_ENEMY_SPAWNER = 1 << 4, //!< If set, tell that the whole block is occupied by an enemy spawner. Player and enemies can't cross the block, but bullets can.
+	BLOCK_CONTENT_LEVEL_EXIT = 1 << 5 //!< If set and the player walks on it, the game will load the next level.
 } BlockContent;
 
 //-------------------------------------------------------------------------------------------------
