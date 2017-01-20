@@ -47,6 +47,9 @@ void playSound(SoundId id);
 
 // TODO music
 
+/** Immediately stop all channels. */
+void stopAllSounds();
+
 }
 
 #endif

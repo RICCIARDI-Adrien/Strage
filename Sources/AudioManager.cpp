@@ -92,4 +92,9 @@ void playSound(SoundId id)
 	if (Mix_PlayChannel(-1, _pointerSounds[id], 0) == -1) LOG_DEBUG("Failed to play sound ID %d (%s).\n", id, Mix_GetError());
 }
 
+void stopAllSounds()
+{
+	Mix_HaltChannel(-1);
+}
+
 }

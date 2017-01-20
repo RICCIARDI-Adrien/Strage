@@ -198,8 +198,8 @@ Spawn_Enemy:
 /** Load next level. */
 static inline void _loadNextLevel()
 {
-	// Stop all sounds
-	// TODO
+	// Stop currently playing sounds
+	AudioManager::stopAllSounds();
 	
 	// Clear all lists
 	LevelManager::enemySpawnersList.clear();
