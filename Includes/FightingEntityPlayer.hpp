@@ -77,6 +77,14 @@ class FightingEntityPlayer: public FightingEntity
 			return _ammunitionAmount;
 		}
 		
+		/** Set the remaining ammunition count.
+		 * @param ammunitionCount The ammunition amount.
+		 */
+		inline void setAmmunitionAmount(int ammunitionCount)
+		{
+			_ammunitionAmount = ammunitionCount;
+		}
+		
 		/** Add ammunition to the player owned ones.
 		 * @param amount How many ammunition to add (do not use negative numbers, there is no check...).
 		 */

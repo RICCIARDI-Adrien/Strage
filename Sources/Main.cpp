@@ -219,6 +219,8 @@ static inline void _loadNextLevel()
 /** Update all game actors. */
 static inline void _updateGameLogic()
 {
+	int playerAmmunitionAmount;
+	
 	// Check if pickable objects can be taken by the player or if the level end has been reached
 	if (pointerPlayer->update() == 2)
 	{
@@ -227,8 +229,13 @@ static inline void _updateGameLogic()
 		{
 			// Restore player life
 			pointerPlayer->modifyLife(100);
-		
+			// Keep ammunition count across level
+			playerAmmunitionAmount = pointerPlayer->getAmmunitionAmount();
+			
 			_loadNextLevel();
+			
+			// Restore player ammunition
+			pointerPlayer->setAmmunitionAmount(playerAmmunitionAmount);
 			return;
 		}
 	}

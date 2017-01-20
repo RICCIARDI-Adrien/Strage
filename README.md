@@ -15,7 +15,7 @@ On Debian/Ubuntu systems, you have to install some SDL2 packages.
 ```
 sudo apt install libsdl2-dev libsdl2-mixer-dev libsdl2-ttf-dev
 ```
-Then simply type *make* in the Strage directory to build the game.
+Then simply type *make release* in the Strage directory to build the game.
 
 ## How it works
 Levels are made using [Tiled](http://www.mapeditor.org/) editor. They are constituted of 2 layers :
