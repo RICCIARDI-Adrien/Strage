@@ -162,7 +162,7 @@ class FightingEntity: public MovingEntity
 						
 					default:
 						LOG_ERROR("Entity is facing a non-existing direction (direction ID : %d).\n", _facingDirection);
-						break;
+						return NULL;
 				}
 				
 				MovingEntityBullet *pointerBullet = _fireBullet(_positionRectangle.x + bulletStartingPositionOffsetX, _positionRectangle.y + bulletStartingPositionOffsetY);
