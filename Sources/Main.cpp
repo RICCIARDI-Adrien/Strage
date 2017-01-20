@@ -453,6 +453,9 @@ static inline void _renderGame()
 	// Ammunition count
 	sprintf(string, "Ammo : %d", pointerPlayer->getAmmunitionAmount());
 	Renderer::renderText(string, CONFIGURATION_DISPLAY_HUD_AMMUNITION_X, CONFIGURATION_DISPLAY_HUD_AMMUNITION_Y);
+	// Remaining spawners count
+	sprintf(string, "Spawners : %d", (int) LevelManager::enemySpawnersList.size());
+	Renderer::renderText(string, CONFIGURATION_DISPLAY_HUD_SPAWNERS_X, CONFIGURATION_DISPLAY_HUD_SPAWNERS_Y);
 	
 	// Tell the player that he died
 	if (_isPlayerDead) Renderer::renderCentererText("You are dead !");
