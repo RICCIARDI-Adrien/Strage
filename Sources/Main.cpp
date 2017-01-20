@@ -21,6 +21,8 @@
 #include <MovingEntityBullet.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
+#include <TextureDisplayOverlay.hpp>
+#include <TextureManager.hpp>
 
 //-------------------------------------------------------------------------------------------------
 // Private types
@@ -62,6 +64,11 @@ static int _cameraOffsetY;
 
 /** When set to 1, stop game updating and display a text saying that the player is dead. */
 static int _isPlayerDead = 0;
+/** Set to 1 when the player has been hit. */
+static int _isPlayerHit = 0;
+
+/** Draw the screen in red if the player has been hit. */
+static TextureDisplayOverlay *_pointerPlayerHitOverlayTexture;
 
 //-------------------------------------------------------------------------------------------------
 // Public variables
@@ -321,6 +328,7 @@ static inline void _updateGameLogic()
 			
 			// Wound the player
 			pointerPlayer->modifyLife(pointerEnemyBullet->getDamageAmount());
+			_isPlayerHit = 1;
 			LOG_DEBUG("Player hit.\n");
 			
 			// Instantly stop game updating
@@ -445,6 +453,13 @@ static inline void _renderGame()
 	std::list<EntityAnimatedTexture *>::iterator animatedTexturesListIterator;
 	for (animatedTexturesListIterator = _animatedTexturesList.begin(); animatedTexturesListIterator != _animatedTexturesList.end(); ++animatedTexturesListIterator) (*animatedTexturesListIterator)->render();
 	
+	// Display the red overlay
+	if (_isPlayerHit)
+	{
+		_pointerPlayerHitOverlayTexture->render();
+		_isPlayerHit = 0;
+	}
+	
 	// Display HUD
 	char string[64];
 	// Life points
@@ -502,6 +517,8 @@ int main(int argc, char *argv[])
 	// Offset to subtract to the player position to have the scene camera coordinates
 	_cameraOffsetX = (Renderer::displayWidth / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER)->getWidth() / 2);
 	_cameraOffsetY = (Renderer::displayHeight / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER)->getHeight() / 2);
+	// Player damage overlay
+	_pointerPlayerHitOverlayTexture = (TextureDisplayOverlay *) TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_HIT_OVERLAY);
 	
 	// Initialize pseudo-random numbers generator
 	srand(time(NULL));

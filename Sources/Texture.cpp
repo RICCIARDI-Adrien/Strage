@@ -11,7 +11,7 @@
 //-------------------------------------------------------------------------------------------------
 // Private functions
 //-------------------------------------------------------------------------------------------------
-SDL_Texture *Texture::loadFromBitmap(const char *fileName, int isRleCompressionEnabled)
+SDL_Texture *Texture::_loadFromBitmap(const char *fileName, int isRleCompressionEnabled)
 {
 	// Try to load bitmap
 	SDL_Surface *pointerSurface = SDL_LoadBMP(fileName);
@@ -60,7 +60,7 @@ Texture::Texture(const char *fileName, int isRleCompressionEnabled)
 	int access;
 	
 	// Try to load the texture
-	_pointerTexture = loadFromBitmap(fileName, isRleCompressionEnabled);
+	_pointerTexture = _loadFromBitmap(fileName, isRleCompressionEnabled);
 	if (_pointerTexture == NULL) exit(-1);
 	
 	// Cache width and height parameters

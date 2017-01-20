@@ -9,21 +9,20 @@
  */
 class Texture
 {
-	private:
+	protected:
 		/** The texture. */
 		SDL_Texture *_pointerTexture;
 		
 		/** Use this rectangle to render the texture (some values are cached this way). */
 		SDL_Rect _positionRectangle;
 	
-	protected:
 		/** Load a texture from a bitmap file.
 		 * @param fileName The bitmap file.
 		 * @param isRleCompressionEnabled Set to 1 to enable the RLE compression, resulting in faster rendering on highly transparent pictures.
 		 * @return a valid pointer if the texture was successfully loaded,
 		 * @return NULL if an error occurred.
 		 */
-		SDL_Texture *loadFromBitmap(const char *fileName, int isRleCompressionEnabled);
+		SDL_Texture *_loadFromBitmap(const char *fileName, int isRleCompressionEnabled);
 	
 	public:
 		/** Create a SDL texture from a picture file.

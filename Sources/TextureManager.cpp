@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <Log.hpp>
 #include <Texture.hpp>
+#include <TextureDisplayOverlay.hpp>
 #include <TextureManager.hpp>
 
 namespace TextureManager
@@ -83,6 +84,9 @@ int initialize()
 	_pointerTextureManagerTextures[TEXTURE_ID_SHIP_EXPLOSION_13] = new Texture(CONFIGURATION_PATH_TEXTURES "/Ship_Explosion_13.bmp", 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_SHIP_EXPLOSION_14] = new Texture(CONFIGURATION_PATH_TEXTURES "/Ship_Explosion_14.bmp", 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_SHIP_EXPLOSION_15] = new Texture(CONFIGURATION_PATH_TEXTURES "/Ship_Explosion_15.bmp", 1);
+	
+	// Overlays
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_HIT_OVERLAY] = new TextureDisplayOverlay(CONFIGURATION_PATH_TEXTURES "/Player_Hit_Overlay.bmp", 1);
 	
 	return 0;
 }
