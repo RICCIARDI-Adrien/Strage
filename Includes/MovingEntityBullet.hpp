@@ -33,6 +33,9 @@ class MovingEntityBullet: public MovingEntity
 			_facingDirection = facingDirection;
 			_movedDistance = 0;
 			_damageAmount = -damageAmount;
+			
+			// Collide with enemy spawners too
+			_collisionBlockContent |= LevelManager::BLOCK_CONTENT_ENEMY_SPAWNER;
 		}
 		
 		/** How many life points the bullet removes.
