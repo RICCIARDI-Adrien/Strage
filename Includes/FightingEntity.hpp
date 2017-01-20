@@ -19,8 +19,22 @@ class FightingEntity: public MovingEntity
 		/** The maximum entity life value. */
 		int _maximumLifePointsAmount;
 		
-		/** Add this offset to the entity coordinates to make the fired bullet start from the entity center. */
-		int _bulletStartingPositionOffset;
+		/** Offset to add to entity X coordinate to fire the bullet to up direction. */
+		int _bulletStartingPositionOffsetUpX;
+		/** Offset to add to entity Y coordinate to fire the bullet to up direction. */
+		int _bulletStartingPositionOffsetUpY;
+		/** Offset to add to entity X coordinate to fire the bullet to down direction. */
+		int _bulletStartingPositionOffsetDownX;
+		/** Offset to add to entity Y coordinate to fire the bullet to down direction. */
+		int _bulletStartingPositionOffsetDownY;
+		/** Offset to add to entity X coordinate to fire the bullet to left direction. */
+		int _bulletStartingPositionOffsetLeftX;
+		/** Offset to add to entity Y coordinate to fire the bullet to left direction. */
+		int _bulletStartingPositionOffsetLeftY;
+		/** Offset to add to entity X coordinate to fire the bullet to right direction. */
+		int _bulletStartingPositionOffsetRightX;
+		/** Offset to add to entity Y coordinate to fire the bullet to right direction. */
+		int _bulletStartingPositionOffsetRightY;
 		
 		/** When was the last shot fired (in milliseconds). This is part of the fire rate mechanism. */
 		unsigned int _lastShotTime;
@@ -55,9 +69,18 @@ class FightingEntity: public MovingEntity
 			// Player and enemies collide with walls and enemy spawners
 			_collisionBlockContent = LevelManager::BLOCK_CONTENT_WALL | LevelManager::BLOCK_CONTENT_ENEMY_SPAWNER;
 			
-			// Cache the offset to add to entity coordinates to make fired bullets start from entity center
+			// Cache the offset to add to entity coordinates to make fired bullets start from where the cannon is
 			Texture *pointerBulletTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLET); // Use textures to avoid instantiate a bullet to get its dimensions (all bullets have same dimensions)
-			_bulletStartingPositionOffset = (_pointerTexture->getWidth() - pointerBulletTexture->getWidth()) / 2; // This works in all fighting entity facing directions because fighting entity textures are appositely circular
+			// Assume that entity is faced to the direction the bullet is fired
+			_bulletStartingPositionOffsetUpX = (_pointerTexture->getWidth() - pointerBulletTexture->getWidth()) / 2;
+			_bulletStartingPositionOffsetUpY = -pointerBulletTexture->getHeight();
+			_bulletStartingPositionOffsetDownX = _bulletStartingPositionOffsetUpX;
+			_bulletStartingPositionOffsetDownY = _pointerTexture->getHeight(); // Entity is facing left, so its horizontal width is its height
+			_bulletStartingPositionOffsetLeftX = _bulletStartingPositionOffsetUpY;
+			_bulletStartingPositionOffsetLeftY = _bulletStartingPositionOffsetUpX - 1; // -1 to adjust the rotated bullet texture (TODO how to determine this ?)
+			_bulletStartingPositionOffsetRightX = _bulletStartingPositionOffsetDownY; // Entity is facing right, so its horizontal width is its height
+			_bulletStartingPositionOffsetRightY = _bulletStartingPositionOffsetLeftY;
+			
 			_timeBetweenShots = timeBetweenShots;
 			_lastShotTime = 0; // Allow to shoot immediately
 			_firingSoundId = firingSoundId;
@@ -109,10 +132,40 @@ class FightingEntity: public MovingEntity
 		 */
 		virtual MovingEntityBullet *shoot()
 		{
+			int bulletStartingPositionOffsetX, bulletStartingPositionOffsetY;
+			
 			// Allow to shoot only if enough time elapsed since last shot
 			if (SDL_GetTicks() - _lastShotTime >= _timeBetweenShots)
 			{
-				MovingEntityBullet *pointerBullet = _fireBullet(_positionRectangle.x + _bulletStartingPositionOffset, _positionRectangle.y + _bulletStartingPositionOffset);
+				// Select the right offset according to entity direction
+				switch (_facingDirection)
+				{
+					case DIRECTION_UP:
+						bulletStartingPositionOffsetX = _bulletStartingPositionOffsetUpX;
+						bulletStartingPositionOffsetY = _bulletStartingPositionOffsetUpY;
+						break;
+						
+					case DIRECTION_DOWN:
+						bulletStartingPositionOffsetX = _bulletStartingPositionOffsetDownX;
+						bulletStartingPositionOffsetY = _bulletStartingPositionOffsetDownY;
+						break;
+						
+					case DIRECTION_LEFT:
+						bulletStartingPositionOffsetX = _bulletStartingPositionOffsetLeftX;
+						bulletStartingPositionOffsetY = _bulletStartingPositionOffsetLeftY;
+						break;
+						
+					case DIRECTION_RIGHT:
+						bulletStartingPositionOffsetX = _bulletStartingPositionOffsetRightX;
+						bulletStartingPositionOffsetY = _bulletStartingPositionOffsetRightY;
+						break;
+						
+					default:
+						LOG_ERROR("Entity is facing a non-existing direction (direction ID : %d).\n", _facingDirection);
+						break;
+				}
+				
+				MovingEntityBullet *pointerBullet = _fireBullet(_positionRectangle.x + bulletStartingPositionOffsetX, _positionRectangle.y + bulletStartingPositionOffsetY);
 				
 				// Get time after having generated the bullet, in case this takes more than 1 millisecond
 				_lastShotTime = SDL_GetTicks();
