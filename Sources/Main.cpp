@@ -222,11 +222,15 @@ static inline void _updateGameLogic()
 	// Check if pickable objects can be taken by the player or if the level end has been reached
 	if (pointerPlayer->update() == 2)
 	{
-		// Restore player life
-		pointerPlayer->modifyLife(100);
+		// Next level can be loaded only if all enemies are dead
+		if (_enemiesList.empty())
+		{
+			// Restore player life
+			pointerPlayer->modifyLife(100);
 		
-		_loadNextLevel();
-		return;
+			_loadNextLevel();
+			return;
+		}
 	}
 	
 	// Check if player bullets have hit a wall or an enemy
