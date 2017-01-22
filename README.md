@@ -25,5 +25,14 @@ Levels are made using [Tiled](http://www.mapeditor.org/) editor. They are consti
 Scene textures and objects are gathered in two Tiled tilesets (Scene.tsx and Objects.tsx) located in the Tiled_Resources directory.
 
 ## Credits
+* Musics : [jamendo](https://www.jamendo.com)
+   * Akashic Records - Epic Action Hero
+   * Blue Giraffe - Action Intense Cinematic
+   * Celestial Aeon Project - Epic
+   * E. Erkut - Dark Moment - Dark Epic Trailer
+   * Matti Paalanen - Emotion
+   * Matti Paalanen - Epic Action
+   * Soundbay - Epic Future
+   * Soundshrim - Epic Adventure
 * Sounds : [universal-soundbank.com](http://www.universal-soundbank.com), [soundbible.com](http://soundbible.com)
 * Textures : [textures.com](http://www.textures.com)
