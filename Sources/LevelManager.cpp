@@ -206,8 +206,9 @@ Scene_Loading_End:
 						int playerWidth = pointerTexture->getWidth();
 						int playerHeight = pointerTexture->getHeight();
 						
-						// Spawn the player at the block center
-						pointerPlayer = new FightingEntityPlayer((x * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - playerWidth) / 2), (y * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - playerHeight) / 2));
+						// Put the player at the block center
+						pointerPlayer->setX((x * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - playerWidth) / 2));
+						pointerPlayer->setY((y * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - playerHeight) / 2));
 						isPlayerSpawned = 1;
 						LOG_DEBUG("Spawned player on block (%d, %d).", x, y);
 					}

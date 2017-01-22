@@ -88,6 +88,8 @@ FightingEntityPlayer *pointerPlayer;
 /** Automatically free allocated resources on program shutdown. */
 static void _exitFreeResources()
 {
+	delete pointerPlayer;
+	
 	AudioManager::uninitialize();
 	LevelManager::uninitialize();
 	TextureManager::uninitialize();
@@ -233,8 +235,6 @@ static inline void _loadNextLevel()
 /** Update all game actors. */
 static inline void _updateGameLogic()
 {
-	int playerAmmunitionAmount;
-	
 	// Check if pickable objects can be taken by the player or if the level end has been reached
 	if (pointerPlayer->update() == 2)
 	{
@@ -243,13 +243,8 @@ static inline void _updateGameLogic()
 		{
 			// Restore player life
 			pointerPlayer->modifyLife(100);
-			// Keep ammunition count across level
-			playerAmmunitionAmount = pointerPlayer->getAmmunitionAmount();
 			
 			_loadNextLevel();
-			
-			// Restore player ammunition
-			pointerPlayer->setAmmunitionAmount(playerAmmunitionAmount);
 			return;
 		}
 	}
@@ -517,8 +512,14 @@ int main(int argc, char *argv[])
 	if (LevelManager::initialize() != 0) return -1;
 	if (AudioManager::initialize() != 0) return -1;
 	
+	// Create the player now that everything is working
+	pointerPlayer = new FightingEntityPlayer(0, 0); // It will be placed at the right location by the level loading function
+	
 	// Automatically dispose of allocated resources on program exit (allowing to use exit() elsewhere in the program)
 	atexit(_exitFreeResources);
+	
+	// Initialize pseudo-random numbers generator
+	srand(time(NULL));
 	
 	// Cache some values
 	_enemySpawnOffsetX = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_SMALL_ENEMY)->getWidth() / 2; // All enemies have same dimensions
@@ -528,9 +529,6 @@ int main(int argc, char *argv[])
 	_cameraOffsetY = (Renderer::displayHeight / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER)->getHeight() / 2);
 	// Player damage overlay
 	_pointerPlayerHitOverlayTexture = (TextureDisplayOverlay *) TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_HIT_OVERLAY);
-	
-	// Initialize pseudo-random numbers generator
-	srand(time(NULL));
 	
 	LOG_INFORMATION("Game engine successfully initialized.");
 	

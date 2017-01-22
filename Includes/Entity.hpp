@@ -66,6 +66,22 @@ class Entity
 			return _positionRectangle.x;
 		}
 		
+		/** Set the entity X coordinate.
+		 * @param x The X coordinate.
+		 */
+		inline void setX(int x)
+		{
+			_positionRectangle.x = x;
+		}
+		
+		/** Set the entity Y coordinate.
+		 * @param y The Y coordinate.
+		 */
+		inline void setY(int y)
+		{
+			_positionRectangle.y = y;
+		}
+		
 		/** Get the entity Y coordinate.
 		 * @return The Y coordinate.
 		 */
