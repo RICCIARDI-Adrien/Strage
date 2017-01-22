@@ -70,6 +70,9 @@ static int _isPlayerHit = 0;
 /** Draw the screen in red if the player has been hit. */
 static TextureDisplayOverlay *_pointerPlayerHitOverlayTexture;
 
+/** The current level number. */
+static int _currentLevelNumber = 0;
+
 //-------------------------------------------------------------------------------------------------
 // Public variables
 //-------------------------------------------------------------------------------------------------
@@ -216,11 +219,12 @@ static inline void _loadNextLevel()
 	_animatedTexturesList.clear();
 	
 	// Try to load next level
-	if (LevelManager::loadNextLevel() != 0)
+	if (LevelManager::loadLevel(_currentLevelNumber) != 0)
 	{
-		LOG_ERROR("Failed to load next level.\n");
+		LOG_ERROR("Failed to load level %d.\n", _currentLevelNumber);
 		exit(-1);
 	}
+	_currentLevelNumber++;
 }
 
 /** Update all game actors. */

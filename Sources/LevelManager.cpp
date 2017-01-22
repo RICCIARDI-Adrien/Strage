@@ -27,6 +27,11 @@ namespace LevelManager
 #define COMPUTE_BLOCK_INDEX(x, y) (((y) * _levelWidthBlocks) + (x))
 
 //-------------------------------------------------------------------------------------------------
+// Public constants
+//-------------------------------------------------------------------------------------------------
+const int levelsCount = 2;
+
+//-------------------------------------------------------------------------------------------------
 // Private types
 //-------------------------------------------------------------------------------------------------
 /** All available blocks. */
@@ -74,40 +79,42 @@ static int _displayHeightBlocks;
 /** Contain all level blocks. */
 static Block _levelBlocks[CONFIGURATION_LEVEL_MAXIMUM_WIDTH * CONFIGURATION_LEVEL_MAXIMUM_HEIGHT];
 
-/** All available levels (only level name must be supplied). */
-static const char *_pointerLevelNames[] =
-{
-	"Test",
-	"Test_2"
-};
-
-/** The currently loaded level index in the level names array. */
-static unsigned int _currentLevelNameIndex = 0;
-
 //-------------------------------------------------------------------------------------------------
 // Public variables
 //-------------------------------------------------------------------------------------------------
 std::list<EntityEnemySpawner *> enemySpawnersList;
 
 //-------------------------------------------------------------------------------------------------
-// Private functions
+// Public functions
 //-------------------------------------------------------------------------------------------------
-/** Load a level from two Comma Separated Value files (\<level name\>_Scene.csv and \<level name\>_Objects.csv).
- * @param levelName The level files name prefix (without _Scene.csv or _Objects.csv).
- * @return -1 if an error occurred,
- * @return 0 if the level was successfully loaded.
- */
-static inline int _loadLevel(const char *levelName)
+int initialize()
+{
+	// Compute the amount of blocks that can be simultaneously displayed on the current display
+	_displayWidthBlocks = Renderer::displayWidth / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	if (Renderer::displayWidth % CONFIGURATION_LEVEL_BLOCK_SIZE != 0) _displayWidthBlocks++;
+	_displayHeightBlocks = Renderer::displayHeight / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	if (Renderer::displayHeight % CONFIGURATION_LEVEL_BLOCK_SIZE != 0) _displayHeightBlocks++;
+	LOG_DEBUG("Display size : %dx%d pixels, %dx%d blocks.\n", Renderer::displayWidth, Renderer::displayHeight, _displayWidthBlocks, _displayHeightBlocks);
+
+	return 0;
+}
+
+void uninitialize()
+{
+	// TODO if needed
+}
+
+int loadLevel(int levelNumber)
 {
 	FILE *pointerFile;
 	int x, y, character, i, objectId, isPlayerSpawned = 0;
 	TextureManager::TextureId textureId;
 	char stringFileName[256];
 	
-	LOG_DEBUG("Loading level %s...\n", levelName);
+	LOG_DEBUG("Loading level %d...\n", levelNumber);
 	
 	// Try to open the scene file
-	snprintf(stringFileName, sizeof(stringFileName), "%s_Scene.csv", levelName);
+	snprintf(stringFileName, sizeof(stringFileName), CONFIGURATION_PATH_LEVELS "/%d_Scene.csv", levelNumber);
 	pointerFile = fopen(stringFileName, "r");
 	if (pointerFile == NULL)
 	{
@@ -158,7 +165,7 @@ Scene_Loading_End:
 	fclose(pointerFile);
 	
 	// Try to open the objects file
-	snprintf(stringFileName, sizeof(stringFileName), "%s_Objects.csv", levelName);
+	snprintf(stringFileName, sizeof(stringFileName), CONFIGURATION_PATH_LEVELS "/%d_Objects.csv", levelNumber);
 	pointerFile = fopen(stringFileName, "r");
 	if (pointerFile == NULL)
 	{
@@ -246,52 +253,12 @@ Scene_Loading_End:
 	
 	fclose(pointerFile);
 	
-	LOG_INFORMATION("Level '%s' successfully loaded.\n", stringFileName);
+	LOG_INFORMATION("Level %d successfully loaded.\n", levelNumber);
 	return 0;
 	
 Objects_Loading_Error:
 	fclose(pointerFile);
 	return -1;
-}
-
-//-------------------------------------------------------------------------------------------------
-// Public functions
-//-------------------------------------------------------------------------------------------------
-int initialize()
-{
-	// Compute the amount of blocks that can be simultaneously displayed on the current display
-	_displayWidthBlocks = Renderer::displayWidth / CONFIGURATION_LEVEL_BLOCK_SIZE;
-	if (Renderer::displayWidth % CONFIGURATION_LEVEL_BLOCK_SIZE != 0) _displayWidthBlocks++;
-	_displayHeightBlocks = Renderer::displayHeight / CONFIGURATION_LEVEL_BLOCK_SIZE;
-	if (Renderer::displayHeight % CONFIGURATION_LEVEL_BLOCK_SIZE != 0) _displayHeightBlocks++;
-	LOG_DEBUG("Display size : %dx%d pixels, %dx%d blocks.\n", Renderer::displayWidth, Renderer::displayHeight, _displayWidthBlocks, _displayHeightBlocks);
-
-	return 0;
-}
-
-void uninitialize()
-{
-	// TODO if needed
-}
-
-int loadNextLevel()
-{
-	char stringFileName[256];
-	
-	// Is there one more level to load ?
-	if (_currentLevelNameIndex >= sizeof(_pointerLevelNames) / sizeof(char *))
-	{
-		LOG_ERROR("No more levels to load (currently in level %u).\n", _currentLevelNameIndex);
-		return -1;
-	}
-	
-	// TODO clean all lists here ?
-	
-	// Concatenate levels path to file name
-	snprintf(stringFileName, sizeof(stringFileName), CONFIGURATION_PATH_LEVELS "/%s", _pointerLevelNames[_currentLevelNameIndex]);
-	_currentLevelNameIndex++;
-	
-	return _loadLevel(stringFileName);
 }
 
 void renderScene(int topLeftX, int topLeftY)

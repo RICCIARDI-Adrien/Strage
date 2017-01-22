@@ -12,6 +12,12 @@ namespace LevelManager
 {
 
 //-------------------------------------------------------------------------------------------------
+// Constants
+//-------------------------------------------------------------------------------------------------
+/** How many levels are available. */
+extern const int levelsCount;
+
+//-------------------------------------------------------------------------------------------------
 // Types
 //-------------------------------------------------------------------------------------------------
 /** All available bits to use in the content bit field of a block. */
@@ -43,19 +49,12 @@ int initialize();
 /** Free all allocated resources. */
 void uninitialize();
 
-/** Load a level from two Comma Separated Value files (\<level name\>_Scene.csv and \<level name\>_Objects.csv).
- * @param levelName The level files name prefix (without _Scene.csv or _Objects.csv).
+/** Load a level from two Comma Separated Value files (x_Scene.csv and x_Objects.csv, where x is the level number).
+ * @param levelNumber The level number (starting from 0).
  * @return -1 if an error occurred,
  * @return 0 if the level was successfully loaded.
- * @note This function is public to be used when debugging.
  */
-int loadLevel(const char *levelName);
-
-/** Load the next level on the list.
- * @return -1 if an error occurred,
- * @return 0 if the level was successfully loaded. // TODO value to signal last level ?
- */
-int loadNextLevel();
+int loadLevel(int levelNumber);
 
 /** Display the scene (decor) to the main renderer.
  * @param topLeftX This is the scene horizontal coordinate to start drawing from.
