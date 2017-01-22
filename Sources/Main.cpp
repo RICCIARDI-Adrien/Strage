@@ -545,6 +545,7 @@ int main(int argc, char *argv[])
 	
 	// Load first level
 	_loadNextLevel();
+	AudioManager::playMusic();
 	
 	while (1)
 	{
@@ -599,6 +600,8 @@ int main(int argc, char *argv[])
 								_isGamePaused = !_isGamePaused;
 								if (_isGamePaused) LOG_INFORMATION("Game paused.");
 								else LOG_INFORMATION("Game continuing.");
+								
+								AudioManager::pauseMusic(_isGamePaused);
 							}
 							break;
 							

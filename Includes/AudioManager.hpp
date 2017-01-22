@@ -45,7 +45,13 @@ void uninitialize();
  */
 void playSound(SoundId id);
 
-// TODO music
+/** Start playing randomly all available musics. */
+void playMusic();
+
+/** Pause or resume music playing.
+ * @param isMusicPaused Set to 1 to pause music, set to 0 to resume playing.
+ */
+void pauseMusic(int isMusicPaused);
 
 /** Immediately stop all channels. */
 void stopAllSounds();

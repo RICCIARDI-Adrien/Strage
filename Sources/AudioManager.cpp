@@ -3,18 +3,73 @@
  * @author Adrien RICCIARDI
  */
 #include <AudioManager.hpp>
+#include <chrono>
 #include <cstdlib>
 #include <Log.hpp>
 #include <SDL2/SDL_mixer.h>
+#include <thread>
 
 namespace AudioManager
 {
+
+//-------------------------------------------------------------------------------------------------
+// Private types
+//-------------------------------------------------------------------------------------------------
+/** How many musics are available. */
+#define MUSICS_COUNT (sizeof(_musics) / sizeof(Music))
+
+//-------------------------------------------------------------------------------------------------
+// Private types
+//-------------------------------------------------------------------------------------------------
+/** Associate a music file name to a playable handle. */
+typedef struct
+{
+	const char *pointerFileName; //!< The file containing the music.
+	Mix_Music *pointerMusicHandle; //!< The handle to use to play this music.
+} Music;
 
 //-------------------------------------------------------------------------------------------------
 // Private variables
 //-------------------------------------------------------------------------------------------------
 /** Hold all sounds loaded into a chunk. */
 static Mix_Chunk *_pointerSounds[SOUND_IDS_COUNT];
+
+/** All available musics. */
+static Music _musics[] =
+{
+	{
+		CONFIGURATION_PATH_SOUNDS "/Akashic_Records_-_Epic_Action_Hero.mp3",
+		NULL
+	},
+	{
+		CONFIGURATION_PATH_SOUNDS "/Blue_Giraffe_-_Action_Intense_Cinematic.mp3",
+		NULL
+	},
+	{
+		CONFIGURATION_PATH_SOUNDS "/Celestial_Aeon_Project_-_Epic.mp3",
+		NULL
+	},
+	{
+		CONFIGURATION_PATH_SOUNDS "/E._Erkut_-_Dark_Moment_-_Dark_Epic_Trailer.mp3",
+		NULL
+	},
+	{
+		CONFIGURATION_PATH_SOUNDS "/Matti_Paalanen_-_Emotion.mp3",
+		NULL
+	},
+	{
+		CONFIGURATION_PATH_SOUNDS "/Matti_Paalanen_-_Epic_Action.mp3",
+		NULL
+	},
+	{
+		CONFIGURATION_PATH_SOUNDS "/Soundbay_-_Epic_Future.mp3",
+		NULL
+	},
+	{
+		CONFIGURATION_PATH_SOUNDS "/Soundshrim_-_Epic_Adventure.mp3",
+		NULL
+	}
+};
 
 //-------------------------------------------------------------------------------------------------
 // Private functions
@@ -39,11 +94,38 @@ static Mix_Chunk *_loadFromWave(const char *fileName)
 	return pointerChunk;
 }
 
+/** Make a little pause then play another music randomly chosen. */
+static void _playNextMusic()
+{
+	// Pause 2 seconds to avoid directly starting a different music
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+	
+	playMusic();
+}
+
+/** Called when the previous music finished. Call a thread that will start the music out of the callback scope, as requested by SDL Mixer documentation. */
+static void _scheduleNextMusic()
+{
+	static std::thread *pointerMusicPlayerThread = NULL;
+	
+	// Destroy previous thread if it exists
+	if (pointerMusicPlayerThread != NULL)
+	{
+		pointerMusicPlayerThread->join();
+		delete pointerMusicPlayerThread;
+	}
+	
+	// Start a new thread
+	pointerMusicPlayerThread = new std::thread(_playNextMusic);
+}
+
 //-------------------------------------------------------------------------------------------------
 // Public functions
 //-------------------------------------------------------------------------------------------------
 int initialize()
 {
+	unsigned int i;
+	
 	// Open audio mixer
 	if (Mix_OpenAudio(CONFIGURATION_AUDIO_SAMPLING_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024) != 0) // Chunk size has been randomly chosen due to extremely explicit documentation...
 	{
@@ -66,13 +148,32 @@ int initialize()
 	_pointerSounds[SOUND_ID_ENEMY_SPAWNER_BULLET_IMPACT] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Enemy_Spawner_Bullet_Impact.wav");
 	_pointerSounds[SOUND_ID_ENEMY_SPAWNER_EXPLOSION] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Enemy_Spawner_Explosion.wav");
 	
+	// Load all musics
+	for (i = 0; i < MUSICS_COUNT; i++)
+	{
+		// Try to load the file
+		_musics[i].pointerMusicHandle = Mix_LoadMUS(_musics[i].pointerFileName);
+		if (_musics[i].pointerMusicHandle == NULL)
+		{
+			LOG_ERROR("Failed to load music '%s' (%s).", _musics[i].pointerFileName, Mix_GetError());
+			return -1;
+		}
+	}
+	
+	// Call a callback when playing a music has finished
+	Mix_HookMusicFinished(_scheduleNextMusic);
+	
 	return 0;
 }
 
 void uninitialize()
 {
+	unsigned int i;
+	
+	// Free all musics
+	for (i = 0; i < MUSICS_COUNT; i++) Mix_FreeMusic(_musics[i].pointerMusicHandle);
+	
 	// Free all sounds
-	int i;
 	for (i = 0; i < SOUND_IDS_COUNT; i++) Mix_FreeChunk(_pointerSounds[i]);
 	
 	// Release audio mixer
@@ -90,6 +191,24 @@ void playSound(SoundId id)
 	
 	// Try to play the sound on the first available channel
 	if (Mix_PlayChannel(-1, _pointerSounds[id], 0) == -1) LOG_DEBUG("Failed to play sound ID %d (%s).", id, Mix_GetError());
+}
+
+void playMusic()
+{
+	int musicIndex;
+	
+	// Select a random music
+	musicIndex = rand() % MUSICS_COUNT;
+	
+	// Try to play it
+	if (Mix_PlayMusic(_musics[musicIndex].pointerMusicHandle, 1) != 0) LOG_ERROR("Failed to play music %s (%s).", _musics[musicIndex].pointerFileName, Mix_GetError());
+	else LOG_DEBUG("Playing music '%s'.", _musics[musicIndex].pointerFileName);
+}
+
+void pauseMusic(int isMusicPaused)
+{
+	if (isMusicPaused) Mix_PauseMusic();
+	else Mix_ResumeMusic();
 }
 
 void stopAllSounds()

@@ -12,7 +12,7 @@ ifeq ($(OS),Windows_NT)
 	# Windows needs custom libraries to provide WinMain()
 	LIBRARIES = -lmingw32 -lSDL2main
 endif
-LIBRARIES += -lSDL2 -lSDL2_mixer -lSDL2_ttf
+LIBRARIES += -lSDL2 -lSDL2_mixer -lSDL2_ttf -pthread
 SOURCES = $(shell find $(PATH_SOURCES) -name "*.cpp")
 
 # Program configuration
