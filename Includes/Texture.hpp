@@ -32,7 +32,7 @@ class Texture
 			SDL_Surface *pointerSurface = SDL_LoadBMP(fileName);
 			if (pointerSurface == NULL)
 			{
-				LOG_ERROR("Failed to load texture '%s' (%s).\n", fileName, SDL_GetError());
+				LOG_ERROR("Failed to load texture '%s' (%s).", fileName, SDL_GetError());
 				return NULL;
 			}
 			
@@ -40,7 +40,7 @@ class Texture
 			unsigned int transparentColor = SDL_MapRGB(pointerSurface->format, 0x00, 0xFF, 0x00);
 			if (SDL_SetColorKey(pointerSurface, SDL_TRUE, transparentColor) != 0)
 			{
-				LOG_ERROR("Failed to set the surface transparent color (%s).\n", SDL_GetError());
+				LOG_ERROR("Failed to set the surface transparent color (%s).", SDL_GetError());
 				return NULL;
 			}
 			
@@ -49,7 +49,7 @@ class Texture
 			{
 				if (SDL_SetSurfaceRLE(pointerSurface, 1) != 0)
 				{
-					LOG_ERROR("Failed to enable RLE compression (%s).\n", SDL_GetError());
+					LOG_ERROR("Failed to enable RLE compression (%s).", SDL_GetError());
 					return NULL;
 				}
 			}
@@ -59,7 +59,7 @@ class Texture
 			SDL_FreeSurface(pointerSurface);
 			if (pointerTexture == NULL)
 			{
-				LOG_ERROR("Failed to convert the surface to a texture (%s).\n", SDL_GetError());
+				LOG_ERROR("Failed to convert the surface to a texture (%s).", SDL_GetError());
 				return NULL;
 			}
 			
@@ -83,7 +83,7 @@ class Texture
 			// Cache width and height parameters
 			if (SDL_QueryTexture(_pointerTexture, &pixelFormat, &access, &_positionRectangle.w, &_positionRectangle.h) != 0)
 			{
-				LOG_ERROR("Failed to query texture information (%s).\n", SDL_GetError());
+				LOG_ERROR("Failed to query texture information (%s).", SDL_GetError());
 				exit(-1);
 			}
 		}

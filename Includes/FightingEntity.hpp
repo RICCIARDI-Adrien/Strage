@@ -161,7 +161,7 @@ class FightingEntity: public MovingEntity
 						break;
 						
 					default:
-						LOG_ERROR("Entity is facing a non-existing direction (direction ID : %d).\n", _facingDirection);
+						LOG_ERROR("Entity is facing a non-existing direction (direction ID : %d).", _facingDirection);
 						return NULL;
 				}
 				

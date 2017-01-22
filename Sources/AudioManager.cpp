@@ -32,7 +32,7 @@ static Mix_Chunk *_loadFromWave(const char *fileName)
 	pointerChunk = Mix_LoadWAV(fileName);
 	if (pointerChunk == NULL)
 	{
-		LOG_ERROR("Failed to load sound file '%s' (%s).\n", fileName, Mix_GetError());
+		LOG_ERROR("Failed to load sound file '%s' (%s).", fileName, Mix_GetError());
 		exit(-1);
 	}
 	
@@ -47,7 +47,7 @@ int initialize()
 	// Open audio mixer
 	if (Mix_OpenAudio(CONFIGURATION_AUDIO_SAMPLING_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024) != 0) // Chunk size has been randomly chosen due to extremely explicit documentation...
 	{
-		LOG_ERROR("Failed to open audio device (%s).\n", Mix_GetError());
+		LOG_ERROR("Failed to open audio device (%s).", Mix_GetError());
 		return -1;
 	}
 	
@@ -84,12 +84,12 @@ void playSound(SoundId id)
 	// Make sure the requested sound exists
 	if ((id < 0) || (id >= SOUND_IDS_COUNT))
 	{
-		LOG_INFORMATION("Unknown sound ID requested (%d).\n", id);
+		LOG_INFORMATION("Unknown sound ID requested (%d).", id);
 		return;
 	}
 	
 	// Try to play the sound on the first available channel
-	if (Mix_PlayChannel(-1, _pointerSounds[id], 0) == -1) LOG_DEBUG("Failed to play sound ID %d (%s).\n", id, Mix_GetError());
+	if (Mix_PlayChannel(-1, _pointerSounds[id], 0) == -1) LOG_DEBUG("Failed to play sound ID %d (%s).", id, Mix_GetError());
 }
 
 void stopAllSounds()

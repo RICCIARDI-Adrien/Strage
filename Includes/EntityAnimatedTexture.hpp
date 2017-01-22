@@ -56,7 +56,7 @@ class EntityAnimatedTexture: public Entity
 				// Has the last texture been displayed ?
 				if (_currentTextureId == _finalTextureId)
 				{
-					LOG_DEBUG("Last texture displayed, removing animated texture.\n");
+					LOG_DEBUG("Last texture displayed, removing animated texture.");
 					return 1;
 				}
 				

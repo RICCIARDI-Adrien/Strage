@@ -118,13 +118,13 @@ class FightingEntityPlayer: public FightingEntity
 			// Is there a medipack ?
 			if (blockContent & LevelManager::BLOCK_CONTENT_MEDIPACK)
 			{
-				LOG_DEBUG("Player is crossing a block containing a medipack.\n");
+				LOG_DEBUG("Player is crossing a block containing a medipack.");
 				
 				if (isWounded())
 				{
 					modifyLife(20);
 					AudioManager::playSound(AudioManager::SOUND_ID_PLAYER_HEALED);
-					LOG_DEBUG("Healed player.\n");
+					LOG_DEBUG("Healed player.");
 					
 					// Remove the medipack as it has been used
 					blockContent &= ~LevelManager::BLOCK_CONTENT_MEDIPACK;
@@ -134,11 +134,11 @@ class FightingEntityPlayer: public FightingEntity
 			// Is there ammunition ?
 			else if (blockContent & LevelManager::BLOCK_CONTENT_AMMUNITION)
 			{
-				LOG_DEBUG("Player is crossing a block containing ammunition.\n");
+				LOG_DEBUG("Player is crossing a block containing ammunition.");
 				
 				addAmmunition(30);
 				AudioManager::playSound(AudioManager::SOUND_ID_AMMUNITION_TAKEN);
-				LOG_DEBUG("Player got ammunition.\n");
+				LOG_DEBUG("Player got ammunition.");
 				
 				// Remove the ammunition item
 				blockContent &= ~LevelManager::BLOCK_CONTENT_AMMUNITION;

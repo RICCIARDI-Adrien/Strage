@@ -94,7 +94,7 @@ int initialize()
 	if (Renderer::displayWidth % CONFIGURATION_LEVEL_BLOCK_SIZE != 0) _displayWidthBlocks++;
 	_displayHeightBlocks = Renderer::displayHeight / CONFIGURATION_LEVEL_BLOCK_SIZE;
 	if (Renderer::displayHeight % CONFIGURATION_LEVEL_BLOCK_SIZE != 0) _displayHeightBlocks++;
-	LOG_DEBUG("Display size : %dx%d pixels, %dx%d blocks.\n", Renderer::displayWidth, Renderer::displayHeight, _displayWidthBlocks, _displayHeightBlocks);
+	LOG_DEBUG("Display size : %dx%d pixels, %dx%d blocks.", Renderer::displayWidth, Renderer::displayHeight, _displayWidthBlocks, _displayHeightBlocks);
 
 	return 0;
 }
@@ -111,14 +111,14 @@ int loadLevel(int levelNumber)
 	TextureManager::TextureId textureId;
 	char stringFileName[256];
 	
-	LOG_DEBUG("Loading level %d...\n", levelNumber);
+	LOG_DEBUG("Loading level %d...", levelNumber);
 	
 	// Try to open the scene file
 	snprintf(stringFileName, sizeof(stringFileName), CONFIGURATION_PATH_LEVELS "/%d_Scene.csv", levelNumber);
 	pointerFile = fopen(stringFileName, "r");
 	if (pointerFile == NULL)
 	{
-		LOG_ERROR("Could not open '%s' (%s).\n", stringFileName, strerror(errno));
+		LOG_ERROR("Could not open '%s' (%s).", stringFileName, strerror(errno));
 		return -1;
 	}
 	
@@ -142,7 +142,7 @@ int loadLevel(int levelNumber)
 			else if (textureId < TextureManager::TEXTURE_ID_MEDIPACK) _levelBlocks[i].content = BLOCK_CONTENT_WALL; // This is a wall block
 			else
 			{
-				LOG_ERROR("Block (%d, %d) ID is bad : %d.\n", x, y, (int) textureId);
+				LOG_ERROR("Block (%d, %d) ID is bad : %d.", x, y, (int) textureId);
 				fclose(pointerFile);
 				return -1;
 			}
@@ -161,7 +161,7 @@ int loadLevel(int levelNumber)
 	
 Scene_Loading_End:
 	_levelHeightBlocks = y;
-	LOG_DEBUG("Level size : %dx%d blocks.\n", _levelWidthBlocks, _levelHeightBlocks);
+	LOG_DEBUG("Level size : %dx%d blocks.", _levelWidthBlocks, _levelHeightBlocks);
 	fclose(pointerFile);
 	
 	// Try to open the objects file
@@ -169,7 +169,7 @@ Scene_Loading_End:
 	pointerFile = fopen(stringFileName, "r");
 	if (pointerFile == NULL)
 	{
-		LOG_ERROR("Could not open '%s' (%s).\n", stringFileName, strerror(errno));
+		LOG_ERROR("Could not open '%s' (%s).", stringFileName, strerror(errno));
 		return -1;
 	}
 	
@@ -181,7 +181,7 @@ Scene_Loading_End:
 			// Read an object index
 			if (fscanf(pointerFile, "%d", &objectId) != 1)
 			{
-				LOG_ERROR("Failed to read the object (%d, %d) value. Make sure the objects file has the same dimensions than the scene file.\n", x, y);
+				LOG_ERROR("Failed to read the object (%d, %d) value. Make sure the objects file has the same dimensions than the scene file.", x, y);
 				goto Objects_Loading_Error;
 			}
 			
@@ -196,7 +196,7 @@ Scene_Loading_End:
 					// Make sure the player is unique
 					if (isPlayerSpawned)
 					{
-						LOG_ERROR("More than one player are present on the map. Make sure to have only one player.\n");
+						LOG_ERROR("More than one player are present on the map. Make sure to have only one player.");
 						goto Objects_Loading_Error;
 					}
 					else
@@ -209,33 +209,33 @@ Scene_Loading_End:
 						// Spawn the player at the block center
 						pointerPlayer = new FightingEntityPlayer((x * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - playerWidth) / 2), (y * CONFIGURATION_LEVEL_BLOCK_SIZE) + ((CONFIGURATION_LEVEL_BLOCK_SIZE - playerHeight) / 2));
 						isPlayerSpawned = 1;
-						LOG_DEBUG("Spawned player on block (%d, %d).\n", x, y);
+						LOG_DEBUG("Spawned player on block (%d, %d).", x, y);
 					}
 					break;
 					
 				case OBJECT_ID_MEDIPACK:
 					_levelBlocks[COMPUTE_BLOCK_INDEX(x, y)].content |= BLOCK_CONTENT_MEDIPACK;
-					LOG_DEBUG("Spawned medipack on block (%d, %d).\n", x, y);
+					LOG_DEBUG("Spawned medipack on block (%d, %d).", x, y);
 					break;
 					
 				case OBJECT_ID_AMMUNITION:
 					_levelBlocks[COMPUTE_BLOCK_INDEX(x, y)].content |= BLOCK_CONTENT_AMMUNITION;
-					LOG_DEBUG("Spawned ammunition on block (%d, %d).\n", x, y);
+					LOG_DEBUG("Spawned ammunition on block (%d, %d).", x, y);
 					break;
 					
 				case OBJECT_ID_ENEMY_SPAWNER:
 					enemySpawnersList.push_front(new EntityEnemySpawner(x * CONFIGURATION_LEVEL_BLOCK_SIZE, y * CONFIGURATION_LEVEL_BLOCK_SIZE));
 					_levelBlocks[COMPUTE_BLOCK_INDEX(x, y)].content |= BLOCK_CONTENT_ENEMY_SPAWNER;
-					LOG_DEBUG("Spawned enemy spawner on block (%d, %d).\n", x, y);
+					LOG_DEBUG("Spawned enemy spawner on block (%d, %d).", x, y);
 					break;
 					
 				case OBJECT_ID_LEVEL_EXIT:
 					_levelBlocks[COMPUTE_BLOCK_INDEX(x, y)].content |= BLOCK_CONTENT_LEVEL_EXIT;
-					LOG_DEBUG("Spawned level exit on block (%d, %d).\n", x, y);
+					LOG_DEBUG("Spawned level exit on block (%d, %d).", x, y);
 					break;
 					
 				default:
-					LOG_INFORMATION("Unhandled object (object ID : %d) at block (%d, %d).\n", objectId, x, y);
+					LOG_INFORMATION("Unhandled object (object ID : %d) at block (%d, %d).", objectId, x, y);
 					break;
 			}
 			
@@ -247,13 +247,13 @@ Scene_Loading_End:
 	// Make sure there is a player
 	if (!isPlayerSpawned)
 	{
-		LOG_ERROR("Map does not contain any player.\n");
+		LOG_ERROR("Map does not contain any player.");
 		goto Objects_Loading_Error;
 	}
 	
 	fclose(pointerFile);
 	
-	LOG_INFORMATION("Level %d successfully loaded.\n", levelNumber);
+	LOG_INFORMATION("Level %d successfully loaded.", levelNumber);
 	return 0;
 	
 Objects_Loading_Error:
@@ -404,7 +404,7 @@ int getBlockContent(int x, int y)
 	
 	if ((xBlock < 0) || (xBlock >= _levelWidthBlocks) || (yBlock < 0) || (yBlock >= _levelHeightBlocks))
 	{
-		LOG_INFORMATION("Bad block pixel coordinates (%d, %d).\n", x, y);
+		LOG_INFORMATION("Bad block pixel coordinates (%d, %d).", x, y);
 		return 0;
 	}
 	
@@ -421,7 +421,7 @@ void setBlockContent(int x, int y, int content)
 	
 	if ((xBlock < 0) || (xBlock >= _levelWidthBlocks) || (yBlock < 0) || (yBlock >= _levelHeightBlocks))
 	{
-		LOG_INFORMATION("Bad block pixel coordinates (%d, %d).\n", x, y);
+		LOG_INFORMATION("Bad block pixel coordinates (%d, %d).", x, y);
 		return;
 	}
 	

@@ -113,7 +113,7 @@ static inline void _spawnItem(int x, int y)
 			blockContent |= LevelManager::BLOCK_CONTENT_MEDIPACK;
 			LevelManager::setBlockContent(x, y, blockContent);
 			
-			LOG_DEBUG("Enemy dropped a medipack.\n");
+			LOG_DEBUG("Enemy dropped a medipack.");
 		}
 	}
 	else
@@ -125,7 +125,7 @@ static inline void _spawnItem(int x, int y)
 			blockContent |= LevelManager::BLOCK_CONTENT_AMMUNITION;
 			LevelManager::setBlockContent(x, y, blockContent);
 			
-			LOG_DEBUG("Enemy dropped ammunition.\n");
+			LOG_DEBUG("Enemy dropped ammunition.");
 		}
 	}
 }
@@ -195,7 +195,7 @@ Spawn_Enemy:
 	x += _enemySpawnOffsetX;
 	y += _enemySpawnOffsetY;
 	
-	LOG_DEBUG("Spawned an enemy on map coordinates (%d, %d).\n", x, y);
+	LOG_DEBUG("Spawned an enemy on map coordinates (%d, %d).", x, y);
 	
 	// Select which enemy to spawn
 	spawningPercentage = rand() % 100;
@@ -221,7 +221,7 @@ static inline void _loadNextLevel()
 	// Try to load next level
 	if (LevelManager::loadLevel(_currentLevelNumber) != 0)
 	{
-		LOG_ERROR("Failed to load level %d.\n", _currentLevelNumber);
+		LOG_ERROR("Failed to load level %d.", _currentLevelNumber);
 		exit(-1);
 	}
 	_currentLevelNumber++;
@@ -284,7 +284,7 @@ static inline void _updateGameLogic()
 				pointerEnemy->modifyLife(pointerPlayerBullet->getDamageAmount());
 				
 				AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_BULLET_IMPACT);
-				LOG_DEBUG("Enemy hit.\n");
+				LOG_DEBUG("Enemy hit.");
 				break;
 			}
 		}
@@ -306,7 +306,7 @@ static inline void _updateGameLogic()
 				pointerEnemySpawner->modifyLife(pointerPlayerBullet->getDamageAmount());
 				
 				AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_SPAWNER_BULLET_IMPACT);
-				LOG_DEBUG("Enemy spawner hit.\n");
+				LOG_DEBUG("Enemy spawner hit.");
 				break;
 			}
 		}
@@ -333,13 +333,13 @@ static inline void _updateGameLogic()
 			// Wound the player
 			pointerPlayer->modifyLife(pointerEnemyBullet->getDamageAmount());
 			_isPlayerHit = 1;
-			LOG_DEBUG("Player hit.\n");
+			LOG_DEBUG("Player hit.");
 			
 			// Instantly stop game updating
 			if (pointerPlayer->isDead())
 			{
 				_isPlayerDead = 1;
-				LOG_DEBUG("Player died.\n");
+				LOG_DEBUG("Player died.");
 				return;
 			}
 		}
@@ -527,7 +527,7 @@ int main(int argc, char *argv[])
 	// Initialize pseudo-random numbers generator
 	srand(time(NULL));
 	
-	LOG_INFORMATION("Game engine successfully initialized.\n");
+	LOG_INFORMATION("Game engine successfully initialized.");
 	
 	// Load first level
 	_loadNextLevel();

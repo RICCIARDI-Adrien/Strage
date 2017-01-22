@@ -53,7 +53,7 @@ static void _renderTextToTexture(const char *pointerText, SDL_Texture **pointerT
 	SDL_Surface *pointerSurface = TTF_RenderText_Blended(_pointerFont, pointerText, _textRenderingColor);
 	if (pointerSurface == NULL)
 	{
-		LOG_ERROR("Failed to render the text to a surface, shutting down (%s)\n.", TTF_GetError());
+		LOG_ERROR("Failed to render the text to a surface, shutting down (%s).", TTF_GetError());
 		exit(-1);
 	}
 	
@@ -62,7 +62,7 @@ static void _renderTextToTexture(const char *pointerText, SDL_Texture **pointerT
 	SDL_FreeSurface(pointerSurface);
 	if (*pointerTexture == NULL)
 	{
-		LOG_ERROR("Failed to convert the surface to a texture, shutting down (%s)\n.", SDL_GetError());
+		LOG_ERROR("Failed to convert the surface to a texture, shutting down (%s).", SDL_GetError());
 		exit(-1);
 	}
 	
@@ -71,7 +71,7 @@ static void _renderTextToTexture(const char *pointerText, SDL_Texture **pointerT
 	int access;
 	if (SDL_QueryTexture(*pointerTexture, &pixelFormat, &access, pointerTextureWidth, pointerTextureHeight) != 0)
 	{
-		LOG_ERROR("Failed to query information about the texture, shutting down (%s)\n.", SDL_GetError());
+		LOG_ERROR("Failed to query information about the texture, shutting down (%s).", SDL_GetError());
 		exit(-1);
 	}
 }
@@ -86,7 +86,7 @@ int initialize(int isFullScreenEnabled)
 	// Initialize the needed subsystems
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0)
 	{
-		LOG_ERROR("SDL_Init() failed (%s).\n", SDL_GetError());
+		LOG_ERROR("SDL_Init() failed (%s).", SDL_GetError());
 		goto Exit_Error;
 	}
 	
@@ -96,7 +96,7 @@ int initialize(int isFullScreenEnabled)
 	_pointerMainWindow = SDL_CreateWindow("Strage", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, CONFIGURATION_DISPLAY_WIDTH, CONFIGURATION_DISPLAY_HEIGHT, flags);
 	if (_pointerMainWindow == NULL)
 	{
-		LOG_ERROR("Failed to create the main window (%s).\n", SDL_GetError());
+		LOG_ERROR("Failed to create the main window (%s).", SDL_GetError());
 		goto Exit_Error_Uninitialize_SDL;
 	}
 	
@@ -104,7 +104,7 @@ int initialize(int isFullScreenEnabled)
 	pointerMainRenderer = SDL_CreateRenderer(_pointerMainWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (pointerMainRenderer == NULL)
 	{
-		LOG_ERROR("Failed to create the main renderer (%s).\n", SDL_GetError());
+		LOG_ERROR("Failed to create the main renderer (%s).", SDL_GetError());
 		goto Exit_Error_Destroy_Window;
 	}
 	
@@ -113,7 +113,7 @@ int initialize(int isFullScreenEnabled)
 	{
 		if (SDL_GetRendererOutputSize(pointerMainRenderer, &displayWidth, &displayHeight) != 0)
 		{
-			LOG_ERROR("Failed to get renderer output size (%s).\n", SDL_GetError());
+			LOG_ERROR("Failed to get renderer output size (%s).", SDL_GetError());
 			goto Exit_Error_Destroy_Window;
 		}
 	}
@@ -126,7 +126,7 @@ int initialize(int isFullScreenEnabled)
 	// Initialize SDL TTF
 	if (TTF_Init() != 0)
 	{
-		LOG_ERROR("Failed to initialize SDL TTF library (%s).\n", TTF_GetError());
+		LOG_ERROR("Failed to initialize SDL TTF library (%s).", TTF_GetError());
 		goto Exit_Error_Destroy_Renderer;
 	}
 	
@@ -134,7 +134,7 @@ int initialize(int isFullScreenEnabled)
 	_pointerFont = TTF_OpenFont("Liberation_Sans_Bold.ttf", 36);
 	if (_pointerFont == NULL)
 	{
-		LOG_ERROR("Failed to load TTF font file (%s).\n", TTF_GetError());
+		LOG_ERROR("Failed to load TTF font file (%s).", TTF_GetError());
 		goto Exit_Error_Uninitialize_TTF;
 	}
 	

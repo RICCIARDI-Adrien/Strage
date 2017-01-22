@@ -33,7 +33,7 @@ class Entity
 			_pointerTexture = TextureManager::getTextureFromId(textureId);
 			if (_pointerTexture == NULL)
 			{
-				LOG_ERROR("Could not retrieve texture.\n");
+				LOG_ERROR("Could not retrieve texture.");
 				exit(-1);
 			}
 			

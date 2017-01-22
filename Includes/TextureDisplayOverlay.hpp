@@ -22,7 +22,7 @@ class TextureDisplayOverlay: public Texture
 		{
 			if (SDL_SetTextureAlphaMod(_pointerTexture, 96) != 0)
 			{
-				LOG_ERROR("Failed to set alpha channel (%s).\n", SDL_GetError());
+				LOG_ERROR("Failed to set alpha channel (%s).", SDL_GetError());
 				exit(-1);
 			}
 		}
