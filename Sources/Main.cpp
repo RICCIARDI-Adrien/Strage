@@ -75,6 +75,8 @@ static int _currentLevelNumber = 0;
 
 /** When set to 1, stop game updating but continue displaying the scene. */
 static int _isGamePaused = 0;
+/** Set to 1 when the player has finished all levels. */
+static int _isGameFinished = 0;
 
 //-------------------------------------------------------------------------------------------------
 // Public variables
@@ -213,6 +215,14 @@ Spawn_Enemy:
 /** Load next level. */
 static inline void _loadNextLevel()
 {
+	// Are all levels completed ?
+	if (_currentLevelNumber == LevelManager::levelsCount)
+	{
+		_isGameFinished = 1;
+		_isGamePaused = 1;
+		return;
+	}
+	
 	// Stop currently playing sounds
 	AudioManager::stopAllSounds();
 	
@@ -475,9 +485,10 @@ static inline void _renderGame()
 	sprintf(string, "Spawners : %d", (int) LevelManager::enemySpawnersList.size());
 	Renderer::renderText(string, CONFIGURATION_DISPLAY_HUD_SPAWNERS_X, CONFIGURATION_DISPLAY_HUD_SPAWNERS_Y);
 	
-	// Tell the player that he died
+	// Display a centered message if needed
 	if (_isPlayerDead) Renderer::renderCentererText("You are dead !");
-	else if (_isGamePaused) Renderer::renderCentererText("PAUSE"); // Display player death first to avoid displaying "PAUSE" when the player died
+	else if (_isGameFinished) Renderer::renderCentererText("All levels completed. You are legend.");
+	else if (_isGamePaused) Renderer::renderCentererText("PAUSE");
 	
 	// Display the rendered picture
 	SDL_RenderPresent(Renderer::pointerMainRenderer);
@@ -583,7 +594,7 @@ int main(int argc, char *argv[])
 							
 						case SDL_SCANCODE_ESCAPE:
 							// Pause or continue the game (only if the player is alive, or it would allow the game to continue even if the player is dead
-							if (!_isPlayerDead)
+							if ((!_isPlayerDead) && (!_isGameFinished))
 							{
 								_isGamePaused = !_isGamePaused;
 								if (_isGamePaused) LOG_INFORMATION("Game paused.");
