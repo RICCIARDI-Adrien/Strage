@@ -73,6 +73,9 @@ static TextureDisplayOverlay *_pointerPlayerHitOverlayTexture;
 /** The current level number. */
 static int _currentLevelNumber = 0;
 
+/** When set to 1, stop game updating but continue displaying the scene. */
+static int _isGamePaused = 0;
+
 //-------------------------------------------------------------------------------------------------
 // Public variables
 //-------------------------------------------------------------------------------------------------
@@ -339,6 +342,7 @@ static inline void _updateGameLogic()
 			if (pointerPlayer->isDead())
 			{
 				_isPlayerDead = 1;
+				_isGamePaused = 1; // Pause game updating
 				LOG_DEBUG("Player died.");
 				return;
 			}
@@ -478,6 +482,7 @@ static inline void _renderGame()
 	
 	// Tell the player that he died
 	if (_isPlayerDead) Renderer::renderCentererText("You are dead !");
+	else if (_isGamePaused) Renderer::renderCentererText("PAUSE"); // Display player death first to avoid displaying "PAUSE" when the player died
 	
 	// Display the rendered picture
 	SDL_RenderPresent(Renderer::pointerMainRenderer);
@@ -578,6 +583,16 @@ int main(int argc, char *argv[])
 							isKeyPressed[KEYBOARD_KEY_ID_SPACE] = 1;
 							break;
 							
+						case SDL_SCANCODE_ESCAPE:
+							// Pause or continue the game (only if the player is alive, or it would allow the game to continue even if the player is dead
+							if (!_isPlayerDead)
+							{
+								_isGamePaused = !_isGamePaused;
+								if (_isGamePaused) LOG_INFORMATION("Game paused.");
+								else LOG_INFORMATION("Game continuing.");
+							}
+							break;
+							
 						default:
 							break;
 					}
@@ -622,7 +637,7 @@ int main(int argc, char *argv[])
 		}
 		
 		// Do not update the game anymore if the player died
-		if (!_isPlayerDead)
+		if (!_isGamePaused)
 		{
 			// React to player key press without depending of keyboard key repetition rate
 			// Handle both vertical and horizontal direction movement
