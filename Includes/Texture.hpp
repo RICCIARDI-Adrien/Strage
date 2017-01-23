@@ -5,7 +5,6 @@
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
 #include <Texture.hpp>
-#include <unistd.h>
 
 /** @class Texture
  * Allow to load and display a static picture.
