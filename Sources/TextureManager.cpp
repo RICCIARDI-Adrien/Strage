@@ -2,6 +2,7 @@
  * @see TextureManager.hpp for description.
  * @author Adrien RICCIARDI
  */
+#include <Configuration.hpp>
 #include <cstdio>
 #include <Log.hpp>
 #include <Texture.hpp>

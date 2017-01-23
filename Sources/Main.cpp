@@ -3,6 +3,7 @@
  * @author Adrien RICCIARDI
  */
 #include <AudioManager.hpp>
+#include <Configuration.hpp>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>

@@ -5,9 +5,8 @@
 #ifndef HPP_LOG_HPP
 #define HPP_LOG_HPP
 
+#include <Configuration.hpp>
 #include <cstdio>
-
-// TODO namespace ?
 
 //-------------------------------------------------------------------------------------------------
 // Macros

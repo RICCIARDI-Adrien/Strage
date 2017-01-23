@@ -2,6 +2,7 @@
 #define HPP_FIGHTING_ENTITY_ENEMY_HPP
 
 #include <AudioManager.hpp>
+#include <Configuration.hpp>
 #include <cstdlib>
 #include <FightingEntity.hpp>
 #include <FightingEntityPlayer.hpp>

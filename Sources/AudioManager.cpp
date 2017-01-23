@@ -4,6 +4,7 @@
  */
 #include <AudioManager.hpp>
 #include <chrono>
+#include <Configuration.hpp>
 #include <cstdlib>
 #include <Log.hpp>
 #include <SDL2/SDL_mixer.h>

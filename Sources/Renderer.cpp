@@ -2,6 +2,7 @@
  * @see Renderer.hpp for description.
  * @author Adrien RICCIARDI
  */
+#include <Configuration.hpp>
 #include <cstdlib>
 #include <Log.hpp>
 #include <Renderer.hpp>

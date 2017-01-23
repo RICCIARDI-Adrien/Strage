@@ -3,6 +3,7 @@
  * @author Adrien RICCIARDI
  */
 #include <cerrno>
+#include <Configuration.hpp>
 #include <cstdio>
 #include <cstring>
 #include <EntityEnemySpawner.hpp>
