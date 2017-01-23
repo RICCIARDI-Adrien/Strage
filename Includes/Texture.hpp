@@ -1,10 +1,9 @@
-#ifndef HPP_PICTURE_HPP
-#define HPP_PICTURE_HPP
+#ifndef HPP_TEXTURE_HPP
+#define HPP_TEXTURE_HPP
 
 #include <Log.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
-#include <Texture.hpp>
 
 /** @class Texture
  * Allow to load and display a static picture.
