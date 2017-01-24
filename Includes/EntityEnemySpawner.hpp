@@ -33,6 +33,9 @@ class EntityEnemySpawner: public Entity
 			_lastEnemySpawnTime = -_timeBetweenSpawns;
 		}
 		
+		/** Free allocated resources. */
+		virtual ~EntityEnemySpawner() {};
+		
 		/** Change entity life value by adding or removing some life points.
 		 * @param lifePointsAmount How many life points to add or subtract.
 		 */

@@ -192,8 +192,8 @@ class FightingEntityEnemy: public FightingEntity
 			_setBlockEnemyContent(1);
 		}
 		
-		/** Free entity allocated resources. */
-		virtual ~FightingEntityEnemy() {} // Nothing to free
+		/** Free allocated resources. */
+		virtual ~FightingEntityEnemy() {}
 		
 		virtual int moveToUp()
 		{

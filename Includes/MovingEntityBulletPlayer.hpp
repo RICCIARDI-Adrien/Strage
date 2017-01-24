@@ -22,6 +22,9 @@ class MovingEntityBulletPlayer: public MovingEntityBullet
 			// Do not collide with enemy spawners to allow bullets enter the enemy spawner position rectangle, so it can be damaged
 			_collisionBlockContent &= ~LevelManager::BLOCK_CONTENT_ENEMY_SPAWNER;
 		}
+		
+		/** Free allocated resources. */
+		virtual ~MovingEntityBulletPlayer() {}
 };
 
 #endif

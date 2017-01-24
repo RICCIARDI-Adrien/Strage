@@ -27,6 +27,9 @@ class TextureDisplayOverlay: public Texture
 			}
 		}
 		
+		/** Free allocated resources. */
+		virtual ~TextureDisplayOverlay() {}
+		
 		/** Display the stretched texture on the whole screen. */
 		void render()
 		{

@@ -17,6 +17,9 @@ class MovingEntityBulletSmallEnemy: public MovingEntityBullet
 		 * @param facingDirection In which direction the bullet will move.
 		 */
 		MovingEntityBulletSmallEnemy(int x, int y, Direction facingDirection): MovingEntityBullet(x, y, TextureManager::TEXTURE_ID_SMALL_ENEMY_BULLET, 6, facingDirection, 1) {}
+		
+		/** Free allocated resources. */
+		virtual ~MovingEntityBulletSmallEnemy() {}
 };
 
 #endif

@@ -38,6 +38,9 @@ class MovingEntityBullet: public MovingEntity
 			_collisionBlockContent |= LevelManager::BLOCK_CONTENT_ENEMY_SPAWNER;
 		}
 		
+		/** Free allocated resources. */
+		virtual ~MovingEntityBullet() {}
+		
 		/** How many life points the bullet removes.
 		 * @return Life points to ADD to hit entity (the value is negative yet to directly use with modifyLife() functions).
 		 */

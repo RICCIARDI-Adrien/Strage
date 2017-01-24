@@ -29,6 +29,9 @@ class FightingEntityEnemyBig: public FightingEntityEnemy
 		 * @param y Enemy Y coordinate.
 		 */
 		FightingEntityEnemyBig(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_BIG_ENEMY, 1, 10, 10000, AudioManager::SOUND_ID_BIG_ENEMY_FIRESHOT) {}
+		
+		/** Free allocated resources. */
+		virtual ~FightingEntityEnemyBig() {}
 };
 
 #endif

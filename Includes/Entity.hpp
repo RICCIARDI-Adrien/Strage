@@ -45,6 +45,9 @@ class Entity
 			_positionRectangle.h = _pointerTexture->getHeight();
 		}
 		
+		/** Free allocated resources. */
+		virtual ~Entity() {};
+		
 		/** Display the entity at its current location on the map. */
 		virtual void render()
 		{

@@ -55,6 +55,9 @@ class MovingEntity: public Entity
 			_facingDirection = DIRECTION_UP;
 		}
 		
+		/** Free allocated resources. */
+		virtual ~MovingEntity() {}
+		
 		/** Move the entity to the up.
 		 * @return How many pixels the entity moved.
 		 */

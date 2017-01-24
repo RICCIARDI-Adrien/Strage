@@ -88,9 +88,35 @@ FightingEntityPlayer *pointerPlayer;
 //-------------------------------------------------------------------------------------------------
 // Private functions
 //-------------------------------------------------------------------------------------------------
+/** Free all lists content. */
+static void _clearAllLists()
+{
+	std::list<EntityEnemySpawner *>::iterator enemySpawnersListIterator;
+	for (enemySpawnersListIterator = LevelManager::enemySpawnersList.begin(); enemySpawnersListIterator != LevelManager::enemySpawnersList.end(); ++enemySpawnersListIterator) delete *enemySpawnersListIterator;
+	LevelManager::enemySpawnersList.clear();
+	
+	std::list<MovingEntityBullet *>::iterator bulletsListIterator;
+	for (bulletsListIterator = _playerBulletsList.begin(); bulletsListIterator != _playerBulletsList.end(); ++bulletsListIterator) delete *bulletsListIterator;
+	_playerBulletsList.clear();
+	
+	for (bulletsListIterator = _enemiesBulletsList.begin(); bulletsListIterator != _enemiesBulletsList.end(); ++bulletsListIterator) delete *bulletsListIterator;
+	_enemiesBulletsList.clear();
+
+	std::list<FightingEntityEnemy *>::iterator enemiesListIterator;
+	for (enemiesListIterator = _enemiesList.begin(); enemiesListIterator != _enemiesList.end(); ++enemiesListIterator) delete *enemiesListIterator;
+	_enemiesList.clear();
+	
+	std::list<EntityAnimatedTexture *>::iterator animatedTexturesListIterator;
+	for (animatedTexturesListIterator = _animatedTexturesList.begin(); animatedTexturesListIterator != _animatedTexturesList.end(); ++animatedTexturesListIterator) delete *animatedTexturesListIterator;
+	_animatedTexturesList.clear();
+}
+
 /** Automatically free allocated resources on program shutdown. */
 static void _exitFreeResources()
 {
+	// Delete all entities
+	_clearAllLists();
+	
 	delete pointerPlayer;
 	
 	AudioManager::uninitialize();
@@ -227,12 +253,8 @@ static inline void _loadNextLevel()
 	// Stop currently playing sounds
 	AudioManager::stopAllSounds();
 	
-	// Clear all lists
-	LevelManager::enemySpawnersList.clear();
-	_playerBulletsList.clear();
-	_enemiesBulletsList.clear();
-	_enemiesList.clear();
-	_animatedTexturesList.clear();
+	// Free all entities
+	_clearAllLists();
 	
 	// Try to load next level
 	if (LevelManager::loadLevel(_currentLevelNumber) != 0)
@@ -274,6 +296,7 @@ static inline void _updateGameLogic()
 		// Remove the bullet if it hit a wall
 		if (pointerPlayerBullet->update() != 0)
 		{
+			delete pointerPlayerBullet;
 			bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
 			continue;
 		}
@@ -287,6 +310,7 @@ static inline void _updateGameLogic()
 			if (SDL_HasIntersection(pointerPlayerBullet->getPositionRectangle(), pointerEnemy->getPositionRectangle()))
 			{
 				// Remove the bullet
+				delete pointerPlayerBullet;
 				bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
 				
 				// Wound the enemy
@@ -309,6 +333,7 @@ static inline void _updateGameLogic()
 			if (SDL_HasIntersection(pointerPlayerBullet->getPositionRectangle(), pointerEnemySpawner->getPositionRectangle()))
 			{
 				// Remove the bullet
+				delete pointerPlayerBullet;
 				bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
 				
 				// Damage the enemy spawner
@@ -330,6 +355,7 @@ static inline void _updateGameLogic()
 		// Remove the bullet if it hit a wall
 		if (pointerEnemyBullet->update() != 0)
 		{
+			delete pointerEnemyBullet;
 			bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
 			continue;
 		}
@@ -367,6 +393,7 @@ static inline void _updateGameLogic()
 		// Remove the enemy if it is dead
 		if (result == 1)
 		{
+			delete pointerEnemy;
 			enemiesListIterator = _enemiesList.erase(enemiesListIterator);
 			
 			// Spawn an explosion effect
@@ -400,6 +427,7 @@ static inline void _updateGameLogic()
 		if (result == 1)
 		{
 			// Remove the spawner
+			delete pointerEnemySpawner;
 			enemySpawnersListIterator = LevelManager::enemySpawnersList.erase(enemySpawnersListIterator);
 			
 			// Remove the spawner indicator from the block
@@ -428,7 +456,11 @@ static inline void _updateGameLogic()
 	{
 		pointerAnimatedTexture = *animatedTexturesListIterator;
 		
-		if (pointerAnimatedTexture->update() != 0) animatedTexturesListIterator = _animatedTexturesList.erase(animatedTexturesListIterator);
+		if (pointerAnimatedTexture->update() != 0)
+		{
+			delete pointerAnimatedTexture;
+			animatedTexturesListIterator = _animatedTexturesList.erase(animatedTexturesListIterator);
+		}
 	}
 }
 

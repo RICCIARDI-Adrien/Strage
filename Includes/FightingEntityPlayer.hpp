@@ -51,8 +51,8 @@ class FightingEntityPlayer: public FightingEntity
 			_ammunitionAmount = 100;
 		}
 		
-		/** Free entity allocated resources. */
-		virtual ~FightingEntityPlayer() {} // Nothing to free
+		/** Free allocated resources. */
+		virtual ~FightingEntityPlayer() {}
 		
 		/** @see FightingEntity for description. */
 		virtual MovingEntityBullet *shoot()

@@ -86,6 +86,9 @@ class FightingEntity: public MovingEntity
 			_firingSoundId = firingSoundId;
 		}
 		
+		/** Free allocated resources. */
+		virtual ~FightingEntity() {};
+		
 		/** The the entity life points.
 		 * @return Entity life point amount.
 		 */

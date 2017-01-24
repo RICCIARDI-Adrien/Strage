@@ -86,7 +86,7 @@ class Texture
 			}
 		}
 		
-		/** Free all allocated resources. */
+		/** Free allocated resources. */
 		virtual ~Texture()
 		{
 			SDL_DestroyTexture(_pointerTexture);
