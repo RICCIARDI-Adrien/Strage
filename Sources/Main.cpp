@@ -519,7 +519,7 @@ static inline void _renderGame()
 	Renderer::renderText(string, CONFIGURATION_DISPLAY_HUD_SPAWNERS_X, CONFIGURATION_DISPLAY_HUD_SPAWNERS_Y);
 	
 	// Display a centered message if needed
-	if (_isPlayerDead) Renderer::renderCentererText("You are dead !");
+	if (_isPlayerDead) Renderer::renderCentererText("You are dead ! Hit R to retry.");
 	else if (_isGameFinished) Renderer::renderCentererText("All levels completed. You are legend.");
 	else if (_isGamePaused) Renderer::renderCentererText("PAUSE");
 	
@@ -534,7 +534,7 @@ int main(int argc, char *argv[])
 {
 	SDL_Event event;
 	unsigned int Starting_Time, Elapsed_Time;
-	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0}, isLastDirectionVertical = 1, isFullScreenEnabled = 0;
+	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0}, isLastDirectionVertical = 1, isFullScreenEnabled = 0, levelToLoadNumber;
 	
 	// Check parameters
 	if (argc > 1)
@@ -627,14 +627,47 @@ int main(int argc, char *argv[])
 							break;
 							
 						case SDL_SCANCODE_ESCAPE:
-							// Pause or continue the game (only if the player is alive, or it would allow the game to continue even if the player is dead
-							if ((!_isPlayerDead) && (!_isGameFinished))
+							// Pause or continue the game (only if the player is alive, or it would allow the game to continue even if the player is dead)
+							if (_isPlayerDead || _isGameFinished) break;
+							
+							_isGamePaused = !_isGamePaused;
+							if (_isGamePaused) LOG_INFORMATION("Game paused.");
+							else LOG_INFORMATION("Game continuing.");
+							
+							AudioManager::pauseMusic(_isGamePaused);
+							break;
+						
+						// Restart current level
+						case SDL_SCANCODE_R:
+							// Can't restart a level if the game is paused or if all levels are completed
+							if ((_isGamePaused && (!_isPlayerDead)) || _isGameFinished) break;
+							
+							// Stop currently playing sounds
+							AudioManager::stopAllSounds();
+							
+							// Free all entities
+							_clearAllLists();
+							
+							// Choose level number to load (_loadNextLevel() automatically increments _currentLevelNumber)
+							if (_currentLevelNumber == 0) levelToLoadNumber = 0;
+							else levelToLoadNumber = _currentLevelNumber - 1;
+							
+							// Try to load the level
+							if (LevelManager::loadLevel(levelToLoadNumber) != 0)
 							{
-								_isGamePaused = !_isGamePaused;
-								if (_isGamePaused) LOG_INFORMATION("Game paused.");
-								else LOG_INFORMATION("Game continuing.");
-								
-								AudioManager::pauseMusic(_isGamePaused);
+								LOG_ERROR("Failed to reload level %d.", levelToLoadNumber);
+								exit(-1);
+							}
+							
+							// Restore player life and force ammunition count (so a player can accumulate a huge amount of ammunition by restarting the level several times)
+							pointerPlayer->modifyLife(100);
+							pointerPlayer->setAmmunitionAmount(100);
+							
+							// Allow the game to restart if the player is dead
+							if (_isPlayerDead)
+							{
+								_isPlayerDead = 0;
+								_isGamePaused = 0;
 							}
 							break;
 							
