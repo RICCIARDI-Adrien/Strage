@@ -10,6 +10,12 @@ You have to make your way alive to the level exit. Medipacks and ammunition are 
   
 And remember, *strage* means *slaughter* in Italian...
 
+## Controls
+* **Keyboard arrow keys** : move
+* **Space bar** : shoot
+* **Escape** : pause game
+* **R** : reload current level
+
 ## Building
 On Debian/Ubuntu systems, you have to install some SDL2 packages.
 ```
