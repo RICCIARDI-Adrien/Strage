@@ -8,7 +8,11 @@
 #include <cstdlib>
 #include <Log.hpp>
 #include <SDL2/SDL_mixer.h>
-#include <thread>
+#ifndef BUILD_FOR_WINDOWS
+	#include <thread>
+#else
+	#include <mingw.thread.h>
+#endif
 
 namespace AudioManager
 {

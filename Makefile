@@ -1,28 +1,30 @@
-CPP = g++
-CPPFLAGS = -W -Wall -std=c++11
-
 PATH_INCLUDES = Includes
 PATH_SOURCES = Sources
 
-BINARY = Strage
-# Windows specific
-ifeq ($(OS),Windows_NT)
-	# Avoid shipping MinGW libgcc and libstdc++
-	CPPFLAGS += -static-libgcc -static-libstdc++ -mwindows
-	# Windows needs custom libraries to provide WinMain()
-	LIBRARIES = -lmingw32 -lSDL2main
-endif
-LIBRARIES += -lSDL2 -lSDL2_mixer -lSDL2_ttf -pthread
+CPPFLAGS = -W -Wall -std=c++11
+LIBRARIES = -lSDL2 -lSDL2_mixer -lSDL2_ttf -pthread
 SOURCES = $(shell find $(PATH_SOURCES) -name "*.cpp")
 
+debug: BINARY = Strage
+debug: CPP = g++
 debug: CPPFLAGS += -g
 debug: all
 
-release: CPPFLAGS += -Werror -O2
-release: all
+linux: BINARY = Strage
+linux: CPP = g++
+linux: CPPFLAGS += -Werror -O2
+linux: all
+
+windows: BINARY = Strage.exe
+windows: CPP = i686-w64-mingw32-g++
+# Avoid shipping MinGW libgcc and libstdc++, build as a GUI program to avoid having an opened console when the game is started
+windows: CPPFLAGS += -Werror -O2 -DBUILD_FOR_WINDOWS -static-libgcc -static-libstdc++ -mwindows
+# Windows needs custom libraries to provide WinMain()
+windows: LIBRARIES += -lmingw32 -lSDL2main
+windows: all
 
 all:
-	$(CPP) $(CPPFLAGS) -I$(PATH_INCLUDES) $(SOURCES) $(LIBRARIES) -o $(BINARY)
+	$(CPP) $(CPPFLAGS) -I$(PATH_INCLUDES) $(SOURCES) -Wl,--start-group $(LIBRARIES) -Wl,--end-group -o $(BINARY)
 
 clean:
 	rm -f $(BINARY) $(BINARY).exe
