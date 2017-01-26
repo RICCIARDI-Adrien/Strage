@@ -17,11 +17,38 @@ And remember, *strage* means *slaughter* in Italian...
 * **R** : reload current level
 
 ## Building
+### Building for Linux
 On Debian/Ubuntu systems, you have to install some SDL2 packages.
 ```
 sudo apt install libsdl2-dev libsdl2-mixer-dev libsdl2-ttf-dev
 ```
-Then simply type *make release* in the Strage directory to build the game.
+Then simply type *make linux* in the Strage directory to build the game.
+
+### Building for Windows
+Windows binary is built under Linux using MinGW W64 cross compiler.  
+On Debian/Ubuntu systems, install the following package :
+```
+sudo apt install mingw-w64
+```
+Now, manually install needed SDL2 libraries and headers. First, download the following MinGW prebuilt packages :
+* [SDL2](https://www.libsdl.org/release/SDL2-devel-2.0.5-mingw.tar.gz)
+* [SDL2 Mixer](https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-2.0.1-mingw.tar.gz)
+* [SDL2 TTF](https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-2.0.14-mingw.tar.gz)
+
+Uncompress the three archives and copy each *i686-w64-mingw32/include* directory content to */usr/i686-w64-mingw32/include*.  
+Copy also all *i686-w64-mingw32/lib* directories content to */usr/i686-w64-mingw32/lib*.
+
+MinGW does not handle C++ threads natively. You have to download or clone https://github.com/meganz/mingw-std-threads and copy all header files to */usr/i686-w64-mingw32/include*.
+
+Finally, build the executable with the command *make windows*.
+
+The following DLLs are required for the game to run on Windows (simply put them next to Strage.exe executable). DLLs are found in the *i686-w64-mingw32/bin* directory of the previously downloaded SDL archives, the archive corresponding to a DLL is specified in brackets.
+* SDL2.dll (SDL2)
+* SDL2_mixer.dll (SDL2_mixer)
+* smpeg2.dll (SDL2_mixer)
+* libfreetype-6.dll (SDL2_ttf)
+* SDL2_ttf.dll (SDL2_ttf)
+* zlib1.dll (SDL2_ttf)
 
 ## How it works
 Levels are made using [Tiled](http://www.mapeditor.org/) editor. They are constituted of 2 layers :
