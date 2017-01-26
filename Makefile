@@ -1,16 +1,15 @@
 PATH_INCLUDES = Includes
 PATH_SOURCES = Sources
 
+BINARY = Strage
 CPPFLAGS = -W -Wall -std=c++11
 LIBRARIES = -lSDL2 -lSDL2_mixer -lSDL2_ttf -pthread
 SOURCES = $(shell find $(PATH_SOURCES) -name "*.cpp")
 
-debug: BINARY = Strage
 debug: CPP = g++
 debug: CPPFLAGS += -g
 debug: all
 
-linux: BINARY = Strage
 linux: CPP = g++
 linux: CPPFLAGS += -Werror -O2
 linux: all
