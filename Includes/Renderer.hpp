@@ -11,6 +11,17 @@ namespace Renderer
 {
 
 //-------------------------------------------------------------------------------------------------
+// Types
+//-------------------------------------------------------------------------------------------------
+/** All available text rendering colors. */
+typedef enum
+{
+	TEXT_COLOR_ID_BLUE,
+	TEXT_COLOR_ID_RED,
+	TEXT_COLOR_IDS_COUNT
+} TextColorId;
+	
+//-------------------------------------------------------------------------------------------------
 // Variables
 //-------------------------------------------------------------------------------------------------
 /** The renderer used to render to the game window. */
@@ -56,10 +67,11 @@ int isDisplayable(SDL_Rect *pointerObjectPositionRectangle);
 
 /** Display the provided text at the specified display position.
  * @param pointerText The text to display.
+ * @param colorId Which color to use to render the text.
  * @param x Horizontal coordinate of the text top left corner.
  * @param y Vertical coordinate of the text top left corner.
  */
-void renderText(const char *pointerText, int x, int y);
+void renderText(const char *pointerText, TextColorId colorId, int x, int y);
 
 /** Display the provided text at the display vertical and horizontal center.
  * @param pointerText The text to display.

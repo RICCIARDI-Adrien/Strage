@@ -23,8 +23,8 @@ static SDL_Rect _displayRectangle;
 
 /** The font used to draw text. */
 static TTF_Font *_pointerFont;
-/** The text rendering color. */
-static SDL_Color _textRenderingColor;
+/** All available text colors. */
+static SDL_Color _textColors[TEXT_COLOR_IDS_COUNT];
 
 //-------------------------------------------------------------------------------------------------
 // Public variables
@@ -42,16 +42,24 @@ int displayHeight;
 //-------------------------------------------------------------------------------------------------
 /** Render the provided text on a texture.
  * @param pointerText The string to render.
+ * @param colorId The text color.
  * @param pointerTexture On output, contain the rendered texture (it must be destroyed after usage).
  * @param pointerTextureWidth On output, contain the texture width in pixels.
  * @param pointerTextureHeight On output, contain the texture height in pixels.
  * @warning The function stops the game if something goes wrong.
  */
-static void _renderTextToTexture(const char *pointerText, SDL_Texture **pointerTexture, int *pointerTextureWidth, int *pointerTextureHeight)
+static void _renderTextToTexture(const char *pointerText, TextColorId colorId, SDL_Texture **pointerTexture, int *pointerTextureWidth, int *pointerTextureHeight)
 {
+	// Make sure color is valid
+	if ((colorId < 0) || (colorId >= TEXT_COLOR_IDS_COUNT))
+	{
+		LOG_ERROR("Invalid color ID : %d.\n", colorId);
+		exit(-1);
+	}
+	
 	// Render the text
 	//SDL_Surface *pointerSurface = TTF_RenderText_Solid(_pointerFont, pointerText, _textRenderingColor);
-	SDL_Surface *pointerSurface = TTF_RenderText_Blended(_pointerFont, pointerText, _textRenderingColor);
+	SDL_Surface *pointerSurface = TTF_RenderText_Blended(_pointerFont, pointerText, _textColors[colorId]);
 	if (pointerSurface == NULL)
 	{
 		LOG_ERROR("Failed to render the text to a surface, shutting down (%s).", TTF_GetError());
@@ -142,10 +150,14 @@ int initialize(int isFullScreenEnabled)
 	// Cache some values
 	_displayRectangle.w = Renderer::displayWidth;
 	_displayRectangle.h = Renderer::displayHeight;
-	_textRenderingColor.r = 0;
-	_textRenderingColor.g = 0;
-	_textRenderingColor.b = 255;
-	_textRenderingColor.a = 255;
+	_textColors[TEXT_COLOR_ID_BLUE].r = 0;
+	_textColors[TEXT_COLOR_ID_BLUE].g = 0;
+	_textColors[TEXT_COLOR_ID_BLUE].b = 255;
+	_textColors[TEXT_COLOR_ID_BLUE].a = 255;
+	_textColors[TEXT_COLOR_ID_RED].r = 255;
+	_textColors[TEXT_COLOR_ID_RED].g = 0;
+	_textColors[TEXT_COLOR_ID_RED].b = 0;
+	_textColors[TEXT_COLOR_ID_RED].a = 255;
 	
 	// Everything went fine
 	return 0;
@@ -193,13 +205,13 @@ int isDisplayable(SDL_Rect *pointerObjectPositionRectangle)
 	return SDL_HasIntersection(&_displayRectangle, pointerObjectPositionRectangle);
 }
 
-void renderText(const char *pointerText, int x, int y)
+void renderText(const char *pointerText, TextColorId colorId, int x, int y)
 {
 	SDL_Texture *pointerTexture;
 	SDL_Rect destinationRectangle;
 	
 	// Render the text on a texture
-	_renderTextToTexture(pointerText, &pointerTexture, &destinationRectangle.w, &destinationRectangle.h);
+	_renderTextToTexture(pointerText, colorId, &pointerTexture, &destinationRectangle.w, &destinationRectangle.h);
 	
 	// Display the texture at the specified coordinates
 	destinationRectangle.x = x;
@@ -214,7 +226,7 @@ void renderCenteredText(const char *pointerText)
 	SDL_Rect destinationRectangle;
 	
 	// Render the text on a texture
-	_renderTextToTexture(pointerText, &pointerTexture, &destinationRectangle.w, &destinationRectangle.h);
+	_renderTextToTexture(pointerText, TEXT_COLOR_ID_BLUE, &pointerTexture, &destinationRectangle.w, &destinationRectangle.h);
 	
 	// Display the texture on the screen center
 	destinationRectangle.x = (displayWidth - destinationRectangle.w) / 2;

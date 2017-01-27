@@ -508,15 +508,26 @@ static inline void _renderGame()
 	
 	// Display HUD
 	char string[64];
+	Renderer::TextColorId colorId;
+	int amount;
+	
 	// Life points
-	sprintf(string, "Life : %d%%", pointerPlayer->getLifePointsAmount());
-	Renderer::renderText(string, CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_X, CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y);
+	amount = pointerPlayer->getLifePointsAmount();
+	if (amount < 20) colorId = Renderer::TEXT_COLOR_ID_RED; // Display life points in red if the player is near to death
+	else colorId = Renderer::TEXT_COLOR_ID_BLUE;
+	sprintf(string, "Life : %d%%", amount);
+	Renderer::renderText(string, colorId, CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_X, CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y);
+	
 	// Ammunition count
-	sprintf(string, "Ammo : %d", pointerPlayer->getAmmunitionAmount());
-	Renderer::renderText(string, CONFIGURATION_DISPLAY_HUD_AMMUNITION_X, CONFIGURATION_DISPLAY_HUD_AMMUNITION_Y);
+	amount = pointerPlayer->getAmmunitionAmount();
+	if (amount == 0) colorId = Renderer::TEXT_COLOR_ID_RED; // Display ammunition in red if they are exhausted
+	else colorId = Renderer::TEXT_COLOR_ID_BLUE;
+	sprintf(string, "Ammo : %d", amount);
+	Renderer::renderText(string, colorId, CONFIGURATION_DISPLAY_HUD_AMMUNITION_X, CONFIGURATION_DISPLAY_HUD_AMMUNITION_Y);
+	
 	// Remaining spawners count
 	sprintf(string, "Spawners : %d", (int) LevelManager::enemySpawnersList.size());
-	Renderer::renderText(string, CONFIGURATION_DISPLAY_HUD_SPAWNERS_X, CONFIGURATION_DISPLAY_HUD_SPAWNERS_Y);
+	Renderer::renderText(string, Renderer::TEXT_COLOR_ID_BLUE, CONFIGURATION_DISPLAY_HUD_SPAWNERS_X, CONFIGURATION_DISPLAY_HUD_SPAWNERS_Y);
 	
 	// Display a centered message if needed
 	if (_isPlayerDead) Renderer::renderCenteredText("You are dead ! Hit R to retry.");
