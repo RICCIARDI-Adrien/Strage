@@ -208,7 +208,7 @@ void renderText(const char *pointerText, int x, int y)
 	SDL_DestroyTexture(pointerTexture);
 }
 
-void renderCentererText(const char *pointerText)
+void renderCenteredText(const char *pointerText)
 {
 	SDL_Texture *pointerTexture;
 	SDL_Rect destinationRectangle;

@@ -64,7 +64,7 @@ void renderText(const char *pointerText, int x, int y);
 /** Display the provided text at the display vertical and horizontal center.
  * @param pointerText The text to display.
  */
-void renderCentererText(const char *pointerText);
+void renderCenteredText(const char *pointerText);
 
 }
 

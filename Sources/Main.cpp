@@ -519,9 +519,9 @@ static inline void _renderGame()
 	Renderer::renderText(string, CONFIGURATION_DISPLAY_HUD_SPAWNERS_X, CONFIGURATION_DISPLAY_HUD_SPAWNERS_Y);
 	
 	// Display a centered message if needed
-	if (_isPlayerDead) Renderer::renderCentererText("You are dead ! Hit R to retry.");
-	else if (_isGameFinished) Renderer::renderCentererText("All levels completed. You are legend.");
-	else if (_isGamePaused) Renderer::renderCentererText("PAUSE");
+	if (_isPlayerDead) Renderer::renderCenteredText("You are dead ! Hit R to retry.");
+	else if (_isGameFinished) Renderer::renderCenteredText("All levels completed. You are legend.");
+	else if (_isGamePaused) Renderer::renderCenteredText("PAUSE");
 	
 	// Display the rendered picture
 	SDL_RenderPresent(Renderer::pointerMainRenderer);
