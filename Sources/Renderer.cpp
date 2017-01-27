@@ -147,6 +147,16 @@ int initialize(int isFullScreenEnabled)
 		goto Exit_Error_Uninitialize_TTF;
 	}
 	
+	// Hide the cursor in full screen mode
+	if (isFullScreenEnabled)
+	{
+		if (SDL_ShowCursor(SDL_DISABLE) < 0)
+		{
+			LOG_ERROR("Failed to hide cursor in full screen mode (%s).", SDL_GetError());
+			goto Exit_Error_Uninitialize_TTF;
+		}
+	}
+	
 	// Cache some values
 	_displayRectangle.w = Renderer::displayWidth;
 	_displayRectangle.h = Renderer::displayHeight;
