@@ -3,16 +3,11 @@
  * @author Adrien RICCIARDI
  */
 #include <AudioManager.hpp>
-#include <chrono>
 #include <Configuration.hpp>
 #include <cstdlib>
 #include <Log.hpp>
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
-#ifndef BUILD_FOR_WINDOWS
-	#include <thread>
-#else
-	#include <mingw.thread.h>
-#endif
 
 namespace AudioManager
 {
@@ -76,6 +71,15 @@ static Music _musics[] =
 	}
 };
 
+/** Make the thread wait until a new music must be played. */
+static SDL_cond *_pointerMusicThreadCondition;
+/** The boolean representing the condition state. */
+static int _isCurrentMusicFinished = 0;
+/** The mutex needed to use the thread condition. */
+static SDL_mutex *_pointerMusicThreadMutex;
+/** The music thread that will pause between two musics and start the next one. */
+static SDL_Thread *_pointerMusicThread;
+
 //-------------------------------------------------------------------------------------------------
 // Private functions
 //-------------------------------------------------------------------------------------------------
@@ -99,29 +103,35 @@ static Mix_Chunk *_loadFromWave(const char *fileName)
 	return pointerChunk;
 }
 
-/** Make a little pause then play another music randomly chosen. */
-static void _playNextMusic()
-{
-	// Pause 2 seconds to avoid directly starting a different music
-	std::this_thread::sleep_for(std::chrono::seconds(2));
-	
-	playMusic();
-}
-
 /** Called when the previous music finished. Call a thread that will start the music out of the callback scope, as requested by SDL Mixer documentation. */
 static void _scheduleNextMusic()
 {
-	static std::thread *pointerMusicPlayerThread = NULL;
-	
-	// Destroy previous thread if it exists
-	if (pointerMusicPlayerThread != NULL)
+	// Wake up the thread
+	SDL_LockMutex(_pointerMusicThreadMutex);
+	_isCurrentMusicFinished = 1;
+	SDL_CondSignal(_pointerMusicThreadCondition);
+	SDL_UnlockMutex(_pointerMusicThreadMutex);
+}
+
+/** Wait for _scheduleNextMusic() wake up, pause some time and play the next music.
+ * @param pointerParameter Unused parameter.
+ * @return Nothing as it will never terminate.
+ */
+static int _playNextMusicThread(void __attribute__((unused)) *pointerParameter)
+{
+	while (1)
 	{
-		pointerMusicPlayerThread->join();
-		delete pointerMusicPlayerThread;
+		// Wait for a wake up signal from the callback called when a music is finished
+		SDL_LockMutex(_pointerMusicThreadMutex);
+		while (!_isCurrentMusicFinished) SDL_CondWait(_pointerMusicThreadCondition, _pointerMusicThreadMutex);
+		SDL_UnlockMutex(_pointerMusicThreadMutex);
+		
+		// Pause 2 seconds to avoid directly starting a different music
+		SDL_Delay(2000);
+		
+		playMusic();
+		_isCurrentMusicFinished = 0;
 	}
-	
-	// Start a new thread
-	pointerMusicPlayerThread = new std::thread(_playNextMusic);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -168,12 +178,38 @@ int initialize()
 	// Call a callback when playing a music has finished
 	Mix_HookMusicFinished(_scheduleNextMusic);
 	
+	// Create the condition needed to synchronize the thread
+	_pointerMusicThreadCondition = SDL_CreateCond();
+	if (_pointerMusicThreadCondition == NULL)
+	{
+		LOG_ERROR("Failed to create the thread condition (%s).\n", SDL_GetError());
+		return -1;
+	}
+	
+	// Create the mutex needed by the condition mechanism
+	_pointerMusicThreadMutex = SDL_CreateMutex();
+	if (_pointerMusicThreadMutex == NULL)
+	{
+		LOG_ERROR("Failed to create the condition mutex (%s).\n", SDL_GetError());
+		return -1;
+	}
+	
+	// Create a thread that will pause between two musics and start the next one
+	_pointerMusicThread = SDL_CreateThread(_playNextMusicThread, "Music", NULL);
+	if (_pointerMusicThread == NULL)
+	{
+		LOG_ERROR("Failed to create the music thread (%s).\n", SDL_GetError());
+		return -1;
+	}
+	
 	return 0;
 }
 
 void uninitialize()
 {
 	unsigned int i;
+	
+	// TODO remove thread, cond and mutex
 	
 	// Free all musics
 	for (i = 0; i < MUSICS_COUNT; i++) Mix_FreeMusic(_musics[i].pointerMusicHandle);

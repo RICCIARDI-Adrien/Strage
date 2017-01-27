@@ -3,7 +3,7 @@ PATH_SOURCES = Sources
 
 BINARY = Strage
 CPPFLAGS = -W -Wall -std=c++11
-LIBRARIES = -lSDL2 -lSDL2_mixer -lSDL2_ttf -pthread
+LIBRARIES = -lSDL2 -lSDL2_mixer -lSDL2_ttf
 SOURCES = $(shell find $(PATH_SOURCES) -name "*.cpp")
 
 debug: CPP = g++
@@ -17,7 +17,7 @@ linux: all
 windows: BINARY = Strage.exe
 windows: CPP = i686-w64-mingw32-g++
 # Avoid shipping MinGW libgcc and libstdc++, build as a GUI program to avoid having an opened console when the game is started
-windows: CPPFLAGS += -Werror -O2 -DBUILD_FOR_WINDOWS -static-libgcc -static-libstdc++ -mwindows
+windows: CPPFLAGS += -Werror -O2 -static-libgcc -static-libstdc++ -mwindows
 # Windows needs custom libraries to provide WinMain()
 windows: LIBRARIES += -lmingw32 -lSDL2main
 windows: all

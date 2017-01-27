@@ -14,6 +14,7 @@ And remember, *strage* means *slaughter* in Italian...
 * **Keyboard arrow keys** : move
 * **Space bar** : shoot
 * **Escape** : pause game
+* **Alt+F4** : quit game
 * **R** : reload current level
 
 ## Building
@@ -37,8 +38,6 @@ Now, manually install needed SDL2 libraries and headers. First, download the fol
 
 Uncompress the three archives and copy each *i686-w64-mingw32/include* directory content to */usr/i686-w64-mingw32/include*.  
 Copy also all *i686-w64-mingw32/lib* directories content to */usr/i686-w64-mingw32/lib*.
-
-MinGW does not handle C++ threads natively. You have to download or clone https://github.com/meganz/mingw-std-threads and copy all header files to */usr/i686-w64-mingw32/include*.
 
 Finally, build the executable with the command *make windows*.
 
