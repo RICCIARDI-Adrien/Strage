@@ -79,6 +79,8 @@ static int _isCurrentMusicFinished = 0;
 static SDL_mutex *_pointerMusicThreadMutex;
 /** The music thread that will pause between two musics and start the next one. */
 static SDL_Thread *_pointerMusicThread;
+/** Tell the thread it must exit. */
+static volatile int _isThreadTerminated = 0;
 
 //-------------------------------------------------------------------------------------------------
 // Private functions
@@ -103,8 +105,8 @@ static Mix_Chunk *_loadFromWave(const char *fileName)
 	return pointerChunk;
 }
 
-/** Called when the previous music finished. Call a thread that will start the music out of the callback scope, as requested by SDL Mixer documentation. */
-static void _scheduleNextMusic()
+/** Called when the previous music finished. Wake a thread that will start the music out of the callback scope, as requested by SDL Mixer documentation. */
+static void _wakeUpMusicThread()
 {
 	// Wake up the thread
 	SDL_LockMutex(_pointerMusicThreadMutex);
@@ -113,9 +115,9 @@ static void _scheduleNextMusic()
 	SDL_UnlockMutex(_pointerMusicThreadMutex);
 }
 
-/** Wait for _scheduleNextMusic() wake up, pause some time and play the next music.
+/** Wait for _wakeUpMusicThread() signal, pause some time and play the next music.
  * @param pointerParameter Unused parameter.
- * @return Nothing as it will never terminate.
+ * @return Always 0.
  */
 static int _playNextMusicThread(void __attribute__((unused)) *pointerParameter)
 {
@@ -125,6 +127,13 @@ static int _playNextMusicThread(void __attribute__((unused)) *pointerParameter)
 		SDL_LockMutex(_pointerMusicThreadMutex);
 		while (!_isCurrentMusicFinished) SDL_CondWait(_pointerMusicThreadCondition, _pointerMusicThreadMutex);
 		SDL_UnlockMutex(_pointerMusicThreadMutex);
+		
+		// Exit when the game is being unloaded
+		if (_isThreadTerminated)
+		{
+			LOG_DEBUG("Music thread exited.");
+			return 0;
+		}
 		
 		// Pause 2 seconds to avoid directly starting a different music
 		SDL_Delay(2000);
@@ -176,7 +185,7 @@ int initialize()
 	}
 	
 	// Call a callback when playing a music has finished
-	Mix_HookMusicFinished(_scheduleNextMusic);
+	Mix_HookMusicFinished(_wakeUpMusicThread);
 	
 	// Create the condition needed to synchronize the thread
 	_pointerMusicThreadCondition = SDL_CreateCond();
@@ -209,7 +218,15 @@ void uninitialize()
 {
 	unsigned int i;
 	
-	// TODO remove thread, cond and mutex
+	// Tell the thread to exit
+	_isThreadTerminated = 1;
+	_wakeUpMusicThread();
+	// Wait for the thread to terminate
+	SDL_WaitThread(_pointerMusicThread, NULL);
+	
+	// Remove thread synchronization objects
+	SDL_DestroyMutex(_pointerMusicThreadMutex);
+	SDL_DestroyCond(_pointerMusicThreadCondition);
 	
 	// Free all musics
 	for (i = 0; i < MUSICS_COUNT; i++) Mix_FreeMusic(_musics[i].pointerMusicHandle);
