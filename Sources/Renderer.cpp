@@ -38,54 +38,6 @@ int displayWidth;
 int displayHeight;
 
 //-------------------------------------------------------------------------------------------------
-// Private functions
-//-------------------------------------------------------------------------------------------------
-/** Render the provided text on a texture.
- * @param pointerText The string to render.
- * @param colorId The text color.
- * @param pointerTexture On output, contain the rendered texture (it must be destroyed after usage).
- * @param pointerTextureWidth On output, contain the texture width in pixels.
- * @param pointerTextureHeight On output, contain the texture height in pixels.
- * @warning The function stops the game if something goes wrong.
- */
-static void _renderTextToTexture(const char *pointerText, TextColorId colorId, SDL_Texture **pointerTexture, int *pointerTextureWidth, int *pointerTextureHeight)
-{
-	// Make sure color is valid
-	if ((colorId < 0) || (colorId >= TEXT_COLOR_IDS_COUNT))
-	{
-		LOG_ERROR("Invalid color ID : %d.\n", colorId);
-		exit(-1);
-	}
-	
-	// Render the text
-	//SDL_Surface *pointerSurface = TTF_RenderText_Solid(_pointerFont, pointerText, _textRenderingColor);
-	SDL_Surface *pointerSurface = TTF_RenderText_Blended(_pointerFont, pointerText, _textColors[colorId]);
-	if (pointerSurface == NULL)
-	{
-		LOG_ERROR("Failed to render the text to a surface, shutting down (%s).", TTF_GetError());
-		exit(-1);
-	}
-	
-	// Convert it to a texture to be able to display it
-	*pointerTexture = SDL_CreateTextureFromSurface(pointerMainRenderer, pointerSurface);
-	SDL_FreeSurface(pointerSurface);
-	if (*pointerTexture == NULL)
-	{
-		LOG_ERROR("Failed to convert the surface to a texture, shutting down (%s).", SDL_GetError());
-		exit(-1);
-	}
-	
-	// Get the texture dimensions
-	unsigned int pixelFormat;
-	int access;
-	if (SDL_QueryTexture(*pointerTexture, &pixelFormat, &access, pointerTextureWidth, pointerTextureHeight) != 0)
-	{
-		LOG_ERROR("Failed to query information about the texture, shutting down (%s).", SDL_GetError());
-		exit(-1);
-	}
-}
-
-//-------------------------------------------------------------------------------------------------
 // Public functions
 //-------------------------------------------------------------------------------------------------
 int initialize(int isFullScreenEnabled)
@@ -215,34 +167,68 @@ int isDisplayable(SDL_Rect *pointerObjectPositionRectangle)
 	return SDL_HasIntersection(&_displayRectangle, pointerObjectPositionRectangle);
 }
 
-void renderText(const char *pointerText, TextColorId colorId, int x, int y)
+SDL_Texture *renderTextToTexture(const char *pointerText, TextColorId colorId)
 {
-	SDL_Texture *pointerTexture;
+	// Make sure color is valid
+	if ((colorId < 0) || (colorId >= TEXT_COLOR_IDS_COUNT))
+	{
+		LOG_ERROR("Invalid color ID : %d.\n", colorId);
+		exit(-1);
+	}
+	
+	// Render the text
+	//SDL_Surface *pointerSurface = TTF_RenderText_Solid(_pointerFont, pointerText, _textColors[colorId]);
+	SDL_Surface *pointerSurface = TTF_RenderText_Blended(_pointerFont, pointerText, _textColors[colorId]);
+	if (pointerSurface == NULL)
+	{
+		LOG_ERROR("Failed to render the text to a surface, shutting down (%s).", TTF_GetError());
+		exit(-1);
+	}
+	
+	// Convert it to a texture to be able to display it
+	SDL_Texture *pointerTexture = SDL_CreateTextureFromSurface(pointerMainRenderer, pointerSurface);
+	SDL_FreeSurface(pointerSurface);
+	if (pointerTexture == NULL)
+	{
+		LOG_ERROR("Failed to convert the surface to a texture, shutting down (%s).", SDL_GetError());
+		exit(-1);
+	}
+	
+	return pointerTexture;
+}
+
+void renderTexture(SDL_Texture *pointerTexture, int x, int y)
+{
 	SDL_Rect destinationRectangle;
 	
-	// Render the text on a texture
-	_renderTextToTexture(pointerText, colorId, &pointerTexture, &destinationRectangle.w, &destinationRectangle.h);
+	// Get the texture dimensions
+	if (SDL_QueryTexture(pointerTexture, NULL, NULL, &destinationRectangle.w, &destinationRectangle.h) != 0)
+	{
+		LOG_ERROR("Failed to query information about the texture, shutting down (%s).", SDL_GetError());
+		exit(-1);
+	}
 	
 	// Display the texture at the specified coordinates
 	destinationRectangle.x = x;
 	destinationRectangle.y = y;
 	SDL_RenderCopy(pointerMainRenderer, pointerTexture, NULL, &destinationRectangle);
-	SDL_DestroyTexture(pointerTexture);
 }
 
-void renderCenteredText(const char *pointerText)
+void renderCenteredTexture(SDL_Texture *pointerTexture)
 {
-	SDL_Texture *pointerTexture;
 	SDL_Rect destinationRectangle;
 	
-	// Render the text on a texture
-	_renderTextToTexture(pointerText, TEXT_COLOR_ID_BLUE, &pointerTexture, &destinationRectangle.w, &destinationRectangle.h);
+	// Get the texture dimensions
+	if (SDL_QueryTexture(pointerTexture, NULL, NULL, &destinationRectangle.w, &destinationRectangle.h) != 0)
+	{
+		LOG_ERROR("Failed to query information about the texture, shutting down (%s).", SDL_GetError());
+		exit(-1);
+	}
 	
 	// Display the texture on the screen center
 	destinationRectangle.x = (displayWidth - destinationRectangle.w) / 2;
 	destinationRectangle.y = (displayHeight - destinationRectangle.h) / 2;
 	SDL_RenderCopy(pointerMainRenderer, pointerTexture, NULL, &destinationRectangle);
-	SDL_DestroyTexture(pointerTexture);
 }
 
 }

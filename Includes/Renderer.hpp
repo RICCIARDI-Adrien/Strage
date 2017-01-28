@@ -65,18 +65,25 @@ void beginRendering(int x, int y);
  */
 int isDisplayable(SDL_Rect *pointerObjectPositionRectangle);
 
-/** Display the provided text at the specified display position.
- * @param pointerText The text to display.
- * @param colorId Which color to use to render the text.
- * @param x Horizontal coordinate of the text top left corner.
- * @param y Vertical coordinate of the text top left corner.
+/** Render the provided text on a texture.
+ * @param pointerText The string to render.
+ * @param colorId The text color.
+ * @return A texture containing the rendered text. Caller must free this texture.
+ * @warning This function halts the game if something goes wrong.
  */
-void renderText(const char *pointerText, TextColorId colorId, int x, int y);
+SDL_Texture *renderTextToTexture(const char *pointerText, TextColorId colorId);
 
-/** Display the provided text at the display vertical and horizontal center.
- * @param pointerText The text to display.
+/** Display the provided texture at the specified display position.
+ * @param pointerTexture The texture to display.
+ * @param x Horizontal coordinate of the texture top left corner.
+ * @param y Vertical coordinate of the texture top left corner.
  */
-void renderCenteredText(const char *pointerText);
+void renderTexture(SDL_Texture *pointerTexture, int x, int y);
+
+/** Display the provided texture at the display vertical and horizontal center.
+ * @param pointerTexture The texture to display.
+ */
+void renderCenteredTexture(SDL_Texture *pointerTexture);
 
 }
 

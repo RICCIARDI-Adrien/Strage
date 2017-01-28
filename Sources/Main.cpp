@@ -39,6 +39,18 @@ typedef enum
 	KEYBOARD_KEY_IDS_COUNT
 } KeyboardKeyId;
 
+/** All strings the interface can display. */
+typedef enum
+{
+	INTERFACE_STRING_ID_LIFE_POINTS_AMOUNT,
+	INTERFACE_STRING_ID_AMMUNITION_AMOUNT,
+	INTERFACE_STRING_ID_SPAWNERS_COUNT,
+	INTERFACE_STRING_ID_GAME_PAUSED,
+	INTERFACE_STRING_ID_GAME_LOST,
+	INTERFACE_STRING_ID_GAME_WON,
+	INTERFACE_STRING_IDS_COUNT
+} InterfaceStringId;
+
 //-------------------------------------------------------------------------------------------------
 // Private variables
 //-------------------------------------------------------------------------------------------------
@@ -79,6 +91,9 @@ static int _isGamePaused = 0;
 /** Set to 1 when the player has finished all levels. */
 static int _isGameFinished = 0;
 
+/** Cache all interface strings (rendered to textures) because they are really slow to render. */
+static SDL_Texture *_pointerInterfaceStrings[INTERFACE_STRING_IDS_COUNT];
+
 //-------------------------------------------------------------------------------------------------
 // Public variables
 //-------------------------------------------------------------------------------------------------
@@ -114,6 +129,11 @@ static void _clearAllLists()
 /** Automatically free allocated resources on program shutdown. */
 static void _exitFreeResources()
 {
+	int i;
+	
+	// Free all cached interface strings
+	for (i = 0; i < INTERFACE_STRING_IDS_COUNT; i++) SDL_DestroyTexture(_pointerInterfaceStrings[i]);
+	
 	// Delete all entities
 	_clearAllLists();
 	
@@ -464,6 +484,76 @@ static inline void _updateGameLogic()
 	}
 }
 
+/** Display and keep up to date interface strings. */
+static inline void _renderInterface()
+{
+	static int previousLifePointsAmount = -1, previousAmmunitionAmount = -1, previousSpawnersCount = -1; // Initialize everything to -1 to force the strings to be generated on game first frame
+	char string[64];
+	Renderer::TextColorId colorId;
+	int amount;
+	
+	// Life points
+	amount = pointerPlayer->getLifePointsAmount();
+	if (amount != previousLifePointsAmount)
+	{
+		// Display life points in red if the player is near to death
+		if (amount < 20) colorId = Renderer::TEXT_COLOR_ID_RED;
+		else colorId = Renderer::TEXT_COLOR_ID_BLUE;
+		
+		// Free previous string
+		SDL_DestroyTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_LIFE_POINTS_AMOUNT]); // SDL_DestroyTexture() does not complain if the provided pointer is NULL, as it is on the first frame
+		
+		// Render the string
+		sprintf(string, "Life : %d%%", amount);
+		_pointerInterfaceStrings[INTERFACE_STRING_ID_LIFE_POINTS_AMOUNT] = Renderer::renderTextToTexture(string, colorId);
+		
+		previousLifePointsAmount = amount;
+		LOG_DEBUG("Refreshed life points interface string.");
+	}
+	Renderer::renderTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_LIFE_POINTS_AMOUNT], CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_X, CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y);
+	
+	// Ammunition count
+	amount = pointerPlayer->getAmmunitionAmount();
+	if (amount != previousAmmunitionAmount)
+	{
+		// Display ammunition in red if they are exhausted
+		if (amount == 0) colorId = Renderer::TEXT_COLOR_ID_RED;
+		else colorId = Renderer::TEXT_COLOR_ID_BLUE;
+		
+		// Free previous string
+		SDL_DestroyTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_AMMUNITION_AMOUNT]);
+		
+		// Render the string
+		sprintf(string, "Ammo : %d", amount);
+		_pointerInterfaceStrings[INTERFACE_STRING_ID_AMMUNITION_AMOUNT] = Renderer::renderTextToTexture(string, colorId);
+		
+		previousAmmunitionAmount = amount;
+		LOG_DEBUG("Refreshed ammunition interface string.");
+	}
+	Renderer::renderTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_AMMUNITION_AMOUNT], CONFIGURATION_DISPLAY_HUD_AMMUNITION_X, CONFIGURATION_DISPLAY_HUD_AMMUNITION_Y);
+	
+	// Remaining spawners count
+	amount = (int) LevelManager::enemySpawnersList.size();
+	if (amount != previousSpawnersCount)
+	{
+		// Free previous string
+		SDL_DestroyTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_SPAWNERS_COUNT]);
+		
+		// Render the string
+		sprintf(string, "Spawners : %d", amount);
+		_pointerInterfaceStrings[INTERFACE_STRING_ID_SPAWNERS_COUNT] = Renderer::renderTextToTexture(string, Renderer::TEXT_COLOR_ID_BLUE);
+		
+		previousSpawnersCount = amount;
+		LOG_DEBUG("Refreshed spawners interface string.");
+	}
+	Renderer::renderTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_SPAWNERS_COUNT], CONFIGURATION_DISPLAY_HUD_SPAWNERS_X, CONFIGURATION_DISPLAY_HUD_SPAWNERS_Y);
+	
+	// Display a centered message if needed
+	if (_isPlayerDead) Renderer::renderCenteredTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_GAME_LOST]);
+	else if (_isGameFinished) Renderer::renderCenteredTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_GAME_WON]);
+	else if (_isGamePaused) Renderer::renderCenteredTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_GAME_PAUSED]);
+}
+
 /** Display everything to the screen. */
 static inline void _renderGame()
 {
@@ -507,32 +597,7 @@ static inline void _renderGame()
 	}
 	
 	// Display HUD
-	char string[64];
-	Renderer::TextColorId colorId;
-	int amount;
-	
-	// Life points
-	amount = pointerPlayer->getLifePointsAmount();
-	if (amount < 20) colorId = Renderer::TEXT_COLOR_ID_RED; // Display life points in red if the player is near to death
-	else colorId = Renderer::TEXT_COLOR_ID_BLUE;
-	sprintf(string, "Life : %d%%", amount);
-	Renderer::renderText(string, colorId, CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_X, CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y);
-	
-	// Ammunition count
-	amount = pointerPlayer->getAmmunitionAmount();
-	if (amount == 0) colorId = Renderer::TEXT_COLOR_ID_RED; // Display ammunition in red if they are exhausted
-	else colorId = Renderer::TEXT_COLOR_ID_BLUE;
-	sprintf(string, "Ammo : %d", amount);
-	Renderer::renderText(string, colorId, CONFIGURATION_DISPLAY_HUD_AMMUNITION_X, CONFIGURATION_DISPLAY_HUD_AMMUNITION_Y);
-	
-	// Remaining spawners count
-	sprintf(string, "Spawners : %d", (int) LevelManager::enemySpawnersList.size());
-	Renderer::renderText(string, Renderer::TEXT_COLOR_ID_BLUE, CONFIGURATION_DISPLAY_HUD_SPAWNERS_X, CONFIGURATION_DISPLAY_HUD_SPAWNERS_Y);
-	
-	// Display a centered message if needed
-	if (_isPlayerDead) Renderer::renderCenteredText("You are dead ! Hit R to retry.");
-	else if (_isGameFinished) Renderer::renderCenteredText("All levels completed. You are legend.");
-	else if (_isGamePaused) Renderer::renderCenteredText("PAUSE");
+	_renderInterface();
 	
 	// Display the rendered picture
 	SDL_RenderPresent(Renderer::pointerMainRenderer);
@@ -584,6 +649,10 @@ int main(int argc, char *argv[])
 	_cameraOffsetY = (Renderer::displayHeight / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER)->getHeight() / 2);
 	// Player damage overlay
 	_pointerPlayerHitOverlayTexture = (TextureDisplayOverlay *) TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_HIT_OVERLAY);
+	// Static interface strings
+	_pointerInterfaceStrings[INTERFACE_STRING_ID_GAME_PAUSED] = Renderer::renderTextToTexture("PAUSE", Renderer::TEXT_COLOR_ID_BLUE);
+	_pointerInterfaceStrings[INTERFACE_STRING_ID_GAME_LOST] =  Renderer::renderTextToTexture("You are dead ! Hit R to retry.", Renderer::TEXT_COLOR_ID_BLUE);
+	_pointerInterfaceStrings[INTERFACE_STRING_ID_GAME_WON] = Renderer::renderTextToTexture("All levels completed. You are legend.", Renderer::TEXT_COLOR_ID_BLUE);
 	
 	LOG_INFORMATION("Game engine successfully initialized.");
 	
