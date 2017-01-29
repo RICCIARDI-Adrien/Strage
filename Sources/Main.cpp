@@ -609,8 +609,12 @@ static inline void _renderGame()
 int main(int argc, char *argv[])
 {
 	SDL_Event event;
-	unsigned int Starting_Time, Elapsed_Time;
+	unsigned int frameStartingTime, frameElapsedTime;
 	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0}, isLastDirectionVertical = 1, isFullScreenEnabled = 0, levelToLoadNumber;
+	#if CONFIGURATION_DISPLAY_IS_FRAME_RATE_DISPLAYING_ENABLED
+		unsigned int frameRateStartingTime = 0;
+		int framesCount = 0;
+	#endif
 	
 	// Check parameters
 	if (argc > 1)
@@ -663,7 +667,11 @@ int main(int argc, char *argv[])
 	while (1)
 	{
 		// Store the time when the loop started
-		Starting_Time = SDL_GetTicks();
+		frameStartingTime = SDL_GetTicks();
+		
+		#if CONFIGURATION_DISPLAY_IS_FRAME_RATE_DISPLAYING_ENABLED
+			if (frameRateStartingTime == 0) frameRateStartingTime = frameStartingTime;
+		#endif
 		
 		// Handle all relevant events
 		while (SDL_PollEvent(&event))
@@ -837,8 +845,19 @@ int main(int argc, char *argv[])
 		_renderGame();
 		
 		// Wait enough time to achieve a 60Hz refresh rate
-		Elapsed_Time = SDL_GetTicks() - Starting_Time;
-		if (Elapsed_Time < CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS) SDL_Delay(CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS - Elapsed_Time);
+		frameElapsedTime = SDL_GetTicks() - frameStartingTime;
+		if (frameElapsedTime < CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS) SDL_Delay(CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS - frameElapsedTime);
+		
+		#if CONFIGURATION_DISPLAY_IS_FRAME_RATE_DISPLAYING_ENABLED
+			framesCount++;
+			// Display rendered frames count each second
+			if (SDL_GetTicks() - frameRateStartingTime >= 1000)
+			{
+				LOG_INFORMATION("Frame rate : %d fps", framesCount);
+				framesCount = 0;
+				frameRateStartingTime = 0;
+			}
+		#endif
 	}
 	
 Exit:
