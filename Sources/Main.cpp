@@ -303,13 +303,13 @@ static inline void _updateGameLogic()
 	}
 	
 	// Check if player bullets have hit a wall or an enemy
-	std::list<MovingEntityBullet *>::iterator bulletsListIterator;
+	std::list<MovingEntityBullet *>::iterator bulletsListIterator = _playerBulletsList.begin();
 	std::list<FightingEntityEnemy *>::iterator enemiesListIterator;
 	std::list<EntityEnemySpawner *>::iterator enemySpawnersListIterator;
 	MovingEntityBullet *pointerPlayerBullet;
 	FightingEntityEnemy *pointerEnemy;
 	EntityEnemySpawner *pointerEnemySpawner;
-	for (bulletsListIterator = _playerBulletsList.begin(); bulletsListIterator != _playerBulletsList.end(); ++bulletsListIterator)
+	while (bulletsListIterator != _playerBulletsList.end())
 	{
 		pointerPlayerBullet = *bulletsListIterator;
 		
@@ -364,11 +364,18 @@ static inline void _updateGameLogic()
 				break;
 			}
 		}
+		
+		// The bullet collided an enemy spawner and was destroyed, check next bullet
+		if (enemySpawnersListIterator != LevelManager::enemySpawnersList.end()) continue;
+		
+		// The bullet is still alive, check next one
+		++bulletsListIterator;
 	}
 	
 	// Check if enemies bullets have hit the player
 	MovingEntityBullet *pointerEnemyBullet;
-	for (bulletsListIterator = _enemiesBulletsList.begin(); bulletsListIterator != _enemiesBulletsList.end(); ++bulletsListIterator)
+	bulletsListIterator = _enemiesBulletsList.begin();
+	while (bulletsListIterator != _enemiesBulletsList.end())
 	{
 		pointerEnemyBullet = *bulletsListIterator;
 		
@@ -398,14 +405,19 @@ static inline void _updateGameLogic()
 				LOG_DEBUG("Player died.");
 				return;
 			}
+			continue;
 		}
+		
+		// Bullet is still alive, check next one
+		++bulletsListIterator;
 	}
 	
 	// Update enemies artificial intelligence
 	MovingEntityBullet *pointerBullet;
 	int result;
 	SDL_Rect *pointerPositionRectangle;
-	for (enemiesListIterator = _enemiesList.begin(); enemiesListIterator != _enemiesList.end(); ++enemiesListIterator)
+	enemiesListIterator = _enemiesList.begin();
+	while (enemiesListIterator != _enemiesList.end())
 	{
 		pointerEnemy = *enemiesListIterator;
 		
@@ -434,11 +446,15 @@ static inline void _updateGameLogic()
 			// Was the enemy allowed to fire ?
 			if (pointerBullet != NULL) _enemiesBulletsList.push_front(pointerBullet);
 		}
+		
+		// Enemy is still alive, check next one
+		++enemiesListIterator;
 	}
 	
 	// Update enemy spawners at the end, to avoid new enemies being spawned in the middle of the update function
 	int blockContent;
-	for (enemySpawnersListIterator = LevelManager::enemySpawnersList.begin(); enemySpawnersListIterator != LevelManager::enemySpawnersList.end(); ++enemySpawnersListIterator)
+	enemySpawnersListIterator = LevelManager::enemySpawnersList.begin();
+	while (enemySpawnersListIterator !=  LevelManager::enemySpawnersList.end())
 	{
 		pointerEnemySpawner = *enemySpawnersListIterator;
 		
@@ -459,6 +475,8 @@ static inline void _updateGameLogic()
 			// Display an explosion
 			_animatedTexturesList.push_front(new EntityAnimatedTextureEnemySpawnerExplosion(pointerPositionRectangle->x, pointerPositionRectangle->y));
 			AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_SPAWNER_EXPLOSION);
+			
+			continue;
 		}
 		// Try to spawn an enemy if the spawner requested to
 		else if (result == 2)
@@ -467,12 +485,15 @@ static inline void _updateGameLogic()
 			pointerEnemy = _spawnEnemy(pointerPositionRectangle->x, pointerPositionRectangle->y);
 			if (pointerEnemy != NULL) _enemiesList.push_front(pointerEnemy);
 		}
+		
+		// Spawner is still working, check next one
+		++enemySpawnersListIterator;
 	}
 	
 	// Update animated textures at the end, because they can be spawned by previous updates
-	std::list<EntityAnimatedTexture *>::iterator animatedTexturesListIterator;
+	std::list<EntityAnimatedTexture *>::iterator animatedTexturesListIterator = _animatedTexturesList.begin();
 	EntityAnimatedTexture *pointerAnimatedTexture;
-	for (animatedTexturesListIterator = _animatedTexturesList.begin(); animatedTexturesListIterator != _animatedTexturesList.end(); ++animatedTexturesListIterator)
+	while (animatedTexturesListIterator != _animatedTexturesList.end())
 	{
 		pointerAnimatedTexture = *animatedTexturesListIterator;
 		
@@ -481,6 +502,8 @@ static inline void _updateGameLogic()
 			delete pointerAnimatedTexture;
 			animatedTexturesListIterator = _animatedTexturesList.erase(animatedTexturesListIterator);
 		}
+		// Animation is not finished, check next one
+		else ++animatedTexturesListIterator;
 	}
 }
 
