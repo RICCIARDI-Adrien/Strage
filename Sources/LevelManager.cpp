@@ -80,6 +80,11 @@ static int _displayHeightBlocks;
 /** Contain all level blocks. */
 static Block _levelBlocks[CONFIGURATION_LEVEL_MAXIMUM_WIDTH * CONFIGURATION_LEVEL_MAXIMUM_HEIGHT];
 
+/** Cache medipack texture. */
+static Texture *_pointerMedipackTexture;
+/** Cache ammunition texture. */
+static Texture *_pointerAmmunitionTexture;
+
 //-------------------------------------------------------------------------------------------------
 // Public variables
 //-------------------------------------------------------------------------------------------------
@@ -96,6 +101,10 @@ int initialize()
 	_displayHeightBlocks = Renderer::displayHeight / CONFIGURATION_LEVEL_BLOCK_SIZE;
 	if (Renderer::displayHeight % CONFIGURATION_LEVEL_BLOCK_SIZE != 0) _displayHeightBlocks++;
 	LOG_DEBUG("Display size : %dx%d pixels, %dx%d blocks.", Renderer::displayWidth, Renderer::displayHeight, _displayWidthBlocks, _displayHeightBlocks);
+	
+	// Cache some values
+	_pointerMedipackTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_MEDIPACK);
+	_pointerAmmunitionTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_AMMUNITION);
 
 	return 0;
 }
@@ -277,7 +286,6 @@ void renderScene(int topLeftX, int topLeftY)
 	yStartingBlock = topLeftY / CONFIGURATION_LEVEL_BLOCK_SIZE;
 	
 	// Compute the amount of blocks to display
-	// TODO handle user reaching the rightmost or the downer side
 	xDisplayBlocksCount = _displayWidthBlocks;
 	if (xStartingPixel < 0) xDisplayBlocksCount++; // Display one more block on the right if the leftmost block is not fully displayed
 	yDisplayBlocksCount = _displayHeightBlocks;
@@ -302,8 +310,8 @@ void renderScene(int topLeftX, int topLeftY)
 				pointerBlock->pointerTexture->render(xPixel, yPixel);
 				
 				// Display an eventual item which can be on the block
-				if (pointerBlock->content & BLOCK_CONTENT_MEDIPACK) TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_MEDIPACK)->render(xPixel, yPixel);
-				else if (pointerBlock->content & BLOCK_CONTENT_AMMUNITION) TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_AMMUNITION)->render(xPixel, yPixel);
+				if (pointerBlock->content & BLOCK_CONTENT_MEDIPACK) _pointerMedipackTexture->render(xPixel, yPixel);
+				else if (pointerBlock->content & BLOCK_CONTENT_AMMUNITION) _pointerAmmunitionTexture->render(xPixel, yPixel);
 			}
 			
 			xPixel += CONFIGURATION_LEVEL_BLOCK_SIZE;
