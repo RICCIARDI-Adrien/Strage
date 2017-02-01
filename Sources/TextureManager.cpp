@@ -24,18 +24,32 @@ static Texture *_pointerTextureManagerTextures[TEXTURE_IDS_COUNT];
 int initialize()
 {
 	// Scene floors
-	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_0] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Dirt_0.bmp", 0);
-	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_1] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Dirt_1.bmp", 0);
-	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_2] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Grass_0.bmp", 0);
-	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_3] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Grass_1.bmp", 0);
-	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_4] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Metal_Grid_0.bmp", 0);
-	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_5] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Metal_Plate_0.bmp", 0);
-	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_6] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Metal_Plate_1.bmp", 0);
-	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_7] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Level_Exit.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_0] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Clay_0.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_1] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Dirt_0.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_2] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Dirt_1.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_3] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Grass_0.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_4] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Grass_1.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_5] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Gravel_0.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_6] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Gravel_1.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_7] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Metal_Grid_0.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_8] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Level_Exit.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_9] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Metal_Plate_0.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_10] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Metal_Plate_1.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_11] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Sand_0.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_12] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Snow_0.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_13] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Stone_0.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_14] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Stone_1.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_15] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Stone_2.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_16] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Stone_3.bmp", 0);
 	
 	// Scene walls
 	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_WALL_0] = new Texture(CONFIGURATION_PATH_TEXTURES "/Wall_Stone_0.bmp", 0);
-	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_WALL_1] = new Texture(CONFIGURATION_PATH_TEXTURES "/Wall_White_Bricks_0.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_WALL_1] = new Texture(CONFIGURATION_PATH_TEXTURES "/Wall_Stone_1.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_WALL_2] = new Texture(CONFIGURATION_PATH_TEXTURES "/Wall_Stone_2.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_WALL_3] = new Texture(CONFIGURATION_PATH_TEXTURES "/Wall_Stone_3.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_WALL_4] = new Texture(CONFIGURATION_PATH_TEXTURES "/Wall_Stone_4.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_WALL_6] = new Texture(CONFIGURATION_PATH_TEXTURES "/Wall_Bricks_0.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_WALL_7] = new Texture(CONFIGURATION_PATH_TEXTURES "/Wall_Bricks_1.bmp", 0);
 	
 	// Static objects
 	_pointerTextureManagerTextures[TEXTURE_ID_MEDIPACK] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medipack.bmp", 1);
