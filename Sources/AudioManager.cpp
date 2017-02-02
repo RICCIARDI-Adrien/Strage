@@ -116,10 +116,9 @@ static void _wakeUpMusicThread()
 }
 
 /** Wait for _wakeUpMusicThread() signal, pause some time and play the next music.
- * @param pointerParameter Unused parameter.
  * @return Always 0.
  */
-static int _playNextMusicThread(void __attribute__((unused)) *pointerParameter)
+static int _playNextMusicThread(void *)
 {
 	while (1)
 	{
