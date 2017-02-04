@@ -140,7 +140,7 @@ class FightingEntityPlayer: public FightingEntity
 				_maximumLifePointsAmount += 10;
 				// Restore life
 				_lifePointsAmount = _maximumLifePointsAmount;
-				//AudioManager::playSound(AudioManager::SOUND_ID_PLAYER_HEALED); TODO
+				AudioManager::playSound(AudioManager::SOUND_ID_PLAYER_LIFE_INCREASED);
 				LOG_DEBUG("Increased player life and healed him.");
 				
 				// Remove the golden medipack as it has been used
