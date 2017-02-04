@@ -372,46 +372,6 @@ static inline void _updateGameLogic()
 		++bulletsListIterator;
 	}
 	
-	// Check if enemies bullets have hit the player
-	MovingEntityBullet *pointerEnemyBullet;
-	bulletsListIterator = _enemiesBulletsList.begin();
-	while (bulletsListIterator != _enemiesBulletsList.end())
-	{
-		pointerEnemyBullet = *bulletsListIterator;
-		
-		// Remove the bullet if it hit a wall
-		if (pointerEnemyBullet->update() != 0)
-		{
-			delete pointerEnemyBullet;
-			bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
-			continue;
-		}
-		
-		if (SDL_HasIntersection(pointerPlayer->getPositionRectangle(), pointerEnemyBullet->getPositionRectangle()))
-		{
-			// Remove the bullet
-			bulletsListIterator = _enemiesBulletsList.erase(bulletsListIterator);
-			
-			// Wound the player
-			pointerPlayer->modifyLife(pointerEnemyBullet->getDamageAmount());
-			_isPlayerHit = 1;
-			LOG_DEBUG("Player hit.");
-			
-			// Instantly stop game updating
-			if (pointerPlayer->isDead())
-			{
-				_isPlayerDead = 1;
-				_isGamePaused = 1; // Pause game updating
-				LOG_DEBUG("Player died.");
-				return;
-			}
-			continue;
-		}
-		
-		// Bullet is still alive, check next one
-		++bulletsListIterator;
-	}
-	
 	// Update enemies artificial intelligence
 	MovingEntityBullet *pointerBullet;
 	int result;
@@ -449,6 +409,46 @@ static inline void _updateGameLogic()
 		
 		// Enemy is still alive, check next one
 		++enemiesListIterator;
+	}
+	
+	// Check if enemies bullets have hit the player (update enemies bullets after enemies, so if they shot a new bullet is it updated too, in the same way it's done for the player. Thus, it is possible to adjust bullet spawning coordinate offsets in the same way for player and enemies)
+	MovingEntityBullet *pointerEnemyBullet;
+	bulletsListIterator = _enemiesBulletsList.begin();
+	while (bulletsListIterator != _enemiesBulletsList.end())
+	{
+		pointerEnemyBullet = *bulletsListIterator;
+		
+		// Remove the bullet if it hit a wall
+		if (pointerEnemyBullet->update() != 0)
+		{
+			delete pointerEnemyBullet;
+			bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
+			continue;
+		}
+		
+		if (SDL_HasIntersection(pointerPlayer->getPositionRectangle(), pointerEnemyBullet->getPositionRectangle()))
+		{
+			// Remove the bullet
+			bulletsListIterator = _enemiesBulletsList.erase(bulletsListIterator);
+			
+			// Wound the player
+			pointerPlayer->modifyLife(pointerEnemyBullet->getDamageAmount());
+			_isPlayerHit = 1;
+			LOG_DEBUG("Player hit.");
+			
+			// Instantly stop game updating
+			if (pointerPlayer->isDead())
+			{
+				_isPlayerDead = 1;
+				_isGamePaused = 1; // Pause game updating
+				LOG_DEBUG("Player died.");
+				return;
+			}
+			continue;
+		}
+		
+		// Bullet is still alive, check next one
+		++bulletsListIterator;
 	}
 	
 	// Update enemy spawners at the end, to avoid new enemies being spawned in the middle of the update function

@@ -69,14 +69,18 @@ class FightingEntity: public MovingEntity
 			// Player and enemies collide with walls and enemy spawners
 			_collisionBlockContent = LevelManager::BLOCK_CONTENT_WALL | LevelManager::BLOCK_CONTENT_ENEMY_SPAWNER;
 			
-			// Cache the offset to add to entity coordinates to make fired bullets start from where the cannon is
+			// Cache the offset to add to entity coordinates to make fired bullets start from where the cannon is (bullets are spawned a little nearer from the entity center than the cannon muzzle, so an underneath entity can be hit)
+			// Warning : for the underneath entity to be killed, bullet speed must be less than the bullet texture's larger dimension
 			Texture *pointerBulletTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLET); // Use textures to avoid instantiate a bullet to get its dimensions (all bullets have same dimensions)
+			int entityWidth = _pointerTexture->getWidth(); // Only entity width is required because the entity is always facing the direction it shoots to
+			int bulletWidth = pointerBulletTexture->getWidth();
+			int bulletHeight = pointerBulletTexture->getHeight();
 			// Assume that entity is faced to the direction the bullet is fired
-			_bulletStartingPositionOffsetUpX = (_pointerTexture->getWidth() - pointerBulletTexture->getWidth()) / 2;
-			_bulletStartingPositionOffsetUpY = -pointerBulletTexture->getHeight();
+			_bulletStartingPositionOffsetUpX = (entityWidth - bulletWidth) / 2;
+			_bulletStartingPositionOffsetUpY = 2; // Make the bullet start into the entity, with two more pixels to be sure to hit an underneath entity
 			_bulletStartingPositionOffsetDownX = _bulletStartingPositionOffsetUpX;
-			_bulletStartingPositionOffsetDownY = _pointerTexture->getHeight(); // Entity is facing left, so its horizontal width is its height
-			_bulletStartingPositionOffsetLeftX = _bulletStartingPositionOffsetUpY;
+			_bulletStartingPositionOffsetDownY = entityWidth - bulletHeight - 2; // -1 should be enough due entityHeight usage (which results in coordinate + 1), but -2 is needed to make the underneath entity killable
+			_bulletStartingPositionOffsetLeftX = 5; // Manually adjusted value to allow an underneath entity to be hit when this entity is facing left (TODO dependent of bullet size, speed and texture rotation)
 			_bulletStartingPositionOffsetLeftY = _bulletStartingPositionOffsetUpX - 1; // -1 to adjust the rotated bullet texture (TODO how to determine this ?)
 			_bulletStartingPositionOffsetRightX = _bulletStartingPositionOffsetDownY; // Entity is facing right, so its horizontal width is its height
 			_bulletStartingPositionOffsetRightY = _bulletStartingPositionOffsetLeftY;
