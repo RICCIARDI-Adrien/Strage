@@ -559,12 +559,16 @@ static inline void _renderInterface()
 	amount = (int) _enemiesList.size();
 	if (amount != previousSpawnersCount)
 	{
+		// Display enemies in green if they are all dead
+		if (amount == 0) colorId = Renderer::TEXT_COLOR_ID_GREEN;
+		else colorId = Renderer::TEXT_COLOR_ID_BLUE;
+		
 		// Free previous string
 		SDL_DestroyTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_ENEMIES_COUNT]);
 		
 		// Render the string
 		sprintf(string, "Enemies : %d", amount);
-		_pointerInterfaceStrings[INTERFACE_STRING_ID_ENEMIES_COUNT] = Renderer::renderTextToTexture(string, Renderer::TEXT_COLOR_ID_BLUE);
+		_pointerInterfaceStrings[INTERFACE_STRING_ID_ENEMIES_COUNT] = Renderer::renderTextToTexture(string, colorId);
 		
 		previousSpawnersCount = amount;
 		LOG_DEBUG("Refreshed enemies interface string.");
