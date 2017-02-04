@@ -131,6 +131,22 @@ class FightingEntityPlayer: public FightingEntity
 					LevelManager::setBlockContent(playerCenterX, playerCenterY, blockContent);
 				}
 			}
+			// Is there a golden medipack ?
+			if (blockContent & LevelManager::BLOCK_CONTENT_GOLDEN_MEDIPACK)
+			{
+				LOG_DEBUG("Player is crossing a block containing a golden medipack.");
+				
+				// Increase maximum life
+				_maximumLifePointsAmount += 10;
+				// Restore life
+				_lifePointsAmount = _maximumLifePointsAmount;
+				//AudioManager::playSound(AudioManager::SOUND_ID_PLAYER_HEALED); TODO
+				LOG_DEBUG("Increased player life and healed him.");
+				
+				// Remove the golden medipack as it has been used
+				blockContent &= ~LevelManager::BLOCK_CONTENT_GOLDEN_MEDIPACK;
+				LevelManager::setBlockContent(playerCenterX, playerCenterY, blockContent);
+			}
 			// Is there ammunition ?
 			else if (blockContent & LevelManager::BLOCK_CONTENT_AMMUNITION)
 			{
