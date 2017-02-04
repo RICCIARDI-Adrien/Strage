@@ -7,6 +7,7 @@ You do not know why they want you dead, they may have a very good reason, but it
   
 Enemies are teleported to this place to fight you by using big machines. Destroy these machines at sight or they will teleport tons of enemies !  
 You have to make your way alive to the level exit. Medipacks and ammunition are hidden somewhere on the map to help you. They can also be dropped by dead enemies, if you are lucky.  
+Some levels contain a golden medipack that increases player maximum life amount, will you find them all ?  
   
 And remember, *strage* means *slaughter* in Italian...
 
