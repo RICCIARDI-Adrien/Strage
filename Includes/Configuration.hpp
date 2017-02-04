@@ -25,10 +25,10 @@
 #define CONFIGURATION_DISPLAY_HUD_AMMUNITION_X 250
 /** HUD ammunition text screen Y coordinate. */
 #define CONFIGURATION_DISPLAY_HUD_AMMUNITION_Y 10
-/** HUD spawners text screen X coordinate. */
-#define CONFIGURATION_DISPLAY_HUD_SPAWNERS_X 510
-/** HUD spawners text screen Y coordinate. */
-#define CONFIGURATION_DISPLAY_HUD_SPAWNERS_Y 10
+/** HUD enemies text screen X coordinate. */
+#define CONFIGURATION_DISPLAY_HUD_ENEMIES_X 510
+/** HUD enemies text screen Y coordinate. */
+#define CONFIGURATION_DISPLAY_HUD_ENEMIES_Y 10
 
 // Audio
 /** Sampling frequency in Hz. */

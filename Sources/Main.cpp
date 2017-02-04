@@ -44,7 +44,7 @@ typedef enum
 {
 	INTERFACE_STRING_ID_LIFE_POINTS_AMOUNT,
 	INTERFACE_STRING_ID_AMMUNITION_AMOUNT,
-	INTERFACE_STRING_ID_SPAWNERS_COUNT,
+	INTERFACE_STRING_ID_ENEMIES_COUNT,
 	INTERFACE_STRING_ID_GAME_PAUSED,
 	INTERFACE_STRING_ID_GAME_LOST,
 	INTERFACE_STRING_ID_GAME_WON,
@@ -555,21 +555,21 @@ static inline void _renderInterface()
 	}
 	Renderer::renderTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_AMMUNITION_AMOUNT], CONFIGURATION_DISPLAY_HUD_AMMUNITION_X, CONFIGURATION_DISPLAY_HUD_AMMUNITION_Y);
 	
-	// Remaining spawners count
-	amount = (int) LevelManager::enemySpawnersList.size();
+	// Remaining enemies count
+	amount = (int) _enemiesList.size();
 	if (amount != previousSpawnersCount)
 	{
 		// Free previous string
-		SDL_DestroyTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_SPAWNERS_COUNT]);
+		SDL_DestroyTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_ENEMIES_COUNT]);
 		
 		// Render the string
-		sprintf(string, "Spawners : %d", amount);
-		_pointerInterfaceStrings[INTERFACE_STRING_ID_SPAWNERS_COUNT] = Renderer::renderTextToTexture(string, Renderer::TEXT_COLOR_ID_BLUE);
+		sprintf(string, "Enemies : %d", amount);
+		_pointerInterfaceStrings[INTERFACE_STRING_ID_ENEMIES_COUNT] = Renderer::renderTextToTexture(string, Renderer::TEXT_COLOR_ID_BLUE);
 		
 		previousSpawnersCount = amount;
-		LOG_DEBUG("Refreshed spawners interface string.");
+		LOG_DEBUG("Refreshed enemies interface string.");
 	}
-	Renderer::renderTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_SPAWNERS_COUNT], CONFIGURATION_DISPLAY_HUD_SPAWNERS_X, CONFIGURATION_DISPLAY_HUD_SPAWNERS_Y);
+	Renderer::renderTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_ENEMIES_COUNT], CONFIGURATION_DISPLAY_HUD_ENEMIES_X, CONFIGURATION_DISPLAY_HUD_ENEMIES_Y);
 	
 	// Display a centered message if needed
 	if (_isPlayerDead) Renderer::renderCenteredTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_GAME_LOST]);
