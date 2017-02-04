@@ -61,6 +61,7 @@ typedef enum
 	OBJECT_ID_AMMUNITION,
 	OBJECT_ID_ENEMY_SPAWNER,
 	OBJECT_ID_LEVEL_EXIT,
+	OBJECT_ID_GOLDEN_MEDIPACK, // TODO put under medipack, update all levels
 	OBJECT_IDS_COUNT
 } ObjectId;
 
@@ -82,6 +83,8 @@ static Block _levelBlocks[CONFIGURATION_LEVEL_MAXIMUM_WIDTH * CONFIGURATION_LEVE
 
 /** Cache medipack texture. */
 static Texture *_pointerMedipackTexture;
+/** Cache golden medipack texture. */
+static Texture *_pointerGoldenMedipackTexture;
 /** Cache ammunition texture. */
 static Texture *_pointerAmmunitionTexture;
 
@@ -104,6 +107,7 @@ int initialize()
 	
 	// Cache some values
 	_pointerMedipackTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_MEDIPACK);
+	_pointerGoldenMedipackTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_GOLDEN_MEDIPACK);
 	_pointerAmmunitionTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_AMMUNITION);
 
 	return 0;
@@ -229,6 +233,11 @@ Scene_Loading_End:
 					LOG_DEBUG("Spawned medipack on block (%d, %d).", x, y);
 					break;
 					
+				case OBJECT_ID_GOLDEN_MEDIPACK:
+					_levelBlocks[COMPUTE_BLOCK_INDEX(x, y)].content |= BLOCK_CONTENT_GOLDEN_MEDIPACK;
+					LOG_DEBUG("Spawned golden medipack on block (%d, %d).", x, y);
+					break;
+					
 				case OBJECT_ID_AMMUNITION:
 					_levelBlocks[COMPUTE_BLOCK_INDEX(x, y)].content |= BLOCK_CONTENT_AMMUNITION;
 					LOG_DEBUG("Spawned ammunition on block (%d, %d).", x, y);
@@ -311,6 +320,7 @@ void renderScene(int topLeftX, int topLeftY)
 				
 				// Display an eventual item which can be on the block
 				if (pointerBlock->content & BLOCK_CONTENT_MEDIPACK) _pointerMedipackTexture->render(xPixel, yPixel);
+				else if (pointerBlock->content & BLOCK_CONTENT_GOLDEN_MEDIPACK) _pointerGoldenMedipackTexture->render(xPixel, yPixel);
 				else if (pointerBlock->content & BLOCK_CONTENT_AMMUNITION) _pointerAmmunitionTexture->render(xPixel, yPixel);
 			}
 			

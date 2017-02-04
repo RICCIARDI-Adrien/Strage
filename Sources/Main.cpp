@@ -155,7 +155,7 @@ static inline void _spawnItem(int x, int y)
 	
 	// Spawn nothing if the block contains an item yet
 	blockContent = LevelManager::getBlockContent(x, y);
-	if ((blockContent & LevelManager::BLOCK_CONTENT_MEDIPACK) || (blockContent & LevelManager::BLOCK_CONTENT_AMMUNITION)) return;
+	if ((blockContent & LevelManager::BLOCK_CONTENT_MEDIPACK) || (blockContent & LevelManager::BLOCK_CONTENT_GOLDEN_MEDIPACK) || (blockContent & LevelManager::BLOCK_CONTENT_AMMUNITION)) return;
 	
 	// Select which item to spawn
 	if (rand() % 2 == 0)

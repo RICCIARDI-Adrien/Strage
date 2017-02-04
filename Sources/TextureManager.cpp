@@ -53,6 +53,7 @@ int initialize()
 	
 	// Static objects
 	_pointerTextureManagerTextures[TEXTURE_ID_MEDIPACK] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medipack.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_GOLDEN_MEDIPACK] = new Texture(CONFIGURATION_PATH_TEXTURES "/Golden_Medipack.bmp", 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_AMMUNITION] = new Texture(CONFIGURATION_PATH_TEXTURES "/Ammunition.bmp", 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_ENEMY_SPAWNER] = new Texture(CONFIGURATION_PATH_TEXTURES "/Enemy_Spawner.bmp", 1);
 	
