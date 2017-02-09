@@ -329,15 +329,16 @@ static inline void _updateGameLogic()
 			// Did the bullet hit this enemy ?
 			if (SDL_HasIntersection(pointerPlayerBullet->getPositionRectangle(), pointerEnemy->getPositionRectangle()))
 			{
-				// Remove the bullet
-				delete pointerPlayerBullet;
-				bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
-				
 				// Wound the enemy
 				pointerEnemy->modifyLife(pointerPlayerBullet->getDamageAmount());
 				
 				AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_BULLET_IMPACT);
 				LOG_DEBUG("Enemy hit.");
+				
+				// Remove the bullet
+				delete pointerPlayerBullet;
+				bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
+				
 				break;
 			}
 		}
@@ -352,15 +353,16 @@ static inline void _updateGameLogic()
 			
 			if (SDL_HasIntersection(pointerPlayerBullet->getPositionRectangle(), pointerEnemySpawner->getPositionRectangle()))
 			{
-				// Remove the bullet
-				delete pointerPlayerBullet;
-				bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
-				
 				// Damage the enemy spawner
 				pointerEnemySpawner->modifyLife(pointerPlayerBullet->getDamageAmount());
 				
 				AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_SPAWNER_BULLET_IMPACT);
 				LOG_DEBUG("Enemy spawner hit.");
+				
+				// Remove the bullet
+				delete pointerPlayerBullet;
+				bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
+				
 				break;
 			}
 		}
@@ -385,16 +387,18 @@ static inline void _updateGameLogic()
 		// Remove the enemy if it is dead
 		if (result == 1)
 		{
-			delete pointerEnemy;
-			enemiesListIterator = _enemiesList.erase(enemiesListIterator);
-			
 			// Spawn an explosion effect
 			pointerPositionRectangle = pointerEnemy->getPositionRectangle();
+			
 			_animatedTexturesList.push_front(new EntityAnimatedTextureShipExplosion(pointerPositionRectangle->x, pointerPositionRectangle->y));
 			AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_EXPLOSION);
 			
 			// Spawn an item on the current block if player is lucky
 			_spawnItem(pointerPositionRectangle->x + (pointerPositionRectangle->w / 2), pointerPositionRectangle->y + (pointerPositionRectangle->h / 2)); // Use enemy center coordinates to avoid favoring one block among others
+			
+			// Remove the enemy
+			delete pointerEnemy;
+			enemiesListIterator = _enemiesList.erase(enemiesListIterator);
 			
 			continue;
 		}
@@ -462,10 +466,6 @@ static inline void _updateGameLogic()
 		// Remove the spawner if it is destroyed
 		if (result == 1)
 		{
-			// Remove the spawner
-			delete pointerEnemySpawner;
-			enemySpawnersListIterator = LevelManager::enemySpawnersList.erase(enemySpawnersListIterator);
-			
 			// Remove the spawner indicator from the block
 			pointerPositionRectangle = pointerEnemySpawner->getPositionRectangle();
 			blockContent = LevelManager::getBlockContent(pointerPositionRectangle->x, pointerPositionRectangle->y);
@@ -475,6 +475,10 @@ static inline void _updateGameLogic()
 			// Display an explosion
 			_animatedTexturesList.push_front(new EntityAnimatedTextureEnemySpawnerExplosion(pointerPositionRectangle->x, pointerPositionRectangle->y));
 			AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_SPAWNER_EXPLOSION);
+			
+			// Remove the spawner
+			delete pointerEnemySpawner;
+			enemySpawnersListIterator = LevelManager::enemySpawnersList.erase(enemySpawnersListIterator);
 			
 			continue;
 		}
@@ -499,6 +503,7 @@ static inline void _updateGameLogic()
 		
 		if (pointerAnimatedTexture->update() != 0)
 		{
+			// Remove the texture
 			delete pointerAnimatedTexture;
 			animatedTexturesListIterator = _animatedTexturesList.erase(animatedTexturesListIterator);
 		}
