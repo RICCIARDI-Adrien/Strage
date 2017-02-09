@@ -23,6 +23,7 @@ static Texture *_pointerTextureManagerTextures[TEXTURE_IDS_COUNT];
 //-------------------------------------------------------------------------------------------------
 int initialize()
 {
+	// TODO load with array of struct { string, int }?
 	// Scene floors
 	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_0] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Clay_0.bmp", 0);
 	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_1] = new Texture(CONFIGURATION_PATH_TEXTURES "/Floor_Dirt_0.bmp", 0);
@@ -58,14 +59,38 @@ int initialize()
 	_pointerTextureManagerTextures[TEXTURE_ID_ENEMY_SPAWNER] = new Texture(CONFIGURATION_PATH_TEXTURES "/Enemy_Spawner.bmp", 1);
 	
 	// Moving objects
-	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER] = new Texture(CONFIGURATION_PATH_TEXTURES "/Player.bmp", 1);
-	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY] = new Texture(CONFIGURATION_PATH_TEXTURES "/Small_Enemy.bmp", 1);
-	_pointerTextureManagerTextures[TEXTURE_ID_MEDIUM_ENEMY] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medium_Enemy.bmp", 1);
-	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY] = new Texture(CONFIGURATION_PATH_TEXTURES "/Big_Enemy.bmp", 1);
-	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_BULLET] = new Texture(CONFIGURATION_PATH_TEXTURES "/Player_Bullet.bmp", 0);
-	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_BULLET] = new Texture(CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Bullet.bmp", 0);
-	_pointerTextureManagerTextures[TEXTURE_ID_MEDIUM_ENEMY_BULLET] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Bullet.bmp", 0);
-	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_BULLET] = new Texture(CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Bullet.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_FACING_UP] = new Texture(CONFIGURATION_PATH_TEXTURES "/Player_Up.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_FACING_DOWN] = new Texture(CONFIGURATION_PATH_TEXTURES "/Player_Down.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_FACING_LEFT] = new Texture(CONFIGURATION_PATH_TEXTURES "/Player_Left.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_FACING_RIGHT] = new Texture(CONFIGURATION_PATH_TEXTURES "/Player_Right.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_FACING_UP] = new Texture(CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Up.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_FACING_DOWN] = new Texture(CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Down.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_FACING_LEFT] = new Texture(CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Left.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_FACING_RIGHT] = new Texture(CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Right.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIUM_ENEMY_FACING_UP] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Up.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIUM_ENEMY_FACING_DOWN] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Down.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIUM_ENEMY_FACING_LEFT] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Left.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIUM_ENEMY_FACING_RIGHT] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Right.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_FACING_UP] = new Texture(CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Up.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_FACING_DOWN] = new Texture(CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Down.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_FACING_LEFT] = new Texture(CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Left.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_FACING_RIGHT] = new Texture(CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Right.bmp", 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_BULLET_FACING_UP] = new Texture(CONFIGURATION_PATH_TEXTURES "/Player_Bullet_Up.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_BULLET_FACING_DOWN] = new Texture(CONFIGURATION_PATH_TEXTURES "/Player_Bullet_Down.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_BULLET_FACING_LEFT] = new Texture(CONFIGURATION_PATH_TEXTURES "/Player_Bullet_Left.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_BULLET_FACING_RIGHT] = new Texture(CONFIGURATION_PATH_TEXTURES "/Player_Bullet_Right.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_BULLET_FACING_UP] = new Texture(CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Bullet_Up.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_BULLET_FACING_DOWN] = new Texture(CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Bullet_Down.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_BULLET_FACING_LEFT] = new Texture(CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Bullet_Left.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_BULLET_FACING_RIGHT] = new Texture(CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Bullet_Right.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIUM_ENEMY_BULLET_FACING_UP] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Bullet_Up.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIUM_ENEMY_BULLET_FACING_DOWN] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Bullet_Down.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIUM_ENEMY_BULLET_FACING_LEFT] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Bullet_Left.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIUM_ENEMY_BULLET_FACING_RIGHT] = new Texture(CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Bullet_Right.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_BULLET_FACING_UP] = new Texture(CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Bullet_Up.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_BULLET_FACING_DOWN] = new Texture(CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Bullet_Down.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_BULLET_FACING_LEFT] = new Texture(CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Bullet_Left.bmp", 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_BULLET_FACING_RIGHT] = new Texture(CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Bullet_Right.bmp", 0);
 	
 	// Animated textures
 	_pointerTextureManagerTextures[TEXTURE_ID_ENEMY_SPAWNER_EXPLOSION_0] = new Texture(CONFIGURATION_PATH_TEXTURES "/Enemy_Spawner_Explosion_0.bmp", 1);

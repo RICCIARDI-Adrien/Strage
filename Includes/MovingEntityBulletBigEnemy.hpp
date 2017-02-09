@@ -16,7 +16,7 @@ class MovingEntityBulletBigEnemy: public MovingEntityBullet
 		 * @param y Bullet Y coordinate on the map.
 		 * @param facingDirection In which direction the bullet will move.
 		 */
-		MovingEntityBulletBigEnemy(int x, int y, Direction facingDirection): MovingEntityBullet(x, y, TextureManager::TEXTURE_ID_BIG_ENEMY_BULLET, 4, facingDirection, 20) {}
+		MovingEntityBulletBigEnemy(int x, int y, Direction facingDirection): MovingEntityBullet(x, y, TextureManager::TEXTURE_ID_BIG_ENEMY_BULLET_FACING_UP, 4, facingDirection, 20) {}
 		
 		/** Free allocated resources. */
 		virtual ~MovingEntityBulletBigEnemy() {}

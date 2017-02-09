@@ -216,7 +216,7 @@ Scene_Loading_End:
 					else
 					{
 						// Get player size from its texture
-						Texture *pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER);
+						Texture *pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_FACING_UP);
 						int playerWidth = pointerTexture->getWidth();
 						int playerHeight = pointerTexture->getHeight();
 						

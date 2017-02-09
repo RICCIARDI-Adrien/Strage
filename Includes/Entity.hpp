@@ -16,10 +16,10 @@ class Entity
 {
 	protected:
 		/** The texture used to render the entity. */
-		Texture *_pointerTexture;
+		Texture *_pointerTexture; // TODO move to StaticEntity
 		
 		/** Hold entity dimensions and location on the map. Use this destination rectangle to render the entity. */
-		SDL_Rect _positionRectangle;
+		SDL_Rect _positionRectangle; // TODO move to StaticEntity
 		
 	public:
 		/** Load the entity texture.
@@ -27,7 +27,7 @@ class Entity
 		 * @param y Entity Y coordinate.
 		 * @param textureId The texture ID to use.
 		 */
-		Entity(int x, int y, TextureManager::TextureId textureId)
+		Entity(int x, int y, TextureManager::TextureId textureId) // TODO move to StaticEntity
 		{
 			// Try to get the texture
 			_pointerTexture = TextureManager::getTextureFromId(textureId);
@@ -64,7 +64,7 @@ class Entity
 		/** Get the entity X coordinate.
 		 * @return The X coordinate.
 		 */
-		inline int getX()
+		virtual int getX() // TODO duplicate in each static and moving entities
 		{
 			return _positionRectangle.x;
 		}
@@ -72,7 +72,7 @@ class Entity
 		/** Set the entity X coordinate.
 		 * @param x The X coordinate.
 		 */
-		inline void setX(int x)
+		virtual void setX(int x) // TODO duplicate in each static and moving entities
 		{
 			_positionRectangle.x = x;
 		}
@@ -80,7 +80,7 @@ class Entity
 		/** Set the entity Y coordinate.
 		 * @param y The Y coordinate.
 		 */
-		inline void setY(int y)
+		virtual void setY(int y) // TODO duplicate in each static and moving entities
 		{
 			_positionRectangle.y = y;
 		}
@@ -88,7 +88,7 @@ class Entity
 		/** Get the entity Y coordinate.
 		 * @return The Y coordinate.
 		 */
-		inline int getY()
+		virtual int getY() // TODO duplicate in each static and moving entities
 		{
 			return _positionRectangle.y;
 		}
@@ -96,7 +96,7 @@ class Entity
 		/** Get a rectangle defining the entity bounds in the map.
 		 * @return The position rectangle.
 		 */
-		inline SDL_Rect *getPositionRectangle()
+		virtual SDL_Rect *getPositionRectangle() // TODO duplicate in each static and moving entities
 		{
 			return &_positionRectangle;
 		}

@@ -678,11 +678,11 @@ int main(int argc, char *argv[])
 	srand(time(NULL));
 	
 	// Cache some values
-	_enemySpawnOffsetX = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_SMALL_ENEMY)->getWidth() / 2; // All enemies have same dimensions
-	_enemySpawnOffsetY = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_SMALL_ENEMY)->getHeight() / 2;
+	_enemySpawnOffsetX = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_SMALL_ENEMY_FACING_UP)->getWidth() / 2; // All enemies have same dimensions
+	_enemySpawnOffsetY = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_SMALL_ENEMY_FACING_UP)->getHeight() / 2;
 	// Offset to subtract to the player position to have the scene camera coordinates
-	_cameraOffsetX = (Renderer::displayWidth / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER)->getWidth() / 2);
-	_cameraOffsetY = (Renderer::displayHeight / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER)->getHeight() / 2);
+	_cameraOffsetX = (Renderer::displayWidth / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_FACING_UP)->getWidth() / 2);
+	_cameraOffsetY = (Renderer::displayHeight / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_FACING_UP)->getHeight() / 2);
 	// Player damage overlay
 	_pointerPlayerHitOverlayTexture = (TextureDisplayOverlay *) TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_HIT_OVERLAY);
 	// Static interface strings

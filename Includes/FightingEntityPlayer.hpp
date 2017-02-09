@@ -42,11 +42,13 @@ class FightingEntityPlayer: public FightingEntity
 		 * @param x X coordinate where to spawn the player on the map.
 		 * @param y Y coordinate where to spawn the player on the map.
 		 */
-		FightingEntityPlayer(int x, int y): FightingEntity(x, y, TextureManager::TEXTURE_ID_PLAYER, 3, 100, 300, AudioManager::SOUND_ID_PLAYER_FIRESHOT)
+		FightingEntityPlayer(int x, int y): FightingEntity(x, y, TextureManager::TEXTURE_ID_PLAYER_FACING_UP, 3, 100, 300, AudioManager::SOUND_ID_PLAYER_FIRESHOT)
 		{
+			SDL_Rect *pointerPositionRectangle = &_positionRectangles[_facingDirection];
+			
 			// Cache rendering coordinates
-			_renderingX = (Renderer::displayWidth - _positionRectangle.w) / 2;
-			_renderingY = (Renderer::displayHeight - _positionRectangle.h) / 2;
+			_renderingX = (Renderer::displayWidth - pointerPositionRectangle->w) / 2;
+			_renderingY = (Renderer::displayHeight - pointerPositionRectangle->h) / 2;
 			
 			_ammunitionAmount = 100;
 		}
@@ -97,7 +99,7 @@ class FightingEntityPlayer: public FightingEntity
 		virtual void render()
 		{
 			// Display the player at the screen center
-			_pointerTexture->render(_renderingX, _renderingY, _rotationAngle);
+			_pointerTextures[_facingDirection]->render(_renderingX, _renderingY);
 		}
 		
 		/** Check for a pickable item on the underlaying block and get it if possible.
@@ -107,10 +109,11 @@ class FightingEntityPlayer: public FightingEntity
 		virtual int update()
 		{
 			int blockContent, playerCenterX, playerCenterY;
+			SDL_Rect *pointerPositionRectangle = &_positionRectangles[_facingDirection];
 			
 			// Cache player center coordinates
-			playerCenterX = _positionRectangle.x + (_positionRectangle.w / 2);
-			playerCenterY = _positionRectangle.y + (_positionRectangle.h / 2);
+			playerCenterX = pointerPositionRectangle->x + (pointerPositionRectangle->w / 2);
+			playerCenterY = pointerPositionRectangle->y + (pointerPositionRectangle->h / 2);
 			
 			// Get block under player center content
 			blockContent = LevelManager::getBlockContent(playerCenterX, playerCenterY);

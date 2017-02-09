@@ -71,7 +71,7 @@ class FightingEntity: public MovingEntity
 			
 			// Cache the offset to add to entity coordinates to make fired bullets start from where the cannon is (bullets are spawned a little nearer from the entity center than the cannon muzzle, so an underneath entity can be hit)
 			// Warning : for the underneath entity to be killed, bullet speed must be less than the bullet texture's larger dimension
-			Texture *pointerBulletTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLET); // Use textures to avoid instantiate a bullet to get its dimensions (all bullets have same dimensions)
+			Texture *pointerBulletTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLET_FACING_UP); // Use textures to avoid instantiate a bullet to get its dimensions (all bullets have same dimensions)
 			int entityWidth = _pointerTexture->getWidth(); // Only entity width is required because the entity is always facing the direction it shoots to
 			int bulletWidth = pointerBulletTexture->getWidth();
 			int bulletHeight = pointerBulletTexture->getHeight();
@@ -172,7 +172,7 @@ class FightingEntity: public MovingEntity
 						return NULL;
 				}
 				
-				MovingEntityBullet *pointerBullet = _fireBullet(_positionRectangle.x + bulletStartingPositionOffsetX, _positionRectangle.y + bulletStartingPositionOffsetY);
+				MovingEntityBullet *pointerBullet = _fireBullet(_positionRectangles[_facingDirection].x + bulletStartingPositionOffsetX, _positionRectangles[_facingDirection].y + bulletStartingPositionOffsetY);
 				
 				// Get time after having generated the bullet, in case this takes more than 1 millisecond
 				_lastShotTime = SDL_GetTicks();

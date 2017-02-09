@@ -109,13 +109,13 @@ class Texture
 		 * @param y Y coordinate where to draw the texture on the display.
 		 * @param rotationAngle Amount of degrees to rotate the texture around its center.
 		 */
-		void render(int x, int y, double rotationAngle)
+		/*void render(int x, int y, double rotationAngle) // TODO remove when useless
 		{
 			_positionRectangle.x = x;
 			_positionRectangle.y = y;
 			
 			SDL_RenderCopyEx(Renderer::pointerMainRenderer, _pointerTexture, NULL, &_positionRectangle, rotationAngle, NULL, SDL_FLIP_NONE);
-		}
+		}*/
 		
 		/** Get the texture width in pixels.
 		 * @return The texture width.

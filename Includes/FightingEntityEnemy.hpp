@@ -58,12 +58,13 @@ class FightingEntityEnemy: public FightingEntity
 		int _getPlayerDirection(Direction *pointerDirection)
 		{
 			int enemyCenterX, enemyCenterY, horizontalDistance, verticalDistance;
-			SDL_Rect *pointerPlayerPositionRectangle;
+			SDL_Rect *pointerPlayerPositionRectangle, *pointerEnemyPositionRectangle;
 			
 			// Compute both player and enemy centers
 			pointerPlayerPositionRectangle = pointerPlayer->getPositionRectangle();
-			enemyCenterX = _positionRectangle.x + (_positionRectangle.w / 2);
-			enemyCenterY = _positionRectangle.y + (_positionRectangle.h / 2);
+			pointerEnemyPositionRectangle = &_positionRectangles[_facingDirection];
+			enemyCenterX = pointerEnemyPositionRectangle->x + (pointerEnemyPositionRectangle->w / 2);
+			enemyCenterY = pointerEnemyPositionRectangle->y + (pointerEnemyPositionRectangle->h / 2);
 			
 			// Compute a fast distance-like to know if the player is farther horizontally or vertically
 			horizontalDistance = enemyCenterX - (pointerPlayerPositionRectangle->x + (pointerPlayerPositionRectangle->w / 2));
@@ -113,10 +114,12 @@ class FightingEntityEnemy: public FightingEntity
 		void _setBlockEnemyContent(int isEnemyPresent)
 		{
 			int blockContent, enemyCenterX, enemyCenterY;
+			SDL_Rect *pointerPositionRectangle;
 			
 			// Cache enemy center coordinates
-			enemyCenterX = _positionRectangle.x + (_positionRectangle.w / 2);
-			enemyCenterY = _positionRectangle.y + (_positionRectangle.h / 2);
+			pointerPositionRectangle = &_positionRectangles[_facingDirection];
+			enemyCenterX = pointerPositionRectangle->x + (pointerPositionRectangle->w / 2);
+			enemyCenterY = pointerPositionRectangle->y + (pointerPositionRectangle->h / 2);
 			
 			// Get current block content
 			blockContent = LevelManager::getBlockContent(enemyCenterX, enemyCenterY);
@@ -159,32 +162,32 @@ class FightingEntityEnemy: public FightingEntity
 			// Initialize spotting rectangle to around the entity
 			_spottingRectangle.w = Renderer::displayWidth * 2; // Thus, the player staying at on side of the display will be spotted by an enemy located at the display other side
 			_spottingRectangle.h = Renderer::displayHeight * 2;
-			_spottingRectangle.x = _positionRectangle.x - ((_spottingRectangle.w - _positionRectangle.w) / 2);
-			_spottingRectangle.y = _positionRectangle.y - ((_spottingRectangle.h - _positionRectangle.h) / 2);
+			_spottingRectangle.x = _positionRectangles[DIRECTION_UP].x - ((_spottingRectangle.w - _positionRectangles[DIRECTION_UP].w) / 2);
+			_spottingRectangle.y = _positionRectangles[DIRECTION_UP].y - ((_spottingRectangle.h - _positionRectangles[DIRECTION_UP].h) / 2);
 			
 			// Get a bullet width
-			Texture *pointerBulletTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLET); // Use textures to avoid instantiate a bullet to get its dimensions
+			Texture *pointerBulletTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLET_FACING_UP); // Use textures to avoid instantiate a bullet to get its dimensions
 			int bulletWidth = pointerBulletTexture->getWidth();
 			
 			// Cache all shooting rectangles
 			// Up direction
-			_shootingRectangles[DIRECTION_UP].x = _positionRectangle.x + ((_positionRectangle.w - bulletWidth) / 2);
-			_shootingRectangles[DIRECTION_UP].y = (_positionRectangle.y + (_positionRectangle.h / 2)) - (Renderer::displayHeight / 2);
+			_shootingRectangles[DIRECTION_UP].x = _positionRectangles[DIRECTION_UP].x + ((_positionRectangles[DIRECTION_UP].w - bulletWidth) / 2);
+			_shootingRectangles[DIRECTION_UP].y = (_positionRectangles[DIRECTION_UP].y + (_positionRectangles[DIRECTION_UP].h / 2)) - (Renderer::displayHeight / 2);
 			_shootingRectangles[DIRECTION_UP].w = bulletWidth;
 			_shootingRectangles[DIRECTION_UP].h = Renderer::displayHeight / 2; // Make the enemy always visible when it starts shooting the player
 			// Down direction
-			_shootingRectangles[DIRECTION_DOWN].x = _positionRectangle.x + ((_positionRectangle.w - bulletWidth) / 2);
-			_shootingRectangles[DIRECTION_DOWN].y = _positionRectangle.y + (_positionRectangle.h / 2);
+			_shootingRectangles[DIRECTION_DOWN].x = _positionRectangles[DIRECTION_UP].x + ((_positionRectangles[DIRECTION_UP].w - bulletWidth) / 2);
+			_shootingRectangles[DIRECTION_DOWN].y = _positionRectangles[DIRECTION_UP].y + (_positionRectangles[DIRECTION_UP].h / 2);
 			_shootingRectangles[DIRECTION_DOWN].w = bulletWidth;
 			_shootingRectangles[DIRECTION_DOWN].h = Renderer::displayHeight / 2;
 			// Left direction
-			_shootingRectangles[DIRECTION_LEFT].x = _positionRectangle.x + (_positionRectangle.w / 2) - (Renderer::displayWidth / 2);
-			_shootingRectangles[DIRECTION_LEFT].y = _positionRectangle.y + ((_positionRectangle.h - bulletWidth) / 2);
+			_shootingRectangles[DIRECTION_LEFT].x = _positionRectangles[DIRECTION_UP].x + (_positionRectangles[DIRECTION_UP].w / 2) - (Renderer::displayWidth / 2);
+			_shootingRectangles[DIRECTION_LEFT].y = _positionRectangles[DIRECTION_UP].y + ((_positionRectangles[DIRECTION_UP].h - bulletWidth) / 2);
 			_shootingRectangles[DIRECTION_LEFT].w = Renderer::displayWidth / 2;
 			_shootingRectangles[DIRECTION_LEFT].h = bulletWidth;
 			// Right direction
-			_shootingRectangles[DIRECTION_RIGHT].x = _positionRectangle.x + (_positionRectangle.w / 2);
-			_shootingRectangles[DIRECTION_RIGHT].y = _positionRectangle.y + ((_positionRectangle.h - bulletWidth) / 2);
+			_shootingRectangles[DIRECTION_RIGHT].x = _positionRectangles[DIRECTION_UP].x + (_positionRectangles[DIRECTION_UP].w / 2);
+			_shootingRectangles[DIRECTION_RIGHT].y = _positionRectangles[DIRECTION_UP].y + ((_positionRectangles[DIRECTION_UP].h - bulletWidth) / 2);
 			_shootingRectangles[DIRECTION_RIGHT].w = Renderer::displayWidth / 2;
 			_shootingRectangles[DIRECTION_RIGHT].h = bulletWidth;
 			
