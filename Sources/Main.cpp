@@ -432,13 +432,14 @@ static inline void _updateGameLogic()
 		
 		if (SDL_HasIntersection(pointerPlayer->getPositionRectangle(), pointerEnemyBullet->getPositionRectangle()))
 		{
-			// Remove the bullet
-			bulletsListIterator = _enemiesBulletsList.erase(bulletsListIterator);
-			
 			// Wound the player
 			pointerPlayer->modifyLife(pointerEnemyBullet->getDamageAmount());
 			_isPlayerHit = 1;
 			LOG_DEBUG("Player hit.");
+			
+			// Remove the bullet
+			delete pointerEnemyBullet;
+			bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
 			
 			// Instantly stop game updating
 			if (pointerPlayer->isDead())
