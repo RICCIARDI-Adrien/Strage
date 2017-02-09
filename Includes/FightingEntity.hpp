@@ -80,8 +80,8 @@ class FightingEntity: public MovingEntity
 			_bulletStartingPositionOffsetUpY = 2; // Make the bullet start into the entity, with two more pixels to be sure to hit an underneath entity
 			_bulletStartingPositionOffsetDownX = _bulletStartingPositionOffsetUpX;
 			_bulletStartingPositionOffsetDownY = entityWidth - bulletHeight - 2; // -1 should be enough due entityHeight usage (which results in coordinate + 1), but -2 is needed to make the underneath entity killable
-			_bulletStartingPositionOffsetLeftX = 5; // Manually adjusted value to allow an underneath entity to be hit when this entity is facing left (TODO dependent of bullet size, speed and texture rotation)
-			_bulletStartingPositionOffsetLeftY = _bulletStartingPositionOffsetUpX - 1; // -1 to adjust the rotated bullet texture (TODO how to determine this ?)
+			_bulletStartingPositionOffsetLeftX = 2; // Manually adjusted value to allow an underneath entity to be hit when this entity is facing left (TODO dependent of bullet size and speed)
+			_bulletStartingPositionOffsetLeftY = _bulletStartingPositionOffsetUpX;
 			_bulletStartingPositionOffsetRightX = _bulletStartingPositionOffsetDownY; // Entity is facing right, so its horizontal width is its height
 			_bulletStartingPositionOffsetRightY = _bulletStartingPositionOffsetLeftY;
 			
