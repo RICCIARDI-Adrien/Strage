@@ -72,7 +72,7 @@ class FightingEntity: public MovingEntity
 			// Cache the offset to add to entity coordinates to make fired bullets start from where the cannon is (bullets are spawned a little nearer from the entity center than the cannon muzzle, so an underneath entity can be hit)
 			// Warning : for the underneath entity to be killed, bullet speed must be less than the bullet texture's larger dimension
 			Texture *pointerBulletTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLET_FACING_UP); // Use textures to avoid instantiate a bullet to get its dimensions (all bullets have same dimensions)
-			int entityWidth = _pointerTexture->getWidth(); // Only entity width is required because the entity is always facing the direction it shoots to
+			int entityWidth = _pointerTextures[DIRECTION_UP]->getWidth(); // Only entity width is required because the entity is always facing the direction it shoots to
 			int bulletWidth = pointerBulletTexture->getWidth();
 			int bulletHeight = pointerBulletTexture->getHeight();
 			// Assume that entity is faced to the direction the bullet is fired

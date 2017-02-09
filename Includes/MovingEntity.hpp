@@ -25,8 +25,6 @@ class MovingEntity: public Entity
 		} Direction; // Must be declared before usage in protected section
 		
 	protected:
-		/** Rotate the texture when rendering (degrees unit). */
-		double _rotationAngle; // TODO remove
 		/** Tell in which direction the entity is facing. */
 		Direction _facingDirection;
 		
@@ -48,7 +46,7 @@ class MovingEntity: public Entity
 		 * @param y The Y coordinate where to spawn the entity.
 		 * @param movingPixelsAmount Entity moving speed.
 		 */
-		MovingEntity(int x, int y, TextureManager::TextureId facingUpTextureId, int movingPixelsAmount): Entity(x, y, facingUpTextureId)
+		MovingEntity(int x, int y, TextureManager::TextureId facingUpTextureId, int movingPixelsAmount)
 		{
 			int i, textureId = (int) facingUpTextureId;
 			
@@ -72,7 +70,6 @@ class MovingEntity: public Entity
 			_collisionBlockContent = LevelManager::BLOCK_CONTENT_WALL;
 			
 			// Entity is facing up on spawn
-			//_rotationAngle = 0;
 			_facingDirection = DIRECTION_UP;
 		}
 		
@@ -153,7 +150,6 @@ class MovingEntity: public Entity
 			_positionRectangles[DIRECTION_RIGHT].y -= movingPixelsAmount;
 			
 			// Entity is facing up
-			_rotationAngle = 0;
 			_facingDirection = DIRECTION_UP;
 			
 			return movingPixelsAmount;
@@ -185,7 +181,6 @@ class MovingEntity: public Entity
 			_positionRectangles[DIRECTION_RIGHT].y += movingPixelsAmount;
 			
 			// Entity is facing down
-			_rotationAngle = 180;
 			_facingDirection = DIRECTION_DOWN;
 			
 			return movingPixelsAmount;
@@ -217,7 +212,6 @@ class MovingEntity: public Entity
 			_positionRectangles[DIRECTION_RIGHT].x -= movingPixelsAmount;
 			
 			// Entity is facing left
-			_rotationAngle = 270;
 			_facingDirection = DIRECTION_LEFT;
 			
 			return movingPixelsAmount;
@@ -249,7 +243,6 @@ class MovingEntity: public Entity
 			_positionRectangles[DIRECTION_RIGHT].x += movingPixelsAmount;
 			
 			// Entity is facing right
-			_rotationAngle = 90;
 			_facingDirection = DIRECTION_RIGHT;
 			
 			return movingPixelsAmount;
@@ -283,32 +276,28 @@ class MovingEntity: public Entity
 		/** Turn the entity to the up direction. */
 		void turnToUp()
 		{
-			_rotationAngle = 0;
 			_facingDirection = DIRECTION_UP;
 		}
 		
 		/** Turn the entity to the down direction. */
 		void turnToDown()
 		{
-			_rotationAngle = 180;
 			_facingDirection = DIRECTION_DOWN;
 		}
 		
 		/** Turn the entity to the left direction. */
 		void turnToLeft()
 		{
-			_rotationAngle = 270;
 			_facingDirection = DIRECTION_LEFT;
 		}
 		
 		/** Turn the entity to the right direction. */
 		void turnToRight()
 		{
-			_rotationAngle = 90;
 			_facingDirection = DIRECTION_RIGHT;
 		}
 		
-		/** Display the texture and rotate it in the same time. */
+		/** Display the texture facing in the right direction. */
 		virtual void render()
 		{
 			SDL_Rect *pointerPositionRectangle = &_positionRectangles[_facingDirection];
