@@ -7,7 +7,11 @@
 #include <Log.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
+#ifdef CONFIGURATION_BUILD_FOR_MACOS
+	#include <SDL2_ttf/SDL_ttf.h>
+#else
+	#include <SDL2/SDL_ttf.h>
+#endif
 
 namespace Renderer
 {

@@ -7,7 +7,11 @@
 #include <cstdlib>
 #include <Log.hpp>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_mixer.h>
+#ifdef CONFIGURATION_BUILD_FOR_MACOS
+	#include <SDL2_Mixer/SDL_mixer.h>
+#else
+	#include <SDL2/SDL_mixer.h>
+#endif
 
 namespace AudioManager
 {
