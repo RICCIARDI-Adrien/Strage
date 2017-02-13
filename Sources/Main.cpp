@@ -294,8 +294,8 @@ static inline void _updateGameLogic()
 		// Next level can be loaded only if all enemies are dead
 		if (_enemiesList.empty())
 		{
-			// Restore player life
-			pointerPlayer->modifyLife(100);
+			// Restore player maximum life
+			pointerPlayer->modifyLife(100000); // Should be enough even if using a lot of golden medipacks
 			
 			_loadNextLevel();
 			return;
@@ -781,7 +781,7 @@ int main(int argc, char *argv[])
 							}
 							
 							// Restore player life and force ammunition count (so a player can accumulate a huge amount of ammunition by restarting the level several times)
-							pointerPlayer->modifyLife(100);
+							pointerPlayer->resetLife();
 							pointerPlayer->setAmmunitionAmount(100);
 							
 							// Allow the game to restart if the player is dead

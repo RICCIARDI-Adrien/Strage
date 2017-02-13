@@ -16,6 +16,8 @@ class FightingEntity: public MovingEntity
 	protected:
 		/** How many life points the entity owns. */
 		int _lifePointsAmount;
+		/** How many life points the entity has without taking any golden medipack. */
+		int _baseLifePointAmount;
 		/** The maximum entity life value. */
 		int _maximumLifePointsAmount;
 		
@@ -64,6 +66,7 @@ class FightingEntity: public MovingEntity
 		FightingEntity(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, int maximumLifePointsAmount, int timeBetweenShots, AudioManager::SoundId firingSoundId): MovingEntity(x, y, textureId, movingPixelsAmount)
 		{
 			_lifePointsAmount = maximumLifePointsAmount;
+			_baseLifePointAmount = maximumLifePointsAmount;
 			_maximumLifePointsAmount = maximumLifePointsAmount;
 			
 			// Player and enemies collide with walls and enemy spawners
@@ -111,6 +114,13 @@ class FightingEntity: public MovingEntity
 			// Clamp life points to [0; _maximumLifePointsAmount]
 			if (_lifePointsAmount < 0) _lifePointsAmount = 0;
 			else if (_lifePointsAmount > _maximumLifePointsAmount) _lifePointsAmount = _maximumLifePointsAmount;
+		}
+		
+		/** Reset the life points to what the entity has when it spawns. */
+		inline void resetLife(void)
+		{
+			_lifePointsAmount = _baseLifePointAmount;
+			_maximumLifePointsAmount = _baseLifePointAmount;
 		}
 		
 		/** Tell if the entity is at maximum life or not.
