@@ -1,7 +1,7 @@
 # Strage
 
 ## How to play
-You are in command of a little space ship (flying-saucer model) in an unknown part of the galaxy. What are you doing here ? No one knows, even you...  
+You are in command of a little futuristic tank in an unknown part of the galaxy. What are you doing here ? No one knows, even you...  
 Your ship can **move** in up, down, left and right directions using the **keyboard arrow keys**.  You can also **shoot** using **space bar**. Shoot ? Yes, enemies are nearby.  
 You do not know why they want you dead, they may have a very good reason, but it's the worse idea they ever had. Defend yourself and escape from this place !  
   

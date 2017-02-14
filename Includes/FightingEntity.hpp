@@ -16,8 +16,6 @@ class FightingEntity: public MovingEntity
 	protected:
 		/** How many life points the entity owns. */
 		int _lifePointsAmount;
-		/** How many life points the entity has without taking any golden medipack. */
-		int _baseLifePointAmount;
 		/** The maximum entity life value. */
 		int _maximumLifePointsAmount;
 		
@@ -66,7 +64,6 @@ class FightingEntity: public MovingEntity
 		FightingEntity(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, int maximumLifePointsAmount, int timeBetweenShots, AudioManager::SoundId firingSoundId): MovingEntity(x, y, textureId, movingPixelsAmount)
 		{
 			_lifePointsAmount = maximumLifePointsAmount;
-			_baseLifePointAmount = maximumLifePointsAmount;
 			_maximumLifePointsAmount = maximumLifePointsAmount;
 			
 			// Player and enemies collide with walls and enemy spawners
@@ -96,12 +93,36 @@ class FightingEntity: public MovingEntity
 		/** Free allocated resources. */
 		virtual ~FightingEntity() {};
 		
-		/** The the entity life points.
-		 * @return Entity life point amount.
+		/** Get the entity life points.
+		 * @return Entity life points amount.
 		 */
 		inline int getLifePointsAmount()
 		{
 			return _lifePointsAmount;
+		}
+		
+		/** Set the entity life points.
+		 * @param lifePointsAmount Entity life points amount.
+		 */
+		inline void setLifePointsAmount(int lifePointsAmount)
+		{
+			_lifePointsAmount = lifePointsAmount;
+		}
+		
+		/** Get the entity maximum life points.
+		 * @return Entity maximum life points amount.
+		 */
+		inline int getMaximumLifePointsAmount()
+		{
+			return _maximumLifePointsAmount;
+		}
+		
+		/** Set the entity maximum life points.
+		 * @param lifePointsAmount Entity maximum life points amount.
+		 */
+		inline void setMaximumLifePointsAmount(int lifePointsAmount)
+		{
+			_maximumLifePointsAmount = lifePointsAmount;
 		}
 		
 		/** Change entity life value by adding or removing some life points.
@@ -114,13 +135,6 @@ class FightingEntity: public MovingEntity
 			// Clamp life points to [0; _maximumLifePointsAmount]
 			if (_lifePointsAmount < 0) _lifePointsAmount = 0;
 			else if (_lifePointsAmount > _maximumLifePointsAmount) _lifePointsAmount = _maximumLifePointsAmount;
-		}
-		
-		/** Reset the life points to what the entity has when it spawns. */
-		inline void resetLife(void)
-		{
-			_lifePointsAmount = _baseLifePointAmount;
-			_maximumLifePointsAmount = _baseLifePointAmount;
 		}
 		
 		/** Tell if the entity is at maximum life or not.

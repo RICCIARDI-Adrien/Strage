@@ -73,5 +73,13 @@
 #define CONFIGURATION_GAMEPLAY_MEDIUM_ENEMY_SPAWN_PROBABILITY_PERCENTAGE 15
 /** Big enemy spawning probability. */
 #define CONFIGURATION_GAMEPLAY_BIG_ENEMY_SPAWN_PROBABILITY_PERCENTAGE 5
+/** Player default life points amount. */
+#define CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_LIFE_POINTS_AMOUNT 100
+/** Player default ammunition amount. */
+#define CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_AMMUNITION_AMOUNT 100
+
+// Savegame
+/** The savegame file. */
+#define CONFIGURATION_SAVEGAME_FILE_NAME "Savegame.txt"
 
 #endif

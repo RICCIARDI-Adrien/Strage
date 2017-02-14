@@ -2,6 +2,7 @@
 #define HPP_FIGHTING_ENTITY_PLAYER_HPP
 
 #include <AudioManager.hpp>
+#include <Configuration.hpp>
 #include <FightingEntity.hpp>
 #include <Log.hpp>
 #include <MovingEntityBullet.hpp>
@@ -42,7 +43,7 @@ class FightingEntityPlayer: public FightingEntity
 		 * @param x X coordinate where to spawn the player on the map.
 		 * @param y Y coordinate where to spawn the player on the map.
 		 */
-		FightingEntityPlayer(int x, int y): FightingEntity(x, y, TextureManager::TEXTURE_ID_PLAYER_FACING_UP, 3, 100, 300, AudioManager::SOUND_ID_PLAYER_FIRESHOT)
+		FightingEntityPlayer(int x, int y): FightingEntity(x, y, TextureManager::TEXTURE_ID_PLAYER_FACING_UP, 3, CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_LIFE_POINTS_AMOUNT, 300, AudioManager::SOUND_ID_PLAYER_FIRESHOT)
 		{
 			SDL_Rect *pointerPositionRectangle = &_positionRectangles[_facingDirection];
 			
@@ -50,7 +51,7 @@ class FightingEntityPlayer: public FightingEntity
 			_renderingX = (Renderer::displayWidth - pointerPositionRectangle->w) / 2;
 			_renderingY = (Renderer::displayHeight - pointerPositionRectangle->h) / 2;
 			
-			_ammunitionAmount = 100;
+			_ammunitionAmount = CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_AMMUNITION_AMOUNT;
 		}
 		
 		/** Free allocated resources. */

@@ -21,6 +21,7 @@
 #include <LevelManager.hpp>
 #include <MovingEntityBullet.hpp>
 #include <Renderer.hpp>
+#include <SavegameManager.hpp>
 #include <SDL2/SDL.h>
 #include <TextureDisplayOverlay.hpp>
 #include <TextureManager.hpp>
@@ -282,6 +283,15 @@ static inline void _loadNextLevel()
 		LOG_ERROR("Failed to load level %d.", _currentLevelNumber);
 		exit(-1);
 	}
+	
+	// Save player progress
+	SavegameManager::setSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_STARTING_LEVEL, _currentLevelNumber); // TODO do not save if last level reached
+	SavegameManager::setSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_MAXIMUM_LIFE_POINTS, pointerPlayer->getMaximumLifePointsAmount());
+	SavegameManager::setSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_AMMUNITION, pointerPlayer->getAmmunitionAmount());
+	SavegameManager::storeSavegame();
+	LOG_DEBUG("Saved game.");
+	
+	// Prepare to load next level
 	_currentLevelNumber++;
 }
 
@@ -643,7 +653,7 @@ int main(int argc, char *argv[])
 {
 	SDL_Event event;
 	unsigned int frameStartingTime, frameElapsedTime;
-	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0}, isLastDirectionVertical = 1, isFullScreenEnabled = 0, levelToLoadNumber;
+	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0}, isLastDirectionVertical = 1, isFullScreenEnabled = 0, isGameLoadedFromSavegame = 0, levelToLoadNumber, i;
 	#if CONFIGURATION_DISPLAY_IS_FRAME_RATE_DISPLAYING_ENABLED
 		unsigned int frameRateStartingTime = 0;
 		int framesCount = 0;
@@ -652,14 +662,21 @@ int main(int argc, char *argv[])
 	// Check parameters
 	if (argc > 1)
 	{
-		// Is full screen mode requested ?
-		if (strcmp("-f", argv[1]) == 0) isFullScreenEnabled = 1;
-		else
+		// Process all parameters
+		for (i = 1; i < argc; i++)
 		{
-			printf("Unknown parameter(s).\n"
-				"Usage : %s [-f]\n"
-				" -f : enable full screen\n", argv[0]);
-			return -1;
+			// Is the game continued from previous savegame ?
+			if (strcmp("-c", argv[i]) == 0) isGameLoadedFromSavegame = 1;
+			// Is full screen mode requested ?
+			else if (strcmp("-f", argv[i]) == 0) isFullScreenEnabled = 1;
+			else
+			{
+				printf("Unknown parameter(s).\n"
+					"Usage : %s [-c] [-f]\n"
+					" -c : continue previously saved game\n"
+					" -f : enable full screen\n", argv[0]);
+				return -1;
+			}
 		}
 	}
 	
@@ -692,6 +709,26 @@ int main(int argc, char *argv[])
 	_pointerInterfaceStrings[INTERFACE_STRING_ID_GAME_WON] = Renderer::renderTextToTexture("All levels completed. You are legend.", Renderer::TEXT_COLOR_ID_BLUE);
 	
 	LOG_INFORMATION("Game engine successfully initialized.");
+	
+	// Try to load the savegame if requested to
+	if (isGameLoadedFromSavegame)
+	{
+		// Is a savegame available ?
+		if (SavegameManager::loadSavegame() == 0)
+		{
+			// Set which level to load TODO handle last level
+			_currentLevelNumber = SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_STARTING_LEVEL);
+			
+			// Set player life points
+			i = SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_MAXIMUM_LIFE_POINTS); // Recycle 'i' variable
+			pointerPlayer->setLifePointsAmount(i);
+			pointerPlayer->setMaximumLifePointsAmount(i);
+			
+			// Set player ammunition
+			pointerPlayer->setAmmunitionAmount(SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_AMMUNITION));
+		}
+		else LOG_ERROR("No valid savegame found, starting a new game.");
+	}
 	
 	// Load first level
 	_loadNextLevel();
@@ -780,9 +817,11 @@ int main(int argc, char *argv[])
 								exit(-1);
 							}
 							
-							// Restore player life and force ammunition count (so a player can accumulate a huge amount of ammunition by restarting the level several times)
-							pointerPlayer->resetLife();
-							pointerPlayer->setAmmunitionAmount(100);
+							// Restore player life and ammunition count as they were at the level start
+							i = SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_MAXIMUM_LIFE_POINTS); // Recycle 'i' variable
+							pointerPlayer->setLifePointsAmount(i);
+							pointerPlayer->setMaximumLifePointsAmount(i);
+							pointerPlayer->setAmmunitionAmount(SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_AMMUNITION));
 							
 							// Allow the game to restart if the player is dead
 							if (_isPlayerDead)
