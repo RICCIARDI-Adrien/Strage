@@ -46,6 +46,10 @@ static Music _musics[] =
 		NULL
 	},
 	{
+		CONFIGURATION_PATH_SOUNDS "/Art_Music_-_Epic_Trailer.mp3",
+		NULL
+	},
+	{
 		CONFIGURATION_PATH_SOUNDS "/Blue_Giraffe_-_Action_Intense_Cinematic.mp3",
 		NULL
 	},

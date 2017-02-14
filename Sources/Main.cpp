@@ -285,7 +285,7 @@ static inline void _loadNextLevel()
 	}
 	
 	// Save player progress
-	SavegameManager::setSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_STARTING_LEVEL, _currentLevelNumber); // TODO do not save if last level reached
+	SavegameManager::setSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_STARTING_LEVEL, _currentLevelNumber);
 	SavegameManager::setSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_MAXIMUM_LIFE_POINTS, pointerPlayer->getMaximumLifePointsAmount());
 	SavegameManager::setSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_AMMUNITION, pointerPlayer->getAmmunitionAmount());
 	SavegameManager::storeSavegame();
@@ -716,7 +716,7 @@ int main(int argc, char *argv[])
 		// Is a savegame available ?
 		if (SavegameManager::loadSavegame() == 0)
 		{
-			// Set which level to load TODO handle last level
+			// Set which level to load
 			_currentLevelNumber = SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_STARTING_LEVEL);
 			
 			// Set player life points

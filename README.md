@@ -68,6 +68,7 @@ Scene textures and objects are gathered in two Tiled tilesets (Scene.tsx and Obj
 ## Credits
 * Musics : [jamendo](https://www.jamendo.com)
    * Akashic Records - Epic Action Hero
+   * Art Music - Epic Trailer
    * Blue Giraffe - Action Intense Cinematic
    * Celestial Aeon Project - Epic
    * E. Erkut - Dark Moment - Dark Epic Trailer
