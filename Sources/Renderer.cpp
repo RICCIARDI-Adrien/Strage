@@ -170,6 +170,12 @@ void beginRendering(int x, int y)
 	displayY = y;
 }
 
+void endRendering()
+{
+	// Display the rendered picture
+	SDL_RenderPresent(pointerMainRenderer);
+}
+
 int isDisplayable(SDL_Rect *pointerObjectPositionRectangle)
 {
 	return SDL_HasIntersection(&_displayRectangle, pointerObjectPositionRectangle);

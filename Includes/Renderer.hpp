@@ -59,6 +59,9 @@ void uninitialize();
  */
 void beginRendering(int x, int y);
 
+/** End the rendering step by displaying the final picture on the screen. */
+void endRendering();
+
 /** Tell if the object located at the provided position can be displayed or not (an object is not displayed if it is out of the screen).
  * @param pointerObjectPositionRectangle The object position on the map.
  * @return 0 if the object is out of the screen,

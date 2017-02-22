@@ -29,6 +29,8 @@
 #define CONFIGURATION_DISPLAY_HUD_ENEMIES_X 510
 /** HUD enemies text screen Y coordinate. */
 #define CONFIGURATION_DISPLAY_HUD_ENEMIES_Y 10
+/** Main menu vertical space between two strings. */
+#define CONFIGURATION_DISPLAY_MAIN_MENU_STRINGS_VERTICAL_SPACING 60
 
 // Audio
 /** Sampling frequency in Hz. */

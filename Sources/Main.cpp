@@ -19,6 +19,7 @@
 #include <list>
 #include <Log.hpp>
 #include <LevelManager.hpp>
+#include <MainMenu.hpp>
 #include <MovingEntityBullet.hpp>
 #include <Renderer.hpp>
 #include <SavegameManager.hpp>
@@ -642,8 +643,7 @@ static inline void _renderGame()
 	// Display HUD
 	_renderInterface();
 	
-	// Display the rendered picture
-	SDL_RenderPresent(Renderer::pointerMainRenderer);
+	Renderer::endRendering();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -653,7 +653,7 @@ int main(int argc, char *argv[])
 {
 	SDL_Event event;
 	unsigned int frameStartingTime, frameElapsedTime;
-	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0}, isLastDirectionVertical = 1, isFullScreenEnabled = 0, isGameLoadedFromSavegame = 0, levelToLoadNumber, i;
+	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0}, isLastDirectionVertical = 1, isFullScreenEnabled = 0, isGameLoadedFromSavegame, levelToLoadNumber, i;
 	#if CONFIGURATION_DISPLAY_IS_FRAME_RATE_DISPLAYING_ENABLED
 		unsigned int frameRateStartingTime = 0;
 		int framesCount = 0;
@@ -709,6 +709,21 @@ int main(int argc, char *argv[])
 	_pointerInterfaceStrings[INTERFACE_STRING_ID_GAME_WON] = Renderer::renderTextToTexture("All levels completed. You are legend.", Renderer::TEXT_COLOR_ID_BLUE);
 	
 	LOG_INFORMATION("Game engine successfully initialized.");
+	
+	// Display the main menu and get user choice
+	switch (MainMenu::display())
+	{
+		case 0:
+			isGameLoadedFromSavegame = 1;
+			break;
+			
+		case 1:
+			isGameLoadedFromSavegame = 0;
+			break;
+			
+		default:
+			goto Exit;
+	}
 	
 	// Try to load the savegame if requested to
 	if (isGameLoadedFromSavegame)
