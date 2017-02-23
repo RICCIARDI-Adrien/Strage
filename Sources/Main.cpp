@@ -653,7 +653,7 @@ int main(int argc, char *argv[])
 {
 	SDL_Event event;
 	unsigned int frameStartingTime, frameElapsedTime;
-	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0}, isLastDirectionVertical = 1, isFullScreenEnabled = 0, isGameLoadedFromSavegame, levelToLoadNumber, i;
+	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0}, isLastDirectionVertical = 1, isFullScreenEnabled = 0, levelToLoadNumber, i;
 	#if CONFIGURATION_DISPLAY_IS_FRAME_RATE_DISPLAYING_ENABLED
 		unsigned int frameRateStartingTime = 0;
 		int framesCount = 0;
@@ -665,15 +665,12 @@ int main(int argc, char *argv[])
 		// Process all parameters
 		for (i = 1; i < argc; i++)
 		{
-			// Is the game continued from previous savegame ?
-			if (strcmp("-c", argv[i]) == 0) isGameLoadedFromSavegame = 1;
 			// Is full screen mode requested ?
-			else if (strcmp("-f", argv[i]) == 0) isFullScreenEnabled = 1;
+			if (strcmp("-f", argv[i]) == 0) isFullScreenEnabled = 1;
 			else
 			{
 				printf("Unknown parameter(s).\n"
-					"Usage : %s [-c] [-f]\n"
-					" -c : continue previously saved game\n"
+					"Usage : %s [-f]\n"
 					" -f : enable full screen\n", argv[0]);
 				return -1;
 			}
@@ -713,36 +710,31 @@ int main(int argc, char *argv[])
 	// Display the main menu and get user choice
 	switch (MainMenu::display())
 	{
+		// Continue last saved game
 		case 0:
-			isGameLoadedFromSavegame = 1;
+			// Is a savegame available ?
+			if (SavegameManager::loadSavegame() == 0)
+			{
+				// Set which level to load
+				_currentLevelNumber = SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_STARTING_LEVEL);
+				
+				// Set player life points
+				i = SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_MAXIMUM_LIFE_POINTS); // Recycle 'i' variable
+				pointerPlayer->setLifePointsAmount(i);
+				pointerPlayer->setMaximumLifePointsAmount(i);
+				
+				// Set player ammunition
+				pointerPlayer->setAmmunitionAmount(SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_AMMUNITION));
+			}
+			else LOG_ERROR("No valid savegame found, starting a new game.");
 			break;
 			
+		// Start a new game (nothing to do because all needed variables are already initialized)
 		case 1:
-			isGameLoadedFromSavegame = 0;
 			break;
 			
 		default:
 			goto Exit;
-	}
-	
-	// Try to load the savegame if requested to
-	if (isGameLoadedFromSavegame)
-	{
-		// Is a savegame available ?
-		if (SavegameManager::loadSavegame() == 0)
-		{
-			// Set which level to load
-			_currentLevelNumber = SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_STARTING_LEVEL);
-			
-			// Set player life points
-			i = SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_MAXIMUM_LIFE_POINTS); // Recycle 'i' variable
-			pointerPlayer->setLifePointsAmount(i);
-			pointerPlayer->setMaximumLifePointsAmount(i);
-			
-			// Set player ammunition
-			pointerPlayer->setAmmunitionAmount(SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_AMMUNITION));
-		}
-		else LOG_ERROR("No valid savegame found, starting a new game.");
 	}
 	
 	// Load first level
