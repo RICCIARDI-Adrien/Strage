@@ -429,6 +429,7 @@ static inline void _updateGameLogic()
 	// Check if enemies bullets have hit the player (update enemies bullets after enemies, so if they shot a new bullet is it updated too, in the same way it's done for the player. Thus, it is possible to adjust bullet spawning coordinate offsets in the same way for player and enemies)
 	MovingEntityBullet *pointerEnemyBullet;
 	bulletsListIterator = _enemiesBulletsList.begin();
+	pointerPositionRectangle = pointerPlayer->getPositionRectangle();
 	while (bulletsListIterator != _enemiesBulletsList.end())
 	{
 		pointerEnemyBullet = *bulletsListIterator;
@@ -441,7 +442,7 @@ static inline void _updateGameLogic()
 			continue;
 		}
 		
-		if (SDL_HasIntersection(pointerPlayer->getPositionRectangle(), pointerEnemyBullet->getPositionRectangle()))
+		if (SDL_HasIntersection(pointerPositionRectangle, pointerEnemyBullet->getPositionRectangle()))
 		{
 			// Wound the player
 			pointerPlayer->modifyLife(pointerEnemyBullet->getDamageAmount());
