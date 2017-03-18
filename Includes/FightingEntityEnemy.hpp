@@ -136,7 +136,7 @@ class FightingEntityEnemy: public FightingEntity
 		/** The player will be spotted by the enemy if he enters this area. */
 		SDL_Rect _spottingRectangle;
 		
-		/** The enemy will shoot if the player enters this rectangles. */
+		/** The enemy will shoot if the player enters one of these rectangles. */
 		SDL_Rect _shootingRectangles[DIRECTIONS_COUNT];
 		
 		/** Tell if a replacement direction has been chosen or not. */
@@ -146,15 +146,16 @@ class FightingEntityEnemy: public FightingEntity
 		
 	public:
 		/** Spawn a new enemy.
-		 * @param textureId The texture to use on rendering.
 		 * @param x The X coordinate where to spawn the entity.
 		 * @param y The Y coordinate where to spawn the entity.
+		 * @param textureId The texture to use on rendering.
 		 * @param movingPixelsAmount Entity moving speed.
 		 * @param maximumLifePointsAmount Entity maximum life points count.
 		 * @param timeBetweenShots How many milliseconds to wait between two shots.
 		 * @param firingSoundId The sound to play when the entity shoots.
+		 * @param bulletTextureId The "facing up" texture of the bullet fired by the entity.
 		 */
-		FightingEntityEnemy(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, int maximumLifePointsAmount, int timeBetweenShots, AudioManager::SoundId firingSoundId): FightingEntity(x, y, textureId, movingPixelsAmount, maximumLifePointsAmount, timeBetweenShots, firingSoundId)
+		FightingEntityEnemy(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, int maximumLifePointsAmount, int timeBetweenShots, AudioManager::SoundId firingSoundId, TextureManager::TextureId bulletTextureId): FightingEntity(x, y, textureId, movingPixelsAmount, maximumLifePointsAmount, timeBetweenShots, firingSoundId, bulletTextureId)
 		{
 			// Enemies collide between them too
 			_collisionBlockContent |= LevelManager::BLOCK_CONTENT_ENEMY;
@@ -166,7 +167,7 @@ class FightingEntityEnemy: public FightingEntity
 			_spottingRectangle.y = _positionRectangles[DIRECTION_UP].y - ((_spottingRectangle.h - _positionRectangles[DIRECTION_UP].h) / 2);
 			
 			// Get a bullet width
-			Texture *pointerBulletTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLET_FACING_UP); // Use textures to avoid instantiate a bullet to get its dimensions
+			Texture *pointerBulletTexture = TextureManager::getTextureFromId(bulletTextureId); // Use textures to avoid instantiate a bullet to get its dimensions
 			int bulletWidth = pointerBulletTexture->getWidth();
 			
 			// Cache all shooting rectangles

@@ -28,7 +28,7 @@ class FightingEntityEnemyMedium: public FightingEntityEnemy
 		 * @param x Enemy X coordinate.
 		 * @param y Enemy Y coordinate.
 		 */
-		FightingEntityEnemyMedium(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_FACING_UP, 2, 3, 2000, AudioManager::SOUND_ID_MEDIUM_ENEMY_FIRESHOT) {}
+		FightingEntityEnemyMedium(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_FACING_UP, 2, 3, 2000, AudioManager::SOUND_ID_MEDIUM_ENEMY_FIRESHOT, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_BULLET_FACING_UP) {}
 		
 		/** Free allocated resources. */
 		virtual ~FightingEntityEnemyMedium() {}

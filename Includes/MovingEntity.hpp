@@ -41,9 +41,9 @@ class MovingEntity: public Entity
 	
 	public:
 		/** Gather some initialization common to all moving entities.
-		 * @param facingUpTextureId The texture to use on rendering when the entity is facing up. This texture ID must be followed by facing down, facing left and facing right textures (in this order).
 		 * @param x The X coordinate where to spawn the entity.
 		 * @param y The Y coordinate where to spawn the entity.
+		 * @param facingUpTextureId The texture to use on rendering when the entity is facing up. This texture ID must be followed by facing down, facing left and facing right textures (in this order).
 		 * @param movingPixelsAmount Entity moving speed.
 		 */
 		MovingEntity(int x, int y, TextureManager::TextureId facingUpTextureId, int movingPixelsAmount)

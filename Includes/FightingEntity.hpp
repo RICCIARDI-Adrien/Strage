@@ -53,15 +53,16 @@ class FightingEntity: public MovingEntity
 		
 	public:
 		/** Initialize life points in addition to parent classes fields.
-		 * @param textureId The texture to use on rendering.
 		 * @param x The X coordinate where to spawn the entity.
 		 * @param y The Y coordinate where to spawn the entity.
+		 * @param textureId The texture to use on rendering.
 		 * @param movingPixelsAmount Entity moving speed.
 		 * @param maximumLifePointsAmount Entity maximum life points count.
 		 * @param timeBetweenShots How many milliseconds to wait between two shots.
 		 * @param firingSoundId The sound to play when the entity shoots.
+		 * @param facingUpBulletTextureId The "facing up" texture of the bullet fired by the entity.
 		 */
-		FightingEntity(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, int maximumLifePointsAmount, int timeBetweenShots, AudioManager::SoundId firingSoundId): MovingEntity(x, y, textureId, movingPixelsAmount)
+		FightingEntity(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, int maximumLifePointsAmount, int timeBetweenShots, AudioManager::SoundId firingSoundId, TextureManager::TextureId facingUpBulletTextureId): MovingEntity(x, y, textureId, movingPixelsAmount)
 		{
 			_lifePointsAmount = maximumLifePointsAmount;
 			_maximumLifePointsAmount = maximumLifePointsAmount;
@@ -71,7 +72,7 @@ class FightingEntity: public MovingEntity
 			
 			// Cache the offset to add to entity coordinates to make fired bullets start from where the cannon is (bullets are spawned a little nearer from the entity center than the cannon muzzle, so an underneath entity can be hit)
 			// Warning : for the underneath entity to be killed, bullet speed must be less than the bullet texture's larger dimension
-			Texture *pointerBulletTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLET_FACING_UP); // Use textures to avoid instantiate a bullet to get its dimensions (all bullets have same dimensions)
+			Texture *pointerBulletTexture = TextureManager::getTextureFromId(facingUpBulletTextureId); // Use textures to avoid instantiate a bullet to get its dimensions
 			int entityWidth = _pointerTextures[DIRECTION_UP]->getWidth(); // Only entity width is required because the entity is always facing the direction it shoots to
 			int bulletWidth = pointerBulletTexture->getWidth();
 			int bulletHeight = pointerBulletTexture->getHeight();
