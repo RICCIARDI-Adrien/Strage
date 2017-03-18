@@ -67,11 +67,6 @@ static std::list<FightingEntityEnemy *> _enemiesList;
 /** All animated textures. */
 static std::list<EntityAnimatedTexture *> _animatedTexturesList;
 
-/** How many pixels to add to spawn X coordinate to make the enemy spawn on block center. */
-static int _enemySpawnOffsetX;
-/** How many pixels to add to spawn Y coordinate to make the enemy spawn on block center. */
-static int _enemySpawnOffsetY;
-
 /** How many pixels to subtract to the player X coordinate to obtain the scene camera X coordinate. */
 static int _cameraOffsetX;
 /** How many pixels to subtract to the player Y coordinate to obtain the scene camera Y coordinate. */
@@ -213,6 +208,8 @@ int _isBlockAvailableForSpawn(int x, int y)
 static inline FightingEntityEnemy *_spawnEnemy(int enemySpawnerX, int enemySpawnerY)
 {
 	int x, y, spawningPercentage;
+	FightingEntityEnemy *pointerEnemy;
+	SDL_Rect *pointerEnemyPositionRectangle;
 	
 	// Find a free block to spawn the enemy onto
 	// North-west block
@@ -247,18 +244,22 @@ static inline FightingEntityEnemy *_spawnEnemy(int enemySpawnerX, int enemySpawn
 	return NULL;
 	
 Spawn_Enemy:
-	// Adjust coordinates to spawn the enemy at the block center
-	x += _enemySpawnOffsetX;
-	y += _enemySpawnOffsetY;
-	
-	LOG_DEBUG("Spawned an enemy on map coordinates (%d, %d).", x, y);
-	
 	// Select which enemy to spawn
 	spawningPercentage = rand() % 100;
 	// Start with the smaller percentage and continue so on
-	if (spawningPercentage <= CONFIGURATION_GAMEPLAY_BIG_ENEMY_SPAWN_PROBABILITY_PERCENTAGE) return new FightingEntityEnemyBig(x, y);
-	if (spawningPercentage <= CONFIGURATION_GAMEPLAY_MEDIUM_ENEMY_SPAWN_PROBABILITY_PERCENTAGE) return new FightingEntityEnemyMedium(x, y);
-	return new FightingEntityEnemySmall(x, y);
+	if (spawningPercentage <= CONFIGURATION_GAMEPLAY_BIG_ENEMY_SPAWN_PROBABILITY_PERCENTAGE) pointerEnemy = new FightingEntityEnemyBig(x, y); // Spawn the enemy on the top-left part of the block, as the enemy size can't be known until it is instantiated
+	else if (spawningPercentage <= CONFIGURATION_GAMEPLAY_MEDIUM_ENEMY_SPAWN_PROBABILITY_PERCENTAGE) pointerEnemy = new FightingEntityEnemyMedium(x, y);
+	else pointerEnemy = new FightingEntityEnemySmall(x, y);
+	
+	// Adjust coordinates to spawn the enemy at the block center
+	pointerEnemyPositionRectangle = pointerEnemy->getPositionRectangle();
+	x += (CONFIGURATION_LEVEL_BLOCK_SIZE - pointerEnemyPositionRectangle->w) / 2;
+	y += (CONFIGURATION_LEVEL_BLOCK_SIZE - pointerEnemyPositionRectangle->h) / 2;
+	pointerEnemy->setX(x);
+	pointerEnemy->setY(y);
+	
+	LOG_DEBUG("Spawned an enemy on map coordinates (%d, %d).", x, y);
+	return pointerEnemy;
 }
 
 /** Load next level. */
@@ -694,8 +695,6 @@ int main(int argc, char *argv[])
 	srand(time(NULL));
 	
 	// Cache some values
-	_enemySpawnOffsetX = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_SMALL_ENEMY_FACING_UP)->getWidth() / 2; // All enemies have same dimensions
-	_enemySpawnOffsetY = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_SMALL_ENEMY_FACING_UP)->getHeight() / 2;
 	// Offset to subtract to the player position to have the scene camera coordinates
 	_cameraOffsetX = (Renderer::displayWidth / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_FACING_UP)->getWidth() / 2);
 	_cameraOffsetY = (Renderer::displayHeight / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_FACING_UP)->getHeight() / 2);

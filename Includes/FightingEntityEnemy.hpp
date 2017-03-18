@@ -199,6 +199,36 @@ class FightingEntityEnemy: public FightingEntity
 		/** Free allocated resources. */
 		virtual ~FightingEntityEnemy() {}
 		
+		/** Set the entity X coordinate.
+		 * @param x The X coordinate.
+		 */
+		virtual void setX(int x)
+		{
+			int i, movedPixelsAmount;
+			
+			// Adjust shooting rectangles
+			movedPixelsAmount = x - _positionRectangles[DIRECTION_UP].x; // Compute the amount of pixels that have been moved (i.e. an offset) to avoid to recompute all collision rectangles
+			for (i = 0; i < DIRECTIONS_COUNT; i++) _shootingRectangles[i].x += movedPixelsAmount;
+			
+			// Adjust position rectangles
+			MovingEntity::setX(x);
+		}
+		
+		/** Set the entity Y coordinate.
+		 * @param y The Y coordinate.
+		 */
+		virtual void setY(int y)
+		{
+			int i, movedPixelsAmount;
+			
+			// Adjust shooting rectangles
+			movedPixelsAmount = y - _positionRectangles[DIRECTION_UP].y; // Compute the amount of pixels that have been moved (i.e. an offset) to avoid to recompute all collision rectangles
+			for (i = 0; i < DIRECTIONS_COUNT; i++) _shootingRectangles[i].y += movedPixelsAmount;
+			
+			// Adjust position rectangles
+			MovingEntity::setY(y);
+		}
+		
 		virtual int moveToUp()
 		{
 			int movedPixelsAmount, i;
