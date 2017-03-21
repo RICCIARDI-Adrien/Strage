@@ -47,6 +47,7 @@ int displayHeight;
 int initialize(int isFullScreenEnabled)
 {
 	unsigned int flags;
+	SDL_RendererInfo rendererInformation;
 	
 	// Initialize the needed subsystems
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0)
@@ -72,6 +73,9 @@ int initialize(int isFullScreenEnabled)
 		LOG_ERROR("Failed to create the main renderer (%s).", SDL_GetError());
 		goto Exit_Error_Destroy_Window;
 	}
+	
+	// Display rendering driver name
+	if (SDL_GetRendererInfo(pointerMainRenderer, &rendererInformation) == 0) LOG_DEBUG("Rendering driver : %s.", rendererInformation.name);
 	
 	// Set display size according to selected mode
 	if (isFullScreenEnabled)
