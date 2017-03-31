@@ -297,6 +297,11 @@ class FightingEntityEnemy: public FightingEntity
 			return movedPixelsAmount;
 		}
 		
+		/** Generate the explosion effect corresponding to the entity at the entity current location on the map.
+		 * @return The enemy-specific explosion.
+		 */
+		virtual EntityAnimatedTexture *generateExplosion() = 0;
+		
 		/** Update enemy artificial intelligence.
 		 * @return 0 if the enemy must be kept alive,
 		 * @return 1 if the enemy is dead and must be removed,

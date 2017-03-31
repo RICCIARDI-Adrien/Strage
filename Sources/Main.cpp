@@ -9,7 +9,6 @@
 #include <ctime>
 #include <EntityAnimatedTexture.hpp>
 #include <EntityAnimatedTextureEnemySpawnerExplosion.hpp>
-#include <EntityAnimatedTextureShipExplosion.hpp>
 #include <EntityEnemySpawner.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <FightingEntityPlayer.hpp>
@@ -402,7 +401,7 @@ static inline void _updateGameLogic()
 			// Spawn an explosion effect
 			pointerPositionRectangle = pointerEnemy->getPositionRectangle();
 			
-			_animatedTexturesList.push_front(new EntityAnimatedTextureShipExplosion(pointerPositionRectangle->x, pointerPositionRectangle->y));
+			_animatedTexturesList.push_front(pointerEnemy->generateExplosion());
 			AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_EXPLOSION);
 			
 			// Spawn an item on the current block if player is lucky

@@ -2,6 +2,7 @@
 #define HPP_FIGHTING_ENTITY_ENEMY_BIG_HPP
 
 #include <AudioManager.hpp>
+#include <EntityAnimatedTextureShipExplosion.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <MovingEntityBulletBigEnemy.hpp>
 #include <TextureManager.hpp>
@@ -32,6 +33,14 @@ class FightingEntityEnemyBig: public FightingEntityEnemy
 		
 		/** Free allocated resources. */
 		virtual ~FightingEntityEnemyBig() {}
+		
+		/** Generate a big explosion.
+		 * @return The explosion effect.
+		 */
+		virtual EntityAnimatedTexture *generateExplosion()
+		{
+			return new EntityAnimatedTextureShipExplosion(_positionRectangles[DIRECTION_UP].x, _positionRectangles[DIRECTION_UP].y);
+		}
 };
 
 #endif
