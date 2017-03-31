@@ -2,7 +2,7 @@
 #define HPP_FIGHTING_ENTITY_ENEMY_MEDIUM_HPP
 
 #include <AudioManager.hpp>
-#include <EntityAnimatedTextureShipExplosion.hpp>
+#include <EntityAnimatedTextureSmallEnemyExplosion.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <MovingEntityBulletMediumEnemy.hpp>
 #include <TextureManager.hpp>
@@ -39,7 +39,7 @@ class FightingEntityEnemyMedium: public FightingEntityEnemy
 		 */
 		virtual EntityAnimatedTexture *generateExplosion()
 		{
-			return new EntityAnimatedTextureShipExplosion(_positionRectangles[DIRECTION_UP].x, _positionRectangles[DIRECTION_UP].y);
+			return new EntityAnimatedTextureSmallEnemyExplosion(_positionRectangles[DIRECTION_UP].x, _positionRectangles[DIRECTION_UP].y);
 		}
 };
 
