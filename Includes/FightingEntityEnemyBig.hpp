@@ -2,7 +2,7 @@
 #define HPP_FIGHTING_ENTITY_ENEMY_BIG_HPP
 
 #include <AudioManager.hpp>
-#include <EntityAnimatedTextureSmallEnemyExplosion.hpp>
+#include <EntityAnimatedTextureBigEnemyExplosion.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <MovingEntityBulletBigEnemy.hpp>
 #include <TextureManager.hpp>
@@ -39,7 +39,7 @@ class FightingEntityEnemyBig: public FightingEntityEnemy
 		 */
 		virtual EntityAnimatedTexture *generateExplosion()
 		{
-			return new EntityAnimatedTextureSmallEnemyExplosion(this->getX(), this->getY());
+			return new EntityAnimatedTextureBigEnemyExplosion(this->getX(), this->getY());
 		}
 };
 
