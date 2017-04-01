@@ -2,7 +2,7 @@
 
 ## How to play
 You are in command of a little futuristic tank in an unknown part of the galaxy. What are you doing here ? No one knows, even you...  
-Your ship can **move** in up, down, left and right directions using the **keyboard arrow keys**.  You can also **shoot** using **space bar**. Shoot ? Yes, enemies are nearby.  
+Your tank can **move** in up, down, left and right directions using the **keyboard arrow keys**.  You can also **shoot** using **space bar**. Shoot ? Yes, enemies are nearby.  
 You do not know why they want you dead, they may have a very good reason, but it's the worse idea they ever had. Defend yourself and escape from this place !  
   
 Enemies are teleported to this place to fight you by using big machines. Destroy these machines at sight or they will teleport tons of enemies !  
