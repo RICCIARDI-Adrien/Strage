@@ -39,7 +39,7 @@ class FightingEntityEnemySmall: public FightingEntityEnemy
 		 */
 		virtual EntityAnimatedTexture *generateExplosion()
 		{
-			return new EntityAnimatedTextureSmallEnemyExplosion(_positionRectangles[DIRECTION_UP].x, _positionRectangles[DIRECTION_UP].y);
+			return new EntityAnimatedTextureSmallEnemyExplosion(this->getX(), this->getY());
 		}
 };
 

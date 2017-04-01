@@ -39,7 +39,7 @@ class FightingEntityEnemyMedium: public FightingEntityEnemy
 		 */
 		virtual EntityAnimatedTexture *generateExplosion()
 		{
-			return new EntityAnimatedTextureMediumEnemyExplosion(_positionRectangles[DIRECTION_UP].x, _positionRectangles[DIRECTION_UP].y);
+			return new EntityAnimatedTextureMediumEnemyExplosion(this->getX(), this->getY());
 		}
 };
 
