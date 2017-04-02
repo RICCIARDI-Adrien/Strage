@@ -35,17 +35,6 @@ const int levelsCount = 3;
 //-------------------------------------------------------------------------------------------------
 // Private types
 //-------------------------------------------------------------------------------------------------
-/** All available blocks. */
-typedef enum
-{
-	BLOCK_ID_RIVER_SAND,
-	BLOCK_ID_GRASS,
-	BLOCK_ID_WALL_STONE_1,
-	BLOCK_ID_DIRT_1,
-	BLOCK_ID_DIRT_2,
-	BLOCK_IDS_COUNT
-} BlockId;
-
 /** A block. */
 typedef struct
 {
@@ -61,7 +50,7 @@ typedef enum
 	OBJECT_ID_AMMUNITION,
 	OBJECT_ID_ENEMY_SPAWNER,
 	OBJECT_ID_LEVEL_EXIT,
-	OBJECT_ID_GOLDEN_MEDIPACK, // TODO put under medipack, update all levels
+	OBJECT_ID_GOLDEN_MEDIPACK,
 	OBJECT_IDS_COUNT
 } ObjectId;
 
