@@ -611,16 +611,12 @@ static inline void _renderGame()
 	// Start rendering
 	Renderer::beginRendering(sceneX, sceneY);
 	
-	// Render the level walls
+	// Render the level walls and static objects (ammunition, medipacks, enemy spawners...)
 	LevelManager::renderScene(sceneX, sceneY);
 	
 	// Display enemies
 	std::list<FightingEntityEnemy *>::iterator enemiesListIterator;
 	for (enemiesListIterator = _enemiesList.begin(); enemiesListIterator != _enemiesList.end(); ++enemiesListIterator) (*enemiesListIterator)->render();
-	
-	// Display enemy spawners
-	std::list<EntityEnemySpawner *>::iterator enemySpawnersListIterator;
-	for (enemySpawnersListIterator = LevelManager::enemySpawnersList.begin(); enemySpawnersListIterator != LevelManager::enemySpawnersList.end(); ++enemySpawnersListIterator) (*enemySpawnersListIterator)->render();
 	
 	// Display bullets after enemies, so when multiple enemies fire on themselves bullets are visible on top of enemies
 	std::list<MovingEntityBullet *>::iterator bulletsListIterator;
