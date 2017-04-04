@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/RICCIARDI-Adrien/Strage.svg?branch=master)](https://travis-ci.org/RICCIARDI-Adrien/Strage)
+
 # Strage
 
 ## How to play
