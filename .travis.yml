@@ -1,0 +1,8 @@
+language: cpp
+dist: trusty
+sudo: required
+install:
+  - sudo apt-get -qq update
+  - sudo apt-get -qq install libsdl2-dev libsdl2-mixer-dev libsdl2-ttf-dev
+script:
+  - make linux
