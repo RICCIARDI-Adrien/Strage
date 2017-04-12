@@ -71,7 +71,7 @@ When exporting a level, let 20 blocks on each map wall side to avoid displaying 
 
 ## Credits
 * Maps :
-   * Stage 3 made by Yannick Bilcot
+   * Level 1 made by Yannick Bilcot
 * Musics : [jamendo](https://www.jamendo.com)
    * Akashic Records - Epic Action Hero
    * Art Music - Epic Trailer
