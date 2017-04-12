@@ -67,7 +67,11 @@ Levels are made using [Tiled](http://www.mapeditor.org/) editor. They are consti
 
 Scene textures and objects are gathered in two Tiled tilesets (Scene.tsx and Objects.tsx) located in the Tiled_Resources directory.
 
+When exporting a level, let 20 blocks on each map wall side to avoid displaying a black background when the player is approaching the map walls.
+
 ## Credits
+* Maps :
+   * Stage 3 made by Yannick Bilcot
 * Musics : [jamendo](https://www.jamendo.com)
    * Akashic Records - Epic Action Hero
    * Art Music - Epic Trailer

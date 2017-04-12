@@ -18,7 +18,7 @@ linux: all
 
 macos: CPP = g++
 macos: CPPFLAGS += -Werror -O2 -DCONFIGURATION_BUILD_FOR_MACOS
-macos: LIBRARIES = -framework SDL2  -framework SDL2_mixer -framework SDL2_ttf
+macos: LIBRARIES = -framework SDL2 -framework SDL2_mixer -framework SDL2_ttf
 macos: all
 
 windows: BINARY = Strage.exe
