@@ -265,7 +265,7 @@ Spawn_Enemy:
 static inline void _loadNextLevel()
 {
 	// Are all levels completed ?
-	if (_currentLevelNumber == LevelManager::levelsCount)
+	if (_currentLevelNumber == CONFIGURATION_LEVELS_COUNT)
 	{
 		_isGameFinished = 1;
 		_isGamePaused = 1;

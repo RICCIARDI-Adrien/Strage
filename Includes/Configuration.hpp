@@ -62,6 +62,8 @@
 #define CONFIGURATION_LEVEL_MAXIMUM_HEIGHT 256
 /** A block size in pixels. */
 #define CONFIGURATION_LEVEL_BLOCK_SIZE 64
+/** How many levels are available. */
+#define CONFIGURATION_LEVELS_COUNT 4
 
 // Gameplay
 /** The probability (in range 0% to 100%) to spawn a medipack when an enemy dies. */
