@@ -302,8 +302,8 @@ static inline void _updateGameLogic()
 	// Check if pickable objects can be taken by the player or if the level end has been reached
 	if (pointerPlayer->update() == 2)
 	{
-		// Next level can be loaded only if all enemies are dead
-		if (_enemiesList.empty())
+		// Next level can be loaded only if all enemies are dead and all spawners are destroyed
+		if (_enemiesList.empty() && LevelManager::enemySpawnersList.empty())
 		{
 			// Restore player maximum life
 			pointerPlayer->modifyLife(100000); // Should be enough even if using a lot of golden medipacks
@@ -577,8 +577,8 @@ static inline void _renderInterface()
 	amount = (int) _enemiesList.size();
 	if (amount != previousSpawnersCount)
 	{
-		// Display enemies in green if they are all dead
-		if (amount == 0) colorId = Renderer::TEXT_COLOR_ID_GREEN;
+		// Display enemies in green if they are all dead and all enemy spawners are destroyed
+		if ((amount == 0) && (LevelManager::enemySpawnersList.empty())) colorId = Renderer::TEXT_COLOR_ID_GREEN;
 		else colorId = Renderer::TEXT_COLOR_ID_BLUE;
 		
 		// Free previous string
