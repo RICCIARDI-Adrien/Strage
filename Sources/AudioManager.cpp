@@ -76,6 +76,10 @@ static Music _musics[] =
 	{
 		CONFIGURATION_PATH_SOUNDS "/Soundshrim_-_Epic_Adventure.mp3",
 		NULL
+	},
+	{
+		CONFIGURATION_PATH_SOUNDS "/Nico_Wohlleben_-_Storm.mp3",
+		NULL
 	}
 };
 
