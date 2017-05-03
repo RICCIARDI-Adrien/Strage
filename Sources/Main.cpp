@@ -299,6 +299,8 @@ static inline void _loadNextLevel()
 /** Update all game actors. */
 static inline void _updateGameLogic()
 {
+	static unsigned int lastEnemySpawningTime = -CONFIGURATION_GAMEPLAY_TIME_BETWEEN_ENEMY_SPAWN; // Initialize to a negative value (gcc allows it) to spawn an enemy immediately when the game starts
+	
 	// Check if pickable objects can be taken by the player or if the level end has been reached
 	if (pointerPlayer->update() == 2)
 	{
@@ -469,15 +471,20 @@ static inline void _updateGameLogic()
 	}
 	
 	// Update enemy spawners at the end, to avoid new enemies being spawned in the middle of the update function
-	int blockContent;
+	int blockContent, isEnemySpawned = 0;
 	enemySpawnersListIterator = LevelManager::enemySpawnersList.begin();
+	// Should enemies be spawned ?
+	if (SDL_GetTicks() - lastEnemySpawningTime >= CONFIGURATION_GAMEPLAY_TIME_BETWEEN_ENEMY_SPAWN)
+	{
+		lastEnemySpawningTime = SDL_GetTicks();
+		isEnemySpawned = 1;
+	}
 	while (enemySpawnersListIterator !=  LevelManager::enemySpawnersList.end())
 	{
 		pointerEnemySpawner = *enemySpawnersListIterator;
 		
-		result = pointerEnemySpawner->update();
 		// Remove the spawner if it is destroyed
-		if (result == 1)
+		if (pointerEnemySpawner->update() == 1)
 		{
 			// Remove the spawner indicator from the block
 			pointerPositionRectangle = pointerEnemySpawner->getPositionRectangle();
@@ -495,8 +502,8 @@ static inline void _updateGameLogic()
 			
 			continue;
 		}
-		// Try to spawn an enemy if the spawner requested to
-		else if (result == 2)
+		// Try to spawn an enemy if the spawner is still alive and enough time has elapsed since last spawn
+		else if (isEnemySpawned)
 		{
 			pointerPositionRectangle = pointerEnemySpawner->getPositionRectangle();
 			pointerEnemy = _spawnEnemy(pointerPositionRectangle->x, pointerPositionRectangle->y);

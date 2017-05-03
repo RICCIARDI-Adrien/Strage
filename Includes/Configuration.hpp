@@ -81,6 +81,8 @@
 #define CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_LIFE_POINTS_AMOUNT 100
 /** Player default ammunition amount. */
 #define CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_AMMUNITION_AMOUNT 100
+/** How many time a spawner waits before spawning a new enemy (in millisecond). */
+#define CONFIGURATION_GAMEPLAY_TIME_BETWEEN_ENEMY_SPAWN 3000
 
 // Savegame
 /** The savegame file. */
