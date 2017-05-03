@@ -4,6 +4,7 @@
  */
 #include <AudioManager.hpp>
 #include <Configuration.hpp>
+#include <ControlManager.hpp>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -29,17 +30,6 @@
 //-------------------------------------------------------------------------------------------------
 // Private types
 //-------------------------------------------------------------------------------------------------
-/** All keyboard keys that matter. */
-typedef enum
-{
-	KEYBOARD_KEY_ID_ARROW_UP,
-	KEYBOARD_KEY_ID_ARROW_DOWN,
-	KEYBOARD_KEY_ID_ARROW_LEFT,
-	KEYBOARD_KEY_ID_ARROW_RIGHT,
-	KEYBOARD_KEY_ID_SPACE,
-	KEYBOARD_KEY_IDS_COUNT
-} KeyboardKeyId;
-
 /** All strings the interface can display. */
 typedef enum
 {
@@ -135,6 +125,7 @@ static void _exitFreeResources()
 	
 	delete pointerPlayer;
 	
+	ControlManager::uninitialize();
 	AudioManager::uninitialize();
 	LevelManager::uninitialize();
 	TextureManager::uninitialize();
@@ -657,7 +648,7 @@ int main(int argc, char *argv[])
 {
 	SDL_Event event;
 	unsigned int frameStartingTime, frameElapsedTime;
-	int isKeyPressed[KEYBOARD_KEY_IDS_COUNT] = {0}, isLastDirectionVertical = 1, isFullScreenEnabled = 0, levelToLoadNumber, i;
+	int isFullScreenEnabled = 0, levelToLoadNumber, i, isPauseKeyPressed = 0, isRetryKeyPressed = 0;
 	#if CONFIGURATION_DISPLAY_IS_FRAME_RATE_DISPLAYING_ENABLED
 		unsigned int frameRateStartingTime = 0;
 		int framesCount = 0;
@@ -686,6 +677,7 @@ int main(int argc, char *argv[])
 	if (TextureManager::initialize() != 0) return -1;
 	if (LevelManager::initialize() != 0) return -1;
 	if (AudioManager::initialize() != 0) return -1;
+	if (ControlManager::initialize() != 0) return -1;
 	
 	// Create the player now that everything is working
 	pointerPlayer = new FightingEntityPlayer(0, 0); // It will be placed at the right location by the level loading function
@@ -760,159 +752,102 @@ int main(int argc, char *argv[])
 				case SDL_QUIT:
 					goto Exit;
 				
-				// Remember which key are pressed
-				case SDL_KEYDOWN:
-				{
-					switch (event.key.keysym.scancode)
-					{
-						case SDL_SCANCODE_UP:
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP] = 1;
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN] = 0;
-							isLastDirectionVertical = 1;
-							break;
-							
-						case SDL_SCANCODE_DOWN:
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP] = 0;
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN] = 1;
-							isLastDirectionVertical = 1;
-							break;
-							
-						case SDL_SCANCODE_LEFT:
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT] = 1;
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT] = 0;
-							isLastDirectionVertical = 0;
-							break;
-							
-						case SDL_SCANCODE_RIGHT:
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT] = 0;
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT] = 1;
-							isLastDirectionVertical = 0;
-							break;
-							
-						case SDL_SCANCODE_SPACE:
-							isKeyPressed[KEYBOARD_KEY_ID_SPACE] = 1;
-							break;
-							
-						case SDL_SCANCODE_ESCAPE:
-							// Pause or continue the game (only if the player is alive, or it would allow the game to continue even if the player is dead)
-							if (_isPlayerDead || _isGameFinished) break;
-							
-							_isGamePaused = !_isGamePaused;
-							if (_isGamePaused) LOG_INFORMATION("Game paused.");
-							else LOG_INFORMATION("Game continuing.");
-							
-							AudioManager::pauseMusic(_isGamePaused);
-							break;
-						
-						// Restart current level
-						case SDL_SCANCODE_R:
-							// Can't restart a level if the game is paused or if all levels are completed
-							if ((_isGamePaused && (!_isPlayerDead)) || _isGameFinished) break;
-							
-							// Stop currently playing sounds
-							AudioManager::stopAllSounds();
-							
-							// Free all entities
-							_clearAllLists();
-							
-							// Choose level number to load (_loadNextLevel() automatically increments _currentLevelNumber)
-							if (_currentLevelNumber == 0) levelToLoadNumber = 0;
-							else levelToLoadNumber = _currentLevelNumber - 1;
-							
-							// Try to load the level
-							if (LevelManager::loadLevel(levelToLoadNumber) != 0)
-							{
-								LOG_ERROR("Failed to reload level %d.", levelToLoadNumber);
-								exit(-1);
-							}
-							
-							// Restore player life and ammunition count as they were at the level start
-							i = SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_MAXIMUM_LIFE_POINTS); // Recycle 'i' variable
-							pointerPlayer->setLifePointsAmount(i);
-							pointerPlayer->setMaximumLifePointsAmount(i);
-							pointerPlayer->setAmmunitionAmount(SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_AMMUNITION));
-							
-							// Allow the game to restart if the player is dead
-							if (_isPlayerDead)
-							{
-								_isPlayerDead = 0;
-								_isGamePaused = 0;
-							}
-							break;
-							
-						default:
-							break;
-					}
-					break;
-				}
-				
-				// Some key has been released
 				case SDL_KEYUP:
-				{
-					switch (event.key.keysym.scancode)
-					{
-						case SDL_SCANCODE_UP:
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP] = 0;
-							isLastDirectionVertical = 0;
-							break;
-							
-						case SDL_SCANCODE_DOWN:
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN] = 0;
-							isLastDirectionVertical = 0;
-							break;
-							
-						case SDL_SCANCODE_LEFT:
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT] = 0;
-							isLastDirectionVertical = 1;
-							break;
-							
-						case SDL_SCANCODE_RIGHT:
-							isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT] = 0;
-							isLastDirectionVertical = 1;
-							break;
-							
-						case SDL_SCANCODE_SPACE:
-							isKeyPressed[KEYBOARD_KEY_ID_SPACE] = 0;
-							break;
-							
-						default:
-							break;
-					}
+				case SDL_KEYDOWN:
+					ControlManager::handleKeyboardEvent(&event);
 					break;
-				}
 			}
 		}
+		
+		// Pause or continue the game
+		if (ControlManager::isKeyPressed(ControlManager::KEY_ID_PAUSE_GAME))
+		{
+			// Pause only if the player is alive, or it would allow the game to continue even if the player is dead
+			if (!_isPlayerDead && !_isGameFinished && !isPauseKeyPressed)
+			{
+				_isGamePaused = !_isGamePaused;
+				if (_isGamePaused) LOG_INFORMATION("Game paused.");
+				else LOG_INFORMATION("Game continuing.");
+				
+				AudioManager::pauseMusic(_isGamePaused);
+			
+				// Tell that the key is held, so the "pause key" corresponding code is not called every time until the key is released
+				isPauseKeyPressed = 1;
+			}
+		}
+		else isPauseKeyPressed = 0;
+		
+		// Restart the current level
+		if (ControlManager::isKeyPressed(ControlManager::KEY_ID_RETRY_GAME))
+		{
+			// Can't restart a level if the game is paused or if all levels are completed
+			if (((_isGamePaused && _isPlayerDead) || (!_isGamePaused)) && !_isGameFinished && !isRetryKeyPressed) // Check (_isGamePaused && _isPlayerDead) to be sure the game is paused but not because the player is dead
+			{
+				// Stop currently playing sounds
+				AudioManager::stopAllSounds();
+				
+				// Free all entities
+				_clearAllLists();
+				
+				// Choose level number to load (_loadNextLevel() automatically increments _currentLevelNumber)
+				if (_currentLevelNumber == 0) levelToLoadNumber = 0;
+				else levelToLoadNumber = _currentLevelNumber - 1;
+				
+				// Try to load the level
+				if (LevelManager::loadLevel(levelToLoadNumber) != 0)
+				{
+					LOG_ERROR("Failed to reload level %d.", levelToLoadNumber);
+					exit(-1);
+				}
+				
+				// Restore player life and ammunition count as they were at the level start
+				i = SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_MAXIMUM_LIFE_POINTS); // Recycle 'i' variable
+				pointerPlayer->setLifePointsAmount(i);
+				pointerPlayer->setMaximumLifePointsAmount(i);
+				pointerPlayer->setAmmunitionAmount(SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_AMMUNITION));
+				
+				// Allow the game to restart if the player is dead
+				if (_isPlayerDead)
+				{
+					_isPlayerDead = 0;
+					_isGamePaused = 0;
+				}
+				
+				isRetryKeyPressed = 1;
+			}
+		}
+		else isRetryKeyPressed = 0;
 		
 		// Do not update the game anymore if the player died
 		if (!_isGamePaused)
 		{
 			// React to player key press without depending of keyboard key repetition rate
 			// Handle both vertical and horizontal direction movement
-			if ((isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP] || isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN]) && (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT] || isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT]))
+			if ((ControlManager::isKeyPressed(ControlManager::KEY_ID_GO_UP) || ControlManager::isKeyPressed(ControlManager::KEY_ID_GO_DOWN)) && (ControlManager::isKeyPressed(ControlManager::KEY_ID_GO_LEFT) || ControlManager::isKeyPressed(ControlManager::KEY_ID_GO_RIGHT)))
 			{
 				// Keep trace of the last direction the player took to favor it, when this key will be released the previous direction will be favored
-				if (isLastDirectionVertical)
+				if (ControlManager::isLastPressedDirectionKeyOnVerticalAxis())
 				{
-					if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP]) pointerPlayer->moveToUp();
+					if (ControlManager::isKeyPressed(ControlManager::KEY_ID_GO_UP)) pointerPlayer->moveToUp();
 					else pointerPlayer->moveToDown();
 				}
 				else
 				{
-					if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT]) pointerPlayer->moveToLeft();
+					if (ControlManager::isKeyPressed(ControlManager::KEY_ID_GO_LEFT)) pointerPlayer->moveToLeft();
 					else pointerPlayer->moveToRight();
 				}
 			}
 			// Handle a single key press
 			else
 			{
-				if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_UP]) pointerPlayer->moveToUp();
-				else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_DOWN]) pointerPlayer->moveToDown();
-				else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_LEFT]) pointerPlayer->moveToLeft();
-				else if (isKeyPressed[KEYBOARD_KEY_ID_ARROW_RIGHT]) pointerPlayer->moveToRight();
+				if (ControlManager::isKeyPressed(ControlManager::KEY_ID_GO_UP)) pointerPlayer->moveToUp();
+				else if (ControlManager::isKeyPressed(ControlManager::KEY_ID_GO_DOWN)) pointerPlayer->moveToDown();
+				else if (ControlManager::isKeyPressed(ControlManager::KEY_ID_GO_LEFT)) pointerPlayer->moveToLeft();
+				else if (ControlManager::isKeyPressed(ControlManager::KEY_ID_GO_RIGHT)) pointerPlayer->moveToRight();
 			}
 			
 			// Fire a bullet
-			if (isKeyPressed[KEYBOARD_KEY_ID_SPACE])
+			if (ControlManager::isKeyPressed(ControlManager::KEY_ID_SHOOT))
 			{
 				MovingEntityBullet *pointerBullet = pointerPlayer->shoot();
 				
