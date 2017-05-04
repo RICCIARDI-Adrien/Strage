@@ -299,7 +299,7 @@ static inline void _updateGameLogic()
 		if (_enemiesList.empty() && LevelManager::enemySpawnersList.empty())
 		{
 			// Restore player maximum life
-			pointerPlayer->modifyLife(100000); // Should be enough even if using a lot of golden medipacks
+			pointerPlayer->modifyLife(pointerPlayer->getMaximumLifePointsAmount());
 			
 			_loadNextLevel();
 			return;
