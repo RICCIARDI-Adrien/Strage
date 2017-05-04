@@ -50,7 +50,7 @@ int initialize(int isFullScreenEnabled)
 	SDL_RendererInfo rendererInformation;
 	
 	// Initialize the needed subsystems
-	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0)
+	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK) != 0)
 	{
 		LOG_ERROR("SDL_Init() failed (%s).", SDL_GetError());
 		goto Exit_Error;

@@ -14,11 +14,18 @@ Some levels contain a golden medipack that increases player maximum life amount,
 And remember, *strage* means *slaughter* in Italian...
 
 ## Controls
-* **Keyboard arrow keys** : move
+### Keyboard
+* **Arrow keys** : move
 * **Space bar** : shoot
 * **Escape** : pause game
 * **Alt+F4** : quit game
 * **R** : reload current level
+
+### Xbox One game controller
+* **Left stick** : move
+* **A button** : shoot
+* **View button** : reload current level
+* **Menu button** : pause game
 
 ## Building
 ### Building for Linux

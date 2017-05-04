@@ -42,9 +42,15 @@ void uninitialize(void);
  */
 int isKeyPressed(KeyId keyId);
 
+/** Handle a SDL event related to the keyboard.
+ * @param pointerEvent The keyboard event.
+ */
 void handleKeyboardEvent(SDL_Event *pointerEvent);
 
-//void handleJoystickEvent(SDL_Event *pointerEvent);
+/** Handle a SDL event related to the joystick.
+ * @param pointerEvent The joystick event.
+ */
+void handleJoystickEvent(SDL_Event *pointerEvent);
 
 /** Tell if the last pressed direction key of the current controller was on the vertical or the horizontal axis.
  * @return 1 if the direction was vertical,

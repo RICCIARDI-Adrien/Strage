@@ -751,7 +751,13 @@ int main(int argc, char *argv[])
 			{
 				case SDL_QUIT:
 					goto Exit;
-				
+					
+				case SDL_JOYBUTTONUP:
+				case SDL_JOYBUTTONDOWN:
+				case SDL_JOYAXISMOTION:
+					ControlManager::handleJoystickEvent(&event);
+					break;
+					
 				case SDL_KEYUP:
 				case SDL_KEYDOWN:
 					ControlManager::handleKeyboardEvent(&event);
