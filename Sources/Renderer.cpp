@@ -117,6 +117,8 @@ int initialize(int isFullScreenEnabled)
 		}
 	}
 	
+	//TTF_SetFontStyle(_pointerFont, TTF_STYLE_BOLD);
+	
 	// Cache some values
 	_displayRectangle.w = Renderer::displayWidth;
 	_displayRectangle.h = Renderer::displayHeight;
@@ -132,6 +134,10 @@ int initialize(int isFullScreenEnabled)
 	_textColors[TEXT_COLOR_ID_RED].g = 0;
 	_textColors[TEXT_COLOR_ID_RED].b = 0;
 	_textColors[TEXT_COLOR_ID_RED].a = 255;
+	_textColors[TEXT_COLOR_ID_BLACK].r = 0;
+	_textColors[TEXT_COLOR_ID_BLACK].g = 0;
+	_textColors[TEXT_COLOR_ID_BLACK].b = 0;
+	_textColors[TEXT_COLOR_ID_BLACK].a = 255;
 	
 	// Everything went fine
 	return 0;
@@ -194,14 +200,32 @@ SDL_Texture *renderTextToTexture(const char *pointerText, TextColorId colorId)
 		exit(-1);
 	}
 	
-	// Render the text
+	// Render the plain text
+	TTF_SetFontOutline(_pointerFont, 0); // Disable outlining (i.e. drawing only characters contour with transparent center)
 	//SDL_Surface *pointerSurface = TTF_RenderText_Solid(_pointerFont, pointerText, _textColors[colorId]);
 	SDL_Surface *pointerSurface = TTF_RenderText_Blended(_pointerFont, pointerText, _textColors[colorId]);
 	if (pointerSurface == NULL)
 	{
-		LOG_ERROR("Failed to render the text to a surface, shutting down (%s).", TTF_GetError());
+		LOG_ERROR("Failed to render the plain text to a surface, shutting down (%s).", TTF_GetError());
 		exit(-1);
 	}
+	
+	// Render only the text outline
+	TTF_SetFontOutline(_pointerFont, 1);
+	SDL_Surface *pointerSurfaceOutlinedText = TTF_RenderText_Blended(_pointerFont, pointerText, _textColors[TEXT_COLOR_ID_BLACK]);
+	if (pointerSurfaceOutlinedText == NULL)
+	{
+		LOG_ERROR("Failed to render the outlined text to a surface, shutting down (%s).", TTF_GetError());
+		exit(-1);
+	}
+	
+	// Draw outlined text on top of plain text
+	if (SDL_BlitSurface(pointerSurfaceOutlinedText, NULL, pointerSurface, NULL) != 0)
+	{
+		LOG_ERROR("Failed to blit outlined surface on plain text surface, shutting down (%s).", SDL_GetError());
+		exit(-1);
+	}
+	SDL_FreeSurface(pointerSurfaceOutlinedText);
 	
 	// Convert it to a texture to be able to display it
 	SDL_Texture *pointerTexture = SDL_CreateTextureFromSurface(pointerMainRenderer, pointerSurface);
