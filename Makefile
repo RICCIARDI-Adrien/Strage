@@ -1,5 +1,6 @@
 PATH_INCLUDES = Includes
 PATH_SOURCES = Sources
+PATH_WINDOWS_RELEASE = ../Strage_Windows_Release
 
 BINARY = Strage
 CPPFLAGS = -W -Wall -std=c++11
@@ -34,3 +35,36 @@ all:
 
 clean:
 	rm -f $(BINARY) $(BINARY).exe
+
+windows_release: windows
+	@# Create release root directory
+	rm -rf $(PATH_WINDOWS_RELEASE)
+	mkdir $(PATH_WINDOWS_RELEASE)
+
+	@# Copy relevant directories
+	cp -r Levels $(PATH_WINDOWS_RELEASE)
+	cp -r Sounds $(PATH_WINDOWS_RELEASE)
+	cp -r Textures $(PATH_WINDOWS_RELEASE)
+
+	@# Copy relevant files
+	cp Liberation_Sans_Bold.ttf $(PATH_WINDOWS_RELEASE)
+	cp README.md $(PATH_WINDOWS_RELEASE)
+	cp Strage.exe $(PATH_WINDOWS_RELEASE)
+	
+	@# Download needed SDL prebuit packages
+	wget https://www.libsdl.org/release/SDL2-devel-2.0.5-mingw.tar.gz -O /tmp/SDL2-devel-2.0.5-mingw.tar.gz
+	wget https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-2.0.1-mingw.tar.gz -O /tmp/SDL2_mixer-devel-2.0.1-mingw.tar.gz
+	wget https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-2.0.14-mingw.tar.gz -O /tmp/SDL2_ttf-devel-2.0.14-mingw.tar.gz
+	
+	@# Uncompress SDL packages
+	tar -xf /tmp/SDL2-devel-2.0.5-mingw.tar.gz -C /tmp
+	tar -xf /tmp/SDL2_mixer-devel-2.0.1-mingw.tar.gz -C /tmp
+	tar -xf /tmp/SDL2_ttf-devel-2.0.14-mingw.tar.gz -C /tmp
+
+	@# Add needed DLLs
+	cp /tmp/SDL2-2.0.5/i686-w64-mingw32/bin/SDL2.dll $(PATH_WINDOWS_RELEASE)
+	cp /tmp/SDL2_mixer-2.0.1/i686-w64-mingw32/bin/SDL2_mixer.dll $(PATH_WINDOWS_RELEASE)
+	cp /tmp/SDL2_mixer-2.0.1/i686-w64-mingw32/bin/smpeg2.dll $(PATH_WINDOWS_RELEASE)
+	cp /tmp/SDL2_ttf-2.0.14/i686-w64-mingw32/bin/libfreetype-6.dll $(PATH_WINDOWS_RELEASE)
+	cp /tmp/SDL2_ttf-2.0.14/i686-w64-mingw32/bin/SDL2_ttf.dll $(PATH_WINDOWS_RELEASE)
+	cp /tmp/SDL2_ttf-2.0.14/i686-w64-mingw32/bin/zlib1.dll $(PATH_WINDOWS_RELEASE)
