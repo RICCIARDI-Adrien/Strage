@@ -2,7 +2,7 @@
  * @see MainMenu.hpp for description.
  * @author Adrien RICCIARDI
  */
-#include <cstdlib>
+#include <ControlManager.hpp>
 #include <Log.hpp>
 #include <MainMenu.hpp>
 #include <Renderer.hpp>
@@ -23,7 +23,8 @@ namespace MainMenu
 /** A menu string. */
 typedef struct
 {
-	SDL_Texture *pointerTexture; //!< The texture the string is rendered on.
+	SDL_Texture *pointerNormalTexture; //!< The texture the string is rendered on when the menu item is not focused.
+	SDL_Texture *pointerFocusedTexture; //!< The texture the string is rendered on when the menu item is focused.
 	int x; //<! Drawing X coordinate.
 	int y; //<! Drawing Y coordinate.
 } MenuString;
@@ -43,15 +44,18 @@ static inline void _initialize()
 	int i, textureWidth, textureHeight, stringTexturesVerticalHeight, firstStringTextureY;
 	
 	// Render strings
-	_menuStrings[0].pointerTexture = Renderer::renderTextToTexture("[C]ontinue game", Renderer::TEXT_COLOR_ID_BLUE);
-	_menuStrings[1].pointerTexture = Renderer::renderTextToTexture("[N]ew game", Renderer::TEXT_COLOR_ID_BLUE);
-	_menuStrings[2].pointerTexture = Renderer::renderTextToTexture("[Q]uit", Renderer::TEXT_COLOR_ID_BLUE);
+	_menuStrings[0].pointerNormalTexture = Renderer::renderTextToTexture("Continue game", Renderer::TEXT_COLOR_ID_BLUE);
+	_menuStrings[0].pointerFocusedTexture = Renderer::renderTextToTexture("Continue game", Renderer::TEXT_COLOR_ID_DARK_GREEN);
+	_menuStrings[1].pointerNormalTexture = Renderer::renderTextToTexture("New game", Renderer::TEXT_COLOR_ID_BLUE);
+	_menuStrings[1].pointerFocusedTexture = Renderer::renderTextToTexture("New game", Renderer::TEXT_COLOR_ID_DARK_GREEN);
+	_menuStrings[2].pointerNormalTexture = Renderer::renderTextToTexture("Quit", Renderer::TEXT_COLOR_ID_BLUE);
+	_menuStrings[2].pointerFocusedTexture = Renderer::renderTextToTexture("Quit", Renderer::TEXT_COLOR_ID_DARK_GREEN);
 	
 	// Compute displaying coordinates
 	for (i = 0; i < STRINGS_COUNT; i++)
 	{
-		// Get texture size
-		if (SDL_QueryTexture(_menuStrings[i].pointerTexture, NULL, NULL, &textureWidth, &textureHeight) != 0)
+		// Get texture size (texture have same size because only color changes between normal and focused textures, so use the normal one)
+		if (SDL_QueryTexture(_menuStrings[i].pointerNormalTexture, NULL, NULL, &textureWidth, &textureHeight) != 0)
 		{
 			LOG_ERROR("Failed to query texture information for texture %d (%s).", i, SDL_GetError());
 			exit(-1);
@@ -84,7 +88,12 @@ static inline void _uninitialize()
 {
 	int i;
 	
-	for (i = 0; i < STRINGS_COUNT; i++) SDL_DestroyTexture(_menuStrings[i].pointerTexture);
+	// Free all textures
+	for (i = 0; i < STRINGS_COUNT; i++)
+	{
+		SDL_DestroyTexture(_menuStrings[i].pointerNormalTexture);
+		SDL_DestroyTexture(_menuStrings[i].pointerFocusedTexture);
+	}
 	
 	// Reset rendering color to black
 	if (SDL_SetRenderDrawColor(Renderer::pointerMainRenderer, 0, 0, 0, 255) != 0)
@@ -100,8 +109,9 @@ static inline void _uninitialize()
 int display(void)
 {
 	SDL_Event event;
-	int returnValue, i;
+	int returnValue, i, focusedMenuItemIndex = 0, isGoUpKeyPressed = 0, isGoDownKeyPressed = 0, isShootKeyPressed = 0;
 	unsigned int frameStartingTime, frameElapsedTime;
+	SDL_Texture *pointerTexture;
 	
 	// Cache textures to display
 	_initialize();
@@ -114,44 +124,67 @@ int display(void)
 		// Process SDL events
 		while (SDL_PollEvent(&event))
 		{
-			// User closed the game window or pressed alt+F4
-			if (event.type == SDL_QUIT)
+			switch (event.type)
 			{
-				returnValue = 2;
-				LOG_DEBUG("Quitting game.");
-				goto Exit;
+				// User closed the game window or pressed alt+F4
+				case SDL_QUIT:
+					returnValue = 2;
+					LOG_DEBUG("Quitting game.");
+					goto Exit;
+					
+				case SDL_JOYBUTTONUP:
+				case SDL_JOYBUTTONDOWN:
+				case SDL_JOYAXISMOTION:
+					ControlManager::handleJoystickEvent(&event);
+					break;
+						
+				case SDL_KEYUP:
+				case SDL_KEYDOWN:
+					ControlManager::handleKeyboardEvent(&event);
+					break;
 			}
-			
-			// Process key presses
-			if (event.type == SDL_KEYDOWN)
+		}
+		
+		// Handle key press
+		// Go up key
+		if (ControlManager::isKeyPressed(ControlManager::KEY_ID_GO_UP))
+		{
+			if (!isGoUpKeyPressed)
 			{
-				// Use keyboard virtual key code instead of raw scan code to allow whatever language keyboard to be used
-				switch (event.key.keysym.sym)
-				{
-					case SDLK_c:
-						returnValue = 0;
-						LOG_DEBUG("Continuing game.");
-						goto Exit;
-						
-					case SDLK_n:
-						returnValue = 1;
-						LOG_DEBUG("New game.");
-						goto Exit;
-						
-					case SDLK_q:
-						returnValue = 2;
-						LOG_DEBUG("Quitting game.");
-						goto Exit;
-						
-					default:
-						break;
-				}
+				if (focusedMenuItemIndex > 0) focusedMenuItemIndex--;
+				isGoUpKeyPressed = 1;
 			}
+		}
+		else isGoUpKeyPressed = 0;
+		// Go down key
+		if (ControlManager::isKeyPressed(ControlManager::KEY_ID_GO_DOWN))
+		{
+			if (!isGoDownKeyPressed)
+			{
+				if (focusedMenuItemIndex < STRINGS_COUNT - 1) focusedMenuItemIndex++;
+				isGoDownKeyPressed = 1;
+			}
+		}
+		else isGoDownKeyPressed = 0;
+		// Shoot key
+		if (ControlManager::isKeyPressed(ControlManager::KEY_ID_SHOOT)) isShootKeyPressed = 1; // Wait for the key to be released to execute the associated action, so the shoot key is not pressed when entering the game (this avoids the player immediately shooting when entering the game because the shoot key is pressed yet)
+		else if (isShootKeyPressed)
+		{
+			returnValue = focusedMenuItemIndex;
+			LOG_DEBUG("Selected item %d.", focusedMenuItemIndex);
+			goto Exit;
 		}
 		
 		// Display menu
 		Renderer::beginRendering(0, 0);
-		for (i = 0; i < STRINGS_COUNT; i++) Renderer::renderTexture(_menuStrings[i].pointerTexture, _menuStrings[i].x, _menuStrings[i].y);
+		for (i = 0; i < STRINGS_COUNT; i++)
+		{
+			// Select the right texture according to the focus state
+			if (i == focusedMenuItemIndex) pointerTexture = _menuStrings[i].pointerFocusedTexture;
+			else pointerTexture = _menuStrings[i].pointerNormalTexture;
+			
+			Renderer::renderTexture(pointerTexture, _menuStrings[i].x, _menuStrings[i].y);
+		}
 		Renderer::endRendering();
 		
 		// Wait enough time to achieve a 60Hz refresh rate
