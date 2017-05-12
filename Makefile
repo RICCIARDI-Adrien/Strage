@@ -22,16 +22,27 @@ macos: CPPFLAGS += -Werror -O2 -DCONFIGURATION_BUILD_FOR_MACOS
 macos: LIBRARIES = -framework SDL2 -framework SDL2_mixer -framework SDL2_ttf
 macos: all
 
+windows: ADDITIONAL_OBJECTS = Windows_Icon.o
 windows: BINARY = Strage.exe
 windows: CPP = i686-w64-mingw32-g++
 # Avoid shipping MinGW libgcc and libstdc++, build as a GUI program to avoid having an opened console when the game is started
 windows: CPPFLAGS += -Werror -O2 -static-libgcc -static-libstdc++ -mwindows
 # Windows needs custom libraries to provide WinMain() ; symbols are scattered into several libraries, so make sure they are all found
 windows: LIBRARIES = -Wl,--start-group -lSDL2 -lSDL2_mixer -lSDL2_ttf -lmingw32 -lSDL2main -Wl,--end-group
-windows: all
+windows: windows_generate_executable_icon all windows_clean_executable_icon
+
+windows_generate_executable_icon:
+	@# Create resource file (.rc)
+	echo "id ICON \"Development_Resources/Windows_Icon.ico\"" > Icon.rc
+	
+	@# Embed the icon to a special file
+	i686-w64-mingw32-windres Icon.rc Windows_Icon.o
+
+windows_clean_executable_icon:
+	rm Icon.rc Windows_Icon.o
 
 all:
-	$(CPP) $(CPPFLAGS) -I$(PATH_INCLUDES) $(SOURCES) $(LIBRARIES) -o $(BINARY)
+	$(CPP) $(CPPFLAGS) -I$(PATH_INCLUDES) $(SOURCES) $(ADDITIONAL_OBJECTS) $(LIBRARIES) -o $(BINARY)
 
 clean:
 	rm -f $(BINARY) $(BINARY).exe
