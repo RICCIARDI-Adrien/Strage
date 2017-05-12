@@ -72,6 +72,9 @@ macos_release: macos
 	cp Liberation_Sans_Bold.ttf $(PATH_MACOS_RELEASE)/Contents/Resources
 	cp README.md $(PATH_MACOS_RELEASE)/Contents/Resources
 	
+	@# Copy app icon
+	cp Development_Resources/MacOS_Icon.icns $(PATH_MACOS_RELEASE)/Contents/Resources/Icon.icns
+	
 	@# Create Info.plist file
 	echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > $(PATH_MACOS_RELEASE)/Contents/Info.plist
 	echo "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
@@ -87,6 +90,8 @@ macos_release: macos
 	echo "<string>Strage</string>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
 	echo "<key>LSMinimumSystemVersion</key>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
 	echo "<string>10.5.0</string>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
+	echo "<key>CFBundleIconFile</key>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
+	echo "<string>Icon.icns</string>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
 	echo "</dict>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
 	echo "</plist>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
 
