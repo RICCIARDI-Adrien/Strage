@@ -5,6 +5,7 @@
 #include <Configuration.hpp>
 #include <cstdio>
 #include <cstdlib>
+#include <FileManager.hpp>
 #include <Log.hpp>
 #include <SavegameManager.hpp>
 
@@ -31,7 +32,7 @@ int loadSavegame(void)
 	int i;
 	
 	// Try to open the file
-	pointerFile = fopen(CONFIGURATION_SAVEGAME_FILE_NAME, "r");
+	pointerFile = fopen(FileManager::getFilePath(CONFIGURATION_SAVEGAME_FILE_NAME), "r");
 	if (pointerFile == NULL)
 	{
 		LOG_INFORMATION("No savegame file found.");
@@ -61,7 +62,7 @@ void storeSavegame(void)
 	int i;
 	
 	// Try to open the file
-	pointerFile = fopen(CONFIGURATION_SAVEGAME_FILE_NAME, "w");
+	pointerFile = fopen(FileManager::getFilePath(CONFIGURATION_SAVEGAME_FILE_NAME), "w");
 	if (pointerFile == NULL)
 	{
 		LOG_INFORMATION("Could not open savegame file in write mode.");

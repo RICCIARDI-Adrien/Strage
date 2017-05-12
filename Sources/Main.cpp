@@ -16,6 +16,7 @@
 #include <FightingEntityEnemyBig.hpp>
 #include <FightingEntityEnemyMedium.hpp>
 #include <FightingEntityEnemySmall.hpp>
+#include <FileManager.hpp>
 #include <list>
 #include <Log.hpp>
 #include <LevelManager.hpp>
@@ -129,7 +130,9 @@ static void _exitFreeResources()
 	AudioManager::uninitialize();
 	LevelManager::uninitialize();
 	TextureManager::uninitialize();
-	Renderer::uninitialize(); // Must be called at the end because it stops SDL
+	Renderer::uninitialize();
+	
+	SDL_Quit();
 }
 
 /** Spawn a random item (or nothing) on the block into which coordinates are contained.
@@ -662,17 +665,27 @@ int main(int argc, char *argv[])
 		{
 			// Is full screen mode requested ?
 			if (strcmp("-f", argv[i]) == 0) isFullScreenEnabled = 1;
-			else
-			{
-				printf("Unknown parameter(s).\n"
-					"Usage : %s [-f]\n"
-					" -f : enable full screen\n", argv[0]);
-				return -1;
-			}
+			#ifndef CONFIGURATION_BUILD_FOR_MACOS // macOS provides a dynamic second parameter like "-psn_0_278596", so for now avoid checking for unknown parameters
+				else
+				{
+					printf("Unknown parameter(s).\n"
+						"Usage : %s [-f]\n"
+						" -f : enable full screen\n", argv[0]);
+					return -1;
+				}
+			#endif
 		}
 	}
 	
+	// Initialize the needed SDL subsystems
+	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK) != 0)
+	{
+		LOG_ERROR("SDL_Init() failed (%s).", SDL_GetError());
+		return -1;
+	}
+	
 	// Engine initialization
+	if (FileManager::initialize() != 0) return -1; // Must be initialized before the managers that use it
 	if (Renderer::initialize(isFullScreenEnabled) != 0) return -1;
 	if (TextureManager::initialize() != 0) return -1;
 	if (LevelManager::initialize() != 0) return -1;

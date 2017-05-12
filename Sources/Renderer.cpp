@@ -4,6 +4,7 @@
  */
 #include <Configuration.hpp>
 #include <cstdlib>
+#include <FileManager.hpp>
 #include <Log.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
@@ -49,13 +50,6 @@ int initialize(int isFullScreenEnabled)
 	unsigned int flags;
 	SDL_RendererInfo rendererInformation;
 	
-	// Initialize the needed subsystems
-	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK) != 0)
-	{
-		LOG_ERROR("SDL_Init() failed (%s).", SDL_GetError());
-		goto Exit_Error;
-	}
-	
 	// Create the game window
 	if (isFullScreenEnabled) flags = SDL_WINDOW_FULLSCREEN_DESKTOP; // Automatically adjust renderer resolution to display one
 	else flags = 0;
@@ -63,7 +57,7 @@ int initialize(int isFullScreenEnabled)
 	if (_pointerMainWindow == NULL)
 	{
 		LOG_ERROR("Failed to create the main window (%s).", SDL_GetError());
-		goto Exit_Error_Uninitialize_SDL;
+		goto Exit_Error;
 	}
 	
 	// Create the window renderer
@@ -100,7 +94,7 @@ int initialize(int isFullScreenEnabled)
 	}
 	
 	// Try to load the font
-	_pointerFont = TTF_OpenFont(CONFIGURATION_PATH_FONTS "/Liberation_Sans_Bold.ttf", 36);
+	_pointerFont = TTF_OpenFont(FileManager::getFilePath(CONFIGURATION_PATH_FONTS "/Liberation_Sans_Bold.ttf"), 36);
 	if (_pointerFont == NULL)
 	{
 		LOG_ERROR("Failed to load TTF font file (%s).", TTF_GetError());
@@ -149,9 +143,6 @@ Exit_Error_Destroy_Renderer:
 Exit_Error_Destroy_Window:
 	SDL_DestroyWindow(_pointerMainWindow);
 	
-Exit_Error_Uninitialize_SDL:
-	SDL_Quit();
-
 Exit_Error:
 	return -1;
 }

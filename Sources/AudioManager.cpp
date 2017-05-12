@@ -5,6 +5,7 @@
 #include <AudioManager.hpp>
 #include <Configuration.hpp>
 #include <cstdlib>
+#include <FileManager.hpp>
 #include <Log.hpp>
 #include <SDL2/SDL.h>
 #ifdef CONFIGURATION_BUILD_FOR_MACOS
@@ -172,23 +173,23 @@ int initialize()
 	Mix_AllocateChannels(CONFIGURATION_AUDIO_CHANNELS_COUNT); // This function can't fail, according to documentation
 	
 	// Load all sounds
-	_pointerSounds[SOUND_ID_AMMUNITION_TAKEN] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Ammunition_Taken.wav");
-	_pointerSounds[SOUND_ID_PLAYER_FIRESHOT] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Player_Fireshot.wav");
-	_pointerSounds[SOUND_ID_PLAYER_HEALED] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Player_Healed.wav");
-	_pointerSounds[SOUND_ID_PLAYER_LIFE_INCREASED] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Player_Life_Increased.wav");
-	_pointerSounds[SOUND_ID_SMALL_ENEMY_FIRESHOT] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Small_Enemy_Fireshot.wav");
-	_pointerSounds[SOUND_ID_MEDIUM_ENEMY_FIRESHOT] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Medium_Enemy_Fireshot.wav");
-	_pointerSounds[SOUND_ID_BIG_ENEMY_FIRESHOT] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Big_Enemy_Fireshot.wav");
-	_pointerSounds[SOUND_ID_ENEMY_BULLET_IMPACT] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Enemy_Bullet_Impact.wav");
-	_pointerSounds[SOUND_ID_ENEMY_EXPLOSION] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Enemy_Explosion.wav");
-	_pointerSounds[SOUND_ID_ENEMY_SPAWNER_BULLET_IMPACT] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Enemy_Spawner_Bullet_Impact.wav");
-	_pointerSounds[SOUND_ID_ENEMY_SPAWNER_EXPLOSION] = _loadFromWave(CONFIGURATION_PATH_SOUNDS "/Enemy_Spawner_Explosion.wav");
+	_pointerSounds[SOUND_ID_AMMUNITION_TAKEN] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Ammunition_Taken.wav"));
+	_pointerSounds[SOUND_ID_PLAYER_FIRESHOT] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Player_Fireshot.wav"));
+	_pointerSounds[SOUND_ID_PLAYER_HEALED] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Player_Healed.wav"));
+	_pointerSounds[SOUND_ID_PLAYER_LIFE_INCREASED] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Player_Life_Increased.wav"));
+	_pointerSounds[SOUND_ID_SMALL_ENEMY_FIRESHOT] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Small_Enemy_Fireshot.wav"));
+	_pointerSounds[SOUND_ID_MEDIUM_ENEMY_FIRESHOT] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Medium_Enemy_Fireshot.wav"));
+	_pointerSounds[SOUND_ID_BIG_ENEMY_FIRESHOT] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Big_Enemy_Fireshot.wav"));
+	_pointerSounds[SOUND_ID_ENEMY_BULLET_IMPACT] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Enemy_Bullet_Impact.wav"));
+	_pointerSounds[SOUND_ID_ENEMY_EXPLOSION] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Enemy_Explosion.wav"));
+	_pointerSounds[SOUND_ID_ENEMY_SPAWNER_BULLET_IMPACT] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Enemy_Spawner_Bullet_Impact.wav"));
+	_pointerSounds[SOUND_ID_ENEMY_SPAWNER_EXPLOSION] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Enemy_Spawner_Explosion.wav"));
 	
 	// Load all musics
 	for (i = 0; i < MUSICS_COUNT; i++)
 	{
 		// Try to load the file
-		_musics[i].pointerMusicHandle = Mix_LoadMUS(_musics[i].pointerFileName);
+		_musics[i].pointerMusicHandle = Mix_LoadMUS(FileManager::getFilePath(_musics[i].pointerFileName));
 		if (_musics[i].pointerMusicHandle == NULL)
 		{
 			LOG_ERROR("Failed to load music '%s' (%s).", _musics[i].pointerFileName, Mix_GetError());

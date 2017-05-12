@@ -8,6 +8,7 @@
 #include <cstring>
 #include <EntityEnemySpawner.hpp>
 #include <FightingEntityPlayer.hpp>
+#include <FileManager.hpp>
 #include <LevelManager.hpp>
 #include <list>
 #include <Log.hpp>
@@ -115,7 +116,7 @@ int loadLevel(int levelNumber)
 	LOG_DEBUG("Loading level %d...", levelNumber);
 	
 	// Try to open the scene file
-	snprintf(stringFileName, sizeof(stringFileName), CONFIGURATION_PATH_LEVELS "/%d_Scene.csv", levelNumber);
+	snprintf(stringFileName, sizeof(stringFileName), FileManager::getFilePath(CONFIGURATION_PATH_LEVELS "/%d_Scene.csv"), levelNumber);
 	pointerFile = fopen(stringFileName, "r");
 	if (pointerFile == NULL)
 	{
@@ -166,7 +167,7 @@ Scene_Loading_End:
 	fclose(pointerFile);
 	
 	// Try to open the objects file
-	snprintf(stringFileName, sizeof(stringFileName), CONFIGURATION_PATH_LEVELS "/%d_Objects.csv", levelNumber);
+	snprintf(stringFileName, sizeof(stringFileName), FileManager::getFilePath(CONFIGURATION_PATH_LEVELS "/%d_Objects.csv"), levelNumber);
 	pointerFile = fopen(stringFileName, "r");
 	if (pointerFile == NULL)
 	{
