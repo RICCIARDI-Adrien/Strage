@@ -1,5 +1,6 @@
 PATH_INCLUDES = Includes
 PATH_SOURCES = Sources
+PATH_MACOS_RELEASE = ../Strage.app
 PATH_WINDOWS_RELEASE = ../Strage_Windows_Release
 
 BINARY = Strage
@@ -46,6 +47,48 @@ all:
 
 clean:
 	rm -f $(BINARY) $(BINARY).exe
+
+# Make all frameworks being searched in the application Frameworks directory
+macos_release: CPPFLAGS += -rpath @executable_path/../Frameworks
+macos_release: macos
+	@# Create application directories
+	rm -rf $(PATH_MACOS_RELEASE)
+	mkdir -p $(PATH_MACOS_RELEASE)/Contents/Frameworks
+	mkdir -p $(PATH_MACOS_RELEASE)/Contents/MacOS
+	mkdir -p $(PATH_MACOS_RELEASE)/Contents/Resources
+
+	@# Copy needed frameworks
+	cp -r /Library/Frameworks/SDL2.framework $(PATH_MACOS_RELEASE)/Contents/Frameworks
+	cp -r /Library/Frameworks/SDL2_mixer.framework $(PATH_MACOS_RELEASE)/Contents/Frameworks
+	cp -r /Library/Frameworks/SDL2_ttf.framework $(PATH_MACOS_RELEASE)/Contents/Frameworks
+
+	@# Copy binary
+	cp Strage $(PATH_MACOS_RELEASE)/Contents/MacOS
+
+	@# Copy game resource files
+	cp -r Levels $(PATH_MACOS_RELEASE)/Contents/Resources
+	cp -r Sounds $(PATH_MACOS_RELEASE)/Contents/Resources
+	cp -r Textures $(PATH_MACOS_RELEASE)/Contents/Resources
+	cp Liberation_Sans_Bold.ttf $(PATH_MACOS_RELEASE)/Contents/Resources
+	cp README.md $(PATH_MACOS_RELEASE)/Contents/Resources
+	
+	@# Create Info.plist file
+	echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > $(PATH_MACOS_RELEASE)/Contents/Info.plist
+	echo "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
+	echo "<plist version=\"1.0\">" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
+	echo "<dict>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
+	echo "<key>CFBundleName</key>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
+	echo "<string>Strage</string>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
+	echo "<key>CFBundlePackageType</key>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
+	echo "<string>APPL</string>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
+	echo "<key>CFBundleSignature</key>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
+	echo "<string>????</string>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
+	echo "<key>CFBundleExecutable</key>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
+	echo "<string>Strage</string>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
+	echo "<key>LSMinimumSystemVersion</key>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
+	echo "<string>10.5.0</string>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
+	echo "</dict>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
+	echo "</plist>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
 
 windows_release: windows
 	@# Create release root directory
