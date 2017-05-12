@@ -100,7 +100,7 @@ int initialize(int isFullScreenEnabled)
 	}
 	
 	// Try to load the font
-	_pointerFont = TTF_OpenFont("Liberation_Sans_Bold.ttf", 36);
+	_pointerFont = TTF_OpenFont(CONFIGURATION_PATH_FONTS "/Liberation_Sans_Bold.ttf", 36);
 	if (_pointerFont == NULL)
 	{
 		LOG_ERROR("Failed to load TTF font file (%s).", TTF_GetError());
