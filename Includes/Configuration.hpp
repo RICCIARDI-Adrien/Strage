@@ -47,16 +47,6 @@
  */
 #define CONFIGURATION_LOG_LEVEL 1
 
-// Paths
-/** Relative path from the executable to the directory containing the TrueType fonts. */
-#define CONFIGURATION_PATH_FONTS "."
-/** Relative path from the executable to the directory containing the levels. */
-#define CONFIGURATION_PATH_LEVELS "Levels"
-/** Relative path from the executable to the directory containing the sounds. */
-#define CONFIGURATION_PATH_SOUNDS "Sounds"
-/** Relative path from the executable to the directory containing the textures. */
-#define CONFIGURATION_PATH_TEXTURES "Textures"
-
 // Levels
 /** Level maximum width in blocks. */
 #define CONFIGURATION_LEVEL_MAXIMUM_WIDTH 256

@@ -43,43 +43,43 @@ static Mix_Chunk *_pointerSounds[SOUND_IDS_COUNT];
 static Music _musics[] =
 {
 	{
-		CONFIGURATION_PATH_SOUNDS "/Akashic_Records_-_Epic_Action_Hero.mp3",
+		"Sounds/Akashic_Records_-_Epic_Action_Hero.mp3",
 		NULL
 	},
 	{
-		CONFIGURATION_PATH_SOUNDS "/Art_Music_-_Epic_Trailer.mp3",
+		"Sounds/Art_Music_-_Epic_Trailer.mp3",
 		NULL
 	},
 	{
-		CONFIGURATION_PATH_SOUNDS "/Blue_Giraffe_-_Action_Intense_Cinematic.mp3",
+		"Sounds/Blue_Giraffe_-_Action_Intense_Cinematic.mp3",
 		NULL
 	},
 	{
-		CONFIGURATION_PATH_SOUNDS "/Celestial_Aeon_Project_-_Epic.mp3",
+		"Sounds/Celestial_Aeon_Project_-_Epic.mp3",
 		NULL
 	},
 	{
-		CONFIGURATION_PATH_SOUNDS "/E._Erkut_-_Dark_Moment_-_Dark_Epic_Trailer.mp3",
+		"Sounds/E._Erkut_-_Dark_Moment_-_Dark_Epic_Trailer.mp3",
 		NULL
 	},
 	{
-		CONFIGURATION_PATH_SOUNDS "/Matti_Paalanen_-_Emotion.mp3",
+		"Sounds/Matti_Paalanen_-_Emotion.mp3",
 		NULL
 	},
 	{
-		CONFIGURATION_PATH_SOUNDS "/Matti_Paalanen_-_Epic_Action.mp3",
+		"Sounds/Matti_Paalanen_-_Epic_Action.mp3",
 		NULL
 	},
 	{
-		CONFIGURATION_PATH_SOUNDS "/Soundbay_-_Epic_Future.mp3",
+		"Sounds/Soundbay_-_Epic_Future.mp3",
 		NULL
 	},
 	{
-		CONFIGURATION_PATH_SOUNDS "/Soundshrim_-_Epic_Adventure.mp3",
+		"Sounds/Soundshrim_-_Epic_Adventure.mp3",
 		NULL
 	},
 	{
-		CONFIGURATION_PATH_SOUNDS "/Nico_Wohlleben_-_Storm.mp3",
+		"Sounds/Nico_Wohlleben_-_Storm.mp3",
 		NULL
 	}
 };
@@ -173,17 +173,17 @@ int initialize()
 	Mix_AllocateChannels(CONFIGURATION_AUDIO_CHANNELS_COUNT); // This function can't fail, according to documentation
 	
 	// Load all sounds
-	_pointerSounds[SOUND_ID_AMMUNITION_TAKEN] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Ammunition_Taken.wav"));
-	_pointerSounds[SOUND_ID_PLAYER_FIRESHOT] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Player_Fireshot.wav"));
-	_pointerSounds[SOUND_ID_PLAYER_HEALED] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Player_Healed.wav"));
-	_pointerSounds[SOUND_ID_PLAYER_LIFE_INCREASED] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Player_Life_Increased.wav"));
-	_pointerSounds[SOUND_ID_SMALL_ENEMY_FIRESHOT] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Small_Enemy_Fireshot.wav"));
-	_pointerSounds[SOUND_ID_MEDIUM_ENEMY_FIRESHOT] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Medium_Enemy_Fireshot.wav"));
-	_pointerSounds[SOUND_ID_BIG_ENEMY_FIRESHOT] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Big_Enemy_Fireshot.wav"));
-	_pointerSounds[SOUND_ID_ENEMY_BULLET_IMPACT] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Enemy_Bullet_Impact.wav"));
-	_pointerSounds[SOUND_ID_ENEMY_EXPLOSION] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Enemy_Explosion.wav"));
-	_pointerSounds[SOUND_ID_ENEMY_SPAWNER_BULLET_IMPACT] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Enemy_Spawner_Bullet_Impact.wav"));
-	_pointerSounds[SOUND_ID_ENEMY_SPAWNER_EXPLOSION] = _loadFromWave(FileManager::getFilePath(CONFIGURATION_PATH_SOUNDS "/Enemy_Spawner_Explosion.wav"));
+	_pointerSounds[SOUND_ID_AMMUNITION_TAKEN] = _loadFromWave(FileManager::getFilePath("Sounds/Ammunition_Taken.wav"));
+	_pointerSounds[SOUND_ID_PLAYER_FIRESHOT] = _loadFromWave(FileManager::getFilePath("Sounds/Player_Fireshot.wav"));
+	_pointerSounds[SOUND_ID_PLAYER_HEALED] = _loadFromWave(FileManager::getFilePath("Sounds/Player_Healed.wav"));
+	_pointerSounds[SOUND_ID_PLAYER_LIFE_INCREASED] = _loadFromWave(FileManager::getFilePath("Sounds/Player_Life_Increased.wav"));
+	_pointerSounds[SOUND_ID_SMALL_ENEMY_FIRESHOT] = _loadFromWave(FileManager::getFilePath("Sounds/Small_Enemy_Fireshot.wav"));
+	_pointerSounds[SOUND_ID_MEDIUM_ENEMY_FIRESHOT] = _loadFromWave(FileManager::getFilePath("Sounds/Medium_Enemy_Fireshot.wav"));
+	_pointerSounds[SOUND_ID_BIG_ENEMY_FIRESHOT] = _loadFromWave(FileManager::getFilePath("Sounds/Big_Enemy_Fireshot.wav"));
+	_pointerSounds[SOUND_ID_ENEMY_BULLET_IMPACT] = _loadFromWave(FileManager::getFilePath("Sounds/Enemy_Bullet_Impact.wav"));
+	_pointerSounds[SOUND_ID_ENEMY_EXPLOSION] = _loadFromWave(FileManager::getFilePath("Sounds/Enemy_Explosion.wav"));
+	_pointerSounds[SOUND_ID_ENEMY_SPAWNER_BULLET_IMPACT] = _loadFromWave(FileManager::getFilePath("Sounds/Enemy_Spawner_Bullet_Impact.wav"));
+	_pointerSounds[SOUND_ID_ENEMY_SPAWNER_EXPLOSION] = _loadFromWave(FileManager::getFilePath("Sounds/Enemy_Spawner_Explosion.wav"));
 	
 	// Load all musics
 	for (i = 0; i < MUSICS_COUNT; i++)
