@@ -664,16 +664,15 @@ int main(int argc, char *argv[])
 		for (i = 1; i < argc; i++)
 		{
 			// Is full screen mode requested ?
-			if (strcmp("-f", argv[i]) == 0) isFullScreenEnabled = 1;
-			#ifndef CONFIGURATION_BUILD_FOR_MACOS // macOS provides a dynamic second parameter like "-psn_0_278596", so for now avoid checking for unknown parameters
-				else
-				{
-					printf("Unknown parameter(s).\n"
-						"Usage : %s [-f]\n"
-						" -f : enable full screen\n", argv[0]);
-					return -1;
-				}
-			#endif
+			if (strcmp("-fullscreen", argv[i]) == 0) isFullScreenEnabled = 1;
+			else if (strcmp("-help", argv[i]) == 0)
+			{
+				printf("Usage : %s [-fullscreen] [-help].\n"
+					"  -fullscreen : play game in full screen mode.\n"
+					"  -help       : display this help and exit.\n"
+					"All other parameters are ignored.\n", argv[0]);
+				return 0;
+			}
 		}
 	}
 	
