@@ -2,6 +2,10 @@
 
 # Strage
 
+## Gameplay preview
+* [Strage version 0.2](https://www.youtube.com/watch?v=aTI6zjJu4h4)
+* [Strage version 0.3](https://www.youtube.com/watch?v=r5JJvJWiGF0)
+
 ## How to play
 You are in command of a little futuristic tank in an unknown part of the galaxy. What are you doing here ? No one knows, even you...  
 Your tank can **move** in up, down, left and right directions using the **keyboard arrow keys**.  You can also **shoot** using **space bar**. Shoot ? Yes, enemies are nearby.  
