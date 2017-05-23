@@ -55,7 +55,7 @@
 /** A block size in pixels. */
 #define CONFIGURATION_LEVEL_BLOCK_SIZE 64
 /** How many levels are available. */
-#define CONFIGURATION_LEVELS_COUNT 5
+#define CONFIGURATION_LEVELS_COUNT 6
 
 // Gameplay
 /** The probability (in range 0% to 100%) to spawn a medipack when an enemy dies. */

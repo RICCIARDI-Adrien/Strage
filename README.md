@@ -83,7 +83,7 @@ When exporting a level, let 20 blocks on each map wall side to avoid displaying 
 ## Credits
 * Maps :
    * Level 1 made by Yannick Bilcot
-   * Level 4 made by Sylvain Heude
+   * Levels 4 and 5 made by Sylvain Heude
 * Musics : [jamendo](https://www.jamendo.com)
    * Akashic Records - Epic Action Hero
    * Art Music - Epic Trailer
