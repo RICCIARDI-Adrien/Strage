@@ -5,6 +5,7 @@
 #include <EntityAnimatedTextureBigEnemyExplosion.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <MovingEntityBulletBigEnemy.hpp>
+#include <SDL2/SDL.h>
 #include <TextureManager.hpp>
 
 /** @class FightingEntityEnemyBig
@@ -29,7 +30,14 @@ class FightingEntityEnemyBig: public FightingEntityEnemy
 		 * @param x Enemy X coordinate.
 		 * @param y Enemy Y coordinate.
 		 */
-		FightingEntityEnemyBig(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_BIG_ENEMY_FACING_UP, 1, 10, 10000, AudioManager::SOUND_ID_BIG_ENEMY_FIRESHOT, TextureManager::TEXTURE_ID_BIG_ENEMY_BULLET_FACING_UP) {}
+		FightingEntityEnemyBig(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_BIG_ENEMY_FACING_UP, 1, 10, 10000, AudioManager::SOUND_ID_BIG_ENEMY_FIRESHOT, TextureManager::TEXTURE_ID_BIG_ENEMY_BULLET_FACING_UP)
+		{
+			unsigned int currentTime;
+			
+			// Make big enemies wait 3 seconds before shooting (to avoid them shooting instantly when spawned)
+			currentTime = SDL_GetTicks();
+			if (currentTime > 7000) _lastShotTime = currentTime - 7000;
+		}
 		
 		/** Free allocated resources. */
 		virtual ~FightingEntityEnemyBig() {}
