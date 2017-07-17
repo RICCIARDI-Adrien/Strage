@@ -1,7 +1,7 @@
 PATH_INCLUDES = Includes
 PATH_SOURCES = Sources
-PATH_MACOS_RELEASE = ../Strage.app
-PATH_WINDOWS_RELEASE = ../Strage_Windows_Release
+PATH_MACOS_RELEASE = Strage.app
+PATH_WINDOWS_RELEASE = Strage
 
 BINARY = Strage
 CPPFLAGS = -W -Wall -std=c++11
@@ -94,6 +94,12 @@ macos_release: macos
 	echo "<string>Icon.icns</string>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
 	echo "</dict>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
 	echo "</plist>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
+	
+	@# Create a compressed archive
+	zip -r ../Strage_MacOS.zip $(PATH_MACOS_RELEASE)
+	
+	@# Remove now useless release directory
+	rm -r $(PATH_MACOS_RELEASE)
 
 windows_release: windows
 	@# Create release root directory
@@ -110,7 +116,7 @@ windows_release: windows
 	cp README.md $(PATH_WINDOWS_RELEASE)
 	cp Strage.exe $(PATH_WINDOWS_RELEASE)
 	
-	@# Download needed SDL prebuit packages
+	@# Download needed SDL prebuilt packages
 	wget https://www.libsdl.org/release/SDL2-devel-2.0.5-mingw.tar.gz -O /tmp/SDL2-devel-2.0.5-mingw.tar.gz
 	wget https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-2.0.1-mingw.tar.gz -O /tmp/SDL2_mixer-devel-2.0.1-mingw.tar.gz
 	wget https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-2.0.14-mingw.tar.gz -O /tmp/SDL2_ttf-devel-2.0.14-mingw.tar.gz
@@ -127,3 +133,9 @@ windows_release: windows
 	cp /tmp/SDL2_ttf-2.0.14/i686-w64-mingw32/bin/libfreetype-6.dll $(PATH_WINDOWS_RELEASE)
 	cp /tmp/SDL2_ttf-2.0.14/i686-w64-mingw32/bin/SDL2_ttf.dll $(PATH_WINDOWS_RELEASE)
 	cp /tmp/SDL2_ttf-2.0.14/i686-w64-mingw32/bin/zlib1.dll $(PATH_WINDOWS_RELEASE)
+	
+	@# Create a compressed archive
+	zip -r ../Strage_Windows.zip $(PATH_WINDOWS_RELEASE)
+	
+	@# Remove now useless release directory
+	rm -r $(PATH_WINDOWS_RELEASE)
