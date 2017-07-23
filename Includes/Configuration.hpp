@@ -22,7 +22,7 @@
 /** HUD life point text screen Y coordinate. */
 #define CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y 10
 /** HUD ammunition text screen X coordinate. */
-#define CONFIGURATION_DISPLAY_HUD_AMMUNITION_X 250
+#define CONFIGURATION_DISPLAY_HUD_AMMUNITION_X 240
 /** HUD ammunition text screen Y coordinate. */
 #define CONFIGURATION_DISPLAY_HUD_AMMUNITION_Y 10
 /** HUD enemies text screen X coordinate. */

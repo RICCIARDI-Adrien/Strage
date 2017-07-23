@@ -540,13 +540,15 @@ static inline void _renderInterface()
 	{
 		// Display life points in red if the player is near to death
 		if (amount < 20) colorId = Renderer::TEXT_COLOR_ID_RED;
+		// Display life points in green if the player life is full
+		else if (amount == pointerPlayer->getMaximumLifePointsAmount()) colorId = Renderer::TEXT_COLOR_ID_GREEN;
 		else colorId = Renderer::TEXT_COLOR_ID_BLUE;
 		
 		// Free previous string
 		SDL_DestroyTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_LIFE_POINTS_AMOUNT]); // SDL_DestroyTexture() does not complain if the provided pointer is NULL, as it is on the first frame
 		
 		// Render the string
-		sprintf(string, "Life : %d%%", amount);
+		sprintf(string, "Life : %d", amount);
 		_pointerInterfaceStrings[INTERFACE_STRING_ID_LIFE_POINTS_AMOUNT] = Renderer::renderTextToTexture(string, colorId);
 		
 		previousLifePointsAmount = amount;
