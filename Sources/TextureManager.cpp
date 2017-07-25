@@ -157,10 +157,22 @@ int initialize()
 	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_EXPLOSION_13] = new Texture(FileManager::getFilePath("Textures/Big_Enemy_Explosion_13.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_EXPLOSION_14] = new Texture(FileManager::getFilePath("Textures/Big_Enemy_Explosion_14.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_EXPLOSION_15] = new Texture(FileManager::getFilePath("Textures/Big_Enemy_Explosion_15.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_UP] = new Texture(FileManager::getFilePath("Textures/Player_Muzzle_Flash_Up.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_DOWN] = new Texture(FileManager::getFilePath("Textures/Player_Muzzle_Flash_Down.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_LEFT] = new Texture(FileManager::getFilePath("Textures/Player_Muzzle_Flash_Left.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_RIGHT] = new Texture(FileManager::getFilePath("Textures/Player_Muzzle_Flash_Right.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_UP] = new Texture(FileManager::getFilePath("Textures/Small_Enemy_Muzzle_Flash_Up.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_DOWN] = new Texture(FileManager::getFilePath("Textures/Small_Enemy_Muzzle_Flash_Down.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_LEFT] = new Texture(FileManager::getFilePath("Textures/Small_Enemy_Muzzle_Flash_Left.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_RIGHT] = new Texture(FileManager::getFilePath("Textures/Small_Enemy_Muzzle_Flash_Right.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_UP] = new Texture(FileManager::getFilePath("Textures/Medium_Enemy_Muzzle_Flash_Up.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_DOWN] = new Texture(FileManager::getFilePath("Textures/Medium_Enemy_Muzzle_Flash_Down.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_LEFT] = new Texture(FileManager::getFilePath("Textures/Medium_Enemy_Muzzle_Flash_Left.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_RIGHT] = new Texture(FileManager::getFilePath("Textures/Medium_Enemy_Muzzle_Flash_Right.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_UP] = new Texture(FileManager::getFilePath("Textures/Big_Enemy_Muzzle_Flash_Up.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_DOWN] = new Texture(FileManager::getFilePath("Textures/Big_Enemy_Muzzle_Flash_Down.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_LEFT] = new Texture(FileManager::getFilePath("Textures/Big_Enemy_Muzzle_Flash_Left.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_RIGHT] = new Texture(FileManager::getFilePath("Textures/Big_Enemy_Muzzle_Flash_Right.bmp"), 1);
 	
 	// Overlays
 	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_HIT_OVERLAY] = new TextureDisplayOverlay(FileManager::getFilePath("Textures/Player_Hit_Overlay.bmp"), 1);

@@ -30,7 +30,7 @@ class FightingEntityEnemyBig: public FightingEntityEnemy
 		 * @param x Enemy X coordinate.
 		 * @param y Enemy Y coordinate.
 		 */
-		FightingEntityEnemyBig(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_BIG_ENEMY_FACING_UP, 1, 10, 10000, AudioManager::SOUND_ID_BIG_ENEMY_FIRESHOT, TextureManager::TEXTURE_ID_BIG_ENEMY_BULLET_FACING_UP)
+		FightingEntityEnemyBig(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_BIG_ENEMY_FACING_UP, 1, 10, 10000, AudioManager::SOUND_ID_BIG_ENEMY_FIRESHOT, TextureManager::TEXTURE_ID_BIG_ENEMY_BULLET_FACING_UP, TextureManager::TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_UP)
 		{
 			unsigned int currentTime;
 			

@@ -43,7 +43,7 @@ class FightingEntityPlayer: public FightingEntity
 		 * @param x X coordinate where to spawn the player on the map.
 		 * @param y Y coordinate where to spawn the player on the map.
 		 */
-		FightingEntityPlayer(int x, int y): FightingEntity(x, y, TextureManager::TEXTURE_ID_PLAYER_FACING_UP, 3, CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_LIFE_POINTS_AMOUNT, 300, AudioManager::SOUND_ID_PLAYER_FIRESHOT, TextureManager::TEXTURE_ID_PLAYER_BULLET_FACING_UP)
+		FightingEntityPlayer(int x, int y): FightingEntity(x, y, TextureManager::TEXTURE_ID_PLAYER_FACING_UP, 3, CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_LIFE_POINTS_AMOUNT, 300, AudioManager::SOUND_ID_PLAYER_FIRESHOT, TextureManager::TEXTURE_ID_PLAYER_BULLET_FACING_UP, TextureManager::TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_UP)
 		{
 			SDL_Rect *pointerPositionRectangle = &_positionRectangles[_facingDirection];
 			
