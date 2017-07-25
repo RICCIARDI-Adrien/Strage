@@ -2,6 +2,7 @@
 #define HPP_FIGHTING_ENTITY_HPP
 
 #include <AudioManager.hpp>
+#include <EntityAnimatedTexture.hpp>
 #include <MovingEntity.hpp>
 #include <MovingEntityBullet.hpp>
 #include <SDL2/SDL.h>
@@ -22,6 +23,9 @@ class FightingEntity: public MovingEntity
 		/** Offset to add to entity coordinates to fire the bullet in the entity facing direction. */
 		SDL_Point _bulletStartingPositionOffsets[DIRECTIONS_COUNT]; // Offsets are in the same order than Direction enum
 		
+		/** Offset to add to entity coordinates to put the shoot muzzle flash in front of the entity cannon. */
+		SDL_Point _muzzleFlashStartingPositionOffsets[DIRECTIONS_COUNT]; // Offsets are in the same order than Direction enum
+		
 		/** When was the last shot fired (in milliseconds). This is part of the fire rate mechanism. */
 		unsigned int _lastShotTime;
 		/** How many milliseconds to wait between two shots. */
@@ -36,6 +40,9 @@ class FightingEntity: public MovingEntity
 		 * @return An enemy-specific bullet.
 		 */
 		virtual MovingEntityBullet *_fireBullet(int x, int y) = 0;
+		
+		/** The muzzle flash facing up texture. Other directions follow this one in the same order than the Direction enum. */
+		TextureManager::TextureId _muzzleFlashFacingUpTextureId;
 		
 	public:
 		/** Initialize life points in addition to parent classes fields.
@@ -70,7 +77,24 @@ class FightingEntity: public MovingEntity
 			_bulletStartingPositionOffsets[DIRECTION_LEFT].x = 2; // Manually adjusted value to allow an underneath entity to be hit when this entity is facing left (TODO dependent of bullet size and speed)
 			_bulletStartingPositionOffsets[DIRECTION_LEFT].y = _bulletStartingPositionOffsets[DIRECTION_UP].x;
 			_bulletStartingPositionOffsets[DIRECTION_RIGHT].x = _bulletStartingPositionOffsets[DIRECTION_DOWN].y; // Entity is facing right, so its horizontal width is its height
-			_bulletStartingPositionOffsets[DIRECTION_RIGHT].y = _bulletStartingPositionOffsets[DIRECTION_LEFT].y;
+			_bulletStartingPositionOffsets[DIRECTION_RIGHT].y = _bulletStartingPositionOffsets[DIRECTION_UP].x;
+			
+			// TEST
+			_muzzleFlashFacingUpTextureId = TextureManager::TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_UP;
+			
+			// Cache the offset to add to entity coordinates to put the muzzle flash in front of the cannon
+			Texture *pointerMuzzleFlashTexture = TextureManager::getTextureFromId(_muzzleFlashFacingUpTextureId);
+			int entityHeight = _pointerTextures[DIRECTION_UP]->getHeight();
+			int muzzleFlashWidth = pointerMuzzleFlashTexture->getWidth();
+			int muzzleFlashHeight = pointerMuzzleFlashTexture->getHeight();
+			_muzzleFlashStartingPositionOffsets[DIRECTION_UP].x = (entityWidth - muzzleFlashWidth) / 2;
+			_muzzleFlashStartingPositionOffsets[DIRECTION_UP].y = -muzzleFlashHeight;
+			_muzzleFlashStartingPositionOffsets[DIRECTION_DOWN].x = _muzzleFlashStartingPositionOffsets[DIRECTION_UP].x;
+			_muzzleFlashStartingPositionOffsets[DIRECTION_DOWN].y = entityHeight;
+			_muzzleFlashStartingPositionOffsets[DIRECTION_LEFT].x = -muzzleFlashHeight;
+			_muzzleFlashStartingPositionOffsets[DIRECTION_LEFT].y = _muzzleFlashStartingPositionOffsets[DIRECTION_UP].x;
+			_muzzleFlashStartingPositionOffsets[DIRECTION_RIGHT].x = _muzzleFlashStartingPositionOffsets[DIRECTION_DOWN].y;
+			_muzzleFlashStartingPositionOffsets[DIRECTION_RIGHT].y = _muzzleFlashStartingPositionOffsets[DIRECTION_UP].x;
 			
 			_timeBetweenShots = timeBetweenShots;
 			_lastShotTime = 0; // Allow to shoot immediately
@@ -155,7 +179,7 @@ class FightingEntity: public MovingEntity
 			// Allow to shoot only if enough time elapsed since last shot
 			if (SDL_GetTicks() - _lastShotTime >= _timeBetweenShots)
 			{
-				// Select the right offset according to entity direction
+				// Select the right offsets according to entity direction
 				bulletStartingPositionOffsetX = _bulletStartingPositionOffsets[_facingDirection].x;
 				bulletStartingPositionOffsetY = _bulletStartingPositionOffsets[_facingDirection].y;
 				
@@ -171,6 +195,25 @@ class FightingEntity: public MovingEntity
 				return pointerBullet;
 			}
 			else return NULL; // No shot allowed
+		}
+		
+		/** Create the muzzle flash animation corresponding to the current entity type and facing direction.
+		 * @return The muzzle flash effect to display.
+		 */
+		// TODO gather with shoot()
+		virtual EntityAnimatedTexture *generateShootMuzzleFlash()
+		{
+			int muzzleFlashStartingPositionOffsetX, muzzleFlashStartingPositionOffsetY;
+			TextureManager::TextureId muzzleFlashTextureId;
+			
+			// Select the right offsets according to entity direction
+			muzzleFlashStartingPositionOffsetX = _muzzleFlashStartingPositionOffsets[_facingDirection].x;
+			muzzleFlashStartingPositionOffsetY = _muzzleFlashStartingPositionOffsets[_facingDirection].y;
+			
+			// Select the right texture according to entity direction
+			muzzleFlashTextureId = (TextureManager::TextureId) ((int) _muzzleFlashFacingUpTextureId + (int) _facingDirection);
+			
+			return new EntityAnimatedTexture(_positionRectangles[_facingDirection].x + muzzleFlashStartingPositionOffsetX, _positionRectangles[_facingDirection].y + muzzleFlashStartingPositionOffsetY, muzzleFlashTextureId, muzzleFlashTextureId, 8);
 		}
 };
 

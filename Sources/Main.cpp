@@ -872,7 +872,11 @@ int main(int argc, char *argv[])
 				MovingEntityBullet *pointerBullet = pointerPlayer->shoot();
 				
 				// Is the player allowed to shoot ?
-				if (pointerBullet != NULL) _playerBulletsList.push_front(pointerBullet);
+				if (pointerBullet != NULL)
+				{
+					_playerBulletsList.push_front(pointerBullet);
+					_animatedTexturesList.push_front(pointerPlayer->generateShootMuzzleFlash());
+				}
 			}
 			
 			_updateGameLogic();
