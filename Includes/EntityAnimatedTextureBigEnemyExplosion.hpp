@@ -5,7 +5,7 @@
 #include <TextureManager.hpp>
 
 /** @class EntityAnimatedTextureBigEnemyExplosion
- * Display a violent explosion with the same dimensions than a small enemy.
+ * Display a violent explosion with the same dimensions than a big enemy.
  * @author Adrien RICCIARDI
  */
 class EntityAnimatedTextureBigEnemyExplosion: public EntityAnimatedTexture
