@@ -168,23 +168,36 @@ class FightingEntity: public MovingEntity
 			return 0;
 		}
 		
-		/** Generate a bullet facing the entity direction.
-		 * @return A valid pointer if the entity was allowed to shot,
-		 * @return NULL if the entity could not shoot (no more ammunition, slower fire rate...).
+		/** Generate a bullet facing the entity direction and the corresponding muzzle flash.
+		 * @param pointerBullet On output, contain the generated bullet (if the entity was allowed to shoot).
+		 * @param pointerMuzzleFlashAnimatedTexture On output, contain the generated muzzle flash animated texture (if the entity was allowed to shoot).
+		 * @return 1 if the entity was allowed to shot,
+		 * @return 0 if the entity could not shoot (no more ammunition, slower fire rate...).
 		 */
-		virtual MovingEntityBullet *shoot()
+		virtual int shoot(MovingEntityBullet **pointerBullet, EntityAnimatedTexture **pointerMuzzleFlashAnimatedTexture)
 		{
-			int bulletStartingPositionOffsetX, bulletStartingPositionOffsetY;
+			int bulletStartingPositionOffsetX, bulletStartingPositionOffsetY, muzzleFlashStartingPositionOffsetX, muzzleFlashStartingPositionOffsetY, entityX, entityY;
+			TextureManager::TextureId muzzleFlashTextureId;
 			
 			// Allow to shoot only if enough time elapsed since last shot
 			if (SDL_GetTicks() - _lastShotTime >= _timeBetweenShots)
 			{
+				// Cache entity coordinates
+				entityX = _positionRectangles[_facingDirection].x;
+				entityY = _positionRectangles[_facingDirection].y;
+				
 				// Select the right offsets according to entity direction
 				bulletStartingPositionOffsetX = _bulletStartingPositionOffsets[_facingDirection].x;
 				bulletStartingPositionOffsetY = _bulletStartingPositionOffsets[_facingDirection].y;
+				muzzleFlashStartingPositionOffsetX = _muzzleFlashStartingPositionOffsets[_facingDirection].x;
+				muzzleFlashStartingPositionOffsetY = _muzzleFlashStartingPositionOffsets[_facingDirection].y;
 				
 				// Create the bullet
-				MovingEntityBullet *pointerBullet = _fireBullet(_positionRectangles[_facingDirection].x + bulletStartingPositionOffsetX, _positionRectangles[_facingDirection].y + bulletStartingPositionOffsetY);
+				*pointerBullet = _fireBullet(entityX + bulletStartingPositionOffsetX, entityY + bulletStartingPositionOffsetY);
+				
+				// Create the muzzle flash
+				muzzleFlashTextureId = (TextureManager::TextureId) ((int) _muzzleFlashFacingUpTextureId + (int) _facingDirection); // Select the right texture according to entity direction
+				*pointerMuzzleFlashAnimatedTexture = new EntityAnimatedTexture(entityX + muzzleFlashStartingPositionOffsetX, entityY + muzzleFlashStartingPositionOffsetY, muzzleFlashTextureId, muzzleFlashTextureId, 8);
 				
 				// Get time after having generated the bullet, in case this takes more than 1 millisecond
 				_lastShotTime = SDL_GetTicks();
@@ -192,28 +205,9 @@ class FightingEntity: public MovingEntity
 				// Play firing sound
 				AudioManager::playSound(_firingSoundId);
 				
-				return pointerBullet;
+				return 1;
 			}
-			else return NULL; // No shot allowed
-		}
-		
-		/** Create the muzzle flash animation corresponding to the current entity type and facing direction.
-		 * @return The muzzle flash effect to display.
-		 */
-		// TODO gather with shoot()
-		virtual EntityAnimatedTexture *generateShootMuzzleFlash()
-		{
-			int muzzleFlashStartingPositionOffsetX, muzzleFlashStartingPositionOffsetY;
-			TextureManager::TextureId muzzleFlashTextureId;
-			
-			// Select the right offsets according to entity direction
-			muzzleFlashStartingPositionOffsetX = _muzzleFlashStartingPositionOffsets[_facingDirection].x;
-			muzzleFlashStartingPositionOffsetY = _muzzleFlashStartingPositionOffsets[_facingDirection].y;
-			
-			// Select the right texture according to entity direction
-			muzzleFlashTextureId = (TextureManager::TextureId) ((int) _muzzleFlashFacingUpTextureId + (int) _facingDirection);
-			
-			return new EntityAnimatedTexture(_positionRectangles[_facingDirection].x + muzzleFlashStartingPositionOffsetX, _positionRectangles[_facingDirection].y + muzzleFlashStartingPositionOffsetY, muzzleFlashTextureId, muzzleFlashTextureId, 8);
+			return 0; // No shot allowed
 		}
 };
 

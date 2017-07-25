@@ -386,6 +386,7 @@ static inline void _updateGameLogic()
 	int result;
 	SDL_Rect *pointerPositionRectangle;
 	enemiesListIterator = _enemiesList.begin();
+	EntityAnimatedTexture *pointerMuzzleFlashAnimatedTexture;
 	while (enemiesListIterator != _enemiesList.end())
 	{
 		pointerEnemy = *enemiesListIterator;
@@ -412,10 +413,12 @@ static inline void _updateGameLogic()
 		// The enemy wants to shoot
 		else if (result == 2)
 		{
-			pointerBullet = pointerEnemy->shoot();
-			
-			// Was the enemy allowed to fire ?
-			if (pointerBullet != NULL) _enemiesBulletsList.push_front(pointerBullet);
+			// Is the enemy allowed to fire ?
+			if (pointerEnemy->shoot(&pointerBullet, &pointerMuzzleFlashAnimatedTexture))
+			{
+				_enemiesBulletsList.push_front(pointerBullet);
+				_animatedTexturesList.push_front(pointerMuzzleFlashAnimatedTexture);
+			}
 		}
 		
 		// Enemy is still alive, check next one
@@ -869,13 +872,14 @@ int main(int argc, char *argv[])
 			// Fire a bullet
 			if (ControlManager::isKeyPressed(ControlManager::KEY_ID_SHOOT))
 			{
-				MovingEntityBullet *pointerBullet = pointerPlayer->shoot();
+				MovingEntityBullet *pointerBullet;
+				EntityAnimatedTexture *pointerMuzzleFlashAnimatedTexture;
 				
 				// Is the player allowed to shoot ?
-				if (pointerBullet != NULL)
+				if (pointerPlayer->shoot(&pointerBullet, &pointerMuzzleFlashAnimatedTexture))
 				{
 					_playerBulletsList.push_front(pointerBullet);
-					_animatedTexturesList.push_front(pointerPlayer->generateShootMuzzleFlash());
+					_animatedTexturesList.push_front(pointerMuzzleFlashAnimatedTexture);
 				}
 			}
 			

@@ -58,18 +58,18 @@ class FightingEntityPlayer: public FightingEntity
 		virtual ~FightingEntityPlayer() {}
 		
 		/** @see FightingEntity for description. */
-		virtual MovingEntityBullet *shoot()
+		virtual int shoot(MovingEntityBullet **pointerBullet, EntityAnimatedTexture **pointerMuzzleFlashAnimatedTexture)
 		{
-			MovingEntityBullet *pointerBullet;
-			
 			// The player can't shoot if it has no more ammunition
-			if (_ammunitionAmount == 0) return NULL;
+			if (_ammunitionAmount == 0) return 0;
 			
 			// Decrement ammunition count if the player shot
-			pointerBullet = FightingEntity::shoot();
-			if (pointerBullet != NULL) _ammunitionAmount--;
-			
-			return pointerBullet;
+			if (FightingEntity::shoot(pointerBullet, pointerMuzzleFlashAnimatedTexture))
+			{
+				_ammunitionAmount--;
+				return 1;
+			}
+			return 0;
 		}
 		
 		/** Get the remaining ammunition count.
