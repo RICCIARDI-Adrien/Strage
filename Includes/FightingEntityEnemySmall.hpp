@@ -2,7 +2,7 @@
 #define HPP_FIGHTING_ENTITY_ENEMY_SMALL_HPP
 
 #include <AudioManager.hpp>
-#include <EntityAnimatedTextureSmallEnemyExplosion.hpp>
+#include <EffectManager.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <MovingEntityBulletSmallEnemy.hpp>
 #include <TextureManager.hpp>
@@ -29,18 +29,10 @@ class FightingEntityEnemySmall: public FightingEntityEnemy
 		 * @param x Enemy X coordinate.
 		 * @param y Enemy Y coordinate.
 		 */
-		FightingEntityEnemySmall(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_SMALL_ENEMY_FACING_UP, 2, 1, 1000, AudioManager::SOUND_ID_SMALL_ENEMY_FIRESHOT, TextureManager::TEXTURE_ID_SMALL_ENEMY_BULLET_FACING_UP, TextureManager::TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_UP) {}
+		FightingEntityEnemySmall(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_SMALL_ENEMY_FACING_UP, 2, 1, 1000, AudioManager::SOUND_ID_SMALL_ENEMY_FIRESHOT, TextureManager::TEXTURE_ID_SMALL_ENEMY_BULLET_FACING_UP, EffectManager::EFFECT_ID_SMALL_ENEMY_EXPLOSION, TextureManager::TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_UP) {}
 		
 		/** Free allocated resources. */
 		virtual ~FightingEntityEnemySmall() {}
-		
-		/** Generate a small explosion.
-		 * @return The explosion effect.
-		 */
-		virtual EntityAnimatedTexture *generateExplosion()
-		{
-			return new EntityAnimatedTextureSmallEnemyExplosion(this->getX(), this->getY());
-		}
 };
 
 #endif

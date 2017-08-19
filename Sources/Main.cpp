@@ -397,9 +397,7 @@ static inline void _updateGameLogic()
 		{
 			// Spawn an explosion effect
 			pointerPositionRectangle = pointerEnemy->getPositionRectangle();
-			
 			_animatedTexturesList.push_front(pointerEnemy->generateExplosion());
-			AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_EXPLOSION);
 			
 			// Spawn an item on the current block if player is lucky
 			_spawnItem(pointerPositionRectangle->x + (pointerPositionRectangle->w / 2), pointerPositionRectangle->y + (pointerPositionRectangle->h / 2)); // Use enemy center coordinates to avoid favoring one block among others

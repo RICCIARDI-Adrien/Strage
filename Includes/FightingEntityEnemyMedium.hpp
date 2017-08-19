@@ -2,7 +2,7 @@
 #define HPP_FIGHTING_ENTITY_ENEMY_MEDIUM_HPP
 
 #include <AudioManager.hpp>
-#include <EntityAnimatedTextureMediumEnemyExplosion.hpp>
+#include <EffectManager.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <MovingEntityBulletMediumEnemy.hpp>
 #include <TextureManager.hpp>
@@ -29,18 +29,10 @@ class FightingEntityEnemyMedium: public FightingEntityEnemy
 		 * @param x Enemy X coordinate.
 		 * @param y Enemy Y coordinate.
 		 */
-		FightingEntityEnemyMedium(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_FACING_UP, 2, 3, 2000, AudioManager::SOUND_ID_MEDIUM_ENEMY_FIRESHOT, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_BULLET_FACING_UP, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_UP) {}
+		FightingEntityEnemyMedium(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_FACING_UP, 2, 3, 2000, AudioManager::SOUND_ID_MEDIUM_ENEMY_FIRESHOT, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_BULLET_FACING_UP, EffectManager::EFFECT_ID_MEDIUM_ENEMY_EXPLOSION, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_UP) {}
 		
 		/** Free allocated resources. */
 		virtual ~FightingEntityEnemyMedium() {}
-		
-		/** Generate a medium explosion.
-		 * @return The explosion effect.
-		 */
-		virtual EntityAnimatedTexture *generateExplosion()
-		{
-			return new EntityAnimatedTextureMediumEnemyExplosion(this->getX(), this->getY());
-		}
 };
 
 #endif
