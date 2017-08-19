@@ -9,7 +9,6 @@
 #include <cstring>
 #include <ctime>
 #include <EntityAnimatedTexture.hpp>
-#include <EntityAnimatedTextureEnemySpawnerExplosion.hpp>
 #include <EntityEnemySpawner.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <FightingEntityPlayer.hpp>
@@ -488,8 +487,7 @@ static inline void _updateGameLogic()
 			LevelManager::setBlockContent(pointerPositionRectangle->x, pointerPositionRectangle->y, blockContent);
 			
 			// Display an explosion
-			_animatedTexturesList.push_front(new EntityAnimatedTextureEnemySpawnerExplosion(pointerPositionRectangle->x, pointerPositionRectangle->y));
-			AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_SPAWNER_EXPLOSION);
+			_animatedTexturesList.push_front(EffectManager::generateEffect(pointerPositionRectangle->x, pointerPositionRectangle->y, EffectManager::EFFECT_ID_ENEMY_SPAWNER_EXPLOSION));
 			
 			// Remove the spawner
 			delete pointerEnemySpawner;
