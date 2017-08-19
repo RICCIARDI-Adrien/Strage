@@ -1,7 +1,6 @@
 #ifndef HPP_FIGHTING_ENTITY_ENEMY_MEDIUM_HPP
 #define HPP_FIGHTING_ENTITY_ENEMY_MEDIUM_HPP
 
-#include <AudioManager.hpp>
 #include <EffectManager.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <MovingEntityBulletMediumEnemy.hpp>
@@ -29,7 +28,7 @@ class FightingEntityEnemyMedium: public FightingEntityEnemy
 		 * @param x Enemy X coordinate.
 		 * @param y Enemy Y coordinate.
 		 */
-		FightingEntityEnemyMedium(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_FACING_UP, 2, 3, 2000, AudioManager::SOUND_ID_MEDIUM_ENEMY_FIRESHOT, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_BULLET_FACING_UP, EffectManager::EFFECT_ID_MEDIUM_ENEMY_EXPLOSION, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_UP) {}
+		FightingEntityEnemyMedium(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_FACING_UP, 2, 3, 2000, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_BULLET_FACING_UP, EffectManager::EFFECT_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_UP, EffectManager::EFFECT_ID_MEDIUM_ENEMY_EXPLOSION) {}
 		
 		/** Free allocated resources. */
 		virtual ~FightingEntityEnemyMedium() {}

@@ -1,7 +1,6 @@
 #ifndef HPP_FIGHTING_ENTITY_ENEMY_BIG_HPP
 #define HPP_FIGHTING_ENTITY_ENEMY_BIG_HPP
 
-#include <AudioManager.hpp>
 #include <EffectManager.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <MovingEntityBulletBigEnemy.hpp>
@@ -30,7 +29,7 @@ class FightingEntityEnemyBig: public FightingEntityEnemy
 		 * @param x Enemy X coordinate.
 		 * @param y Enemy Y coordinate.
 		 */
-		FightingEntityEnemyBig(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_BIG_ENEMY_FACING_UP, 1, 10, 10000, AudioManager::SOUND_ID_BIG_ENEMY_FIRESHOT, TextureManager::TEXTURE_ID_BIG_ENEMY_BULLET_FACING_UP, EffectManager::EFFECT_ID_BIG_ENEMY_EXPLOSION, TextureManager::TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_UP)
+		FightingEntityEnemyBig(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_BIG_ENEMY_FACING_UP, 1, 10, 10000, TextureManager::TEXTURE_ID_BIG_ENEMY_BULLET_FACING_UP, EffectManager::EFFECT_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_UP, EffectManager::EFFECT_ID_BIG_ENEMY_EXPLOSION)
 		{
 			unsigned int currentTime;
 			
