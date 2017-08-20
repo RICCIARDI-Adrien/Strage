@@ -181,7 +181,9 @@ int initialize()
 	_pointerSounds[SOUND_ID_MEDIUM_ENEMY_FIRESHOT] = _loadFromWave(FileManager::getFilePath("Sounds/Medium_Enemy_Fireshot.wav"));
 	_pointerSounds[SOUND_ID_BIG_ENEMY_FIRESHOT] = _loadFromWave(FileManager::getFilePath("Sounds/Big_Enemy_Fireshot.wav"));
 	_pointerSounds[SOUND_ID_ENEMY_BULLET_IMPACT] = _loadFromWave(FileManager::getFilePath("Sounds/Enemy_Bullet_Impact.wav"));
-	_pointerSounds[SOUND_ID_ENEMY_EXPLOSION] = _loadFromWave(FileManager::getFilePath("Sounds/Enemy_Explosion.wav"));
+	_pointerSounds[SOUND_ID_SMALL_ENEMY_EXPLOSION] = _loadFromWave(FileManager::getFilePath("Sounds/Small_Enemy_Explosion.wav"));
+	_pointerSounds[SOUND_ID_MEDIUM_ENEMY_EXPLOSION] = _loadFromWave(FileManager::getFilePath("Sounds/Medium_Enemy_Explosion.wav"));
+	_pointerSounds[SOUND_ID_BIG_ENEMY_EXPLOSION] = _loadFromWave(FileManager::getFilePath("Sounds/Big_Enemy_Explosion.wav"));
 	_pointerSounds[SOUND_ID_ENEMY_SPAWNER_BULLET_IMPACT] = _loadFromWave(FileManager::getFilePath("Sounds/Enemy_Spawner_Bullet_Impact.wav"));
 	_pointerSounds[SOUND_ID_ENEMY_SPAWNER_EXPLOSION] = _loadFromWave(FileManager::getFilePath("Sounds/Enemy_Spawner_Explosion.wav"));
 	
