@@ -119,6 +119,14 @@ class Texture
 		{
 			return _positionRectangle.h;
 		}
+		
+		/** Get the SDL texture which can be rendered using SDL API.
+		 * @return The SDL texture.
+		 */
+		inline SDL_Texture *getTexture()
+		{
+			return _pointerTexture;
+		}
 };
 
 #endif

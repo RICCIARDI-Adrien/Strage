@@ -17,18 +17,22 @@
 #define CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS 16
 /** Compute and display the current frame rate. Displaying requires log levels to be set to 1 or higher. */
 #define CONFIGURATION_DISPLAY_IS_FRAME_RATE_DISPLAYING_ENABLED 0
+/** HUD background texture screen X coordinate. */
+#define CONFIGURATION_DISPLAY_HUD_BACKGROUND_TEXTURE_X 10
+/** HUD background texture screen Y coordinate. */
+#define CONFIGURATION_DISPLAY_HUD_BACKGROUND_TEXTURE_Y 10
 /** HUD life point text screen X coordinate. */
-#define CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_X 10
+#define CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_X 15
 /** HUD life point text screen Y coordinate. */
-#define CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y 10
+#define CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y 15
 /** HUD ammunition text screen X coordinate. */
-#define CONFIGURATION_DISPLAY_HUD_AMMUNITION_X 240
+#define CONFIGURATION_DISPLAY_HUD_AMMUNITION_X 15
 /** HUD ammunition text screen Y coordinate. */
-#define CONFIGURATION_DISPLAY_HUD_AMMUNITION_Y 10
+#define CONFIGURATION_DISPLAY_HUD_AMMUNITION_Y 38
 /** HUD enemies text screen X coordinate. */
-#define CONFIGURATION_DISPLAY_HUD_ENEMIES_X 510
+#define CONFIGURATION_DISPLAY_HUD_ENEMIES_X 15
 /** HUD enemies text screen Y coordinate. */
-#define CONFIGURATION_DISPLAY_HUD_ENEMIES_Y 10
+#define CONFIGURATION_DISPLAY_HUD_ENEMIES_Y 61
 /** Main menu vertical space between two strings. */
 #define CONFIGURATION_DISPLAY_MAIN_MENU_STRINGS_VERTICAL_SPACING 60
 

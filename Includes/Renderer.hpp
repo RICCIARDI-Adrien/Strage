@@ -22,7 +22,15 @@ typedef enum
 	TEXT_COLOR_ID_DARK_GREEN,
 	TEXT_COLOR_IDS_COUNT
 } TextColorId;
-	
+
+/** All available font sizes. */
+typedef enum
+{
+	FONT_SIZE_ID_SMALL,
+	FONT_SIZE_ID_BIG,
+	FONT_SIZE_IDS_COUNT
+}FontSizeId;
+
 //-------------------------------------------------------------------------------------------------
 // Variables
 //-------------------------------------------------------------------------------------------------
@@ -73,10 +81,11 @@ int isDisplayable(SDL_Rect *pointerObjectPositionRectangle);
 /** Render the provided text on a texture.
  * @param pointerText The string to render.
  * @param colorId The text color.
+ * @param fontSizeId The font size.
  * @return A texture containing the rendered text. Caller must free this texture.
  * @warning This function halts the game if something goes wrong.
  */
-SDL_Texture *renderTextToTexture(const char *pointerText, TextColorId colorId);
+SDL_Texture *renderTextToTexture(const char *pointerText, TextColorId colorId, FontSizeId fontSizeId);
 
 /** Display the provided texture at the specified display position.
  * @param pointerTexture The texture to display.

@@ -26,8 +26,8 @@ static SDL_Window *_pointerMainWindow;
 /** Define the display area. */
 static SDL_Rect _displayRectangle;
 
-/** The font used to draw text. */
-static TTF_Font *_pointerFont;
+/** The fonts used to draw text. */
+static TTF_Font *_pointerFonts[FONT_SIZE_IDS_COUNT];
 /** All available text colors. */
 static SDL_Color _textColors[TEXT_COLOR_IDS_COUNT];
 
@@ -93,11 +93,17 @@ int initialize(int isFullScreenEnabled)
 		goto Exit_Error_Destroy_Renderer;
 	}
 	
-	// Try to load the font
-	_pointerFont = TTF_OpenFont(FileManager::getFilePath("Liberation_Sans_Bold.ttf"), 36);
-	if (_pointerFont == NULL)
+	// Try to load the fonts
+	_pointerFonts[0] = TTF_OpenFont(FileManager::getFilePath("Liberation_Sans_Bold.ttf"), 20);
+	if (_pointerFonts[0] == NULL)
 	{
-		LOG_ERROR("Failed to load TTF font file (%s).", TTF_GetError());
+		LOG_ERROR("Failed to load TTF small font file (%s).", TTF_GetError());
+		goto Exit_Error_Uninitialize_TTF;
+	}
+	_pointerFonts[1] = TTF_OpenFont(FileManager::getFilePath("Liberation_Sans_Bold.ttf"), 36);
+	if (_pointerFonts[1] == NULL)
+	{
+		LOG_ERROR("Failed to load TTF big font file (%s).", TTF_GetError());
 		goto Exit_Error_Uninitialize_TTF;
 	}
 	
@@ -149,7 +155,9 @@ Exit_Error:
 
 void uninitialize()
 {
-	TTF_CloseFont(_pointerFont);
+	int i;
+	
+	for (i = 0; i < FONT_SIZE_IDS_COUNT; i++) TTF_CloseFont(_pointerFonts[i]);
 	TTF_Quit();
 	
 	SDL_DestroyRenderer(pointerMainRenderer);
@@ -180,7 +188,7 @@ int isDisplayable(SDL_Rect *pointerObjectPositionRectangle)
 	return SDL_HasIntersection(&_displayRectangle, pointerObjectPositionRectangle);
 }
 
-SDL_Texture *renderTextToTexture(const char *pointerText, TextColorId colorId)
+SDL_Texture *renderTextToTexture(const char *pointerText, TextColorId colorId, FontSizeId fontSizeId)
 {
 	// Make sure color is valid
 	if ((colorId < 0) || (colorId >= TEXT_COLOR_IDS_COUNT))
@@ -191,7 +199,7 @@ SDL_Texture *renderTextToTexture(const char *pointerText, TextColorId colorId)
 	
 	// Render the text
 	//SDL_Surface *pointerSurface = TTF_RenderText_Solid(_pointerFont, pointerText, _textColors[colorId]);
-	SDL_Surface *pointerSurface = TTF_RenderText_Blended(_pointerFont, pointerText, _textColors[colorId]);
+	SDL_Surface *pointerSurface = TTF_RenderText_Blended(_pointerFonts[fontSizeId], pointerText, _textColors[colorId]);
 	if (pointerSurface == NULL)
 	{
 		LOG_ERROR("Failed to render the text to a surface, shutting down (%s).", TTF_GetError());

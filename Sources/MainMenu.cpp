@@ -44,12 +44,12 @@ static inline void _initialize()
 	int i, textureWidth, textureHeight, stringTexturesVerticalHeight, firstStringTextureY;
 	
 	// Render strings
-	_menuStrings[0].pointerNormalTexture = Renderer::renderTextToTexture("Continue game", Renderer::TEXT_COLOR_ID_BLUE);
-	_menuStrings[0].pointerFocusedTexture = Renderer::renderTextToTexture("Continue game", Renderer::TEXT_COLOR_ID_DARK_GREEN);
-	_menuStrings[1].pointerNormalTexture = Renderer::renderTextToTexture("New game", Renderer::TEXT_COLOR_ID_BLUE);
-	_menuStrings[1].pointerFocusedTexture = Renderer::renderTextToTexture("New game", Renderer::TEXT_COLOR_ID_DARK_GREEN);
-	_menuStrings[2].pointerNormalTexture = Renderer::renderTextToTexture("Quit", Renderer::TEXT_COLOR_ID_BLUE);
-	_menuStrings[2].pointerFocusedTexture = Renderer::renderTextToTexture("Quit", Renderer::TEXT_COLOR_ID_DARK_GREEN);
+	_menuStrings[0].pointerNormalTexture = Renderer::renderTextToTexture("Continue game", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
+	_menuStrings[0].pointerFocusedTexture = Renderer::renderTextToTexture("Continue game", Renderer::TEXT_COLOR_ID_DARK_GREEN, Renderer::FONT_SIZE_ID_BIG);
+	_menuStrings[1].pointerNormalTexture = Renderer::renderTextToTexture("New game", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
+	_menuStrings[1].pointerFocusedTexture = Renderer::renderTextToTexture("New game", Renderer::TEXT_COLOR_ID_DARK_GREEN, Renderer::FONT_SIZE_ID_BIG);
+	_menuStrings[2].pointerNormalTexture = Renderer::renderTextToTexture("Quit", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
+	_menuStrings[2].pointerFocusedTexture = Renderer::renderTextToTexture("Quit", Renderer::TEXT_COLOR_ID_DARK_GREEN, Renderer::FONT_SIZE_ID_BIG);
 	
 	// Compute displaying coordinates
 	for (i = 0; i < STRINGS_COUNT; i++)

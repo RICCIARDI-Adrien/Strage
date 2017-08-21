@@ -177,6 +177,9 @@ int initialize()
 	// Overlays
 	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_HIT_OVERLAY] = new TextureDisplayOverlay(FileManager::getFilePath("Textures/Player_Hit_Overlay.bmp"), 1);
 	
+	// Graphic user interface
+	_pointerTextureManagerTextures[TEXTURE_ID_GRAPHIC_USER_INTERFACE_BACKGROUND] = new Texture(FileManager::getFilePath("Textures/Graphic_User_Interface_Background.bmp"), 0);
+	
 	return 0;
 }
 
