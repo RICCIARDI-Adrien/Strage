@@ -3,6 +3,7 @@
  * @author Adrien RICCIARDI
  */
 #include <AudioManager.hpp>
+#include <cassert>
 #include <Configuration.hpp>
 #include <cstdlib>
 #include <FileManager.hpp>
@@ -256,11 +257,7 @@ void uninitialize()
 void playSound(SoundId id)
 {
 	// Make sure the requested sound exists
-	if ((id < 0) || (id >= SOUND_IDS_COUNT))
-	{
-		LOG_INFORMATION("Unknown sound ID requested (%d).", id);
-		return;
-	}
+	assert(id < SOUND_IDS_COUNT);
 	
 	// Try to play the sound on the first available channel
 	if (Mix_PlayChannel(-1, _pointerSounds[id], 0) == -1) LOG_DEBUG("Failed to play sound ID %d (%s).", id, Mix_GetError());

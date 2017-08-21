@@ -14,12 +14,12 @@ debug: LIBRARIES = -lSDL2 -lSDL2_mixer -lSDL2_ttf
 debug: all
 
 linux: CPP = g++
-linux: CPPFLAGS += -Werror -O2
+linux: CPPFLAGS += -Werror -O2 -DNDEBUG
 linux: LIBRARIES = -lSDL2 -lSDL2_mixer -lSDL2_ttf
 linux: all
 
 macos: CPP = g++
-macos: CPPFLAGS += -Werror -O2 -DCONFIGURATION_BUILD_FOR_MACOS
+macos: CPPFLAGS += -Werror -O2 -DNDEBUG -DCONFIGURATION_BUILD_FOR_MACOS
 macos: LIBRARIES = -framework SDL2 -framework SDL2_mixer -framework SDL2_ttf
 macos: all
 
@@ -27,7 +27,7 @@ windows: ADDITIONAL_OBJECTS = Windows_Icon.o
 windows: BINARY = Strage.exe
 windows: CPP = i686-w64-mingw32-g++
 # Avoid shipping MinGW libgcc and libstdc++, build as a GUI program to avoid having an opened console when the game is started
-windows: CPPFLAGS += -Werror -O2 -static-libgcc -static-libstdc++ -mwindows
+windows: CPPFLAGS += -Werror -O2 -DNDEBUG -static-libgcc -static-libstdc++ -mwindows
 # Windows needs custom libraries to provide WinMain() ; symbols are scattered into several libraries, so make sure they are all found
 windows: LIBRARIES = -Wl,--start-group -lSDL2 -lSDL2_mixer -lSDL2_ttf -lmingw32 -lSDL2main -Wl,--end-group
 windows: windows_generate_executable_icon all windows_clean_executable_icon

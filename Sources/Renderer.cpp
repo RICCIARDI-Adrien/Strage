@@ -2,6 +2,7 @@
  * @see Renderer.hpp for description.
  * @author Adrien RICCIARDI
  */
+#include <cassert>
 #include <Configuration.hpp>
 #include <cstdlib>
 #include <FileManager.hpp>
@@ -190,12 +191,9 @@ int isDisplayable(SDL_Rect *pointerObjectPositionRectangle)
 
 SDL_Texture *renderTextToTexture(const char *pointerText, TextColorId colorId, FontSizeId fontSizeId)
 {
-	// Make sure color is valid
-	if ((colorId < 0) || (colorId >= TEXT_COLOR_IDS_COUNT))
-	{
-		LOG_ERROR("Invalid color ID : %d.\n", colorId);
-		exit(-1);
-	}
+	// Make sure parameters are valid
+	assert(colorId < TEXT_COLOR_IDS_COUNT);
+	assert(fontSizeId < FONT_SIZE_IDS_COUNT);
 	
 	// Render the text
 	//SDL_Surface *pointerSurface = TTF_RenderText_Solid(_pointerFont, pointerText, _textColors[colorId]);

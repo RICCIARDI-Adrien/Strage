@@ -2,6 +2,7 @@
  * @see TextureManager.hpp for description.
  * @author Adrien RICCIARDI
  */
+#include <cassert>
 #include <cstdio>
 #include <FileManager.hpp>
 #include <Log.hpp>
@@ -194,7 +195,7 @@ void uninitialize()
 Texture *getTextureFromId(TextureId id)
 {
 	// Make sure the provided ID is valid
-	if (id >= TEXTURE_IDS_COUNT) return NULL;
+	assert(id < TEXTURE_IDS_COUNT);
 	
 	return _pointerTextureManagerTextures[id];
 }

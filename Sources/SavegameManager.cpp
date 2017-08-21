@@ -2,9 +2,9 @@
  * @see SavegameManager.hpp for description.
  * @author Adrien RICCIARDI
  */
+#include <cassert>
 #include <Configuration.hpp>
 #include <cstdio>
-#include <cstdlib>
 #include <FileManager.hpp>
 #include <Log.hpp>
 #include <SavegameManager.hpp>
@@ -81,11 +81,7 @@ void storeSavegame(void)
 int getSavegameItem(SavegameItemId itemId)
 {
 	// Make sure the ID is correct
-	if (itemId >= SAVEGAME_ITEM_IDS_COUNT)
-	{
-		LOG_ERROR("Invalid item ID : %d", itemId);
-		exit(-1);
-	}
+	assert(itemId < SAVEGAME_ITEM_IDS_COUNT);
 	
 	return _items[itemId];
 }
@@ -93,11 +89,7 @@ int getSavegameItem(SavegameItemId itemId)
 void setSavegameItem(SavegameItemId itemId, int itemValue)
 {
 	// Make sure the ID is correct
-	if (itemId >= SAVEGAME_ITEM_IDS_COUNT)
-	{
-		LOG_ERROR("Invalid item ID : %d", itemId);
-		exit(-1);
-	}
+	assert(itemId < SAVEGAME_ITEM_IDS_COUNT);
 	
 	_items[itemId] = itemValue;
 }

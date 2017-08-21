@@ -3,6 +3,7 @@
  * @author Adrien RICCIARDI
  */
 #include <AudioManager.hpp>
+#include <cassert>
 #include <EffectManager.hpp>
 #include <EntityAnimatedTexture.hpp>
 #include <Log.hpp>
@@ -179,11 +180,7 @@ EntityAnimatedTexture *generateEffect(int x, int y, EffectId effectId)
 	Effect *pointerEffect;
 	
 	// Make sure the requested effect is existing
-	if (effectId >= EFFECT_IDS_COUNT)
-	{
-		LOG_ERROR("Non-existing effect requested (effect ID : %d)", effectId);
-		return NULL;
-	}
+	assert(effectId < EFFECT_IDS_COUNT);
 	
 	// Cache effect access
 	pointerEffect = &effects[effectId];
@@ -198,11 +195,7 @@ EntityAnimatedTexture *generateEffect(int x, int y, EffectId effectId)
 int getEffectTextureWidth(EffectId effectId)
 {
 	// Make sure the requested effect is existing
-	if (effectId >= EFFECT_IDS_COUNT)
-	{
-		LOG_ERROR("Non-existing effect requested (effect ID : %d)", effectId);
-		return -1;
-	}
+	assert(effectId < EFFECT_IDS_COUNT);
 	
 	return TextureManager::getTextureFromId(effects[effectId].initialTextureId)->getWidth();
 }
@@ -210,11 +203,7 @@ int getEffectTextureWidth(EffectId effectId)
 int getEffectTextureHeight(EffectId effectId)
 {
 	// Make sure the requested effect is existing
-	if (effectId >= EFFECT_IDS_COUNT)
-	{
-		LOG_ERROR("Non-existing effect requested (effect ID : %d)", effectId);
-		return -1;
-	}
+	assert(effectId < EFFECT_IDS_COUNT);
 	
 	return TextureManager::getTextureFromId(effects[effectId].initialTextureId)->getHeight();
 }
