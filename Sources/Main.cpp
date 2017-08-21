@@ -78,7 +78,7 @@ static int _isGamePaused = 0;
 static int _isGameFinished = 0;
 
 /** Cache all interface strings (rendered to textures) because they are really slow to render. */
-static SDL_Texture *_pointerInterfaceStrings[INTERFACE_STRING_IDS_COUNT];
+static SDL_Texture *_pointerInterfaceStringTextures[INTERFACE_STRING_IDS_COUNT];
 /** Point to the interface background texture with the right type for the rendering function. */
 static SDL_Texture *_pointerInterfaceBackgroundTexture;
 
@@ -120,7 +120,7 @@ static void _exitFreeResources()
 	int i;
 	
 	// Free all cached interface strings
-	for (i = 0; i < INTERFACE_STRING_IDS_COUNT; i++) SDL_DestroyTexture(_pointerInterfaceStrings[i]);
+	for (i = 0; i < INTERFACE_STRING_IDS_COUNT; i++) SDL_DestroyTexture(_pointerInterfaceStringTextures[i]);
 	
 	// Delete all entities
 	_clearAllLists();
@@ -549,16 +549,16 @@ static inline void _renderInterface()
 		else colorId = Renderer::TEXT_COLOR_ID_BLUE;
 		
 		// Free previous string
-		SDL_DestroyTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_LIFE_POINTS_AMOUNT]); // SDL_DestroyTexture() does not complain if the provided pointer is NULL, as it is on the first frame
+		SDL_DestroyTexture(_pointerInterfaceStringTextures[INTERFACE_STRING_ID_LIFE_POINTS_AMOUNT]); // SDL_DestroyTexture() does not complain if the provided pointer is NULL, as it is on the first frame
 		
 		// Render the string
 		sprintf(string, "Life : %d", amount);
-		_pointerInterfaceStrings[INTERFACE_STRING_ID_LIFE_POINTS_AMOUNT] = Renderer::renderTextToTexture(string, colorId, Renderer::FONT_SIZE_ID_SMALL);
+		_pointerInterfaceStringTextures[INTERFACE_STRING_ID_LIFE_POINTS_AMOUNT] = Renderer::renderTextToTexture(string, colorId, Renderer::FONT_SIZE_ID_SMALL);
 		
 		previousLifePointsAmount = amount;
 		LOG_DEBUG("Refreshed life points interface string.");
 	}
-	Renderer::renderTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_LIFE_POINTS_AMOUNT], CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_X, CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y);
+	Renderer::renderTexture(_pointerInterfaceStringTextures[INTERFACE_STRING_ID_LIFE_POINTS_AMOUNT], CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_X, CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y);
 	
 	// Ammunition count
 	amount = pointerPlayer->getAmmunitionAmount();
@@ -569,16 +569,16 @@ static inline void _renderInterface()
 		else colorId = Renderer::TEXT_COLOR_ID_BLUE;
 		
 		// Free previous string
-		SDL_DestroyTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_AMMUNITION_AMOUNT]);
+		SDL_DestroyTexture(_pointerInterfaceStringTextures[INTERFACE_STRING_ID_AMMUNITION_AMOUNT]);
 		
 		// Render the string
 		sprintf(string, "Ammo : %d", amount);
-		_pointerInterfaceStrings[INTERFACE_STRING_ID_AMMUNITION_AMOUNT] = Renderer::renderTextToTexture(string, colorId, Renderer::FONT_SIZE_ID_SMALL);
+		_pointerInterfaceStringTextures[INTERFACE_STRING_ID_AMMUNITION_AMOUNT] = Renderer::renderTextToTexture(string, colorId, Renderer::FONT_SIZE_ID_SMALL);
 		
 		previousAmmunitionAmount = amount;
 		LOG_DEBUG("Refreshed ammunition interface string.");
 	}
-	Renderer::renderTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_AMMUNITION_AMOUNT], CONFIGURATION_DISPLAY_HUD_AMMUNITION_X, CONFIGURATION_DISPLAY_HUD_AMMUNITION_Y);
+	Renderer::renderTexture(_pointerInterfaceStringTextures[INTERFACE_STRING_ID_AMMUNITION_AMOUNT], CONFIGURATION_DISPLAY_HUD_AMMUNITION_X, CONFIGURATION_DISPLAY_HUD_AMMUNITION_Y);
 	
 	// Remaining enemies count
 	amount = (int) _enemiesList.size();
@@ -589,21 +589,21 @@ static inline void _renderInterface()
 		else colorId = Renderer::TEXT_COLOR_ID_BLUE;
 		
 		// Free previous string
-		SDL_DestroyTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_ENEMIES_COUNT]);
+		SDL_DestroyTexture(_pointerInterfaceStringTextures[INTERFACE_STRING_ID_ENEMIES_COUNT]);
 		
 		// Render the string
 		sprintf(string, "Enemies : %d", amount);
-		_pointerInterfaceStrings[INTERFACE_STRING_ID_ENEMIES_COUNT] = Renderer::renderTextToTexture(string, colorId, Renderer::FONT_SIZE_ID_SMALL);
+		_pointerInterfaceStringTextures[INTERFACE_STRING_ID_ENEMIES_COUNT] = Renderer::renderTextToTexture(string, colorId, Renderer::FONT_SIZE_ID_SMALL);
 		
 		previousSpawnersCount = amount;
 		LOG_DEBUG("Refreshed enemies interface string.");
 	}
-	Renderer::renderTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_ENEMIES_COUNT], CONFIGURATION_DISPLAY_HUD_ENEMIES_X, CONFIGURATION_DISPLAY_HUD_ENEMIES_Y);
+	Renderer::renderTexture(_pointerInterfaceStringTextures[INTERFACE_STRING_ID_ENEMIES_COUNT], CONFIGURATION_DISPLAY_HUD_ENEMIES_X, CONFIGURATION_DISPLAY_HUD_ENEMIES_Y);
 	
 	// Display a centered message if needed
-	if (_isPlayerDead) Renderer::renderCenteredTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_GAME_LOST]);
-	else if (_isGameFinished) Renderer::renderCenteredTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_GAME_WON]);
-	else if (_isGamePaused) Renderer::renderCenteredTexture(_pointerInterfaceStrings[INTERFACE_STRING_ID_GAME_PAUSED]);
+	if (_isPlayerDead) Renderer::renderCenteredTexture(_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_LOST]);
+	else if (_isGameFinished) Renderer::renderCenteredTexture(_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_WON]);
+	else if (_isGamePaused) Renderer::renderCenteredTexture(_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_PAUSED]);
 }
 
 /** Display everything to the screen. */
@@ -713,9 +713,9 @@ int main(int argc, char *argv[])
 	// Player damage overlay
 	_pointerPlayerHitOverlayTexture = (TextureDisplayOverlay *) TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_HIT_OVERLAY);
 	// Static interface strings
-	_pointerInterfaceStrings[INTERFACE_STRING_ID_GAME_PAUSED] = Renderer::renderTextToTexture("PAUSE", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
-	_pointerInterfaceStrings[INTERFACE_STRING_ID_GAME_LOST] =  Renderer::renderTextToTexture("You are dead ! Hit R to retry.", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
-	_pointerInterfaceStrings[INTERFACE_STRING_ID_GAME_WON] = Renderer::renderTextToTexture("All levels completed. You are legend.", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
+	_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_PAUSED] = Renderer::renderTextToTexture("PAUSE", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
+	_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_LOST] =  Renderer::renderTextToTexture("You are dead ! Hit R to retry.", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
+	_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_WON] = Renderer::renderTextToTexture("All levels completed. You are legend.", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
 	// Interface background
 	_pointerInterfaceBackgroundTexture = getTextureFromId(TextureManager::TEXTURE_ID_GRAPHIC_USER_INTERFACE_BACKGROUND)->getTexture();
 	
