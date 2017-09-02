@@ -4,10 +4,13 @@ os:
   - osx
 dist: trusty
 sudo: required
-before_install:
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get -y update; fi
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get -y install libsdl2-dev libsdl2-mixer-dev libsdl2-ttf-dev; fi
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get -y install mingw-w64; fi
+addons:
+  apt:
+    packages:
+      - libsdl2-dev
+      - libsdl2-mixer-dev
+      - libsdl2-ttf-dev
+      - mingw-w64
 install:
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then wget https://www.libsdl.org/release/SDL2-devel-2.0.5-mingw.tar.gz; fi
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then tar -xf SDL2-devel-2.0.5-mingw.tar.gz; fi
