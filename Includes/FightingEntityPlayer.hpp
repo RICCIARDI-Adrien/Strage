@@ -8,6 +8,7 @@
 #include <MovingEntityBullet.hpp>
 #include <MovingEntityBulletPlayer.hpp>
 #include <Renderer.hpp>
+#include <StaticEntityAnimatedTexture.hpp>
 #include <TextureManager.hpp>
 
 //-------------------------------------------------------------------------------------------------
@@ -58,7 +59,7 @@ class FightingEntityPlayer: public FightingEntity
 		virtual ~FightingEntityPlayer() {}
 		
 		/** @see FightingEntity for description. */
-		virtual int shoot(MovingEntityBullet **pointerBullet, EntityAnimatedTexture **pointerMuzzleFlashAnimatedTexture)
+		virtual int shoot(MovingEntityBullet **pointerBullet, StaticEntityAnimatedTexture **pointerMuzzleFlashAnimatedTexture)
 		{
 			// The player can't shoot if it has no more ammunition
 			if (_ammunitionAmount == 0) return 0;

@@ -1,15 +1,15 @@
-#ifndef HPP_ENTITY_ENEMY_SPAWNER_HPP
-#define HPP_ENTITY_ENEMY_SPAWNER_HPP
+#ifndef HPP_STATIC_ENTITY_ENEMY_SPAWNER_HPP
+#define HPP_STATIC_ENTITY_ENEMY_SPAWNER_HPP
 
 #include <SDL2/SDL.h>
 #include <StaticEntity.hpp>
 #include <TextureManager.hpp>
 
-/** @class EntityEnemySpawner
+/** @class StaticEntityEnemySpawner
  * A destructible still entity spawning enemies all around.
  * @author Adrien RICCIARDI
  */
-class EntityEnemySpawner: public StaticEntity
+class StaticEntityEnemySpawner: public StaticEntity
 {
 	private:
 		/** How many life points the entity owns. */
@@ -20,13 +20,13 @@ class EntityEnemySpawner: public StaticEntity
 		 * @param x X coordinate in pixels.
 		 * @param y Y coordinate in pixels.
 		 */
-		EntityEnemySpawner(int x, int y): StaticEntity(x, y, TextureManager::TEXTURE_ID_ENEMY_SPAWNER)
+		StaticEntityEnemySpawner(int x, int y): StaticEntity(x, y, TextureManager::TEXTURE_ID_ENEMY_SPAWNER)
 		{
 			_lifePointsAmount = 10;
 		}
 		
 		/** Free allocated resources. */
-		virtual ~EntityEnemySpawner() {};
+		virtual ~StaticEntityEnemySpawner() {};
 		
 		/** Change entity life value by adding or removing some life points.
 		 * @param lifePointsAmount How many life points to add or subtract.

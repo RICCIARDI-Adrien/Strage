@@ -5,7 +5,7 @@
 #ifndef HPP_EFFECT_MANAGER_HPP
 #define HPP_EFFECT_MANAGER_HPP
 
-#include <EntityAnimatedTexture.hpp>
+#include <StaticEntityAnimatedTexture.hpp>
 
 namespace EffectManager
 {
@@ -49,7 +49,7 @@ typedef enum
  * @return NULL if the requested effect does not exist,
  * @return The animated texture corresponding to the effect visual part. Play the effect sound in the same time.
  */
-EntityAnimatedTexture *generateEffect(int x, int y, EffectId effectId);
+StaticEntityAnimatedTexture *generateEffect(int x, int y, EffectId effectId);
 
 /** Get the effect texture width (it is the same for all effect animated frames).
  * @param effectId The effect to get texture width.

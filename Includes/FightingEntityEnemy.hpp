@@ -9,6 +9,7 @@
 #include <FightingEntityPlayer.hpp>
 #include <MovingEntityBullet.hpp>
 #include <Renderer.hpp>
+#include <StaticEntityAnimatedTexture.hpp>
 #include <SDL2/SDL.h>
 #include <TextureManager.hpp>
 
@@ -308,7 +309,7 @@ class FightingEntityEnemy: public FightingEntity
 		/** Generate the explosion effect corresponding to the entity at the entity current location on the map.
 		 * @return The enemy-specific explosion.
 		 */
-		EntityAnimatedTexture *generateExplosion()
+		StaticEntityAnimatedTexture *generateExplosion()
 		{
 			return EffectManager::generateEffect(this->getX(), this->getY(), _explosionEffectId);
 		}

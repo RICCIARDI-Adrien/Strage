@@ -1,15 +1,15 @@
-#ifndef HPP_ENTITY_ANIMATED_TEXTURE_HPP
-#define HPP_ENTITY_ANIMATED_TEXTURE_HPP
+#ifndef HPP_STATIC_ENTITY_ANIMATED_TEXTURE_HPP
+#define HPP_STATIC_ENTITY_ANIMATED_TEXTURE_HPP
 
 #include <Log.hpp>
 #include <StaticEntity.hpp>
 #include <TextureManager.hpp>
 
-/** @class EntityAnimatedTexture
+/** @class StaticEntityAnimatedTexture
  * Display several textures in sequence and stop.
  * @author Adrien RICCIARDI
  */
-class EntityAnimatedTexture: public StaticEntity
+class StaticEntityAnimatedTexture: public StaticEntity
 {
 	private:
 		/** The currently displayed texture. */
@@ -32,7 +32,7 @@ class EntityAnimatedTexture: public StaticEntity
 		 * @note Texture ID must follow from initial to ending, because every texture in this interval will be displayed.
 		 * @warning All textures must have the same dimensions, or it will lead to an unpredictable behavior.
 		 */
-		EntityAnimatedTexture(int x, int y, TextureManager::TextureId initialTextureId, TextureManager::TextureId finalTextureId, int framesPerTexture): StaticEntity(x, y, initialTextureId) // Start animation with the first texture
+		StaticEntityAnimatedTexture(int x, int y, TextureManager::TextureId initialTextureId, TextureManager::TextureId finalTextureId, int framesPerTexture): StaticEntity(x, y, initialTextureId) // Start animation with the first texture
 		{
 			_currentTextureId = initialTextureId;
 			_finalTextureId = finalTextureId;

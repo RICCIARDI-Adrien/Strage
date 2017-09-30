@@ -5,8 +5,8 @@
 #include <AudioManager.hpp>
 #include <cassert>
 #include <EffectManager.hpp>
-#include <EntityAnimatedTexture.hpp>
 #include <Log.hpp>
+#include <StaticEntityAnimatedTexture.hpp>
 #include <TextureManager.hpp>
 
 namespace EffectManager
@@ -175,7 +175,7 @@ static Effect effects[EFFECT_IDS_COUNT] =
 //-------------------------------------------------------------------------------------------------
 // Public functions
 //-------------------------------------------------------------------------------------------------
-EntityAnimatedTexture *generateEffect(int x, int y, EffectId effectId)
+StaticEntityAnimatedTexture *generateEffect(int x, int y, EffectId effectId)
 {
 	Effect *pointerEffect;
 	
@@ -189,7 +189,7 @@ EntityAnimatedTexture *generateEffect(int x, int y, EffectId effectId)
 	AudioManager::playSound(pointerEffect->soundId);
 	
 	// Generate the graphic effect
-	return new EntityAnimatedTexture(x, y, pointerEffect->initialTextureId, pointerEffect->finalTextureId, pointerEffect->framesPerTexture);
+	return new StaticEntityAnimatedTexture(x, y, pointerEffect->initialTextureId, pointerEffect->finalTextureId, pointerEffect->framesPerTexture);
 }
 
 int getEffectTextureWidth(EffectId effectId)

@@ -8,8 +8,6 @@
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
-#include <EntityAnimatedTexture.hpp>
-#include <EntityEnemySpawner.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <FightingEntityPlayer.hpp>
 #include <FightingEntityEnemyBig.hpp>
@@ -24,6 +22,8 @@
 #include <Renderer.hpp>
 #include <SavegameManager.hpp>
 #include <SDL2/SDL.h>
+#include <StaticEntityAnimatedTexture.hpp>
+#include <StaticEntityEnemySpawner.hpp>
 #include <TextureDisplayOverlay.hpp>
 #include <TextureManager.hpp>
 
@@ -54,7 +54,7 @@ static std::list<MovingEntityBullet *> _enemiesBulletsList;
 static std::list<FightingEntityEnemy *> _enemiesList;
 
 /** All animated textures. */
-static std::list<EntityAnimatedTexture *> _animatedTexturesList;
+static std::list<StaticEntityAnimatedTexture *> _animatedTexturesList;
 
 /** How many pixels to subtract to the player X coordinate to obtain the scene camera X coordinate. */
 static int _cameraOffsetX;
@@ -94,7 +94,7 @@ FightingEntityPlayer *pointerPlayer;
 /** Free all lists content. */
 static void _clearAllLists()
 {
-	std::list<EntityEnemySpawner *>::iterator enemySpawnersListIterator;
+	std::list<StaticEntityEnemySpawner *>::iterator enemySpawnersListIterator;
 	for (enemySpawnersListIterator = LevelManager::enemySpawnersList.begin(); enemySpawnersListIterator != LevelManager::enemySpawnersList.end(); ++enemySpawnersListIterator) delete *enemySpawnersListIterator;
 	LevelManager::enemySpawnersList.clear();
 	
@@ -109,7 +109,7 @@ static void _clearAllLists()
 	for (enemiesListIterator = _enemiesList.begin(); enemiesListIterator != _enemiesList.end(); ++enemiesListIterator) delete *enemiesListIterator;
 	_enemiesList.clear();
 	
-	std::list<EntityAnimatedTexture *>::iterator animatedTexturesListIterator;
+	std::list<StaticEntityAnimatedTexture *>::iterator animatedTexturesListIterator;
 	for (animatedTexturesListIterator = _animatedTexturesList.begin(); animatedTexturesListIterator != _animatedTexturesList.end(); ++animatedTexturesListIterator) delete *animatedTexturesListIterator;
 	_animatedTexturesList.clear();
 }
@@ -313,10 +313,10 @@ static inline void _updateGameLogic()
 	// Check if player bullets have hit a wall or an enemy
 	std::list<MovingEntityBullet *>::iterator bulletsListIterator = _playerBulletsList.begin();
 	std::list<FightingEntityEnemy *>::iterator enemiesListIterator;
-	std::list<EntityEnemySpawner *>::iterator enemySpawnersListIterator;
+	std::list<StaticEntityEnemySpawner *>::iterator enemySpawnersListIterator;
 	MovingEntityBullet *pointerPlayerBullet;
 	FightingEntityEnemy *pointerEnemy;
-	EntityEnemySpawner *pointerEnemySpawner;
+	StaticEntityEnemySpawner *pointerEnemySpawner;
 	while (bulletsListIterator != _playerBulletsList.end())
 	{
 		pointerPlayerBullet = *bulletsListIterator;
@@ -387,7 +387,7 @@ static inline void _updateGameLogic()
 	int result;
 	SDL_Rect *pointerPositionRectangle;
 	enemiesListIterator = _enemiesList.begin();
-	EntityAnimatedTexture *pointerMuzzleFlashAnimatedTexture;
+	StaticEntityAnimatedTexture *pointerMuzzleFlashAnimatedTexture;
 	while (enemiesListIterator != _enemiesList.end())
 	{
 		pointerEnemy = *enemiesListIterator;
@@ -510,8 +510,8 @@ static inline void _updateGameLogic()
 	}
 	
 	// Update animated textures at the end, because they can be spawned by previous updates
-	std::list<EntityAnimatedTexture *>::iterator animatedTexturesListIterator = _animatedTexturesList.begin();
-	EntityAnimatedTexture *pointerAnimatedTexture;
+	std::list<StaticEntityAnimatedTexture *>::iterator animatedTexturesListIterator = _animatedTexturesList.begin();
+	StaticEntityAnimatedTexture *pointerAnimatedTexture;
 	while (animatedTexturesListIterator != _animatedTexturesList.end())
 	{
 		pointerAnimatedTexture = *animatedTexturesListIterator;
@@ -634,7 +634,7 @@ static inline void _renderGame()
 	pointerPlayer->render();
 	
 	// Display special effects at the end, so they can recover everything
-	std::list<EntityAnimatedTexture *>::iterator animatedTexturesListIterator;
+	std::list<StaticEntityAnimatedTexture *>::iterator animatedTexturesListIterator;
 	for (animatedTexturesListIterator = _animatedTexturesList.begin(); animatedTexturesListIterator != _animatedTexturesList.end(); ++animatedTexturesListIterator) (*animatedTexturesListIterator)->render();
 	
 	// Display the red overlay
@@ -876,7 +876,7 @@ int main(int argc, char *argv[])
 			if (ControlManager::isKeyPressed(ControlManager::KEY_ID_SHOOT))
 			{
 				MovingEntityBullet *pointerBullet;
-				EntityAnimatedTexture *pointerMuzzleFlashAnimatedTexture;
+				StaticEntityAnimatedTexture *pointerMuzzleFlashAnimatedTexture;
 				
 				// Is the player allowed to shoot ?
 				if (pointerPlayer->shoot(&pointerBullet, &pointerMuzzleFlashAnimatedTexture))

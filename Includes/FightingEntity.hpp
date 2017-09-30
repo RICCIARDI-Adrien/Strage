@@ -2,10 +2,10 @@
 #define HPP_FIGHTING_ENTITY_HPP
 
 #include <EffectManager.hpp>
-#include <EntityAnimatedTexture.hpp>
 #include <MovingEntity.hpp>
 #include <MovingEntityBullet.hpp>
 #include <SDL2/SDL.h>
+#include <StaticEntityAnimatedTexture.hpp>
 #include <TextureManager.hpp>
 
 /** @class FightingEntity
@@ -167,7 +167,7 @@ class FightingEntity: public MovingEntity
 		 * @return 1 if the entity was allowed to shot,
 		 * @return 0 if the entity could not shoot (no more ammunition, slower fire rate...).
 		 */
-		virtual int shoot(MovingEntityBullet **pointerBullet, EntityAnimatedTexture **pointerMuzzleFlashAnimatedTexture)
+		virtual int shoot(MovingEntityBullet **pointerBullet, StaticEntityAnimatedTexture **pointerMuzzleFlashAnimatedTexture)
 		{
 			int bulletStartingPositionOffsetX, bulletStartingPositionOffsetY, muzzleFlashStartingPositionOffsetX, muzzleFlashStartingPositionOffsetY, entityX, entityY;
 			EffectManager::EffectId muzzleFlashEffectId;
