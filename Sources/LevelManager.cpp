@@ -462,11 +462,11 @@ int getBlockContent(int x, int y)
 	xBlock = x / CONFIGURATION_LEVEL_BLOCK_SIZE;
 	yBlock = y / CONFIGURATION_LEVEL_BLOCK_SIZE;
 	
-	if ((xBlock < 0) || (xBlock >= _levelWidthBlocks) || (yBlock < 0) || (yBlock >= _levelHeightBlocks))
-	{
-		LOG_INFORMATION("Bad block pixel coordinates (%d, %d).", x, y);
-		return 0;
-	}
+	// Make sure the block is existing
+	assert(xBlock >= 0);
+	assert(xBlock < _levelWidthBlocks);
+	assert(yBlock >= 0);
+	assert(yBlock < _levelHeightBlocks);
 	
 	return _levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)].content;
 }
@@ -479,11 +479,11 @@ void setBlockContent(int x, int y, int content)
 	xBlock = x / CONFIGURATION_LEVEL_BLOCK_SIZE;
 	yBlock = y / CONFIGURATION_LEVEL_BLOCK_SIZE;
 	
-	if ((xBlock < 0) || (xBlock >= _levelWidthBlocks) || (yBlock < 0) || (yBlock >= _levelHeightBlocks))
-	{
-		LOG_INFORMATION("Bad block pixel coordinates (%d, %d).", x, y);
-		return;
-	}
+	// Make sure the block is existing
+	assert(xBlock >= 0);
+	assert(xBlock < _levelWidthBlocks);
+	assert(yBlock >= 0);
+	assert(yBlock < _levelHeightBlocks);
 	
 	_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)].content = content;
 }
