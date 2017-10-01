@@ -89,6 +89,24 @@ int getDistanceFromLeftmostBlock(int x, int y, int blockContent);
  */
 int getDistanceFromRightmostBlock(int x, int y, int blockContent);
 
+/** Tell if there is an obstacle (wall, enemy spawner...) on the vertical axis between two specified points.
+ * @param topmostY The topmost point Y coordinate.
+ * @param downerY The downer point Y coordinate.
+ * @param x The horizontal coordinate, which is the same for the two points.
+ * @return 0 if there is no obstacle,
+ * @return 1 if there is one or more obstacles.
+ */
+int isObstaclePresentOnVerticalAxis(int topmostY, int downerY, int x);
+
+/** Tell if there is an obstacle (wall, enemy spawner...) on the horizontal axis between two specified points.
+ * @param leftmostX The leftmost point X coordinate.
+ * @param rightmostX The rightmost point X coordinate.
+ * @param y The vertical coordinate, which is the same for the two points.
+ * @return 0 if there is no obstacle,
+ * @return 1 if there is one or more obstacles.
+ */
+int isObstaclePresentOnHorizontalAxis(int leftmostX, int rightmostX, int y);
+
 /** Get a block content.
  * @param x X coordinate in pixels.
  * @param y Y coordinate in pixels.

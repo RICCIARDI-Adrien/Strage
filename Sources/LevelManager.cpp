@@ -2,6 +2,7 @@
  * @see LevelManager.hpp for description.
  * @author Adrien RICCIARDI
  */
+#include <cassert>
 #include <cerrno>
 #include <Configuration.hpp>
 #include <cstdio>
@@ -401,6 +402,56 @@ int getDistanceFromRightmostBlock(int x, int y, int blockContent)
 	
 	// The upper block is a wall, compute the amount of pixels separating the provided coordinates from the wall
 	return CONFIGURATION_LEVEL_BLOCK_SIZE - (x % CONFIGURATION_LEVEL_BLOCK_SIZE);
+}
+
+int isObstaclePresentOnVerticalAxis(int topmostY, int downerY, int x)
+{
+	// Convert coordinates to blocks
+	topmostY /= CONFIGURATION_LEVEL_BLOCK_SIZE;
+	downerY /= CONFIGURATION_LEVEL_BLOCK_SIZE;
+	x /= CONFIGURATION_LEVEL_BLOCK_SIZE;
+	
+	// Make some coordinate checks
+	assert(topmostY >= 0);
+	assert(topmostY < _levelHeightBlocks);
+	assert(downerY >= 0);
+	assert(downerY < _levelHeightBlocks);
+	assert(x >= 0);
+	assert(x < _levelWidthBlocks);
+	
+	// Check all blocks along between the specified coordinates
+	while (topmostY < downerY)
+	{
+		if (_levelBlocks[COMPUTE_BLOCK_INDEX(x, topmostY)].content & (BLOCK_CONTENT_WALL | BLOCK_CONTENT_ENEMY_SPAWNER)) return 1;
+		topmostY++;
+	}
+	
+	return 0;
+}
+
+int isObstaclePresentOnHorizontalAxis(int leftmostX, int rightmostX, int y)
+{
+	// Convert coordinates to blocks
+	leftmostX /= CONFIGURATION_LEVEL_BLOCK_SIZE;
+	rightmostX /= CONFIGURATION_LEVEL_BLOCK_SIZE;
+	y /= CONFIGURATION_LEVEL_BLOCK_SIZE;
+	
+	// Make some coordinate checks
+	assert(leftmostX >= 0);
+	assert(leftmostX < _levelWidthBlocks);
+	assert(rightmostX >= 0);
+	assert(rightmostX < _levelWidthBlocks);
+	assert(y >= 0);
+	assert(y < _levelHeightBlocks);
+	
+	// Check all blocks along between the specified coordinates
+	while (leftmostX < rightmostX)
+	{
+		if (_levelBlocks[COMPUTE_BLOCK_INDEX(leftmostX, y)].content & (BLOCK_CONTENT_WALL | BLOCK_CONTENT_ENEMY_SPAWNER)) return 1;
+		leftmostX++;
+	}
+	
+	return 0;
 }
 
 int getBlockContent(int x, int y)

@@ -26,26 +26,38 @@ class FightingEntityEnemy: public FightingEntity
 		 */
 		int _isShootPossible()
 		{
-			// Is the player in line of sight ? // TODO do not fire if there is a wall between the player and the enemy
+			// Is the player in line of sight ?
 			if (SDL_HasIntersection(pointerPlayer->getPositionRectangle(), &_shootingRectangles[DIRECTION_UP]))
 			{
 				// Shoot if the enemy is in the right direction
-				if (_facingDirection == DIRECTION_UP) return 1;
+				if (_facingDirection == DIRECTION_UP)
+				{
+					if (!LevelManager::isObstaclePresentOnVerticalAxis(pointerPlayer->getY(), getY(), getX())) return 1;
+				}
 				else turnToUp(); // Face right direction
 			}
 			else if (SDL_HasIntersection(pointerPlayer->getPositionRectangle(), &_shootingRectangles[DIRECTION_DOWN]))
 			{
-				if (_facingDirection == DIRECTION_DOWN) return 1;
+				if (_facingDirection == DIRECTION_DOWN)
+				{
+					if (!LevelManager::isObstaclePresentOnVerticalAxis(getY(), pointerPlayer->getY(), getX())) return 1;
+				}
 				else turnToDown();
 			}
 			else if (SDL_HasIntersection(pointerPlayer->getPositionRectangle(), &_shootingRectangles[DIRECTION_LEFT]))
 			{
-				if (_facingDirection == DIRECTION_LEFT) return 1;
+				if (_facingDirection == DIRECTION_LEFT)
+				{
+					if (!LevelManager::isObstaclePresentOnHorizontalAxis(pointerPlayer->getX(), getX(), getY())) return 1;
+				}
 				else turnToLeft();
 			}
 			else if (SDL_HasIntersection(pointerPlayer->getPositionRectangle(), &_shootingRectangles[DIRECTION_RIGHT]))
 			{
-				if (_facingDirection == DIRECTION_RIGHT) return 1;
+				if (_facingDirection == DIRECTION_RIGHT)
+				{
+					if (!LevelManager::isObstaclePresentOnHorizontalAxis(getX(), pointerPlayer->getX(), getY())) return 1;
+				}
 				else turnToRight();
 			}
 			
