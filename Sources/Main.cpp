@@ -683,7 +683,7 @@ int main(int argc, char *argv[])
 	}
 	
 	// Initialize the needed SDL subsystems
-	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK) != 0)
+	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK) != 0)
 	{
 		LOG_ERROR("SDL_Init() failed (%s).", SDL_GetError());
 		return -1;
