@@ -22,7 +22,6 @@
 #include <Renderer.hpp>
 #include <SavegameManager.hpp>
 #include <SDL2/SDL.h>
-#include <StaticEntityAnimatedTexture.hpp>
 #include <StaticEntityEnemySpawner.hpp>
 #include <TextureDisplayOverlay.hpp>
 #include <TextureManager.hpp>
@@ -52,9 +51,6 @@ static std::list<MovingEntityBullet *> _enemiesBulletsList;
 
 /** All enemies. */
 static std::list<FightingEntityEnemy *> _enemiesList;
-
-/** All animated textures. */
-static std::list<StaticEntityAnimatedTexture *> _animatedTexturesList;
 
 /** How many pixels to subtract to the player X coordinate to obtain the scene camera X coordinate. */
 static int _cameraOffsetX;
@@ -109,9 +105,7 @@ static void _clearAllLists()
 	for (enemiesListIterator = _enemiesList.begin(); enemiesListIterator != _enemiesList.end(); ++enemiesListIterator) delete *enemiesListIterator;
 	_enemiesList.clear();
 	
-	std::list<StaticEntityAnimatedTexture *>::iterator animatedTexturesListIterator;
-	for (animatedTexturesListIterator = _animatedTexturesList.begin(); animatedTexturesListIterator != _animatedTexturesList.end(); ++animatedTexturesListIterator) delete *animatedTexturesListIterator;
-	_animatedTexturesList.clear();
+	EffectManager::clearAllEffects();
 }
 
 /** Automatically free allocated resources on program shutdown. */
@@ -387,7 +381,6 @@ static inline void _updateGameLogic()
 	int result;
 	SDL_Rect *pointerPositionRectangle;
 	enemiesListIterator = _enemiesList.begin();
-	StaticEntityAnimatedTexture *pointerMuzzleFlashAnimatedTexture;
 	while (enemiesListIterator != _enemiesList.end())
 	{
 		pointerEnemy = *enemiesListIterator;
@@ -396,11 +389,8 @@ static inline void _updateGameLogic()
 		// Remove the enemy if it is dead
 		if (result == 1)
 		{
-			// Spawn an explosion effect
-			pointerPositionRectangle = pointerEnemy->getPositionRectangle();
-			_animatedTexturesList.push_front(pointerEnemy->generateExplosion());
-			
 			// Spawn an item on the current block if player is lucky
+			pointerPositionRectangle = pointerEnemy->getPositionRectangle();
 			_spawnItem(pointerPositionRectangle->x + (pointerPositionRectangle->w / 2), pointerPositionRectangle->y + (pointerPositionRectangle->h / 2)); // Use enemy center coordinates to avoid favoring one block among others
 			
 			// Remove the enemy
@@ -413,11 +403,8 @@ static inline void _updateGameLogic()
 		else if (result == 2)
 		{
 			// Is the enemy allowed to fire ?
-			if (pointerEnemy->shoot(&pointerBullet, &pointerMuzzleFlashAnimatedTexture))
-			{
-				_enemiesBulletsList.push_front(pointerBullet);
-				_animatedTexturesList.push_front(pointerMuzzleFlashAnimatedTexture);
-			}
+			pointerBullet = pointerEnemy->shoot();
+			if (pointerBullet != NULL) _enemiesBulletsList.push_front(pointerBullet);
 		}
 		
 		// Enemy is still alive, check next one
@@ -489,7 +476,7 @@ static inline void _updateGameLogic()
 			LevelManager::setBlockContent(pointerPositionRectangle->x, pointerPositionRectangle->y, blockContent);
 			
 			// Display an explosion
-			_animatedTexturesList.push_front(EffectManager::generateEffect(pointerPositionRectangle->x, pointerPositionRectangle->y, EffectManager::EFFECT_ID_ENEMY_SPAWNER_EXPLOSION));
+			EffectManager::addEffect(pointerPositionRectangle->x, pointerPositionRectangle->y, EffectManager::EFFECT_ID_ENEMY_SPAWNER_EXPLOSION);
 			
 			// Remove the spawner
 			delete pointerEnemySpawner;
@@ -509,22 +496,8 @@ static inline void _updateGameLogic()
 		++enemySpawnersListIterator;
 	}
 	
-	// Update animated textures at the end, because they can be spawned by previous updates
-	std::list<StaticEntityAnimatedTexture *>::iterator animatedTexturesListIterator = _animatedTexturesList.begin();
-	StaticEntityAnimatedTexture *pointerAnimatedTexture;
-	while (animatedTexturesListIterator != _animatedTexturesList.end())
-	{
-		pointerAnimatedTexture = *animatedTexturesListIterator;
-		
-		if (pointerAnimatedTexture->update() != 0)
-		{
-			// Remove the texture
-			delete pointerAnimatedTexture;
-			animatedTexturesListIterator = _animatedTexturesList.erase(animatedTexturesListIterator);
-		}
-		// Animation is not finished, check next one
-		else ++animatedTexturesListIterator;
-	}
+	// Update effects at the end because they can be spawned by previous updates
+	EffectManager::update();
 }
 
 /** Display and keep up to date interface strings. */
@@ -634,8 +607,7 @@ static inline void _renderGame()
 	pointerPlayer->render();
 	
 	// Display special effects at the end, so they can recover everything
-	std::list<StaticEntityAnimatedTexture *>::iterator animatedTexturesListIterator;
-	for (animatedTexturesListIterator = _animatedTexturesList.begin(); animatedTexturesListIterator != _animatedTexturesList.end(); ++animatedTexturesListIterator) (*animatedTexturesListIterator)->render();
+	EffectManager::render();
 	
 	// Display the red overlay
 	if (_isPlayerHit)
@@ -658,6 +630,7 @@ int main(int argc, char *argv[])
 	SDL_Event event;
 	unsigned int frameStartingTime, frameElapsedTime;
 	int isFullScreenEnabled = 0, levelToLoadNumber, i, isPauseKeyPressed = 0, isRetryKeyPressed = 0;
+	MovingEntityBullet *pointerBullet;
 	#if CONFIGURATION_DISPLAY_IS_FRAME_RATE_DISPLAYING_ENABLED
 		unsigned int frameRateStartingTime = 0;
 		int framesCount = 0;
@@ -875,15 +848,9 @@ int main(int argc, char *argv[])
 			// Fire a bullet
 			if (ControlManager::isKeyPressed(ControlManager::KEY_ID_SHOOT))
 			{
-				MovingEntityBullet *pointerBullet;
-				StaticEntityAnimatedTexture *pointerMuzzleFlashAnimatedTexture;
-				
 				// Is the player allowed to shoot ?
-				if (pointerPlayer->shoot(&pointerBullet, &pointerMuzzleFlashAnimatedTexture))
-				{
-					_playerBulletsList.push_front(pointerBullet);
-					_animatedTexturesList.push_front(pointerMuzzleFlashAnimatedTexture);
-				}
+				pointerBullet = pointerPlayer->shoot();
+				if (pointerBullet != NULL) _playerBulletsList.push_front(pointerBullet);
 			}
 			
 			_updateGameLogic();

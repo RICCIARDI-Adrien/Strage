@@ -5,8 +5,6 @@
 #ifndef HPP_EFFECT_MANAGER_HPP
 #define HPP_EFFECT_MANAGER_HPP
 
-#include <StaticEntityAnimatedTexture.hpp>
-
 namespace EffectManager
 {
 
@@ -42,15 +40,6 @@ typedef enum
 //-------------------------------------------------------------------------------------------------
 // Types
 //-------------------------------------------------------------------------------------------------
-/** Generate the requested effect at the map specified coordinates.
- * @param x Effect horizontal coordinate on the map.
- * @param y Effect vertical coordinate on the map.
- * @param effectId Specify the effect to generate. It's the caller responsibility to free the generated effect.
- * @return NULL if the requested effect does not exist,
- * @return The animated texture corresponding to the effect visual part. Play the effect sound in the same time.
- */
-StaticEntityAnimatedTexture *generateEffect(int x, int y, EffectId effectId);
-
 /** Get the effect texture width (it is the same for all effect animated frames).
  * @param effectId The effect to get texture width.
  * @return -1 if the provided effect does not exist,
@@ -64,7 +53,27 @@ int getEffectTextureWidth(EffectId effectId);
  * @return The effect textures height.
  */
 int getEffectTextureHeight(EffectId effectId);
-	
+
+/** Add a new effect to display on the scene.
+ * @param x Effect horizontal coordinate on the map.
+ * @param y Effect vertical coordinate on the map.
+ * @param effectId Specify the effect to generate.
+ */
+void addEffect(int x, int y, EffectId effectId);
+
+/** Delete all currently playing effects. */
+void clearAllEffects();
+
+/** Update all currently playing effects state.
+ * @note Must be called on the game update step.
+ */
+void update();
+
+/** Display all currently playing effects.
+ * @note Must be called on the game rendering step.
+ */
+void render();
+
 }
 
 #endif

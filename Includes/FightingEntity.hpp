@@ -161,16 +161,15 @@ class FightingEntity: public MovingEntity
 			return 0;
 		}
 		
-		/** Generate a bullet facing the entity direction and the corresponding muzzle flash.
-		 * @param pointerBullet On output, contain the generated bullet (if the entity was allowed to shoot).
-		 * @param pointerMuzzleFlashAnimatedTexture On output, contain the generated muzzle flash animated texture (if the entity was allowed to shoot).
-		 * @return 1 if the entity was allowed to shot,
-		 * @return 0 if the entity could not shoot (no more ammunition, slower fire rate...).
+		/** Generate a bullet facing the entity direction and play the associated effect.
+		 * @return A valid pointer if the entity was allowed to shot,
+		 * @return NULL if the entity could not shoot (no more ammunition, slower fire rate...).
 		 */
-		virtual int shoot(MovingEntityBullet **pointerBullet, StaticEntityAnimatedTexture **pointerMuzzleFlashAnimatedTexture)
+		virtual MovingEntityBullet *shoot()
 		{
 			int bulletStartingPositionOffsetX, bulletStartingPositionOffsetY, muzzleFlashStartingPositionOffsetX, muzzleFlashStartingPositionOffsetY, entityX, entityY;
 			EffectManager::EffectId muzzleFlashEffectId;
+			MovingEntityBullet *pointerBullet;
 			
 			// Allow to shoot only if enough time elapsed since last shot
 			if (SDL_GetTicks() - _lastShotTime >= _timeBetweenShots)
@@ -186,18 +185,18 @@ class FightingEntity: public MovingEntity
 				muzzleFlashStartingPositionOffsetY = _muzzleFlashStartingPositionOffsets[_facingDirection].y;
 				
 				// Create the bullet
-				*pointerBullet = _fireBullet(entityX + bulletStartingPositionOffsetX, entityY + bulletStartingPositionOffsetY);
+				pointerBullet = _fireBullet(entityX + bulletStartingPositionOffsetX, entityY + bulletStartingPositionOffsetY);
 				
-				// Create the muzzle flash
+				// Play the shoot effect
 				muzzleFlashEffectId = (EffectManager::EffectId) ((int) _firingEffectId + (int) _facingDirection); // Select the right effect according to entity direction
-				*pointerMuzzleFlashAnimatedTexture = EffectManager::generateEffect(entityX + muzzleFlashStartingPositionOffsetX, entityY + muzzleFlashStartingPositionOffsetY, muzzleFlashEffectId);
+				EffectManager::addEffect(entityX + muzzleFlashStartingPositionOffsetX, entityY + muzzleFlashStartingPositionOffsetY, muzzleFlashEffectId);
 				
 				// Get time after having generated the bullet, in case this takes more than 1 millisecond
 				_lastShotTime = SDL_GetTicks();
 				
-				return 1;
+				return pointerBullet;
 			}
-			return 0; // No shot allowed
+			return NULL; // No shot allowed
 		}
 };
 

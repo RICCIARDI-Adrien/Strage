@@ -318,14 +318,6 @@ class FightingEntityEnemy: public FightingEntity
 			return movedPixelsAmount;
 		}
 		
-		/** Generate the explosion effect corresponding to the entity at the entity current location on the map.
-		 * @return The enemy-specific explosion.
-		 */
-		StaticEntityAnimatedTexture *generateExplosion()
-		{
-			return EffectManager::generateEffect(this->getX(), this->getY(), _explosionEffectId);
-		}
-		
 		/** Update enemy artificial intelligence.
 		 * @return 0 if the enemy must be kept alive,
 		 * @return 1 if the enemy is dead and must be removed,
@@ -341,6 +333,10 @@ class FightingEntityEnemy: public FightingEntity
 			{
 				// Remove enemy presence from the block
 				_setBlockEnemyContent(0);
+				
+				// Display explosion
+				EffectManager::addEffect(this->getX(), this->getY(), _explosionEffectId);
+				
 				return 1;
 			}
 			
