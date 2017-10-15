@@ -180,6 +180,9 @@ int initialize()
 	_pointerTextureManagerTextures[TEXTURE_ID_MEDIPACK_TAKEN_4] = new Texture(FileManager::getFilePath("Textures/Medipack_Taken_4.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_MEDIPACK_TAKEN_5] = new Texture(FileManager::getFilePath("Textures/Medipack_Taken_5.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_MEDIPACK_TAKEN_6] = new Texture(FileManager::getFilePath("Textures/Medipack_Taken_6.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_AMMUNITION_TAKEN_0] = new Texture(FileManager::getFilePath("Textures/Ammunition_Taken_0.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_AMMUNITION_TAKEN_1] = new Texture(FileManager::getFilePath("Textures/Ammunition_Taken_1.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_AMMUNITION_TAKEN_2] = new Texture(FileManager::getFilePath("Textures/Ammunition_Taken_2.bmp"), 1);
 	
 	// Overlays
 	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_HIT_OVERLAY] = new TextureDisplayOverlay(FileManager::getFilePath("Textures/Player_Hit_Overlay.bmp"), 1);

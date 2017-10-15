@@ -177,6 +177,13 @@ static Effect effects[EFFECT_IDS_COUNT] =
 		TextureManager::TEXTURE_ID_MEDIPACK_TAKEN_6,
 		6,
 		AudioManager::SOUND_ID_PLAYER_HEALED
+	},
+	// EFFECT_ID_AMMUNITION_TAKEN
+	{
+		TextureManager::TEXTURE_ID_AMMUNITION_TAKEN_0,
+		TextureManager::TEXTURE_ID_AMMUNITION_TAKEN_2,
+		6,
+		AudioManager::SOUND_ID_AMMUNITION_TAKEN
 	}
 };
 

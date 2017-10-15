@@ -165,7 +165,7 @@ class FightingEntityPlayer: public FightingEntity
 				LOG_DEBUG("Player is crossing a block containing ammunition.");
 				
 				addAmmunition(30);
-				AudioManager::playSound(AudioManager::SOUND_ID_AMMUNITION_TAKEN);
+				EffectManager::addEffect(blockX, blockY, EffectManager::EFFECT_ID_AMMUNITION_TAKEN);
 				LOG_DEBUG("Player got ammunition.");
 				
 				// Remove the ammunition item
