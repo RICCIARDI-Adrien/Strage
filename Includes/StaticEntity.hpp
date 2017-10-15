@@ -33,7 +33,7 @@ class StaticEntity: public Entity
 			_pointerTexture = TextureManager::getTextureFromId(textureId);
 			if (_pointerTexture == NULL)
 			{
-				LOG_ERROR("Could not retrieve texture.");
+				LOG_ERROR("Could not retrieve texture (texture ID : %d).", textureId);
 				exit(-1);
 			}
 			

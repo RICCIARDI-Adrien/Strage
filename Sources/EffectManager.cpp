@@ -171,6 +171,13 @@ static Effect effects[EFFECT_IDS_COUNT] =
 		8,
 		AudioManager::SOUND_ID_BIG_ENEMY_FIRESHOT
 	},
+	// EFFECT_ID_MEDIPACK_TAKEN
+	{
+		TextureManager::TEXTURE_ID_MEDIPACK_TAKEN_0,
+		TextureManager::TEXTURE_ID_MEDIPACK_TAKEN_6,
+		6,
+		AudioManager::SOUND_ID_PLAYER_HEALED
+	}
 };
 
 /** All animated textures. */

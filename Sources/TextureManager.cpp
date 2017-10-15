@@ -24,7 +24,6 @@ static Texture *_pointerTextureManagerTextures[TEXTURE_IDS_COUNT];
 //-------------------------------------------------------------------------------------------------
 int initialize()
 {
-	// TODO load with array of struct { string, int }?
 	// Scene floors
 	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_0] = new Texture(FileManager::getFilePath("Textures/Floor_Clay_0.bmp"), 0);
 	_pointerTextureManagerTextures[TEXTURE_ID_SCENE_FLOOR_1] = new Texture(FileManager::getFilePath("Textures/Floor_Dirt_0.bmp"), 0);
@@ -174,6 +173,13 @@ int initialize()
 	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_DOWN] = new Texture(FileManager::getFilePath("Textures/Big_Enemy_Muzzle_Flash_Down.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_LEFT] = new Texture(FileManager::getFilePath("Textures/Big_Enemy_Muzzle_Flash_Left.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_RIGHT] = new Texture(FileManager::getFilePath("Textures/Big_Enemy_Muzzle_Flash_Right.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIPACK_TAKEN_0] = new Texture(FileManager::getFilePath("Textures/Medipack_Taken_0.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIPACK_TAKEN_1] = new Texture(FileManager::getFilePath("Textures/Medipack_Taken_1.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIPACK_TAKEN_2] = new Texture(FileManager::getFilePath("Textures/Medipack_Taken_2.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIPACK_TAKEN_3] = new Texture(FileManager::getFilePath("Textures/Medipack_Taken_3.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIPACK_TAKEN_4] = new Texture(FileManager::getFilePath("Textures/Medipack_Taken_4.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIPACK_TAKEN_5] = new Texture(FileManager::getFilePath("Textures/Medipack_Taken_5.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_MEDIPACK_TAKEN_6] = new Texture(FileManager::getFilePath("Textures/Medipack_Taken_6.bmp"), 1);
 	
 	// Overlays
 	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_HIT_OVERLAY] = new TextureDisplayOverlay(FileManager::getFilePath("Textures/Player_Hit_Overlay.bmp"), 1);

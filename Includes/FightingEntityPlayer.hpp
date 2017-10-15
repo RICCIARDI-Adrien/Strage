@@ -3,12 +3,12 @@
 
 #include <AudioManager.hpp>
 #include <Configuration.hpp>
+#include <EffectManager.hpp>
 #include <FightingEntity.hpp>
 #include <Log.hpp>
 #include <MovingEntityBullet.hpp>
 #include <MovingEntityBulletPlayer.hpp>
 #include <Renderer.hpp>
-#include <StaticEntityAnimatedTexture.hpp>
 #include <TextureManager.hpp>
 
 //-------------------------------------------------------------------------------------------------
@@ -113,12 +113,16 @@ class FightingEntityPlayer: public FightingEntity
 		 */
 		virtual int update()
 		{
-			int blockContent, playerCenterX, playerCenterY;
+			int blockContent, playerCenterX, playerCenterY, blockX, blockY;
 			SDL_Rect *pointerPositionRectangle = &_positionRectangles[_facingDirection];
 			
 			// Cache player center coordinates
 			playerCenterX = pointerPositionRectangle->x + (pointerPositionRectangle->w / 2);
 			playerCenterY = pointerPositionRectangle->y + (pointerPositionRectangle->h / 2);
+			
+			// Cache the coordinates of the block the player is crossing
+			blockX = playerCenterX - (playerCenterX % CONFIGURATION_LEVEL_BLOCK_SIZE),
+			blockY = playerCenterY - (playerCenterY % CONFIGURATION_LEVEL_BLOCK_SIZE);
 			
 			// Get block under player center content
 			blockContent = LevelManager::getBlockContent(playerCenterX, playerCenterY);
@@ -131,7 +135,7 @@ class FightingEntityPlayer: public FightingEntity
 				if (isWounded())
 				{
 					modifyLife(20);
-					AudioManager::playSound(AudioManager::SOUND_ID_PLAYER_HEALED);
+					EffectManager::addEffect(blockX, blockY, EffectManager::EFFECT_ID_MEDIPACK_TAKEN);
 					LOG_DEBUG("Healed player.");
 					
 					// Remove the medipack as it has been used
