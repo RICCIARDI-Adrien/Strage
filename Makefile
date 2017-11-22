@@ -27,7 +27,7 @@ macos: CPPFLAGS += -Werror -O2 -DNDEBUG -DCONFIGURATION_BUILD_FOR_MACOS
 macos: LIBRARIES = -framework SDL2 -framework SDL2_mixer -framework SDL2_ttf
 macos: all
 
-windows: windows_prepare
+windows: SDL2-$(VERSION_SDL2) SDL2_mixer-$(VERSION_SDL2_MIXER) SDL2_ttf-$(VERSION_SDL2_TTF)
 windows: ADDITIONAL_OBJECTS = Windows_Icon.o
 windows: BINARY = Strage.exe
 windows: CPP = i686-w64-mingw32-g++
@@ -37,25 +37,25 @@ windows: CPPFLAGS += -Werror -O2 -DNDEBUG -static-libgcc -static-libstdc++ -mwin
 windows: LIBRARIES = -Wl,--start-group -LSDL2-$(VERSION_SDL2)/i686-w64-mingw32/lib -lSDL2 -LSDL2_mixer-$(VERSION_SDL2_MIXER)/i686-w64-mingw32/lib -lSDL2_mixer -LSDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/lib -lSDL2_ttf -lmingw32 -lSDL2main -Wl,--end-group
 windows: windows_generate_executable_icon all windows_clean_executable_icon
 
-windows_prepare: SDL2-$(VERSION_SDL2) SDL2_mixer-$(VERSION_SDL2_MIXER) SDL2_ttf-$(VERSION_SDL2_TTF)
-	@# Create a unique SDL2 include directory because SDL_mixer and SDL_ttf internally refer to SDL2.h as a local file (i.e. #include "SDL2.h"), so multiple directories specified with -I options don't work
-	mkdir -p SDL2_Includes
-	cp -r SDL2-$(VERSION_SDL2)/i686-w64-mingw32/include/* SDL2_Includes
-	cp -r SDL2_mixer-$(VERSION_SDL2_MIXER)/i686-w64-mingw32/include/* SDL2_Includes
-	cp -r SDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/include/* SDL2_Includes
-
 # Windows SDL dependencies
+# Each rule copies headers to a unique SDL2 include directory because SDL_mixer and SDL_ttf internally refer to SDL2.h as a local file (i.e. #include "SDL2.h"), so multiple directories specified with -I options don't work
 SDL2-$(VERSION_SDL2):
 	wget https://www.libsdl.org/release/SDL2-devel-$(VERSION_SDL2)-mingw.tar.gz -O /tmp/SDL2-devel-$(VERSION_SDL2)-mingw.tar.gz
 	tar -xf /tmp/SDL2-devel-$(VERSION_SDL2)-mingw.tar.gz
+	mkdir -p SDL2_Includes
+	cp -r SDL2-$(VERSION_SDL2)/i686-w64-mingw32/include/* SDL2_Includes
 
 SDL2_mixer-$(VERSION_SDL2_MIXER):
 	wget https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-$(VERSION_SDL2_MIXER)-mingw.tar.gz -O /tmp/SDL2_mixer-devel-$(VERSION_SDL2_MIXER)-mingw.tar.gz
 	tar -xf /tmp/SDL2_mixer-devel-$(VERSION_SDL2_MIXER)-mingw.tar.gz
+	mkdir -p SDL2_Includes
+	cp -r SDL2_mixer-$(VERSION_SDL2_MIXER)/i686-w64-mingw32/include/* SDL2_Includes
 
 SDL2_ttf-$(VERSION_SDL2_TTF):
 	wget https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-$(VERSION_SDL2_TTF)-mingw.tar.gz -O /tmp/SDL2_ttf-devel-$(VERSION_SDL2_TTF)-mingw.tar.gz
 	tar -xf /tmp/SDL2_ttf-devel-$(VERSION_SDL2_TTF)-mingw.tar.gz
+	mkdir -p SDL2_Includes
+	cp -r SDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/include/* SDL2_Includes
 
 windows_generate_executable_icon:
 	@# Create resource file (.rc)
