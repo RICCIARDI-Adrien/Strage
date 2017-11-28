@@ -26,7 +26,7 @@ class StaticEntityEnemySpawner: public StaticEntity
 		}
 		
 		/** Free allocated resources. */
-		virtual ~StaticEntityEnemySpawner() {};
+		virtual ~StaticEntityEnemySpawner() {}
 		
 		/** Change entity life value by adding or removing some life points.
 		 * @param lifePointsAmount How many life points to add or subtract.

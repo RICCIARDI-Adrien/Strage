@@ -95,7 +95,7 @@ class FightingEntity: public MovingEntity
 		}
 		
 		/** Free allocated resources. */
-		virtual ~FightingEntity() {};
+		virtual ~FightingEntity() {}
 		
 		/** Get the entity life points.
 		 * @return Entity life points amount.

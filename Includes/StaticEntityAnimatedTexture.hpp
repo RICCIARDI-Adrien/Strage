@@ -40,6 +40,9 @@ class StaticEntityAnimatedTexture: public StaticEntity
 			_framesCounter = 0;
 		}
 		
+		/** Free allocated resources. */
+		virtual ~StaticEntityAnimatedTexture() {}
+		
 		/** Update the _pointerTexture with the right texture when time has come.
 		 * @return 0 while the animation must be displayed,
 		 * @return 1 when the animation is finished and the object must be destroyed.

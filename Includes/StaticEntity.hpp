@@ -46,7 +46,7 @@ class StaticEntity: public Entity
 		}
 		
 		/** Free allocated resources. */
-		virtual ~StaticEntity() {};
+		virtual ~StaticEntity() {}
 		
 		/** Display the entity at its current location on the map. */
 		virtual void render()
