@@ -47,6 +47,11 @@ Install the following SDL libraries and headers by dragging/dropping each framew
 
 Then, build the executable using the command *make macos*.
 
+You can package the game into a standard macOS app thanks to the following command :
+```
+make macos_release
+```
+
 ### Building for Windows
 Windows binary is built under Linux using MinGW W64 cross compiler.  
 On Debian/Ubuntu systems, install the following package :
@@ -55,13 +60,10 @@ sudo apt install mingw-w64
 ```
 Now build the executable with the command *make windows*.
 
-The following DLLs are required for the game to run on Windows (simply put them next to Strage.exe executable). DLLs are found in the *i686-w64-mingw32/bin* directory of the previously downloaded SDL archives, the archive corresponding to a DLL is specified in brackets.
-* SDL2.dll (SDL2)
-* libmpg123-0.dll (SDL2_mixer)
-* SDL2_mixer.dll (SDL2_mixer)
-* libfreetype-6.dll (SDL2_ttf)
-* SDL2_ttf.dll (SDL2_ttf)
-* zlib1.dll (SDL2_ttf)
+You can also package the game into a ZIP archive to easily distribute it by typing the following command :
+```
+make windows_release
+```
 
 ## How it works
 Levels are made using [Tiled](http://www.mapeditor.org/) editor. They are constituted of 2 layers :

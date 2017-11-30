@@ -39,23 +39,28 @@ windows: windows_generate_executable_icon all windows_clean_executable_icon
 
 # Windows SDL dependencies
 # Each rule copies headers to a unique SDL2 include directory because SDL_mixer and SDL_ttf internally refer to SDL2.h as a local file (i.e. #include "SDL2.h"), so multiple directories specified with -I options don't work
+# Each rule also places the DLLs needed by the game executable near to the executable to make it easily testable using wine
 SDL2-$(VERSION_SDL2):
 	wget https://www.libsdl.org/release/SDL2-devel-$(VERSION_SDL2)-mingw.tar.gz -O /tmp/SDL2-devel-$(VERSION_SDL2)-mingw.tar.gz
 	tar -xf /tmp/SDL2-devel-$(VERSION_SDL2)-mingw.tar.gz
 	mkdir -p SDL2_Includes
 	cp -r SDL2-$(VERSION_SDL2)/i686-w64-mingw32/include/* SDL2_Includes
+	cp SDL2-$(VERSION_SDL2)/i686-w64-mingw32/bin/SDL2.dll .
 
 SDL2_mixer-$(VERSION_SDL2_MIXER):
 	wget https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-$(VERSION_SDL2_MIXER)-mingw.tar.gz -O /tmp/SDL2_mixer-devel-$(VERSION_SDL2_MIXER)-mingw.tar.gz
 	tar -xf /tmp/SDL2_mixer-devel-$(VERSION_SDL2_MIXER)-mingw.tar.gz
-	mkdir -p SDL2_Includes
 	cp -r SDL2_mixer-$(VERSION_SDL2_MIXER)/i686-w64-mingw32/include/* SDL2_Includes
+	cp SDL2_mixer-$(VERSION_SDL2_MIXER)/i686-w64-mingw32/bin/libmpg123-0.dll .
+	cp SDL2_mixer-$(VERSION_SDL2_MIXER)/i686-w64-mingw32/bin/SDL2_mixer.dll .
 
 SDL2_ttf-$(VERSION_SDL2_TTF):
 	wget https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-$(VERSION_SDL2_TTF)-mingw.tar.gz -O /tmp/SDL2_ttf-devel-$(VERSION_SDL2_TTF)-mingw.tar.gz
 	tar -xf /tmp/SDL2_ttf-devel-$(VERSION_SDL2_TTF)-mingw.tar.gz
-	mkdir -p SDL2_Includes
 	cp -r SDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/include/* SDL2_Includes
+	cp SDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/bin/libfreetype-6.dll .
+	cp SDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/bin/SDL2_ttf.dll .
+	cp SDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/bin/zlib1.dll .
 
 windows_generate_executable_icon:
 	@# Create resource file (.rc)
