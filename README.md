@@ -27,7 +27,7 @@ And remember, *strage* means *slaughter* in Italian...
 
 ### Xbox One game controller
 * **Left stick** : move
-* **A button** : shoot
+* **'A' button** : shoot
 * **View button** : reload current level
 * **Menu button** : pause game
 
@@ -41,8 +41,8 @@ Then simply type *make linux* in the Strage directory to build the game.
 
 ### Building for macOS
 Install the following SDL libraries and headers by dragging/dropping each framework file in /Library/Frameworks :
-* [SDL2](https://www.libsdl.org/release/SDL2-2.0.5.dmg)
-* [SDL2 Mixer](https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.1.dmg)
+* [SDL2](https://www.libsdl.org/release/SDL2-2.0.7.dmg)
+* [SDL2 Mixer](https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.2.dmg)
 * [SDL2 TTF](https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.14.dmg)
 
 Then, build the executable using the command *make macos*.
