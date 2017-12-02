@@ -77,6 +77,8 @@ all:
 
 clean:
 	rm -f $(BINARY) $(BINARY).exe
+	@# Remove Windows build files
+	rm -rf SDL2-$(VERSION_SDL2) SDL2_mixer-$(VERSION_SDL2_MIXER) SDL2_ttf-$(VERSION_SDL2_TTF) SDL2_Includes *.dll
 
 # Make all frameworks being searched in the application Frameworks directory
 macos_release: CPPFLAGS += -rpath @executable_path/../Frameworks
