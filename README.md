@@ -37,15 +37,16 @@ On Debian/Ubuntu systems, you have to install some SDL2 packages.
 ```
 sudo apt install libsdl2-dev libsdl2-mixer-dev libsdl2-ttf-dev
 ```
-Then simply type *make linux* in the Strage directory to build the game.
+Then simply type the following command in the Strage directory to build the game :
+```
+make linux
+```
 
 ### Building for macOS
-Install the following SDL libraries and headers by dragging/dropping each framework file in /Library/Frameworks :
-* [SDL2](https://www.libsdl.org/release/SDL2-2.0.7.dmg)
-* [SDL2 Mixer](https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.2.dmg)
-* [SDL2 TTF](https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.14.dmg)
-
-Then, build the executable using the command *make macos*.
+Build the executable using the command :
+```
+make macos
+```
 
 You can package the game into a standard macOS app thanks to the following command :
 ```
@@ -58,7 +59,10 @@ On Debian/Ubuntu systems, install the following package :
 ```
 sudo apt install mingw-w64
 ```
-Now build the executable with the command *make windows*.
+Now build the executable with the command :
+```
+make windows
+```
 
 You can also package the game into a ZIP archive to easily distribute it by typing the following command :
 ```
