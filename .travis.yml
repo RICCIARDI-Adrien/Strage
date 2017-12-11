@@ -11,16 +11,7 @@ addons:
       - libsdl2-mixer-dev
       - libsdl2-ttf-dev
       - mingw-w64
-install:
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then wget https://www.libsdl.org/release/SDL2-2.0.5.dmg; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then hdiutil attach SDL2-2.0.5.dmg; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo cp -r /Volumes/SDL2/SDL2.framework /Library/Frameworks; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then wget https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.1.dmg; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then hdiutil attach SDL2_mixer-2.0.1.dmg; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo cp -r /Volumes/SDL2_mixer/SDL2_mixer.framework /Library/Frameworks; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then wget https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.14.dmg; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then hdiutil attach SDL2_ttf-2.0.14.dmg; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo cp -r /Volumes/SDL2_ttf/SDL2_ttf.framework /Library/Frameworks; fi
+install: true
 script:
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then make linux; fi
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then make windows; fi
