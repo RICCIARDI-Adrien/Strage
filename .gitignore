@@ -1,5 +1,6 @@
 *.dll
 *.exe
+Frameworks
 Savegame.txt
 SDL*
 Strage
