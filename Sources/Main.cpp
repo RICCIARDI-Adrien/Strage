@@ -629,12 +629,17 @@ int main(int argc, char *argv[])
 {
 	SDL_Event event;
 	unsigned int frameStartingTime, frameElapsedTime;
-	int isFullScreenEnabled = 0, levelToLoadNumber, i, isPauseKeyPressed = 0, isRetryKeyPressed = 0;
+	int isFullScreenEnabled = 0, levelToLoadNumber, i, isRetryKeyPressed = 0;
 	MovingEntityBullet *pointerBullet;
 	const char *stringMainMenuItems[] =
 	{
 		"Continue game",
 		"New game",
+		"Quit"
+	};
+	const char *stringPauseMenuItems[] =
+	{
+		"Continue",
 		"Quit"
 	};
 	#if CONFIGURATION_DISPLAY_IS_FRAME_RATE_DISPLAYING_ENABLED
@@ -767,20 +772,15 @@ int main(int argc, char *argv[])
 		// Pause or continue the game
 		if (ControlManager::isKeyPressed(ControlManager::KEY_ID_PAUSE_GAME))
 		{
-			// Pause only if the player is alive, or it would allow the game to continue even if the player is dead
-			if (!_isPlayerDead && !_isGameFinished && !isPauseKeyPressed)
-			{
-				_isGamePaused = !_isGamePaused;
-				if (_isGamePaused) LOG_INFORMATION("Game paused.");
-				else LOG_INFORMATION("Game continuing.");
-				
-				AudioManager::pauseMusic(_isGamePaused);
+			// Stop playing music while the game is paused (in case the game must be quickly hidden to an incoming person)
+			LOG_INFORMATION("Game paused.");
+			AudioManager::pauseMusic(1);
 			
-				// Tell that the key is held, so the "pause key" corresponding code is not called every time until the key is released
-				isPauseKeyPressed = 1;
-			}
+			if (Menu::display("Pause", stringPauseMenuItems, 2) != 0) goto Exit;
+				
+			LOG_INFORMATION("Game continuing.");
+			AudioManager::pauseMusic(0);
 		}
-		else isPauseKeyPressed = 0;
 		
 		// Restart the current level
 		if (ControlManager::isKeyPressed(ControlManager::KEY_ID_RETRY_GAME))
