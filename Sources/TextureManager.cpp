@@ -196,6 +196,7 @@ int initialize()
 	
 	// Graphic user interface
 	_pointerTextureManagerTextures[TEXTURE_ID_GRAPHIC_USER_INTERFACE_BACKGROUND] = new Texture(FileManager::getFilePath("Textures/Graphic_User_Interface_Background.bmp"), 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_MENU_BACKGROUND] = new Texture(FileManager::getFilePath("Textures/Menu_Background.bmp"), 0);
 	
 	return 0;
 }

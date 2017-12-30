@@ -9,6 +9,7 @@
 #include <Menu.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
+#include <TextureManager.hpp>
 
 namespace Menu
 {
@@ -92,13 +93,6 @@ static inline void _initialize(const char *stringMenuTitle, const char *stringMe
 
 	// Add Y offset to all texture coordinates, preserving the yet existing spacing
 	for (i = 0; i < _menuItemsCount; i++) _menuItems[i].y += firstStringTextureY;
-	
-	// Set rendering color to gray
-	if (SDL_SetRenderDrawColor(Renderer::pointerMainRenderer, 192, 192, 192, 255) != 0)
-	{
-		LOG_ERROR("Failed to set renderer drawing color (%s).", SDL_GetError());
-		exit(-1);
-	}
 }
 
 /** Free all textures. */
@@ -112,13 +106,6 @@ static inline void _uninitialize()
 	{
 		SDL_DestroyTexture(_menuItems[i].pointerNormalTexture);
 		SDL_DestroyTexture(_menuItems[i].pointerFocusedTexture);
-	}
-	
-	// Reset rendering color to black
-	if (SDL_SetRenderDrawColor(Renderer::pointerMainRenderer, 0, 0, 0, 255) != 0)
-	{
-		LOG_ERROR("Failed to reset renderer drawing color (%s).", SDL_GetError());
-		exit(-1);
 	}
 }
 
@@ -199,7 +186,11 @@ int display(const char *stringMenuTitle, const char *stringMenuItemsTexts[], int
 		
 		// Display menu
 		Renderer::beginRendering(0, 0);
+		// Display stretched background (so it can fit any screen resolution)
+		SDL_RenderCopy(Renderer::pointerMainRenderer, TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_MENU_BACKGROUND)->getTexture(), NULL, NULL);
+		// Display title
 		Renderer::renderTexture(_pointerMenuTitleTexture, _menuTitleTextureX, CONFIGURATION_MENU_TITLE_Y);
+		// Display items
 		for (i = 0; i < _menuItemsCount; i++)
 		{
 			// Select the right texture according to the focus state

@@ -185,6 +185,7 @@ typedef enum
 	
 	// Graphic user interface
 	TEXTURE_ID_GRAPHIC_USER_INTERFACE_BACKGROUND,
+	TEXTURE_ID_MENU_BACKGROUND,
 	
 	TEXTURE_IDS_COUNT
 } TextureId;
