@@ -386,42 +386,42 @@ class FightingEntityEnemy: public FightingEntity
 				SDL_Rect renderingRectangle;
 				
 				// Spotting rectangle
-				SDL_SetRenderDrawColor(Renderer::pointerMainRenderer, 0, 255, 0, 255);
+				SDL_SetRenderDrawColor(Renderer::pointerRenderer, 0, 255, 0, 255);
 				
 				renderingRectangle.x = _spottingRectangle.x - Renderer::displayX;
 				renderingRectangle.y = _spottingRectangle.y - Renderer::displayY;
 				renderingRectangle.w = _spottingRectangle.w;
 				renderingRectangle.h = _spottingRectangle.h;
-				SDL_RenderDrawRect(Renderer::pointerMainRenderer, &renderingRectangle);
+				SDL_RenderDrawRect(Renderer::pointerRenderer, &renderingRectangle);
 				
 				// Shooting rectangles
-				SDL_SetRenderDrawColor(Renderer::pointerMainRenderer, 255, 0, 0, 255);
+				SDL_SetRenderDrawColor(Renderer::pointerRenderer, 255, 0, 0, 255);
 				
 				renderingRectangle.x = _shootingRectangles[DIRECTION_UP].x - Renderer::displayX;
 				renderingRectangle.y = _shootingRectangles[DIRECTION_UP].y - Renderer::displayY;
 				renderingRectangle.w = _shootingRectangles[DIRECTION_UP].w;
 				renderingRectangle.h = _shootingRectangles[DIRECTION_UP].h;
-				SDL_RenderDrawRect(Renderer::pointerMainRenderer, &renderingRectangle);
+				SDL_RenderDrawRect(Renderer::pointerRenderer, &renderingRectangle);
 				
 				renderingRectangle.x = _shootingRectangles[DIRECTION_DOWN].x - Renderer::displayX;
 				renderingRectangle.y = _shootingRectangles[DIRECTION_DOWN].y - Renderer::displayY;
 				renderingRectangle.w = _shootingRectangles[DIRECTION_DOWN].w;
 				renderingRectangle.h = _shootingRectangles[DIRECTION_DOWN].h;
-				SDL_RenderDrawRect(Renderer::pointerMainRenderer, &renderingRectangle);
+				SDL_RenderDrawRect(Renderer::pointerRenderer, &renderingRectangle);
 				
 				renderingRectangle.x = _shootingRectangles[DIRECTION_LEFT].x - Renderer::displayX;
 				renderingRectangle.y = _shootingRectangles[DIRECTION_LEFT].y - Renderer::displayY;
 				renderingRectangle.w = _shootingRectangles[DIRECTION_LEFT].w;
 				renderingRectangle.h = _shootingRectangles[DIRECTION_LEFT].h;
-				SDL_RenderDrawRect(Renderer::pointerMainRenderer, &renderingRectangle);
+				SDL_RenderDrawRect(Renderer::pointerRenderer, &renderingRectangle);
 				
 				renderingRectangle.x = _shootingRectangles[DIRECTION_RIGHT].x - Renderer::displayX;
 				renderingRectangle.y = _shootingRectangles[DIRECTION_RIGHT].y - Renderer::displayY;
 				renderingRectangle.w = _shootingRectangles[DIRECTION_RIGHT].w;
 				renderingRectangle.h = _shootingRectangles[DIRECTION_RIGHT].h;
-				SDL_RenderDrawRect(Renderer::pointerMainRenderer, &renderingRectangle);
+				SDL_RenderDrawRect(Renderer::pointerRenderer, &renderingRectangle);
 				
-				SDL_SetRenderDrawColor(Renderer::pointerMainRenderer, 0, 0, 0, 255);
+				SDL_SetRenderDrawColor(Renderer::pointerRenderer, 0, 0, 0, 255);
 			}
 			#endif
 		}

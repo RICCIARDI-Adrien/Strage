@@ -36,7 +36,7 @@ typedef enum
 // Variables
 //-------------------------------------------------------------------------------------------------
 /** The renderer used to render to the game window. */
-extern SDL_Renderer *pointerMainRenderer;
+extern SDL_Renderer *pointerRenderer;
 
 /** On rendering, contains the visible display leftmost coordinate. */
 extern int displayX;

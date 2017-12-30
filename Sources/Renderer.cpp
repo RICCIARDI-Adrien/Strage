@@ -35,7 +35,7 @@ static SDL_Color _textColors[TEXT_COLOR_IDS_COUNT];
 //-------------------------------------------------------------------------------------------------
 // Public variables
 //-------------------------------------------------------------------------------------------------
-SDL_Renderer *pointerMainRenderer;
+SDL_Renderer *pointerRenderer;
 
 int displayX;
 int displayY;
@@ -62,20 +62,20 @@ int initialize(int isFullScreenEnabled)
 	}
 	
 	// Create the window renderer
-	pointerMainRenderer = SDL_CreateRenderer(_pointerMainWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (pointerMainRenderer == NULL)
+	pointerRenderer = SDL_CreateRenderer(_pointerMainWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (pointerRenderer == NULL)
 	{
 		LOG_ERROR("Failed to create the main renderer (%s).", SDL_GetError());
 		goto Exit_Error_Destroy_Window;
 	}
 	
 	// Display rendering driver name
-	if (SDL_GetRendererInfo(pointerMainRenderer, &rendererInformation) == 0) LOG_DEBUG("Rendering driver : %s.", rendererInformation.name);
+	if (SDL_GetRendererInfo(pointerRenderer, &rendererInformation) == 0) LOG_DEBUG("Rendering driver : %s.", rendererInformation.name);
 	
 	// Set display size according to selected mode
 	if (isFullScreenEnabled)
 	{
-		if (SDL_GetRendererOutputSize(pointerMainRenderer, &displayWidth, &displayHeight) != 0)
+		if (SDL_GetRendererOutputSize(pointerRenderer, &displayWidth, &displayHeight) != 0)
 		{
 			LOG_ERROR("Failed to get renderer output size (%s).", SDL_GetError());
 			goto Exit_Error_Destroy_Window;
@@ -149,7 +149,7 @@ Exit_Error_Uninitialize_TTF:
 	TTF_Quit();
 	
 Exit_Error_Destroy_Renderer:
-	SDL_DestroyRenderer(pointerMainRenderer);
+	SDL_DestroyRenderer(pointerRenderer);
 
 Exit_Error_Destroy_Window:
 	SDL_DestroyWindow(_pointerMainWindow);
@@ -165,7 +165,7 @@ void uninitialize()
 	for (i = 0; i < FONT_SIZE_IDS_COUNT; i++) TTF_CloseFont(_pointerFonts[i]);
 	TTF_Quit();
 	
-	SDL_DestroyRenderer(pointerMainRenderer);
+	SDL_DestroyRenderer(pointerRenderer);
 	SDL_DestroyWindow(_pointerMainWindow);
 	SDL_Quit();
 }
@@ -173,7 +173,7 @@ void uninitialize()
 void beginRendering(int x, int y)
 {
 	// Clean the rendering area
-	SDL_RenderClear(pointerMainRenderer);
+	SDL_RenderClear(pointerRenderer);
 	
 	// Update the display location
 	_displayRectangle.x = x;
@@ -185,7 +185,7 @@ void beginRendering(int x, int y)
 void endRendering()
 {
 	// Display the rendered picture
-	SDL_RenderPresent(pointerMainRenderer);
+	SDL_RenderPresent(pointerRenderer);
 }
 
 int isDisplayable(SDL_Rect *pointerObjectPositionRectangle)
@@ -209,7 +209,7 @@ SDL_Texture *renderTextToTexture(const char *pointerText, TextColorId colorId, F
 	}
 	
 	// Convert it to a texture to be able to display it
-	SDL_Texture *pointerTexture = SDL_CreateTextureFromSurface(pointerMainRenderer, pointerSurface);
+	SDL_Texture *pointerTexture = SDL_CreateTextureFromSurface(pointerRenderer, pointerSurface);
 	SDL_FreeSurface(pointerSurface);
 	if (pointerTexture == NULL)
 	{
@@ -234,7 +234,7 @@ void renderTexture(SDL_Texture *pointerTexture, int x, int y)
 	// Display the texture at the specified coordinates
 	destinationRectangle.x = x;
 	destinationRectangle.y = y;
-	SDL_RenderCopy(pointerMainRenderer, pointerTexture, NULL, &destinationRectangle);
+	SDL_RenderCopy(pointerRenderer, pointerTexture, NULL, &destinationRectangle);
 }
 
 void renderCenteredTexture(SDL_Texture *pointerTexture)
@@ -251,7 +251,7 @@ void renderCenteredTexture(SDL_Texture *pointerTexture)
 	// Display the texture on the screen center
 	destinationRectangle.x = (displayWidth - destinationRectangle.w) / 2;
 	destinationRectangle.y = (displayHeight - destinationRectangle.h) / 2;
-	SDL_RenderCopy(pointerMainRenderer, pointerTexture, NULL, &destinationRectangle);
+	SDL_RenderCopy(pointerRenderer, pointerTexture, NULL, &destinationRectangle);
 }
 
 }

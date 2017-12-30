@@ -33,7 +33,7 @@ class TextureDisplayOverlay: public Texture
 		/** Display the stretched texture on the whole screen. */
 		void render()
 		{
-			SDL_RenderCopy(Renderer::pointerMainRenderer, _pointerTexture, NULL, NULL);
+			SDL_RenderCopy(Renderer::pointerRenderer, _pointerTexture, NULL, NULL);
 		}
 };
 

@@ -53,7 +53,7 @@ class Texture
 			}
 			
 			// Convert the surface to a texture
-			SDL_Texture *pointerTexture = SDL_CreateTextureFromSurface(Renderer::pointerMainRenderer, pointerSurface);
+			SDL_Texture *pointerTexture = SDL_CreateTextureFromSurface(Renderer::pointerRenderer, pointerSurface);
 			SDL_FreeSurface(pointerSurface);
 			if (pointerTexture == NULL)
 			{
@@ -101,7 +101,7 @@ class Texture
 			_positionRectangle.x = x;
 			_positionRectangle.y = y;
 			
-			SDL_RenderCopy(Renderer::pointerMainRenderer, _pointerTexture, NULL, &_positionRectangle);
+			SDL_RenderCopy(Renderer::pointerRenderer, _pointerTexture, NULL, &_positionRectangle);
 		}
 		
 		/** Get the texture width in pixels.

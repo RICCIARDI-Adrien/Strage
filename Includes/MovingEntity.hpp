@@ -311,17 +311,17 @@ class MovingEntity: public Entity
 				SDL_Rect renderingRectangle, *pointerPositionRectangle;
 				
 				// Position rectangle
-				SDL_SetRenderDrawColor(Renderer::pointerMainRenderer, 0, 255, 255, 255);
+				SDL_SetRenderDrawColor(Renderer::pointerRenderer, 0, 255, 255, 255);
 				
 				pointerPositionRectangle = &_positionRectangles[_facingDirection];
 				renderingRectangle.x = pointerPositionRectangle->x - Renderer::displayX;
 				renderingRectangle.y = pointerPositionRectangle->y - Renderer::displayY;
 				renderingRectangle.w = pointerPositionRectangle->w;
 				renderingRectangle.h = pointerPositionRectangle->h;
-				SDL_RenderDrawRect(Renderer::pointerMainRenderer, &renderingRectangle);
+				SDL_RenderDrawRect(Renderer::pointerRenderer, &renderingRectangle);
 				
 				// Restore background color
-				SDL_SetRenderDrawColor(Renderer::pointerMainRenderer, 0, 0, 0, 255);
+				SDL_SetRenderDrawColor(Renderer::pointerRenderer, 0, 0, 0, 255);
 			}
 			#endif
 		}
