@@ -129,6 +129,10 @@ int initialize(int isFullScreenEnabled)
 	_textColors[TEXT_COLOR_ID_BLUE].g = 0;
 	_textColors[TEXT_COLOR_ID_BLUE].b = 255;
 	_textColors[TEXT_COLOR_ID_BLUE].a = 255;
+	_textColors[TEXT_COLOR_ID_DARK_GREEN].r = 27;
+	_textColors[TEXT_COLOR_ID_DARK_GREEN].g = 116;
+	_textColors[TEXT_COLOR_ID_DARK_GREEN].b = 36;
+	_textColors[TEXT_COLOR_ID_DARK_GREEN].a = 255;
 	_textColors[TEXT_COLOR_ID_GREEN].r = 0;
 	_textColors[TEXT_COLOR_ID_GREEN].g = 200;
 	_textColors[TEXT_COLOR_ID_GREEN].b = 0;
@@ -137,10 +141,6 @@ int initialize(int isFullScreenEnabled)
 	_textColors[TEXT_COLOR_ID_RED].g = 0;
 	_textColors[TEXT_COLOR_ID_RED].b = 0;
 	_textColors[TEXT_COLOR_ID_RED].a = 255;
-	_textColors[TEXT_COLOR_ID_DARK_GREEN].r = 27;
-	_textColors[TEXT_COLOR_ID_DARK_GREEN].g = 116;
-	_textColors[TEXT_COLOR_ID_DARK_GREEN].b = 36;
-	_textColors[TEXT_COLOR_ID_DARK_GREEN].a = 255;
 	
 	// Everything went fine
 	return 0;
