@@ -629,7 +629,7 @@ int main(int argc, char *argv[])
 {
 	SDL_Event event;
 	unsigned int frameStartingTime, frameElapsedTime;
-	int isFullScreenEnabled = 0, levelToLoadNumber, i, isRetryKeyPressed = 0;
+	int isFullScreenEnabled = 1, levelToLoadNumber, i, isRetryKeyPressed = 0;
 	MovingEntityBullet *pointerBullet;
 	const char *stringMainMenuItems[] =
 	{
@@ -654,12 +654,12 @@ int main(int argc, char *argv[])
 		for (i = 1; i < argc; i++)
 		{
 			// Is full screen mode requested ?
-			if (strcmp("-fullscreen", argv[i]) == 0) isFullScreenEnabled = 1;
+			if (strcmp("-windowed", argv[i]) == 0) isFullScreenEnabled = 0;
 			else if (strcmp("-help", argv[i]) == 0)
 			{
-				printf("Usage : %s [-fullscreen] [-help].\n"
-					"  -fullscreen : play game in full screen mode.\n"
-					"  -help       : display this help and exit.\n"
+				printf("Usage : %s [-windowed] [-help].\n"
+					"  -windowed : play game in windowed screen mode.\n"
+					"  -help     : display this help and exit.\n"
 					"All other parameters are ignored.\n", argv[0]);
 				return 0;
 			}
