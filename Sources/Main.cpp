@@ -17,7 +17,7 @@
 #include <list>
 #include <Log.hpp>
 #include <LevelManager.hpp>
-#include <MainMenu.hpp>
+#include <Menu.hpp>
 #include <MovingEntityBullet.hpp>
 #include <Renderer.hpp>
 #include <SavegameManager.hpp>
@@ -631,6 +631,12 @@ int main(int argc, char *argv[])
 	unsigned int frameStartingTime, frameElapsedTime;
 	int isFullScreenEnabled = 0, levelToLoadNumber, i, isPauseKeyPressed = 0, isRetryKeyPressed = 0;
 	MovingEntityBullet *pointerBullet;
+	const char *stringMainMenuItems[] =
+	{
+		"Continue game",
+		"New game",
+		"Quit"
+	};
 	#if CONFIGURATION_DISPLAY_IS_FRAME_RATE_DISPLAYING_ENABLED
 		unsigned int frameRateStartingTime = 0;
 		int framesCount = 0;
@@ -695,7 +701,7 @@ int main(int argc, char *argv[])
 	LOG_INFORMATION("Game engine successfully initialized.");
 	
 	// Display the main menu and get user choice
-	switch (MainMenu::display())
+	switch (Menu::display("test", stringMainMenuItems, 3))
 	{
 		// Continue last saved game
 		case 0:

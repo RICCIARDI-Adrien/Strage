@@ -33,8 +33,12 @@
 #define CONFIGURATION_DISPLAY_HUD_ENEMIES_X 15
 /** HUD enemies text screen Y coordinate. */
 #define CONFIGURATION_DISPLAY_HUD_ENEMIES_Y 61
-/** Main menu vertical space between two strings. */
-#define CONFIGURATION_DISPLAY_MAIN_MENU_STRINGS_VERTICAL_SPACING 60
+
+// Menu
+/** Maximum amount of items that a single menu can display. */
+#define CONFIGURATION_MENU_MAXIMUM_ITEMS_COUNT 4
+/** Menu vertical space (in pixels) between two item strings. */
+#define CONFIGURATION_MENU_ITEM_STRINGS_VERTICAL_SPACING 60
 
 // Audio
 /** Sampling frequency in Hz. */

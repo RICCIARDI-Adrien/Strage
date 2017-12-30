@@ -1,79 +1,79 @@
-/** @file MainMenu.cpp
- * @see MainMenu.hpp for description.
+/** @file Menu.cpp
+ * @see Menu.hpp for description.
  * @author Adrien RICCIARDI
  */
+#include <cassert>
+#include <Configuration.hpp>
 #include <ControlManager.hpp>
 #include <Log.hpp>
-#include <MainMenu.hpp>
+#include <Menu.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
 
-namespace MainMenu
+namespace Menu
 {
-
-//-------------------------------------------------------------------------------------------------
-// Private constants
-//-------------------------------------------------------------------------------------------------
-/** Amount of strings to display. */
-#define STRINGS_COUNT 3
 
 //-------------------------------------------------------------------------------------------------
 // Private types
 //-------------------------------------------------------------------------------------------------
-/** A menu string. */
+/** A menu item to display. */
 typedef struct
 {
 	SDL_Texture *pointerNormalTexture; //!< The texture the string is rendered on when the menu item is not focused.
 	SDL_Texture *pointerFocusedTexture; //!< The texture the string is rendered on when the menu item is focused.
-	int x; //<! Drawing X coordinate.
-	int y; //<! Drawing Y coordinate.
-} MenuString;
+	int x; //!< Drawing X coordinate.
+	int y; //!< Drawing Y coordinate.
+} MenuItem;
 
 //-------------------------------------------------------------------------------------------------
 // Private variables
 //-------------------------------------------------------------------------------------------------
-/** All textures to display. */
-static MenuString _menuStrings[STRINGS_COUNT];
+/** All items to display. */
+static MenuItem _menuItems[CONFIGURATION_MENU_MAXIMUM_ITEMS_COUNT];
+/** How many items to display. */
+static int _menuItemsCount;
 
 //-------------------------------------------------------------------------------------------------
 // Private functions
 //-------------------------------------------------------------------------------------------------
-/** Render all strings to cached textures to avoid rendering them on each frame. */
-static inline void _initialize()
+/** Render all strings to cached textures to avoid rendering them on each frame.
+ * @param stringMenuTitle The menu title.
+ * @param stringMenuItemsTexts The menu items.
+ */
+static inline void _initialize(const char __attribute__((unused)) *stringMenuTitle, const char *stringMenuItemsTexts[])
 {
 	int i, textureWidth, textureHeight, stringTexturesVerticalHeight, firstStringTextureY;
 	
-	// Render strings
-	_menuStrings[0].pointerNormalTexture = Renderer::renderTextToTexture("Continue game", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
-	_menuStrings[0].pointerFocusedTexture = Renderer::renderTextToTexture("Continue game", Renderer::TEXT_COLOR_ID_DARK_GREEN, Renderer::FONT_SIZE_ID_BIG);
-	_menuStrings[1].pointerNormalTexture = Renderer::renderTextToTexture("New game", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
-	_menuStrings[1].pointerFocusedTexture = Renderer::renderTextToTexture("New game", Renderer::TEXT_COLOR_ID_DARK_GREEN, Renderer::FONT_SIZE_ID_BIG);
-	_menuStrings[2].pointerNormalTexture = Renderer::renderTextToTexture("Quit", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
-	_menuStrings[2].pointerFocusedTexture = Renderer::renderTextToTexture("Quit", Renderer::TEXT_COLOR_ID_DARK_GREEN, Renderer::FONT_SIZE_ID_BIG);
+	// Make sure there not too many items
+	assert(_menuItemsCount <= CONFIGURATION_MENU_MAXIMUM_ITEMS_COUNT);
 	
-	// Compute displaying coordinates
-	for (i = 0; i < STRINGS_COUNT; i++)
+	for (i = 0; i < _menuItemsCount; i++)
 	{
+		// Render strings
+		_menuItems[i].pointerNormalTexture = Renderer::renderTextToTexture(stringMenuItemsTexts[i], Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
+		_menuItems[i].pointerFocusedTexture = Renderer::renderTextToTexture(stringMenuItemsTexts[i], Renderer::TEXT_COLOR_ID_DARK_GREEN, Renderer::FONT_SIZE_ID_BIG);
+		
+		// Compute displaying coordinates
 		// Get texture size (texture have same size because only color changes between normal and focused textures, so use the normal one)
-		if (SDL_QueryTexture(_menuStrings[i].pointerNormalTexture, NULL, NULL, &textureWidth, &textureHeight) != 0)
+		if (SDL_QueryTexture(_menuItems[i].pointerNormalTexture, NULL, NULL, &textureWidth, &textureHeight) != 0)
 		{
 			LOG_ERROR("Failed to query texture information for texture %d (%s).", i, SDL_GetError());
 			exit(-1);
 		}
 		
 		// Compute X coordinate to center the texture
-		_menuStrings[i].x = (Renderer::displayWidth - textureWidth) / 2;
+		_menuItems[i].x = (Renderer::displayWidth - textureWidth) / 2;
 		
 		// Each string is vertically spaced from the other ones by a fixed amount of pixels
-		_menuStrings[i].y = i * CONFIGURATION_DISPLAY_MAIN_MENU_STRINGS_VERTICAL_SPACING;
+		_menuItems[i].y = i * CONFIGURATION_MENU_ITEM_STRINGS_VERTICAL_SPACING;
 	}
 	
 	// Total vertical size of all string textures is the amount of strings * vertical spacing + the last texture height (because it is displayed starting from the last vertical spacing)
-	stringTexturesVerticalHeight = (STRINGS_COUNT * CONFIGURATION_DISPLAY_MAIN_MENU_STRINGS_VERTICAL_SPACING) + textureHeight; // The textureHeight variable contains the last texture height
+	stringTexturesVerticalHeight = (_menuItemsCount * CONFIGURATION_MENU_ITEM_STRINGS_VERTICAL_SPACING) + textureHeight; // The textureHeight variable contains the last texture height
 	firstStringTextureY = (Renderer::displayHeight - stringTexturesVerticalHeight) / 2;
 
 	// Add Y offset to all texture coordinates, preserving the yet existing spacing
-	for (i = 0; i < STRINGS_COUNT; i++) _menuStrings[i].y += firstStringTextureY;
+	for (i = 0; i < _menuItemsCount; i++) _menuItems[i].y += firstStringTextureY;
 	
 	// Set rendering color to gray
 	if (SDL_SetRenderDrawColor(Renderer::pointerMainRenderer, 192, 192, 192, 255) != 0)
@@ -89,10 +89,10 @@ static inline void _uninitialize()
 	int i;
 	
 	// Free all textures
-	for (i = 0; i < STRINGS_COUNT; i++)
+	for (i = 0; i < _menuItemsCount; i++)
 	{
-		SDL_DestroyTexture(_menuStrings[i].pointerNormalTexture);
-		SDL_DestroyTexture(_menuStrings[i].pointerFocusedTexture);
+		SDL_DestroyTexture(_menuItems[i].pointerNormalTexture);
+		SDL_DestroyTexture(_menuItems[i].pointerFocusedTexture);
 	}
 	
 	// Reset rendering color to black
@@ -106,15 +106,18 @@ static inline void _uninitialize()
 //-------------------------------------------------------------------------------------------------
 // Public functions
 //-------------------------------------------------------------------------------------------------
-int display(void)
+int display(const char *stringMenuTitle, const char *stringMenuItemsTexts[], int menuItemsCount)
 {
 	SDL_Event event;
 	int returnValue, i, focusedMenuItemIndex = 0, isGoUpKeyPressed = 0, isGoDownKeyPressed = 0, isShootKeyPressed = 0;
 	unsigned int frameStartingTime, frameElapsedTime;
 	SDL_Texture *pointerTexture;
 	
+	// This variable is shared by all internal functions, it must be initialized before calling any of the functions
+	_menuItemsCount = menuItemsCount;
+	
 	// Cache textures to display
-	_initialize();
+	_initialize(stringMenuTitle, stringMenuItemsTexts);
 	
 	while (1)
 	{
@@ -128,7 +131,7 @@ int display(void)
 			{
 				// User closed the game window or pressed alt+F4
 				case SDL_QUIT:
-					returnValue = 2;
+					returnValue = -1;
 					LOG_DEBUG("Quitting game.");
 					goto Exit;
 					
@@ -161,7 +164,7 @@ int display(void)
 		{
 			if (!isGoDownKeyPressed)
 			{
-				if (focusedMenuItemIndex < STRINGS_COUNT - 1) focusedMenuItemIndex++;
+				if (focusedMenuItemIndex < _menuItemsCount - 1) focusedMenuItemIndex++;
 				isGoDownKeyPressed = 1;
 			}
 		}
@@ -177,13 +180,13 @@ int display(void)
 		
 		// Display menu
 		Renderer::beginRendering(0, 0);
-		for (i = 0; i < STRINGS_COUNT; i++)
+		for (i = 0; i < _menuItemsCount; i++)
 		{
 			// Select the right texture according to the focus state
-			if (i == focusedMenuItemIndex) pointerTexture = _menuStrings[i].pointerFocusedTexture;
-			else pointerTexture = _menuStrings[i].pointerNormalTexture;
+			if (i == focusedMenuItemIndex) pointerTexture = _menuItems[i].pointerFocusedTexture;
+			else pointerTexture = _menuItems[i].pointerNormalTexture;
 			
-			Renderer::renderTexture(pointerTexture, _menuStrings[i].x, _menuStrings[i].y);
+			Renderer::renderTexture(pointerTexture, _menuItems[i].x, _menuItems[i].y);
 		}
 		Renderer::endRendering();
 		
