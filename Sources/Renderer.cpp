@@ -121,6 +121,10 @@ int initialize(int isFullScreenEnabled)
 	// Cache some values
 	_displayRectangle.w = Renderer::displayWidth;
 	_displayRectangle.h = Renderer::displayHeight;
+	_textColors[TEXT_COLOR_ID_BLACK].r = 0;
+	_textColors[TEXT_COLOR_ID_BLACK].g = 0;
+	_textColors[TEXT_COLOR_ID_BLACK].b = 0;
+	_textColors[TEXT_COLOR_ID_BLACK].a = 255;
 	_textColors[TEXT_COLOR_ID_BLUE].r = 0;
 	_textColors[TEXT_COLOR_ID_BLUE].g = 0;
 	_textColors[TEXT_COLOR_ID_BLUE].b = 255;

@@ -39,6 +39,8 @@
 #define CONFIGURATION_MENU_MAXIMUM_ITEMS_COUNT 4
 /** Menu vertical space (in pixels) between two item strings. */
 #define CONFIGURATION_MENU_ITEM_STRINGS_VERTICAL_SPACING 60
+/** Menu title vertical coordinate. */
+#define CONFIGURATION_MENU_TITLE_Y 10
 
 // Audio
 /** Sampling frequency in Hz. */

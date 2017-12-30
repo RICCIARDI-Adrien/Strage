@@ -701,7 +701,7 @@ int main(int argc, char *argv[])
 	LOG_INFORMATION("Game engine successfully initialized.");
 	
 	// Display the main menu and get user choice
-	switch (Menu::display("test", stringMainMenuItems, 3))
+	switch (Menu::display("Main menu", stringMainMenuItems, 3))
 	{
 		// Continue last saved game
 		case 0:

@@ -33,6 +33,11 @@ static MenuItem _menuItems[CONFIGURATION_MENU_MAXIMUM_ITEMS_COUNT];
 /** How many items to display. */
 static int _menuItemsCount;
 
+/** The menu title texture to render. */
+static SDL_Texture *_pointerMenuTitleTexture;
+/** Horizontal coordinate to render the texture at the screen center. */
+static int _menuTitleTextureX;
+
 //-------------------------------------------------------------------------------------------------
 // Private functions
 //-------------------------------------------------------------------------------------------------
@@ -40,13 +45,26 @@ static int _menuItemsCount;
  * @param stringMenuTitle The menu title.
  * @param stringMenuItemsTexts The menu items.
  */
-static inline void _initialize(const char __attribute__((unused)) *stringMenuTitle, const char *stringMenuItemsTexts[])
+static inline void _initialize(const char *stringMenuTitle, const char *stringMenuItemsTexts[])
 {
 	int i, textureWidth, textureHeight, stringTexturesVerticalHeight, firstStringTextureY;
 	
 	// Make sure there not too many items
 	assert(_menuItemsCount <= CONFIGURATION_MENU_MAXIMUM_ITEMS_COUNT);
 	
+	// Handle title texture separately because it is not a menu item (it can't be selected or focused)
+	// Render texture
+	_pointerMenuTitleTexture = Renderer::renderTextToTexture(stringMenuTitle, Renderer::TEXT_COLOR_ID_BLACK, Renderer::FONT_SIZE_ID_BIG);
+	// Get texture size
+	if (SDL_QueryTexture(_pointerMenuTitleTexture, NULL, NULL, &textureWidth, &textureHeight) != 0)
+	{
+		LOG_ERROR("Failed to query menu title texture information for texture (%s).", SDL_GetError());
+		exit(-1);
+	}
+	// Compute X coordinate to center the texture
+	_menuTitleTextureX = (Renderer::displayWidth - textureWidth) / 2;
+	
+	// Handle menu items
 	for (i = 0; i < _menuItemsCount; i++)
 	{
 		// Render strings
@@ -89,6 +107,7 @@ static inline void _uninitialize()
 	int i;
 	
 	// Free all textures
+	SDL_DestroyTexture(_pointerMenuTitleTexture);
 	for (i = 0; i < _menuItemsCount; i++)
 	{
 		SDL_DestroyTexture(_menuItems[i].pointerNormalTexture);
@@ -180,6 +199,7 @@ int display(const char *stringMenuTitle, const char *stringMenuItemsTexts[], int
 		
 		// Display menu
 		Renderer::beginRendering(0, 0);
+		Renderer::renderTexture(_pointerMenuTitleTexture, _menuTitleTextureX, CONFIGURATION_MENU_TITLE_Y);
 		for (i = 0; i < _menuItemsCount; i++)
 		{
 			// Select the right texture according to the focus state

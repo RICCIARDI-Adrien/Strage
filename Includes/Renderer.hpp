@@ -16,6 +16,7 @@ namespace Renderer
 /** All available text rendering colors. */
 typedef enum
 {
+	TEXT_COLOR_ID_BLACK,
 	TEXT_COLOR_ID_BLUE,
 	TEXT_COLOR_ID_GREEN,
 	TEXT_COLOR_ID_RED,
