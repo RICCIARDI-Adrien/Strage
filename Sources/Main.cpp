@@ -785,8 +785,8 @@ int main(int argc, char *argv[])
 		// Restart the current level
 		if (ControlManager::isKeyPressed(ControlManager::KEY_ID_RETRY_GAME))
 		{
-			// Can't restart a level if the game is paused or if all levels are completed
-			if (((_isGamePaused && _isPlayerDead) || (!_isGamePaused)) && !_isGameFinished && !isRetryKeyPressed) // Check (_isGamePaused && _isPlayerDead) to be sure the game is paused but not because the player is dead
+			// Can't restart a level if the game is finished (player has completed all levels)
+			if (!_isGameFinished && !isRetryKeyPressed)
 			{
 				// Stop currently playing sounds
 				AudioManager::stopAllSounds();
