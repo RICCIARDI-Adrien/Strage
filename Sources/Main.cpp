@@ -35,7 +35,6 @@ typedef enum
 	INTERFACE_STRING_ID_LIFE_POINTS_AMOUNT,
 	INTERFACE_STRING_ID_AMMUNITION_AMOUNT,
 	INTERFACE_STRING_ID_ENEMIES_COUNT,
-	INTERFACE_STRING_ID_GAME_PAUSED,
 	INTERFACE_STRING_ID_GAME_LOST,
 	INTERFACE_STRING_ID_GAME_WON,
 	INTERFACE_STRING_IDS_COUNT
@@ -576,7 +575,6 @@ static inline void _renderInterface()
 	// Display a centered message if needed
 	if (_isPlayerDead) Renderer::renderCenteredTexture(_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_LOST]);
 	else if (_isGameFinished) Renderer::renderCenteredTexture(_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_WON]);
-	else if (_isGamePaused) Renderer::renderCenteredTexture(_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_PAUSED]);
 }
 
 /** Display everything to the screen. */
@@ -697,7 +695,6 @@ int main(int argc, char *argv[])
 	// Player damage overlay
 	_pointerPlayerHitOverlayTexture = (TextureDisplayOverlay *) TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_HIT_OVERLAY);
 	// Static interface strings
-	_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_PAUSED] = Renderer::renderTextToTexture("PAUSE", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
 	_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_LOST] =  Renderer::renderTextToTexture("You are dead ! Hit R to retry.", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
 	_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_WON] = Renderer::renderTextToTexture("All levels completed. You are legend.", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
 	// Interface background
