@@ -1,3 +1,6 @@
+/** @file Entity.hpp
+ * @author Adrien RICCIARDI
+ */
 #ifndef HPP_ENTITY_HPP
 #define HPP_ENTITY_HPP
 
@@ -5,7 +8,6 @@
 
 /** @class Entity
  * Base class for all game entities.
- * @author Adrien RICCIARDI
  */
 class Entity
 {

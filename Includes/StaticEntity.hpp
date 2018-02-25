@@ -1,3 +1,6 @@
+/** @file StaticEntity.hpp
+ * @author Adrien RICCIARDI
+ */
 #ifndef HPP_STATIC_ENTITY_HPP
 #define HPP_STATIC_ENTITY_HPP
 
@@ -10,7 +13,6 @@
 
 /** @class StaticEntity
  * An entity that can't move on the map.
- * @author Adrien RICCIARDI
  */
 class StaticEntity: public Entity
 {
@@ -55,41 +57,31 @@ class StaticEntity: public Entity
 			if (Renderer::isDisplayable(&_positionRectangle)) _pointerTexture->render(_positionRectangle.x - Renderer::displayX, _positionRectangle.y - Renderer::displayY);
 		}
 		
-		/** Get the entity X coordinate.
-		 * @return The X coordinate.
-		 */
+		// No need for documentation because it is the same as parent function
 		virtual int getX()
 		{
 			return _positionRectangle.x;
 		}
 		
-		/** Set the entity X coordinate.
-		 * @param x The X coordinate.
-		 */
+		// No need for documentation because it is the same as parent function
 		virtual void setX(int x)
 		{
 			_positionRectangle.x = x;
 		}
 		
-		/** Get the entity Y coordinate.
-		 * @return The Y coordinate.
-		 */
+		// No need for documentation because it is the same as parent function
 		virtual int getY()
 		{
 			return _positionRectangle.y;
 		}
 		
-		/** Set the entity Y coordinate.
-		 * @param y The Y coordinate.
-		 */
+		// No need for documentation because it is the same as parent function
 		virtual void setY(int y)
 		{
 			_positionRectangle.y = y;
 		}
 		
-		/** Get a rectangle defining the entity bounds in the map.
-		 * @return The position rectangle.
-		 */
+		// No need for documentation because it is the same as parent function
 		virtual SDL_Rect *getPositionRectangle()
 		{
 			return &_positionRectangle;

@@ -1,3 +1,6 @@
+/** @file Texture.hpp
+ * @author Adrien RICCIARDI
+ */
 #ifndef HPP_TEXTURE_HPP
 #define HPP_TEXTURE_HPP
 
@@ -7,7 +10,6 @@
 
 /** @class Texture
  * Allow to load and display a static picture.
- * @author Adrien RICCIARDI
  */
 class Texture
 {

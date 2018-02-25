@@ -1,3 +1,6 @@
+/** @file FightingEntityEnemySmall.hpp
+ * @author Adrien RICCIARDI
+ */
 #ifndef HPP_FIGHTING_ENTITY_ENEMY_SMALL_HPP
 #define HPP_FIGHTING_ENTITY_ENEMY_SMALL_HPP
 
@@ -8,7 +11,6 @@
 
 /** @class FightingEntityEnemySmall
  * A small enemy moving quickly (but no so fast as the player) and shooting small caliber ammunition.
- * @author Adrien RICCIARDI
  */
 class FightingEntityEnemySmall: public FightingEntityEnemy
 {

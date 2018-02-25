@@ -1,3 +1,6 @@
+/** @file StaticEntityEnemySpawner.hpp
+ * @author Adrien RICCIARDI
+ */
 #ifndef HPP_STATIC_ENTITY_ENEMY_SPAWNER_HPP
 #define HPP_STATIC_ENTITY_ENEMY_SPAWNER_HPP
 
@@ -7,7 +10,6 @@
 
 /** @class StaticEntityEnemySpawner
  * A destructible still entity spawning enemies all around.
- * @author Adrien RICCIARDI
  */
 class StaticEntityEnemySpawner: public StaticEntity
 {

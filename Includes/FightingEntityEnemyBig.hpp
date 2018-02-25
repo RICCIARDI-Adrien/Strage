@@ -1,3 +1,6 @@
+/** @file FightingEntityEnemyBig.hpp
+ * @author Adrien RICCIARDI
+ */
 #ifndef HPP_FIGHTING_ENTITY_ENEMY_BIG_HPP
 #define HPP_FIGHTING_ENTITY_ENEMY_BIG_HPP
 
@@ -9,7 +12,6 @@
 
 /** @class FightingEntityEnemyBig
  * A big enemy moving slowly and shooting huge caliber ammunition.
- * @author Adrien RICCIARDI
  */
 class FightingEntityEnemyBig: public FightingEntityEnemy
 {

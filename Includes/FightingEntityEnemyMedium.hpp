@@ -1,3 +1,6 @@
+/** @file FightingEntityEnemyMedium.hpp
+ * @author Adrien RICCIARDI
+ */
 #ifndef HPP_FIGHTING_ENTITY_ENEMY_MEDIUM_HPP
 #define HPP_FIGHTING_ENTITY_ENEMY_MEDIUM_HPP
 
@@ -8,7 +11,6 @@
 
 /** @class FightingEntityEnemyMedium
  * A medium enemy moving a little slower than small enemy but shooting bigger caliber ammunition.
- * @author Adrien RICCIARDI
  */
 class FightingEntityEnemyMedium: public FightingEntityEnemy
 {

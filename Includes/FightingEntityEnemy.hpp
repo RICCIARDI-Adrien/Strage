@@ -1,3 +1,6 @@
+/** @file FightingEntityEnemy.hpp
+ * @author Adrien RICCIARDI
+ */
 #ifndef HPP_FIGHTING_ENTITY_ENEMY_HPP
 #define HPP_FIGHTING_ENTITY_ENEMY_HPP
 
@@ -15,7 +18,6 @@
 
 /** @class FightingEntityEnemy
  * An enemy attacking the player at sight.
- * @author Adrien RICCIARDI
  */
 class FightingEntityEnemy: public FightingEntity
 {

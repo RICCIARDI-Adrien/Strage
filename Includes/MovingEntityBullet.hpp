@@ -1,3 +1,6 @@
+/** @file MovingEntityBullet.hpp
+ * @author Adrien RICCIARDI
+ */
 #ifndef HPP_MOVING_ENTITY_BULLET_HPP
 #define HPP_MOVING_ENTITY_BULLET_HPP
 
@@ -6,7 +9,6 @@
 
 /** @class MovingEntityBullet
  * A bullet fired by the player or the enemies.
- * @author Adrien RICCIARDI
  */
 class MovingEntityBullet: public MovingEntity
 {

@@ -1,3 +1,6 @@
+/** @file MovingEntity.hpp
+ * @author Adrien RICCIARDI
+ */
 #ifndef HPP_MOVING_ENTITY_HPP
 #define HPP_MOVING_ENTITY_HPP
 
@@ -9,7 +12,6 @@
 
 /** @class MovingEntity
  * An entity that can move up, down, left and right onto the map. A moving entity can't walk across a scene wall.
- * @author Adrien RICCIARDI
  */
 class MovingEntity: public Entity
 {

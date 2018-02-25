@@ -1,3 +1,6 @@
+/** @file TextureDisplayOverlay.hpp
+ * @author Adrien RICCIARDI
+ */
 #ifndef HPP_TEXTURE_DISPLAY_OVERLAY_HPP
 #define HPP_TEXTURE_DISPLAY_OVERLAY_HPP
 
@@ -9,14 +12,13 @@
 
 /** @class TextureDisplayOverlay
  * Display a semi transparent texture on the whole display.
- * @author Adrien RICCIARDI
  */
 class TextureDisplayOverlay: public Texture
 {
 	public:
 		/** Load a bitmap and set alpha channel.
 		 * @param fileName The file to load.
-		 * @param isRleCompressionEnabled Enable or disable RLE compression (@see Texture for more details).
+		 * @param isRleCompressionEnabled Enable or disable RLE compression (see Texture for more details).
 		 */
 		TextureDisplayOverlay(const char *fileName, int isRleCompressionEnabled): Texture(fileName, isRleCompressionEnabled)
 		{

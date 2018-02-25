@@ -1,3 +1,6 @@
+/** @file FightingEntity.hpp
+ * @author Adrien RICCIARDI
+ */
 #ifndef HPP_FIGHTING_ENTITY_HPP
 #define HPP_FIGHTING_ENTITY_HPP
 
@@ -10,7 +13,6 @@
 
 /** @class FightingEntity
  * A moving entity that has life points and can shoot bullets.
- * @author Adrien RICCIARDI
  */
 class FightingEntity: public MovingEntity
 {

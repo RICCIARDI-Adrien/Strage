@@ -1,3 +1,6 @@
+/** @file FightingEntityPlayer.hpp
+ * @author Adrien RICCIARDI
+ */
 #ifndef HPP_FIGHTING_ENTITY_PLAYER_HPP
 #define HPP_FIGHTING_ENTITY_PLAYER_HPP
 
@@ -17,7 +20,6 @@
 //-------------------------------------------------------------------------------------------------
 /** @class FightingEntityPlayer
  * The unique player, controlled by the human player.
- * @author Adrien RICCIARDI
  */
 class FightingEntityPlayer: public FightingEntity
 {

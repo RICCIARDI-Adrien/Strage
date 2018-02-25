@@ -1,3 +1,6 @@
+/** @file StaticEntityAnimatedTexture.hpp
+ * @author Adrien RICCIARDI
+ */
 #ifndef HPP_STATIC_ENTITY_ANIMATED_TEXTURE_HPP
 #define HPP_STATIC_ENTITY_ANIMATED_TEXTURE_HPP
 
@@ -7,7 +10,6 @@
 
 /** @class StaticEntityAnimatedTexture
  * Display several textures in sequence and stop.
- * @author Adrien RICCIARDI
  */
 class StaticEntityAnimatedTexture: public StaticEntity
 {
