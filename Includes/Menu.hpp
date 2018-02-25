@@ -13,7 +13,7 @@ namespace Menu
 //-------------------------------------------------------------------------------------------------
 /** Display a centered menu on the whole rendering area.
  * @param stringMenuTitle The menu title, it will be located on the rendering area top and centered.
- * @param stringMenuItemsText All menu items to display.
+ * @param stringMenuItemsTexts All menu items to display.
  * @param menuItemsCount How many menu items to display.
  * @return -1 if the user pressed Alt+F4 or closed the window,
  * @return 0 or a positive number representing the index of the selected menu item. Index are in the stringMenuItemsTexts parameter order.

@@ -14,11 +14,7 @@
 class FightingEntityEnemyBig: public FightingEntityEnemy
 {
 	protected:
-		/** Fire big caliber ammunition.
-		 * @param x Ammunition X coordinate.
-		 * @param y Ammunition Y coordinate.
-		 * @return The fired ammunition.
-		 */
+		// No need for documentation because it is the same as parent function
 		virtual MovingEntityBullet *_fireBullet(int x, int y)
 		{
 			return new MovingEntityBulletBigEnemy(x, y, _facingDirection);

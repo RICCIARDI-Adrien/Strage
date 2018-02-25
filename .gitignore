@@ -1,5 +1,6 @@
 *.dll
 *.exe
+html
 Frameworks
 Savegame.txt
 SDL*

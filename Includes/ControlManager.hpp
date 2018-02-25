@@ -30,7 +30,10 @@ typedef enum
 //-------------------------------------------------------------------------------------------------
 // Functions
 //-------------------------------------------------------------------------------------------------
-/** Initialize the first joystick. */
+/** Initialize the first joystick found.
+ * @return -1 if no joystick was detected,
+ * @return 0 if the first joystick found was successfully initialized.
+ */
 int initialize(void);
 
 /** Close any previously opened joystick. */

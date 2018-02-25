@@ -42,10 +42,7 @@ class FightingEntityPlayer: public FightingEntity
 		SDL_Point _secondaryFireFiringEffectStartingPositionOffsets[DIRECTIONS_COUNT]; // Offsets are in the same order than Direction enum
 	
 	protected:
-		/** Shoot a player ammunition.
-		 * @param x Bullet X coordinate on the map.
-		 * @param y Bullet Y coordinate on the map.
-		 */
+		// No need for documentation because it is the same as parent function
 		virtual MovingEntityBullet *_fireBullet(int x, int y)
 		{
 			return new MovingEntityBulletPlayer(x, y, _facingDirection);
@@ -78,7 +75,7 @@ class FightingEntityPlayer: public FightingEntity
 		/** Free allocated resources. */
 		virtual ~FightingEntityPlayer() {}
 		
-		/** @see FightingEntity for description. */
+		// No need for documentation because it is the same as parent function
 		virtual MovingEntityBullet *shoot()
 		{
 			MovingEntityBullet *pointerBullet;

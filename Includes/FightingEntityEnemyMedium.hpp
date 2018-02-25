@@ -13,11 +13,7 @@
 class FightingEntityEnemyMedium: public FightingEntityEnemy
 {
 	protected:
-		/** Fire medium caliber ammunition.
-		 * @param x Ammunition X coordinate.
-		 * @param y Ammunition Y coordinate.
-		 * @return The fired ammunition.
-		 */
+		// No need for documentation because it is the same as parent function
 		virtual MovingEntityBullet *_fireBullet(int x, int y)
 		{
 			return new MovingEntityBulletMediumEnemy(x, y, _facingDirection);

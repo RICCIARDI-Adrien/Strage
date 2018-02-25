@@ -65,7 +65,7 @@ void uninitialize();
 
 /** Start rendering from the specified map coordinates.
  * @param x Display left corner will be rendered with the scene stuff located at this horizontal coordinate.
- * @param x Display top corner will be rendered with the scene stuff located at this vertical coordinate.
+ * @param y Display top corner will be rendered with the scene stuff located at this vertical coordinate.
  */
 void beginRendering(int x, int y);
 

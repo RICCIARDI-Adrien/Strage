@@ -220,9 +220,7 @@ class FightingEntityEnemy: public FightingEntity
 		/** Free allocated resources. */
 		virtual ~FightingEntityEnemy() {}
 		
-		/** Set the entity X coordinate.
-		 * @param x The X coordinate.
-		 */
+		// No need for documentation because it is the same as parent function
 		virtual void setX(int x)
 		{
 			int i, movedPixelsAmount;
@@ -235,9 +233,7 @@ class FightingEntityEnemy: public FightingEntity
 			MovingEntity::setX(x);
 		}
 		
-		/** Set the entity Y coordinate.
-		 * @param y The Y coordinate.
-		 */
+		// No need for documentation because it is the same as parent function
 		virtual void setY(int y)
 		{
 			int i, movedPixelsAmount;
@@ -250,6 +246,7 @@ class FightingEntityEnemy: public FightingEntity
 			MovingEntity::setY(y);
 		}
 		
+		// No need for documentation because it is the same as parent function
 		virtual int moveToUp()
 		{
 			int movedPixelsAmount, i;
@@ -267,6 +264,7 @@ class FightingEntityEnemy: public FightingEntity
 			return movedPixelsAmount;
 		}
 		
+		// No need for documentation because it is the same as parent function
 		virtual int moveToDown()
 		{
 			int movedPixelsAmount, i;
@@ -284,6 +282,7 @@ class FightingEntityEnemy: public FightingEntity
 			return movedPixelsAmount;
 		}
 		
+		// No need for documentation because it is the same as parent function
 		virtual int moveToLeft()
 		{
 			int movedPixelsAmount, i;
@@ -301,6 +300,7 @@ class FightingEntityEnemy: public FightingEntity
 			return movedPixelsAmount;
 		}
 		
+		// No need for documentation because it is the same as parent function
 		virtual int moveToRight()
 		{
 			int movedPixelsAmount, i;

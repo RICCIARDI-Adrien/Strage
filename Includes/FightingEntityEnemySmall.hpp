@@ -13,11 +13,7 @@
 class FightingEntityEnemySmall: public FightingEntityEnemy
 {
 	protected:
-		/** Fire small caliber ammunition.
-		 * @param x Ammunition X coordinate.
-		 * @param y Ammunition Y coordinate.
-		 * @return The fired ammunition.
-		 */
+		// No need for documentation because it is the same as parent function
 		virtual MovingEntityBullet *_fireBullet(int x, int y)
 		{
 			return new MovingEntityBulletSmallEnemy(x, y, _facingDirection);
