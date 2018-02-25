@@ -6,7 +6,6 @@
 
 #include <EffectManager.hpp>
 #include <FightingEntityEnemy.hpp>
-#include <MovingEntityBulletSmallEnemy.hpp>
 #include <TextureManager.hpp>
 
 /** @class FightingEntityEnemySmall
@@ -18,7 +17,7 @@ class FightingEntityEnemySmall: public FightingEntityEnemy
 		// No need for documentation because it is the same as parent function
 		virtual MovingEntityBullet *_fireBullet(int x, int y)
 		{
-			return new MovingEntityBulletSmallEnemy(x, y, _facingDirection);
+			return new MovingEntityBullet(x, y, TextureManager::TEXTURE_ID_SMALL_ENEMY_BULLET_FACING_UP, 6, _facingDirection, 1, 0);
 		}
 		
 	public:

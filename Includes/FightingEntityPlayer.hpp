@@ -10,8 +10,6 @@
 #include <FightingEntity.hpp>
 #include <Log.hpp>
 #include <MovingEntityBullet.hpp>
-#include <MovingEntityBulletPlayer.hpp>
-#include <MovingEntityBulletPlayerMortarShell.hpp>
 #include <Renderer.hpp>
 #include <TextureManager.hpp>
 
@@ -47,7 +45,7 @@ class FightingEntityPlayer: public FightingEntity
 		// No need for documentation because it is the same as parent function
 		virtual MovingEntityBullet *_fireBullet(int x, int y)
 		{
-			return new MovingEntityBulletPlayer(x, y, _facingDirection);
+			return new MovingEntityBullet(x, y, TextureManager::TEXTURE_ID_PLAYER_BULLET_FACING_UP, 6, _facingDirection, 1, 1);
 		}
 	
 	public:
@@ -121,7 +119,7 @@ class FightingEntityPlayer: public FightingEntity
 				firingEffectStartingPositionOffsetY = _secondaryFireFiringEffectStartingPositionOffsets[_facingDirection].y;
 				
 				// Create the bullet
-				pointerBullet = new MovingEntityBulletPlayerMortarShell(entityX + bulletStartingPositionOffsetX, entityY + bulletStartingPositionOffsetY, _facingDirection);
+				pointerBullet = new MovingEntityBullet(entityX + bulletStartingPositionOffsetX, entityY + bulletStartingPositionOffsetY, TextureManager::TEXTURE_ID_PLAYER_BULLET_MORTAR_SHELL_FACING_UP, 4, _facingDirection, 20, 1);
 				
 				// Play the shoot effect
 				EffectManager::addEffect(entityX + firingEffectStartingPositionOffsetX, entityY + firingEffectStartingPositionOffsetY, EffectManager::EFFECT_ID_PLAYER_MUZZLE_FLASH_MORTAR_SHELL);

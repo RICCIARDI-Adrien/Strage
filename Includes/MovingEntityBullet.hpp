@@ -29,15 +29,17 @@ class MovingEntityBullet: public MovingEntity
 		 * @param movingPixelsAmount Bullet moving speed in pixels.
 		 * @param facingDirection In which direction the bullet will move.
 		 * @param damageAmount How many life points the bullet removes when it hits an entity.
+		 * @param isEnemySpawnerDamageable Set to 1 to make the bullet damage enemy spawers, set to 0 to disable enemy spawners damage dealing.
 		 */
-		MovingEntityBullet(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, Direction facingDirection, int damageAmount): MovingEntity(x, y, textureId, movingPixelsAmount)
+		MovingEntityBullet(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, Direction facingDirection, int damageAmount, int isEnemySpawnerDamageable): MovingEntity(x, y, textureId, movingPixelsAmount)
 		{
 			_facingDirection = facingDirection;
 			_movedDistance = 0;
 			_damageAmount = -damageAmount;
 			
-			// Collide with enemy spawners too
-			_collisionBlockContent |= LevelManager::BLOCK_CONTENT_ENEMY_SPAWNER;
+			// Collide with enemy spawners when bullet is shot by an enemy, so the bullet can't damage the spawner
+			if (isEnemySpawnerDamageable) _collisionBlockContent &= ~LevelManager::BLOCK_CONTENT_ENEMY_SPAWNER; // Do not collide with enemy spawners to allow bullets enter the enemy spawner position rectangle, so it can be damaged
+			else _collisionBlockContent |= LevelManager::BLOCK_CONTENT_ENEMY_SPAWNER;
 		}
 		
 		/** Free allocated resources. */
