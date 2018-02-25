@@ -8,6 +8,7 @@
 #include <Log.hpp>
 #include <MovingEntityBullet.hpp>
 #include <MovingEntityBulletPlayer.hpp>
+#include <MovingEntityBulletPlayerMortarShell.hpp>
 #include <Renderer.hpp>
 #include <TextureManager.hpp>
 
@@ -28,6 +29,17 @@ class FightingEntityPlayer: public FightingEntity
 		
 		/** How many ammunition the player owns. */
 		int _ammunitionAmount; // Only player has limited ammunition, because what could do a munitions-less enemy ?
+		
+		/** When was the last shot fired (in milliseconds). This is part of the fire rate mechanism. */
+		unsigned int _secondaryFireLastShotTime;
+		/** How many milliseconds to wait between two shots. */
+		unsigned int _secondaryFireTimeBetweenShots;
+		
+		/** Offset to add to entity coordinates to fire the bullet in the entity facing direction. */
+		SDL_Point _secondaryFireStartingPositionOffsets[DIRECTIONS_COUNT]; // Offsets are in the same order than Direction enum
+		
+		/** Offset to add to entity coordinates to put the shoot firing effect in front of the entity cannon. */
+		SDL_Point _secondaryFireFiringEffectStartingPositionOffsets[DIRECTIONS_COUNT]; // Offsets are in the same order than Direction enum
 	
 	protected:
 		/** Shoot a player ammunition.
@@ -53,6 +65,14 @@ class FightingEntityPlayer: public FightingEntity
 			_renderingY = (Renderer::displayHeight - pointerPositionRectangle->h) / 2;
 			
 			_ammunitionAmount = CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_AMMUNITION_AMOUNT;
+			
+			// Allow to shoot immediately
+			_secondaryFireTimeBetweenShots = 8000;
+			_secondaryFireLastShotTime = _secondaryFireTimeBetweenShots;
+			
+			// Cache bullet and firing effect position offsets
+			_computeBulletStartingPositionOffsets(_pointerTextures[DIRECTION_UP], TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLET_MORTAR_SHELL_FACING_UP), _secondaryFireStartingPositionOffsets);
+			_computeFiringEffectStartingPositionOffsets(_pointerTextures[DIRECTION_UP], EffectManager::EFFECT_ID_PLAYER_MUZZLE_FLASH_MORTAR_SHELL, _secondaryFireFiringEffectStartingPositionOffsets);
 		}
 		
 		/** Free allocated resources. */
@@ -64,7 +84,7 @@ class FightingEntityPlayer: public FightingEntity
 			MovingEntityBullet *pointerBullet;
 			
 			// The player can't shoot if it has no more ammunition
-			if (_ammunitionAmount == 0) return 0;
+			if (_ammunitionAmount == 0) return NULL;
 			
 			// Decrement ammunition count if the player shot
 			pointerBullet = FightingEntity::shoot();
@@ -74,6 +94,47 @@ class FightingEntityPlayer: public FightingEntity
 				return pointerBullet;
 			}
 			return NULL;
+		}
+		
+		/** Generate a mortar shell facing the entity direction and play the associated effect.
+		 * @return A valid pointer if the entity was allowed to shot,
+		 * @return NULL if the entity could not shoot (no more ammunition, slower fire rate...).
+		 */
+		virtual MovingEntityBullet *shootSecondaryFire()
+		{
+			int bulletStartingPositionOffsetX, bulletStartingPositionOffsetY, firingEffectStartingPositionOffsetX, firingEffectStartingPositionOffsetY, entityX, entityY;
+			MovingEntityBullet *pointerBullet;
+			
+			// The player can't shoot if it has no more ammunition
+			if (_ammunitionAmount < CONFIGURATION_GAMEPLAY_PLAYER_SECONDARY_FIRE_NEEDED_AMMUNITION_AMOUNT) return NULL;
+			
+			// Allow to shoot only if enough time elapsed since last shot
+			if (SDL_GetTicks() - _secondaryFireLastShotTime >= _secondaryFireTimeBetweenShots)
+			{
+				// Cache entity coordinates
+				entityX = _positionRectangles[_facingDirection].x;
+				entityY = _positionRectangles[_facingDirection].y;
+				
+				// Select the right offsets according to entity direction
+				bulletStartingPositionOffsetX = _secondaryFireStartingPositionOffsets[_facingDirection].x;
+				bulletStartingPositionOffsetY = _secondaryFireStartingPositionOffsets[_facingDirection].y;
+				firingEffectStartingPositionOffsetX = _secondaryFireFiringEffectStartingPositionOffsets[_facingDirection].x;
+				firingEffectStartingPositionOffsetY = _secondaryFireFiringEffectStartingPositionOffsets[_facingDirection].y;
+				
+				// Create the bullet
+				pointerBullet = new MovingEntityBulletPlayerMortarShell(entityX + bulletStartingPositionOffsetX, entityY + bulletStartingPositionOffsetY, _facingDirection);
+				
+				// Play the shoot effect
+				EffectManager::addEffect(entityX + firingEffectStartingPositionOffsetX, entityY + firingEffectStartingPositionOffsetY, EffectManager::EFFECT_ID_PLAYER_MUZZLE_FLASH_MORTAR_SHELL);
+				
+				_ammunitionAmount -= CONFIGURATION_GAMEPLAY_PLAYER_SECONDARY_FIRE_NEEDED_AMMUNITION_AMOUNT;
+				
+				// Get time after having generated the bullet, in case this takes more than 1 millisecond
+				_secondaryFireLastShotTime = SDL_GetTicks();
+				
+				return pointerBullet;
+			}
+			return NULL; // No shot allowed
 		}
 		
 		/** Get the remaining ammunition count.

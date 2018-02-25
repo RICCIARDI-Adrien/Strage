@@ -87,6 +87,8 @@
 #define CONFIGURATION_GAMEPLAY_TIME_BETWEEN_ENEMY_SPAWN 3000
 /** Joystick analog parts threshold to consider the part is pushed (must be in range [0..32767] according to SDL documentation). */
 #define CONFIGURATION_GAMEPLAY_JOYSTICK_ANALOG_THRESHOLD 25000
+/** Player secondary fire needed ammunition amount for shooting. */
+#define CONFIGURATION_GAMEPLAY_PLAYER_SECONDARY_FIRE_NEEDED_AMMUNITION_AMOUNT 100
 
 // Savegame
 /** The savegame file. */

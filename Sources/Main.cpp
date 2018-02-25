@@ -849,10 +849,17 @@ int main(int argc, char *argv[])
 			}
 			
 			// Fire a bullet
-			if (ControlManager::isKeyPressed(ControlManager::KEY_ID_SHOOT))
+			if (ControlManager::isKeyPressed(ControlManager::KEY_ID_PRIMARY_SHOOT))
 			{
 				// Is the player allowed to shoot ?
 				pointerBullet = pointerPlayer->shoot();
+				if (pointerBullet != NULL) _playerBulletsList.push_front(pointerBullet);
+			}
+			// Fire a mortar shell (bullet and mortar shell can be shot in the same time)
+			if (ControlManager::isKeyPressed(ControlManager::KEY_ID_SECONDARY_SHOOT))
+			{
+				// Is the player allowed to shoot ?
+				pointerBullet = pointerPlayer->shootSecondaryFire();
 				if (pointerBullet != NULL) _playerBulletsList.push_front(pointerBullet);
 			}
 			

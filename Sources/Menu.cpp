@@ -176,7 +176,7 @@ int display(const char *stringMenuTitle, const char *stringMenuItemsTexts[], int
 		}
 		else isGoDownKeyPressed = 0;
 		// Shoot key
-		if (ControlManager::isKeyPressed(ControlManager::KEY_ID_SHOOT)) isShootKeyPressed = 1; // Wait for the key to be released to execute the associated action, so the shoot key is not pressed when entering the game (this avoids the player immediately shooting when entering the game because the shoot key is pressed yet)
+		if (ControlManager::isKeyPressed(ControlManager::KEY_ID_PRIMARY_SHOOT)) isShootKeyPressed = 1; // Wait for the key to be released to execute the associated action, so the shoot key is not pressed when entering the game (this avoids the player immediately shooting when entering the game because the shoot key is pressed yet)
 		else if (isShootKeyPressed)
 		{
 			returnValue = focusedMenuItemIndex;

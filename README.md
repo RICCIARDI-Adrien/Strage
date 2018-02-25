@@ -20,14 +20,15 @@ And remember, *strage* means *slaughter* in Italian...
 ## Controls
 ### Keyboard
 * **Arrow keys** : move
-* **Space bar** : shoot
+* **Space bar** : primary shoot
+* **Left control** : secondary shoot
 * **Escape** : pause game
 * **Alt+F4** : quit game
 * **R** : reload current level
 
 ### Xbox One game controller
 * **Left stick** : move
-* **'A' button** : shoot
+* **'A' button** : primary shoot
 * **View button** : reload current level
 * **Menu button** : pause game
 

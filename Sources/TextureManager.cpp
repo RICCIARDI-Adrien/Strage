@@ -79,6 +79,10 @@ int initialize()
 	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_BULLET_FACING_DOWN] = new Texture(FileManager::getFilePath("Textures/Player_Bullet_Down.bmp"), 0);
 	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_BULLET_FACING_LEFT] = new Texture(FileManager::getFilePath("Textures/Player_Bullet_Left.bmp"), 0);
 	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_BULLET_FACING_RIGHT] = new Texture(FileManager::getFilePath("Textures/Player_Bullet_Right.bmp"), 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_BULLET_MORTAR_SHELL_FACING_UP] = new Texture(FileManager::getFilePath("Textures/Player_Bullet_Mortar_Shell_Up.bmp"), 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_BULLET_MORTAR_SHELL_FACING_DOWN] = new Texture(FileManager::getFilePath("Textures/Player_Bullet_Mortar_Shell_Down.bmp"), 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_BULLET_MORTAR_SHELL_FACING_LEFT] = new Texture(FileManager::getFilePath("Textures/Player_Bullet_Mortar_Shell_Left.bmp"), 0);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_BULLET_MORTAR_SHELL_FACING_RIGHT] = new Texture(FileManager::getFilePath("Textures/Player_Bullet_Mortar_Shell_Right.bmp"), 0);
 	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_BULLET_FACING_UP] = new Texture(FileManager::getFilePath("Textures/Small_Enemy_Bullet_Up.bmp"), 0);
 	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_BULLET_FACING_DOWN] = new Texture(FileManager::getFilePath("Textures/Small_Enemy_Bullet_Down.bmp"), 0);
 	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_BULLET_FACING_LEFT] = new Texture(FileManager::getFilePath("Textures/Small_Enemy_Bullet_Left.bmp"), 0);
@@ -161,6 +165,12 @@ int initialize()
 	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_DOWN] = new Texture(FileManager::getFilePath("Textures/Player_Muzzle_Flash_Down.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_LEFT] = new Texture(FileManager::getFilePath("Textures/Player_Muzzle_Flash_Left.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_RIGHT] = new Texture(FileManager::getFilePath("Textures/Player_Muzzle_Flash_Right.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_0] = new Texture(FileManager::getFilePath("Textures/Player_Muzzle_Flash_Mortar_Shell_0.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_1] = new Texture(FileManager::getFilePath("Textures/Player_Muzzle_Flash_Mortar_Shell_1.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_2] = new Texture(FileManager::getFilePath("Textures/Player_Muzzle_Flash_Mortar_Shell_2.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_3] = new Texture(FileManager::getFilePath("Textures/Player_Muzzle_Flash_Mortar_Shell_3.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_4] = new Texture(FileManager::getFilePath("Textures/Player_Muzzle_Flash_Mortar_Shell_4.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_5] = new Texture(FileManager::getFilePath("Textures/Player_Muzzle_Flash_Mortar_Shell_5.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_UP] = new Texture(FileManager::getFilePath("Textures/Small_Enemy_Muzzle_Flash_Up.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_DOWN] = new Texture(FileManager::getFilePath("Textures/Small_Enemy_Muzzle_Flash_Down.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_LEFT] = new Texture(FileManager::getFilePath("Textures/Small_Enemy_Muzzle_Flash_Left.bmp"), 1);

@@ -114,7 +114,11 @@ void handleKeyboardEvent(SDL_Event *pointerEvent)
 				break;
 				
 			case SDL_SCANCODE_SPACE:
-				_isKeyPressed[KEY_ID_SHOOT] = 1;
+				_isKeyPressed[KEY_ID_PRIMARY_SHOOT] = 1;
+				break;
+				
+			case SDL_SCANCODE_LCTRL:
+				_isKeyPressed[KEY_ID_SECONDARY_SHOOT] = 1;
 				break;
 				
 			case SDL_SCANCODE_ESCAPE:
@@ -155,7 +159,11 @@ void handleKeyboardEvent(SDL_Event *pointerEvent)
 				break;
 				
 			case SDL_SCANCODE_SPACE:
-				_isKeyPressed[KEY_ID_SHOOT] = 0;
+				_isKeyPressed[KEY_ID_PRIMARY_SHOOT] = 0;
+				break;
+				
+			case SDL_SCANCODE_LCTRL:
+				_isKeyPressed[KEY_ID_SECONDARY_SHOOT] = 0;
 				break;
 			
 			case SDL_SCANCODE_ESCAPE:
@@ -216,7 +224,7 @@ void handleJoystickEvent(SDL_Event *pointerEvent)
 		// Cache button value
 		button = pointerEvent->jbutton.button;
 		
-		if (button == 0) _isKeyPressed[KEY_ID_SHOOT] = 1;
+		if (button == 0) _isKeyPressed[KEY_ID_PRIMARY_SHOOT] = 1;
 		else if (button == 7) _isKeyPressed[KEY_ID_PAUSE_GAME] = 1;
 		else if (button == 6) _isKeyPressed[KEY_ID_RETRY_GAME] = 1;
 	}
@@ -226,7 +234,7 @@ void handleJoystickEvent(SDL_Event *pointerEvent)
 		// Cache button value
 		button = pointerEvent->jbutton.button;
 		
-		if (button == 0) _isKeyPressed[KEY_ID_SHOOT] = 0;
+		if (button == 0) _isKeyPressed[KEY_ID_PRIMARY_SHOOT] = 0;
 		else if (button == 7) _isKeyPressed[KEY_ID_PAUSE_GAME] = 0;
 		else if (button == 6) _isKeyPressed[KEY_ID_RETRY_GAME] = 0;
 	}

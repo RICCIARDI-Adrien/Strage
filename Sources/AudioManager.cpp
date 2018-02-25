@@ -176,6 +176,7 @@ int initialize()
 	// Load all sounds
 	_pointerSounds[SOUND_ID_AMMUNITION_TAKEN] = _loadFromWave(FileManager::getFilePath("Sounds/Ammunition_Taken.wav"));
 	_pointerSounds[SOUND_ID_PLAYER_FIRESHOT] = _loadFromWave(FileManager::getFilePath("Sounds/Player_Fireshot.wav"));
+	_pointerSounds[SOUND_ID_PLAYER_FIRESHOT_MORTAR_SHELL] = _loadFromWave(FileManager::getFilePath("Sounds/Player_Fireshot_Mortar_Shell.wav"));
 	_pointerSounds[SOUND_ID_PLAYER_HEALED] = _loadFromWave(FileManager::getFilePath("Sounds/Player_Healed.wav"));
 	_pointerSounds[SOUND_ID_PLAYER_LIFE_INCREASED] = _loadFromWave(FileManager::getFilePath("Sounds/Player_Life_Increased.wav"));
 	_pointerSounds[SOUND_ID_SMALL_ENEMY_FIRESHOT] = _loadFromWave(FileManager::getFilePath("Sounds/Small_Enemy_Fireshot.wav"));
