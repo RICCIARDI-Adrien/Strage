@@ -30,7 +30,7 @@ namespace AudioManager
 /** Associate a music file name to a playable handle. */
 typedef struct
 {
-	const char *pointerFileName; //!< The file containing the music.
+	const char *pointerStringFileName; //!< The file containing the music.
 	Mix_Music *pointerMusicHandle; //!< The handle to use to play this music.
 } Music;
 
@@ -100,19 +100,19 @@ static volatile int _isThreadTerminated = 0;
 // Private functions
 //-------------------------------------------------------------------------------------------------
 /** Load a sound from a wave file.
- * @param fileName The file to load.
+ * @param pointerStringFileName The file to load.
  * @return A pointer on the chunk containing the sound.
  * @warning This function will stop the program if the sound can't be loaded.
  */
-static Mix_Chunk *_loadFromWave(const char *fileName)
+static Mix_Chunk *_loadFromWave(const char *pointerStringFileName)
 {
 	Mix_Chunk *pointerChunk;
 	
 	// Try to load the file
-	pointerChunk = Mix_LoadWAV(fileName);
+	pointerChunk = Mix_LoadWAV(pointerStringFileName);
 	if (pointerChunk == NULL)
 	{
-		LOG_ERROR("Failed to load sound file '%s' (%s).", fileName, Mix_GetError());
+		LOG_ERROR("Failed to load sound file '%s' (%s).", pointerStringFileName, Mix_GetError());
 		exit(-1);
 	}
 	
@@ -193,10 +193,10 @@ int initialize()
 	for (i = 0; i < MUSICS_COUNT; i++)
 	{
 		// Try to load the file
-		_musics[i].pointerMusicHandle = Mix_LoadMUS(FileManager::getFilePath(_musics[i].pointerFileName));
+		_musics[i].pointerMusicHandle = Mix_LoadMUS(FileManager::getFilePath(_musics[i].pointerStringFileName));
 		if (_musics[i].pointerMusicHandle == NULL)
 		{
-			LOG_ERROR("Failed to load music '%s' (%s).", _musics[i].pointerFileName, Mix_GetError());
+			LOG_ERROR("Failed to load music '%s' (%s).", _musics[i].pointerStringFileName, Mix_GetError());
 			return -1;
 		}
 	}
@@ -272,8 +272,8 @@ void playMusic()
 	musicIndex = rand() % MUSICS_COUNT;
 	
 	// Try to play it
-	if (Mix_PlayMusic(_musics[musicIndex].pointerMusicHandle, 1) != 0) LOG_ERROR("Failed to play music %s (%s).", _musics[musicIndex].pointerFileName, Mix_GetError());
-	else LOG_DEBUG("Playing music '%s'.", _musics[musicIndex].pointerFileName);
+	if (Mix_PlayMusic(_musics[musicIndex].pointerMusicHandle, 1) != 0) LOG_ERROR("Failed to play music %s (%s).", _musics[musicIndex].pointerStringFileName, Mix_GetError());
+	else LOG_DEBUG("Playing music '%s'.", _musics[musicIndex].pointerStringFileName);
 }
 
 void pauseMusic(int isMusicPaused)

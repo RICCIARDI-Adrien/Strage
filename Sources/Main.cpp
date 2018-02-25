@@ -629,13 +629,13 @@ int main(int argc, char *argv[])
 	unsigned int frameStartingTime, frameElapsedTime;
 	int isFullScreenEnabled = 1, levelToLoadNumber, i, isRetryKeyPressed = 0;
 	MovingEntityBullet *pointerBullet;
-	const char *stringMainMenuItems[] =
+	const char *pointerStringsMainMenuItems[] =
 	{
 		"Continue game",
 		"New game",
 		"Quit"
 	};
-	const char *stringPauseMenuItems[] =
+	const char *pointerStringsPauseMenuItems[] =
 	{
 		"Continue",
 		"Quit"
@@ -703,7 +703,7 @@ int main(int argc, char *argv[])
 	LOG_INFORMATION("Game engine successfully initialized.");
 	
 	// Display the main menu and get user choice
-	switch (Menu::display("Main menu", stringMainMenuItems, 3))
+	switch (Menu::display("Main menu", pointerStringsMainMenuItems, 3))
 	{
 		// Continue last saved game
 		case 0:
@@ -773,7 +773,7 @@ int main(int argc, char *argv[])
 			LOG_INFORMATION("Game paused.");
 			AudioManager::pauseMusic(1);
 			
-			if (Menu::display("Pause", stringPauseMenuItems, 2) != 0) goto Exit;
+			if (Menu::display("Pause", pointerStringsPauseMenuItems, 2) != 0) goto Exit;
 				
 			LOG_INFORMATION("Game continuing.");
 			AudioManager::pauseMusic(0);

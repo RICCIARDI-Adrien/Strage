@@ -17,10 +17,10 @@ class TextureDisplayOverlay: public Texture
 {
 	public:
 		/** Load a bitmap and set alpha channel.
-		 * @param fileName The file to load.
+		 * @param pointerStringFileName The file to load.
 		 * @param isRleCompressionEnabled Enable or disable RLE compression (see Texture for more details).
 		 */
-		TextureDisplayOverlay(const char *fileName, int isRleCompressionEnabled): Texture(fileName, isRleCompressionEnabled)
+		TextureDisplayOverlay(const char *pointerStringFileName, int isRleCompressionEnabled): Texture(pointerStringFileName, isRleCompressionEnabled)
 		{
 			if (SDL_SetTextureAlphaMod(_pointerTexture, 96) != 0)
 			{

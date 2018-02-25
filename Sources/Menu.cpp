@@ -43,10 +43,10 @@ static int _menuTitleTextureX;
 // Private functions
 //-------------------------------------------------------------------------------------------------
 /** Render all strings to cached textures to avoid rendering them on each frame.
- * @param stringMenuTitle The menu title.
- * @param stringMenuItemsTexts The menu items.
+ * @param pointerStringMenuTitle The menu title.
+ * @param pointerStringsMenuItemsTexts The menu items.
  */
-static inline void _initialize(const char *stringMenuTitle, const char *stringMenuItemsTexts[])
+static inline void _initialize(const char *pointerStringMenuTitle, const char *pointerStringsMenuItemsTexts[])
 {
 	int i, textureWidth, textureHeight, stringTexturesVerticalHeight, firstStringTextureY;
 	
@@ -55,7 +55,7 @@ static inline void _initialize(const char *stringMenuTitle, const char *stringMe
 	
 	// Handle title texture separately because it is not a menu item (it can't be selected or focused)
 	// Render texture
-	_pointerMenuTitleTexture = Renderer::renderTextToTexture(stringMenuTitle, Renderer::TEXT_COLOR_ID_BLACK, Renderer::FONT_SIZE_ID_BIG);
+	_pointerMenuTitleTexture = Renderer::renderTextToTexture(pointerStringMenuTitle, Renderer::TEXT_COLOR_ID_BLACK, Renderer::FONT_SIZE_ID_BIG);
 	// Get texture size
 	if (SDL_QueryTexture(_pointerMenuTitleTexture, NULL, NULL, &textureWidth, &textureHeight) != 0)
 	{
@@ -69,8 +69,8 @@ static inline void _initialize(const char *stringMenuTitle, const char *stringMe
 	for (i = 0; i < _menuItemsCount; i++)
 	{
 		// Render strings
-		_menuItems[i].pointerNormalTexture = Renderer::renderTextToTexture(stringMenuItemsTexts[i], Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
-		_menuItems[i].pointerFocusedTexture = Renderer::renderTextToTexture(stringMenuItemsTexts[i], Renderer::TEXT_COLOR_ID_DARK_GREEN, Renderer::FONT_SIZE_ID_BIG);
+		_menuItems[i].pointerNormalTexture = Renderer::renderTextToTexture(pointerStringsMenuItemsTexts[i], Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
+		_menuItems[i].pointerFocusedTexture = Renderer::renderTextToTexture(pointerStringsMenuItemsTexts[i], Renderer::TEXT_COLOR_ID_DARK_GREEN, Renderer::FONT_SIZE_ID_BIG);
 		
 		// Compute displaying coordinates
 		// Get texture size (texture have same size because only color changes between normal and focused textures, so use the normal one)
@@ -112,7 +112,7 @@ static inline void _uninitialize()
 //-------------------------------------------------------------------------------------------------
 // Public functions
 //-------------------------------------------------------------------------------------------------
-int display(const char *stringMenuTitle, const char *stringMenuItemsTexts[], int menuItemsCount)
+int display(const char *pointerStringMenuTitle, const char *pointerStringsMenuItemsTexts[], int menuItemsCount)
 {
 	SDL_Event event;
 	int returnValue, i, focusedMenuItemIndex = 0, isGoUpKeyPressed = 0, isGoDownKeyPressed = 0, isShootKeyPressed = 0;
@@ -123,7 +123,7 @@ int display(const char *stringMenuTitle, const char *stringMenuItemsTexts[], int
 	_menuItemsCount = menuItemsCount;
 	
 	// Cache textures to display
-	_initialize(stringMenuTitle, stringMenuItemsTexts);
+	_initialize(pointerStringMenuTitle, pointerStringsMenuItemsTexts);
 	
 	while (1)
 	{

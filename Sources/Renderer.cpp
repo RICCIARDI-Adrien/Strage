@@ -193,15 +193,14 @@ int isDisplayable(SDL_Rect *pointerObjectPositionRectangle)
 	return SDL_HasIntersection(&_displayRectangle, pointerObjectPositionRectangle);
 }
 
-SDL_Texture *renderTextToTexture(const char *pointerText, TextColorId colorId, FontSizeId fontSizeId)
+SDL_Texture *renderTextToTexture(const char *pointerStringText, TextColorId colorId, FontSizeId fontSizeId)
 {
 	// Make sure parameters are valid
 	assert(colorId < TEXT_COLOR_IDS_COUNT);
 	assert(fontSizeId < FONT_SIZE_IDS_COUNT);
 	
 	// Render the text
-	//SDL_Surface *pointerSurface = TTF_RenderText_Solid(_pointerFont, pointerText, _textColors[colorId]);
-	SDL_Surface *pointerSurface = TTF_RenderText_Blended(_pointerFonts[fontSizeId], pointerText, _textColors[colorId]);
+	SDL_Surface *pointerSurface = TTF_RenderText_Blended(_pointerFonts[fontSizeId], pointerStringText, _textColors[colorId]);
 	if (pointerSurface == NULL)
 	{
 		LOG_ERROR("Failed to render the text to a surface, shutting down (%s).", TTF_GetError());

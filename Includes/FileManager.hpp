@@ -18,10 +18,10 @@ namespace FileManager
 int initialize();
 
 /** Build an absolute path leading to the provided file (only on platform that use dynamic paths, on other platforms the provided file name is returned as-is because relative paths work).
- * @param pointerFileName The file to get absolute path. The file can be preceded by directories.
+ * @param pointerStringFileName The file to get absolute path. The file can be preceded by directories.
  * @return A static string containing the file absolute path.
  */
-const char *getFilePath(const char *pointerFileName);
+const char *getFilePath(const char *pointerStringFileName);
 
 }
 

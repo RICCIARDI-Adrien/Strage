@@ -21,18 +21,18 @@ class Texture
 		SDL_Rect _positionRectangle;
 	
 		/** Load a texture from a bitmap file.
-		 * @param fileName The bitmap file.
+		 * @param pointerStringFileName The bitmap file.
 		 * @param isRleCompressionEnabled Set to 1 to enable the RLE compression, resulting in faster rendering on highly transparent pictures.
 		 * @return a valid pointer if the texture was successfully loaded,
 		 * @return NULL if an error occurred.
 		 */
-		SDL_Texture *_loadFromBitmap(const char *fileName, int isRleCompressionEnabled)
+		SDL_Texture *_loadFromBitmap(const char *pointerStringFileName, int isRleCompressionEnabled)
 		{
 			// Try to load bitmap
-			SDL_Surface *pointerSurface = SDL_LoadBMP(fileName);
+			SDL_Surface *pointerSurface = SDL_LoadBMP(pointerStringFileName);
 			if (pointerSurface == NULL)
 			{
-				LOG_ERROR("Failed to load texture '%s' (%s).", fileName, SDL_GetError());
+				LOG_ERROR("Failed to load texture '%s' (%s).", pointerStringFileName, SDL_GetError());
 				return NULL;
 			}
 			
@@ -68,16 +68,16 @@ class Texture
 	
 	public:
 		/** Create a SDL texture from a picture file.
-		 * @param fileName The picture file.
+		 * @param pointerStringFileName The picture file.
 		 * @param isRleCompressionEnabled Set to 1 to enable the RLE compression, resulting in faster rendering on highly transparent pictures.
 		 */
-		Texture(const char *fileName, int isRleCompressionEnabled)
+		Texture(const char *pointerStringFileName, int isRleCompressionEnabled)
 		{
 			unsigned int pixelFormat;
 			int access;
 			
 			// Try to load the texture
-			_pointerTexture = _loadFromBitmap(fileName, isRleCompressionEnabled);
+			_pointerTexture = _loadFromBitmap(pointerStringFileName, isRleCompressionEnabled);
 			if (_pointerTexture == NULL) exit(-1);
 			
 			// Cache width and height parameters

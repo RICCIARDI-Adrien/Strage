@@ -80,13 +80,13 @@ void endRendering();
 int isDisplayable(SDL_Rect *pointerObjectPositionRectangle);
 
 /** Render the provided text on a texture.
- * @param pointerText The string to render.
+ * @param pointerStringText The string to render.
  * @param colorId The text color.
  * @param fontSizeId The font size.
  * @return A texture containing the rendered text. Caller must free this texture.
  * @warning This function halts the game if something goes wrong.
  */
-SDL_Texture *renderTextToTexture(const char *pointerText, TextColorId colorId, FontSizeId fontSizeId);
+SDL_Texture *renderTextToTexture(const char *pointerStringText, TextColorId colorId, FontSizeId fontSizeId);
 
 /** Display the provided texture at the specified display position.
  * @param pointerTexture The texture to display.
