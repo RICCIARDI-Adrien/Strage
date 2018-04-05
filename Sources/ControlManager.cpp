@@ -18,8 +18,8 @@ static int _isKeyPressed[KEY_IDS_COUNT] = {0};
 /** Tell if the last pressed direction key was on the vertical or the horizontal axis. */
 static int _isLastPressedDirectionKeyOnVerticalAxis = 0;
 
-/** The detected joystick. */
-static SDL_Joystick *_pointerJoystick = NULL;
+/** The detected game controller. */
+static SDL_GameController *_pointerGameController = NULL;
 
 //-------------------------------------------------------------------------------------------------
 // Private functions
@@ -61,15 +61,22 @@ static void _handleGoRightKeyPress()
 //-------------------------------------------------------------------------------------------------
 int initialize(void)
 {
-	// Try to detect a joystick
-	if (SDL_NumJoysticks())
+	int i, Detected_Joysticks_Count;
+	
+	// Try to open the first detected game controller
+	Detected_Joysticks_Count = SDL_NumJoysticks();
+	for (i = 0; i < Detected_Joysticks_Count; i++)
 	{
-		// One or more joystick is present, open it
-		_pointerJoystick = SDL_JoystickOpen(0);
-		if (_pointerJoystick == NULL)
+		// Make sure device is supported by SDL game controller API
+		if (!SDL_IsGameController(i)) continue;
+	
+		// Gain access to controller
+		_pointerGameController = SDL_GameControllerOpen(i);
+		if (_pointerGameController == NULL) LOG_ERROR("Failed to open game controller with ID %d (%s).", i, SDL_GetError());
+		else
 		{
-			LOG_ERROR("Failed to open the first found joystick (%s).", SDL_GetError());
-			return -1;
+			LOG_INFORMATION("Successfully detected game controller '%s'.", SDL_GameControllerName(_pointerGameController));
+			break;
 		}
 	}
 	
@@ -78,8 +85,8 @@ int initialize(void)
 
 void uninitialize(void)
 {
-	// Close the opened joystick
-	if ((_pointerJoystick != NULL) && (SDL_JoystickGetAttached(_pointerJoystick))) SDL_JoystickClose(_pointerJoystick);
+	// Close the opened game controller
+	if ((_pointerGameController != NULL) && (SDL_GameControllerGetAttached(_pointerGameController))) SDL_GameControllerClose(_pointerGameController);
 }
 
 int isKeyPressed(KeyId keyId)
@@ -180,20 +187,20 @@ void handleKeyboardEvent(SDL_Event *pointerEvent)
 	}
 }
 
-void handleJoystickEvent(SDL_Event *pointerEvent)
+void handleGameControllerEvent(SDL_Event *pointerEvent)
 {
-	unsigned char button, axis;
+	unsigned char axis;
 	short value;
 	
 	// Analog controls
-	if (pointerEvent->type == SDL_JOYAXISMOTION)
+	if (pointerEvent->type == SDL_CONTROLLERAXISMOTION)
 	{
 		// Cache values
-		axis = pointerEvent->jaxis.axis;
-		value = pointerEvent->jaxis.value;
+		axis = pointerEvent->caxis.axis;
+		value = pointerEvent->caxis.value;
 		
 		// Left stick X axis
-		if (axis == 0)
+		if ((axis == SDL_CONTROLLER_AXIS_LEFTX) || (axis == SDL_CONTROLLER_AXIS_RIGHTX))
 		{
 			if (value <= -CONFIGURATION_GAMEPLAY_JOYSTICK_ANALOG_THRESHOLD) _handleGoLeftKeyPress();
 			else if (value >= CONFIGURATION_GAMEPLAY_JOYSTICK_ANALOG_THRESHOLD) _handleGoRightKeyPress();
@@ -206,7 +213,7 @@ void handleJoystickEvent(SDL_Event *pointerEvent)
 		}
 		
 		// Left stick Y axis
-		if (axis == 1)
+		if ((axis == SDL_CONTROLLER_AXIS_LEFTY) || (axis == SDL_CONTROLLER_AXIS_RIGHTY))
 		{
 			if (value <= -CONFIGURATION_GAMEPLAY_JOYSTICK_ANALOG_THRESHOLD) _handleGoUpKeyPress();
 			else if (value >= CONFIGURATION_GAMEPLAY_JOYSTICK_ANALOG_THRESHOLD) _handleGoDownKeyPress();
@@ -219,24 +226,54 @@ void handleJoystickEvent(SDL_Event *pointerEvent)
 		}
 	}
 	// Button press events
-	else if (pointerEvent->type == SDL_JOYBUTTONDOWN)
+	else if (pointerEvent->type == SDL_CONTROLLERBUTTONDOWN)
 	{
-		// Cache button value
-		button = pointerEvent->jbutton.button;
-		
-		if (button == 0) _isKeyPressed[KEY_ID_PRIMARY_SHOOT] = 1;
-		else if (button == 7) _isKeyPressed[KEY_ID_PAUSE_GAME] = 1;
-		else if (button == 6) _isKeyPressed[KEY_ID_RETRY_GAME] = 1;
+		switch (pointerEvent->cbutton.button)
+		{
+			case SDL_CONTROLLER_BUTTON_A:
+				_isKeyPressed[KEY_ID_PRIMARY_SHOOT] = 1;
+				break;
+				
+			case SDL_CONTROLLER_BUTTON_B:
+				_isKeyPressed[KEY_ID_SECONDARY_SHOOT] = 1;
+				break;
+				
+			case SDL_CONTROLLER_BUTTON_START:
+				_isKeyPressed[KEY_ID_PAUSE_GAME] = 1;
+				break;
+				
+			case SDL_CONTROLLER_BUTTON_BACK:
+				_isKeyPressed[KEY_ID_RETRY_GAME] = 1;
+				break;
+				
+			default:
+				break;
+		}
 	}
 	// Button release events
-	else if (pointerEvent->type == SDL_JOYBUTTONUP)
+	else if (pointerEvent->type == SDL_CONTROLLERBUTTONUP)
 	{
-		// Cache button value
-		button = pointerEvent->jbutton.button;
-		
-		if (button == 0) _isKeyPressed[KEY_ID_PRIMARY_SHOOT] = 0;
-		else if (button == 7) _isKeyPressed[KEY_ID_PAUSE_GAME] = 0;
-		else if (button == 6) _isKeyPressed[KEY_ID_RETRY_GAME] = 0;
+		switch (pointerEvent->cbutton.button)
+		{
+			case SDL_CONTROLLER_BUTTON_A:
+				_isKeyPressed[KEY_ID_PRIMARY_SHOOT] = 0;
+				break;
+				
+			case SDL_CONTROLLER_BUTTON_B:
+				_isKeyPressed[KEY_ID_SECONDARY_SHOOT] = 0;
+				break;
+				
+			case SDL_CONTROLLER_BUTTON_START:
+				_isKeyPressed[KEY_ID_PAUSE_GAME] = 0;
+				break;
+				
+			case SDL_CONTROLLER_BUTTON_BACK:
+				_isKeyPressed[KEY_ID_RETRY_GAME] = 0;
+				break;
+				
+			default:
+				break;
+		}
 	}
 }
 

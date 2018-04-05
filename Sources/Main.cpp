@@ -665,7 +665,7 @@ int main(int argc, char *argv[])
 	}
 	
 	// Initialize the needed SDL subsystems
-	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK) != 0)
+	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER) != 0)
 	{
 		LOG_ERROR("SDL_Init() failed (%s).", SDL_GetError());
 		return -1;
@@ -753,10 +753,10 @@ int main(int argc, char *argv[])
 				case SDL_QUIT:
 					goto Exit;
 					
-				case SDL_JOYBUTTONUP:
-				case SDL_JOYBUTTONDOWN:
-				case SDL_JOYAXISMOTION:
-					ControlManager::handleJoystickEvent(&event);
+				case SDL_CONTROLLERBUTTONUP:
+				case SDL_CONTROLLERBUTTONDOWN:
+				case SDL_CONTROLLERAXISMOTION:
+					ControlManager::handleGameControllerEvent(&event);
 					break;
 					
 				case SDL_KEYUP:

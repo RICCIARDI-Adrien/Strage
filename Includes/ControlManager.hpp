@@ -1,5 +1,5 @@
 /** @file ControlManager.hpp
- * Manage keyboard and game controller (considered as joystick in SDL) inputs.
+ * Manage keyboard and game controller inputs.
  * @author Adrien RICCIARDI
  */
 #ifndef HPP_CONTROL_MANAGER_HPP
@@ -13,7 +13,7 @@ namespace ControlManager
 //-------------------------------------------------------------------------------------------------
 // Types
 //-------------------------------------------------------------------------------------------------
-/** All handled keys. Keyboard and joystick keys are translated to these virtual key codes. */
+/** All handled keys. Keyboard and game controller keys are translated to these virtual key codes. */
 typedef enum
 {
 	KEY_ID_GO_UP,
@@ -30,13 +30,13 @@ typedef enum
 //-------------------------------------------------------------------------------------------------
 // Functions
 //-------------------------------------------------------------------------------------------------
-/** Initialize the first joystick found.
- * @return -1 if no joystick was detected,
- * @return 0 if the first joystick found was successfully initialized.
+/** Initialize the first found game controller.
+ * @return 0 if the first found game controller was successfully initialized or if no game controller was detected,
+ * @return -1 if a game controller was detected but could not be initialized.
  */
 int initialize(void);
 
-/** Close any previously opened joystick. */
+/** Close any previously opened game controller. */
 void uninitialize(void);
 
 /** Tell if a key is pressed or released.
@@ -51,10 +51,10 @@ int isKeyPressed(KeyId keyId);
  */
 void handleKeyboardEvent(SDL_Event *pointerEvent);
 
-/** Handle a SDL event related to the joystick.
- * @param pointerEvent The joystick event.
+/** Handle a SDL event related to the game controller.
+ * @param pointerEvent The game controller event.
  */
-void handleJoystickEvent(SDL_Event *pointerEvent);
+void handleGameControllerEvent(SDL_Event *pointerEvent);
 
 /** Tell if the last pressed direction key of the current controller was on the vertical or the horizontal axis.
  * @return 1 if the direction was vertical,

@@ -141,10 +141,10 @@ int display(const char *pointerStringMenuTitle, const char *pointerStringsMenuIt
 					LOG_DEBUG("Quitting game.");
 					goto Exit;
 					
-				case SDL_JOYBUTTONUP:
-				case SDL_JOYBUTTONDOWN:
-				case SDL_JOYAXISMOTION:
-					ControlManager::handleJoystickEvent(&event);
+				case SDL_CONTROLLERBUTTONUP:
+				case SDL_CONTROLLERBUTTONDOWN:
+				case SDL_CONTROLLERAXISMOTION:
+					ControlManager::handleGameControllerEvent(&event);
 					break;
 						
 				case SDL_KEYUP:
