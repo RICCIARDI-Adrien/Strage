@@ -188,6 +188,8 @@ int initialize()
 	_pointerSounds[SOUND_ID_BIG_ENEMY_EXPLOSION] = _loadFromWave(FileManager::getFilePath("Sounds/Big_Enemy_Explosion.wav"));
 	_pointerSounds[SOUND_ID_ENEMY_SPAWNER_BULLET_IMPACT] = _loadFromWave(FileManager::getFilePath("Sounds/Enemy_Spawner_Bullet_Impact.wav"));
 	_pointerSounds[SOUND_ID_ENEMY_SPAWNER_EXPLOSION] = _loadFromWave(FileManager::getFilePath("Sounds/Enemy_Spawner_Explosion.wav"));
+	_pointerSounds[SOUND_ID_MENU_MOVE] = _loadFromWave(FileManager::getFilePath("Sounds/Menu_Move.wav"));
+	_pointerSounds[SOUND_ID_MENU_SELECT] = _loadFromWave(FileManager::getFilePath("Sounds/Menu_Select.wav"));
 	
 	// Load all musics
 	for (i = 0; i < MUSICS_COUNT; i++)

@@ -2,6 +2,7 @@
  * @see Menu.hpp for description.
  * @author Adrien RICCIARDI
  */
+#include <AudioManager.hpp>
 #include <cassert>
 #include <Configuration.hpp>
 #include <ControlManager.hpp>
@@ -160,6 +161,7 @@ int display(const char *pointerStringMenuTitle, const char *pointerStringsMenuIt
 		{
 			if (!isGoUpKeyPressed)
 			{
+				AudioManager::playSound(AudioManager::SOUND_ID_MENU_MOVE);
 				if (focusedMenuItemIndex > 0) focusedMenuItemIndex--;
 				isGoUpKeyPressed = 1;
 			}
@@ -170,6 +172,7 @@ int display(const char *pointerStringMenuTitle, const char *pointerStringsMenuIt
 		{
 			if (!isGoDownKeyPressed)
 			{
+				AudioManager::playSound(AudioManager::SOUND_ID_MENU_MOVE);
 				if (focusedMenuItemIndex < _menuItemsCount - 1) focusedMenuItemIndex++;
 				isGoDownKeyPressed = 1;
 			}
@@ -179,6 +182,9 @@ int display(const char *pointerStringMenuTitle, const char *pointerStringsMenuIt
 		if (ControlManager::isKeyPressed(ControlManager::KEY_ID_PRIMARY_SHOOT)) isShootKeyPressed = 1; // Wait for the key to be released to execute the associated action, so the shoot key is not pressed when entering the game (this avoids the player immediately shooting when entering the game because the shoot key is pressed yet)
 		else if (isShootKeyPressed)
 		{
+			AudioManager::playSound(AudioManager::SOUND_ID_MENU_SELECT);
+			SDL_Delay(500); // Wait a bit for the sound to be played, because when this function quits _loadNextLevel() is called and it stops all playing sounds
+			
 			returnValue = focusedMenuItemIndex;
 			LOG_DEBUG("Selected item %d.", focusedMenuItemIndex);
 			goto Exit;
