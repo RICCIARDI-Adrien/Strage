@@ -85,6 +85,27 @@ static Music _musics[] =
 	}
 };
 
+/** Gather all sounds file names to load. */
+static const char *pointerStringsSoundFileNames[] =
+{
+	"Sounds/Ammunition_Taken.wav",
+	"Sounds/Player_Fireshot.wav",
+	"Sounds/Player_Fireshot_Mortar_Shell.wav",
+	"Sounds/Player_Healed.wav",
+	"Sounds/Player_Life_Increased.wav",
+	"Sounds/Small_Enemy_Fireshot.wav",
+	"Sounds/Medium_Enemy_Fireshot.wav",
+	"Sounds/Big_Enemy_Fireshot.wav",
+	"Sounds/Enemy_Bullet_Impact.wav",
+	"Sounds/Small_Enemy_Explosion.wav",
+	"Sounds/Medium_Enemy_Explosion.wav",
+	"Sounds/Big_Enemy_Explosion.wav",
+	"Sounds/Enemy_Spawner_Bullet_Impact.wav",
+	"Sounds/Enemy_Spawner_Explosion.wav",
+	"Sounds/Menu_Move.wav",
+	"Sounds/Menu_Select.wav"
+};
+
 /** Make the thread wait until a new music must be played. */
 static SDL_cond *_pointerMusicThreadCondition;
 /** The boolean representing the condition state. */
@@ -174,22 +195,12 @@ int initialize()
 	Mix_AllocateChannels(CONFIGURATION_AUDIO_CHANNELS_COUNT); // This function can't fail, according to documentation
 	
 	// Load all sounds
-	_pointerSounds[SOUND_ID_AMMUNITION_TAKEN] = _loadFromWave(FileManager::getFilePath("Sounds/Ammunition_Taken.wav"));
-	_pointerSounds[SOUND_ID_PLAYER_FIRESHOT] = _loadFromWave(FileManager::getFilePath("Sounds/Player_Fireshot.wav"));
-	_pointerSounds[SOUND_ID_PLAYER_FIRESHOT_MORTAR_SHELL] = _loadFromWave(FileManager::getFilePath("Sounds/Player_Fireshot_Mortar_Shell.wav"));
-	_pointerSounds[SOUND_ID_PLAYER_HEALED] = _loadFromWave(FileManager::getFilePath("Sounds/Player_Healed.wav"));
-	_pointerSounds[SOUND_ID_PLAYER_LIFE_INCREASED] = _loadFromWave(FileManager::getFilePath("Sounds/Player_Life_Increased.wav"));
-	_pointerSounds[SOUND_ID_SMALL_ENEMY_FIRESHOT] = _loadFromWave(FileManager::getFilePath("Sounds/Small_Enemy_Fireshot.wav"));
-	_pointerSounds[SOUND_ID_MEDIUM_ENEMY_FIRESHOT] = _loadFromWave(FileManager::getFilePath("Sounds/Medium_Enemy_Fireshot.wav"));
-	_pointerSounds[SOUND_ID_BIG_ENEMY_FIRESHOT] = _loadFromWave(FileManager::getFilePath("Sounds/Big_Enemy_Fireshot.wav"));
-	_pointerSounds[SOUND_ID_ENEMY_BULLET_IMPACT] = _loadFromWave(FileManager::getFilePath("Sounds/Enemy_Bullet_Impact.wav"));
-	_pointerSounds[SOUND_ID_SMALL_ENEMY_EXPLOSION] = _loadFromWave(FileManager::getFilePath("Sounds/Small_Enemy_Explosion.wav"));
-	_pointerSounds[SOUND_ID_MEDIUM_ENEMY_EXPLOSION] = _loadFromWave(FileManager::getFilePath("Sounds/Medium_Enemy_Explosion.wav"));
-	_pointerSounds[SOUND_ID_BIG_ENEMY_EXPLOSION] = _loadFromWave(FileManager::getFilePath("Sounds/Big_Enemy_Explosion.wav"));
-	_pointerSounds[SOUND_ID_ENEMY_SPAWNER_BULLET_IMPACT] = _loadFromWave(FileManager::getFilePath("Sounds/Enemy_Spawner_Bullet_Impact.wav"));
-	_pointerSounds[SOUND_ID_ENEMY_SPAWNER_EXPLOSION] = _loadFromWave(FileManager::getFilePath("Sounds/Enemy_Spawner_Explosion.wav"));
-	_pointerSounds[SOUND_ID_MENU_MOVE] = _loadFromWave(FileManager::getFilePath("Sounds/Menu_Move.wav"));
-	_pointerSounds[SOUND_ID_MENU_SELECT] = _loadFromWave(FileManager::getFilePath("Sounds/Menu_Select.wav"));
+	for (i = 0; i < sizeof(pointerStringsSoundFileNames) / sizeof(pointerStringsSoundFileNames[0]); i++)
+	{
+		LOG_DEBUG("Loading sound file %s...", pointerStringsSoundFileNames[i]);
+		_pointerSounds[i] = _loadFromWave(FileManager::getFilePath(pointerStringsSoundFileNames[i]));
+	}
+	LOG_DEBUG("Successfully loaded all sound files.");
 	
 	// Load all musics
 	for (i = 0; i < MUSICS_COUNT; i++)
