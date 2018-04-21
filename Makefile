@@ -3,7 +3,7 @@ PATH_SOURCES = Sources
 PATH_MACOS_RELEASE = Strage.app
 PATH_WINDOWS_RELEASE = Strage
 
-VERSION_SDL2 = 2.0.7
+VERSION_SDL2 = 2.0.8
 VERSION_SDL2_MIXER = 2.0.2
 VERSION_SDL2_TTF = 2.0.14
 
@@ -36,21 +36,21 @@ Frameworks/SDL2-$(VERSION_SDL2).framework:
 	@# Explicitly adding the SDL version to the framework makes the makefile rule automatically download an unpack the new version when the SDL version variable is updated (it would not have been the case if the directory name was not dependent of a version), so SDL frameworks are always up-to-date even without doing a "make clean" when version changed
 	cp -r /Volumes/SDL2/SDL2.framework Frameworks/SDL2-$(VERSION_SDL2).framework
 	@# However, framework must be named the same as in the DMG image, so use a symlink to fake the name
-	ln -s SDL2-$(VERSION_SDL2).framework Frameworks/SDL2.framework
+	ln -sf SDL2-$(VERSION_SDL2).framework Frameworks/SDL2.framework
 	hdiutil eject /Volumes/SDL2
 
 Frameworks/SDL2_mixer-$(VERSION_SDL2_MIXER).framework:
 	curl https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-$(VERSION_SDL2_MIXER).dmg -o /tmp/SDL2_mixer-$(VERSION_SDL2_MIXER).dmg
 	hdiutil attach /tmp/SDL2_mixer-$(VERSION_SDL2_MIXER).dmg
 	cp -r /Volumes/SDL2_mixer/SDL2_mixer.framework Frameworks/SDL2_mixer-$(VERSION_SDL2_MIXER).framework
-	ln -s SDL2_mixer-$(VERSION_SDL2_MIXER).framework Frameworks/SDL2_mixer.framework
+	ln -sf SDL2_mixer-$(VERSION_SDL2_MIXER).framework Frameworks/SDL2_mixer.framework
 	hdiutil eject /Volumes/SDL2_mixer
 
 Frameworks/SDL2_ttf-$(VERSION_SDL2_TTF).framework:
 	curl https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-$(VERSION_SDL2_TTF).dmg -o /tmp/SDL2_ttf-$(VERSION_SDL2_TTF).dmg
 	hdiutil attach /tmp/SDL2_ttf-$(VERSION_SDL2_TTF).dmg
 	cp -r /Volumes/SDL2_ttf/SDL2_ttf.framework Frameworks/SDL2_ttf-$(VERSION_SDL2_TTF).framework
-	ln -s SDL2_ttf-$(VERSION_SDL2_TTF).framework Frameworks/SDL2_ttf.framework
+	ln -sf SDL2_ttf-$(VERSION_SDL2_TTF).framework Frameworks/SDL2_ttf.framework
 	hdiutil eject /Volumes/SDL2_ttf
 
 windows: ADDITIONAL_OBJECTS = Windows_Icon.o
