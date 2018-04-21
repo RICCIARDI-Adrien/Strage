@@ -64,8 +64,8 @@ class FightingEntityPlayer: public FightingEntity
 			_ammunitionAmount = CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_AMMUNITION_AMOUNT;
 			
 			// Allow to shoot immediately
-			_secondaryFireTimeBetweenShots = 8000;
-			_secondaryFireLastShotTime = _secondaryFireTimeBetweenShots;
+			_secondaryFireTimeBetweenShots = 9500; // Slightly faster than a big enemy reloading time
+			_secondaryFireLastShotTime = -_secondaryFireTimeBetweenShots;
 			
 			// Cache bullet and firing effect position offsets
 			_computeBulletStartingPositionOffsets(_pointerTextures[DIRECTION_UP], TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLET_MORTAR_SHELL_FACING_UP), _secondaryFireStartingPositionOffsets);
