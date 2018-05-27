@@ -627,7 +627,7 @@ int main(int argc, char *argv[])
 {
 	SDL_Event event;
 	unsigned int frameStartingTime, frameElapsedTime;
-	int isFullScreenEnabled = 1, levelToLoadNumber, i, isRetryKeyPressed = 0;
+	int isFullScreenEnabled = 1, levelToLoadNumber, i;
 	MovingEntityBullet *pointerBullet;
 	const char *pointerStringsMainMenuItems[] =
 	{
@@ -638,8 +638,15 @@ int main(int argc, char *argv[])
 	const char *pointerStringsPauseMenuItems[] =
 	{
 		"Continue",
+		"Restart level",
 		"Quit"
 	};
+	const char *pointerStringsVictoryMenuItems[] =
+	{
+		"Relish your victory",
+		"Quit"
+	};
+	
 	#if CONFIGURATION_DISPLAY_IS_FRAME_RATE_DISPLAYING_ENABLED
 		unsigned int frameRateStartingTime = 0;
 		int framesCount = 0;
@@ -695,7 +702,7 @@ int main(int argc, char *argv[])
 	// Player damage overlay
 	_pointerPlayerHitOverlayTexture = (TextureDisplayOverlay *) TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_HIT_OVERLAY);
 	// Static interface strings
-	_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_LOST] =  Renderer::renderTextToTexture("You are dead ! Hit R to retry.", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
+	_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_LOST] =  Renderer::renderTextToTexture("You are dead !", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
 	_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_WON] = Renderer::renderTextToTexture("All levels completed. You are legend.", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
 	// Interface background
 	_pointerInterfaceBackgroundTexture = getTextureFromId(TextureManager::TEXTURE_ID_GRAPHIC_USER_INTERFACE_BACKGROUND)->getTexture();
@@ -773,52 +780,61 @@ int main(int argc, char *argv[])
 			LOG_INFORMATION("Game paused.");
 			AudioManager::pauseMusic(1);
 			
-			if (Menu::display("Pause", pointerStringsPauseMenuItems, 2) != 0) goto Exit;
-				
+			// Player won, display a specific menu
+			if (_isGameFinished)
+			{
+				if (Menu::display("Victory !", pointerStringsVictoryMenuItems, 2) == 1) goto Exit;
+			}
+			// Normal pause menu
+			else
+			{
+				switch (Menu::display("Pause", pointerStringsPauseMenuItems, 3))
+				{
+					// Player has selected "Continue"
+					case 0:
+						break;
+					
+					// Player has selected "Restart level"
+					case 1:
+						// Stop currently playing sounds
+						AudioManager::stopAllSounds();
+						
+						// Free all entities
+						_clearAllLists();
+						
+						// Choose level number to load (_loadNextLevel() automatically increments _currentLevelNumber)
+						if (_currentLevelNumber == 0) levelToLoadNumber = 0;
+						else levelToLoadNumber = _currentLevelNumber - 1;
+						
+						// Try to load the level
+						if (LevelManager::loadLevel(levelToLoadNumber) != 0)
+						{
+							LOG_ERROR("Failed to reload level %d.", levelToLoadNumber);
+							exit(-1);
+						}
+						
+						// Restore player life and ammunition count as they were at the level start
+						i = SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_MAXIMUM_LIFE_POINTS); // Recycle 'i' variable
+						pointerPlayer->setLifePointsAmount(i);
+						pointerPlayer->setMaximumLifePointsAmount(i);
+						pointerPlayer->setAmmunitionAmount(SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_AMMUNITION));
+						
+						// Allow the game to restart if the player is dead
+						if (_isPlayerDead)
+						{
+							_isPlayerDead = 0;
+							_isGamePaused = 0;
+						}
+						break;
+					
+					default:
+						goto Exit;
+				}
+			}
+			
 			LOG_INFORMATION("Game continuing.");
 			AudioManager::pauseMusic(0);
 		}
-		
-		// Restart the current level
-		if (ControlManager::isKeyPressed(ControlManager::KEY_ID_RETRY_GAME))
-		{
-			// Can't restart a level if the game is finished (player has completed all levels)
-			if (!_isGameFinished && !isRetryKeyPressed)
-			{
-				// Stop currently playing sounds
-				AudioManager::stopAllSounds();
-				
-				// Free all entities
-				_clearAllLists();
-				
-				// Choose level number to load (_loadNextLevel() automatically increments _currentLevelNumber)
-				if (_currentLevelNumber == 0) levelToLoadNumber = 0;
-				else levelToLoadNumber = _currentLevelNumber - 1;
-				
-				// Try to load the level
-				if (LevelManager::loadLevel(levelToLoadNumber) != 0)
-				{
-					LOG_ERROR("Failed to reload level %d.", levelToLoadNumber);
-					exit(-1);
-				}
-				
-				// Restore player life and ammunition count as they were at the level start
-				i = SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_MAXIMUM_LIFE_POINTS); // Recycle 'i' variable
-				pointerPlayer->setLifePointsAmount(i);
-				pointerPlayer->setMaximumLifePointsAmount(i);
-				pointerPlayer->setAmmunitionAmount(SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_AMMUNITION));
-				
-				// Allow the game to restart if the player is dead
-				if (_isPlayerDead)
-				{
-					_isPlayerDead = 0;
-					_isGamePaused = 0;
-				}
-				
-				isRetryKeyPressed = 1;
-			}
-		}
-		else isRetryKeyPressed = 0;
 		
 		// Do not update the game anymore if the player died
 		if (!_isGamePaused)

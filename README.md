@@ -24,20 +24,17 @@ And remember, *strage* means *slaughter* in Italian...
 * **Left control** : secondary shoot
 * **Escape** : pause game
 * **Alt+F4** : quit game
-* **R** : reload current level
 
 ### Xbox 360 game controller
 * **Left stick** : move
 * **'A' button** : primary shoot
 * **'B' button** : secondary shoot
-* **Back button** : reload current level
 * **Start button** : pause game
 
 ### Xbox One game controller
 * **Left stick** : move
 * **'A' button** : primary shoot
 * **'B' button** : secondary shoot
-* **View button** : reload current level
 * **Menu button** : pause game
 
 ## Building
