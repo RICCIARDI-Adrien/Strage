@@ -131,10 +131,6 @@ void handleKeyboardEvent(SDL_Event *pointerEvent)
 			case SDL_SCANCODE_ESCAPE:
 				_isKeyPressed[KEY_ID_PAUSE_GAME] = 1;
 				break;
-			
-			case SDL_SCANCODE_R:
-				_isKeyPressed[KEY_ID_RETRY_GAME] = 1;
-				break;
 				
 			default:
 				break;
@@ -175,10 +171,6 @@ void handleKeyboardEvent(SDL_Event *pointerEvent)
 			
 			case SDL_SCANCODE_ESCAPE:
 				_isKeyPressed[KEY_ID_PAUSE_GAME] = 0;
-				break;
-				
-			case SDL_SCANCODE_R:
-				_isKeyPressed[KEY_ID_RETRY_GAME] = 0;
 				break;
 				
 			default:
@@ -242,10 +234,6 @@ void handleGameControllerEvent(SDL_Event *pointerEvent)
 				_isKeyPressed[KEY_ID_PAUSE_GAME] = 1;
 				break;
 				
-			case SDL_CONTROLLER_BUTTON_BACK:
-				_isKeyPressed[KEY_ID_RETRY_GAME] = 1;
-				break;
-				
 			default:
 				break;
 		}
@@ -265,10 +253,6 @@ void handleGameControllerEvent(SDL_Event *pointerEvent)
 				
 			case SDL_CONTROLLER_BUTTON_START:
 				_isKeyPressed[KEY_ID_PAUSE_GAME] = 0;
-				break;
-				
-			case SDL_CONTROLLER_BUTTON_BACK:
-				_isKeyPressed[KEY_ID_RETRY_GAME] = 0;
 				break;
 				
 			default:
