@@ -8,6 +8,10 @@
 //-------------------------------------------------------------------------------------------------
 // Constants
 //-------------------------------------------------------------------------------------------------
+// Paths
+/** Path to "Sounds" directory relative to game executable. */
+#define CONFIGURATION_PATH_SOUNDS "Sounds"
+
 // Display
 /** Display width in pixels (only in windowed mode). */
 #define CONFIGURATION_DISPLAY_WIDTH 1024

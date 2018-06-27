@@ -44,43 +44,43 @@ static Mix_Chunk *_pointerSounds[SOUND_IDS_COUNT];
 static Music _musics[] =
 {
 	{
-		"Sounds/Akashic_Records_-_Epic_Action_Hero.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Akashic_Records_-_Epic_Action_Hero.mp3",
 		NULL
 	},
 	{
-		"Sounds/Art_Music_-_Epic_Trailer.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Art_Music_-_Epic_Trailer.mp3",
 		NULL
 	},
 	{
-		"Sounds/Blue_Giraffe_-_Action_Intense_Cinematic.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Blue_Giraffe_-_Action_Intense_Cinematic.mp3",
 		NULL
 	},
 	{
-		"Sounds/Celestial_Aeon_Project_-_Epic.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Celestial_Aeon_Project_-_Epic.mp3",
 		NULL
 	},
 	{
-		"Sounds/E._Erkut_-_Dark_Moment_-_Dark_Epic_Trailer.mp3",
+		CONFIGURATION_PATH_SOUNDS "/E._Erkut_-_Dark_Moment_-_Dark_Epic_Trailer.mp3",
 		NULL
 	},
 	{
-		"Sounds/Matti_Paalanen_-_Emotion.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Matti_Paalanen_-_Emotion.mp3",
 		NULL
 	},
 	{
-		"Sounds/Matti_Paalanen_-_Epic_Action.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Matti_Paalanen_-_Epic_Action.mp3",
 		NULL
 	},
 	{
-		"Sounds/Soundbay_-_Epic_Future.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Soundbay_-_Epic_Future.mp3",
 		NULL
 	},
 	{
-		"Sounds/Soundshrim_-_Epic_Adventure.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Soundshrim_-_Epic_Adventure.mp3",
 		NULL
 	},
 	{
-		"Sounds/Nico_Wohlleben_-_Storm.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Nico_Wohlleben_-_Storm.mp3",
 		NULL
 	}
 };
@@ -88,22 +88,22 @@ static Music _musics[] =
 /** Gather all sounds file names to load. */
 static const char *pointerStringsSoundFileNames[] =
 {
-	"Sounds/Ammunition_Taken.wav",
-	"Sounds/Player_Fireshot.wav",
-	"Sounds/Player_Fireshot_Mortar_Shell.wav",
-	"Sounds/Player_Healed.wav",
-	"Sounds/Player_Life_Increased.wav",
-	"Sounds/Small_Enemy_Fireshot.wav",
-	"Sounds/Medium_Enemy_Fireshot.wav",
-	"Sounds/Big_Enemy_Fireshot.wav",
-	"Sounds/Enemy_Bullet_Impact.wav",
-	"Sounds/Small_Enemy_Explosion.wav",
-	"Sounds/Medium_Enemy_Explosion.wav",
-	"Sounds/Big_Enemy_Explosion.wav",
-	"Sounds/Enemy_Spawner_Bullet_Impact.wav",
-	"Sounds/Enemy_Spawner_Explosion.wav",
-	"Sounds/Menu_Move.wav",
-	"Sounds/Menu_Select.wav"
+	CONFIGURATION_PATH_SOUNDS "/Ammunition_Taken.wav",
+	CONFIGURATION_PATH_SOUNDS "/Player_Fireshot.wav",
+	CONFIGURATION_PATH_SOUNDS "/Player_Fireshot_Mortar_Shell.wav",
+	CONFIGURATION_PATH_SOUNDS "/Player_Healed.wav",
+	CONFIGURATION_PATH_SOUNDS "/Player_Life_Increased.wav",
+	CONFIGURATION_PATH_SOUNDS "/Small_Enemy_Fireshot.wav",
+	CONFIGURATION_PATH_SOUNDS "/Medium_Enemy_Fireshot.wav",
+	CONFIGURATION_PATH_SOUNDS "/Big_Enemy_Fireshot.wav",
+	CONFIGURATION_PATH_SOUNDS "/Enemy_Bullet_Impact.wav",
+	CONFIGURATION_PATH_SOUNDS "/Small_Enemy_Explosion.wav",
+	CONFIGURATION_PATH_SOUNDS "/Medium_Enemy_Explosion.wav",
+	CONFIGURATION_PATH_SOUNDS "/Big_Enemy_Explosion.wav",
+	CONFIGURATION_PATH_SOUNDS "/Enemy_Spawner_Bullet_Impact.wav",
+	CONFIGURATION_PATH_SOUNDS "/Enemy_Spawner_Explosion.wav",
+	CONFIGURATION_PATH_SOUNDS "/Menu_Move.wav",
+	CONFIGURATION_PATH_SOUNDS "/Menu_Select.wav"
 };
 
 /** Make the thread wait until a new music must be played. */
