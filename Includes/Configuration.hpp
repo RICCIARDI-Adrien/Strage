@@ -100,4 +100,10 @@
 /** The savegame file. */
 #define CONFIGURATION_SAVEGAME_FILE_NAME "Savegame.txt"
 
+// Player entity
+/** The offset to add to player left side when spawning the "mortar shell muzzle flash" effect. */
+#define CONFIGURATION_PLAYER_MORTAL_SHELL_MUZZLE_FLASH_STARTING_POSITION_OFFSET_X 4
+/** The offset to add to player top side when spawning the "mortar shell muzzle flash" effect. */
+#define CONFIGURATION_PLAYER_MORTAL_SHELL_MUZZLE_FLASH_STARTING_POSITION_OFFSET_Y (-12)
+
 #endif

@@ -4,6 +4,7 @@
 #ifndef HPP_STATIC_ENTITY_HPP
 #define HPP_STATIC_ENTITY_HPP
 
+#include <cassert>
 #include <cstdlib>
 #include <Entity.hpp>
 #include <Log.hpp>
@@ -27,24 +28,19 @@ class StaticEntity: public Entity
 		/** Load the entity texture.
 		 * @param x Entity X coordinate.
 		 * @param y Entity Y coordinate.
-		 * @param textureId The texture ID to use.
+		 * @param pointerTexture The texture to use.
 		 */
-		StaticEntity(int x, int y, TextureManager::TextureId textureId)
+		StaticEntity(int x, int y, Texture *pointerTexture)
 		{
-			// Try to get the texture
-			_pointerTexture = TextureManager::getTextureFromId(textureId);
-			if (_pointerTexture == NULL)
-			{
-				LOG_ERROR("Could not retrieve texture (texture ID : %d).", textureId);
-				exit(-1);
-			}
+			assert(pointerTexture != NULL);
 			
 			_positionRectangle.x = x;
 			_positionRectangle.y = y;
 			
-			// Cache some values to fasten processing
-			_positionRectangle.w = _pointerTexture->getWidth();
-			_positionRectangle.h = _pointerTexture->getHeight();
+			// Cache some values to speed up processing
+			_pointerTexture = pointerTexture;
+			_positionRectangle.w = pointerTexture->getWidth();
+			_positionRectangle.h = pointerTexture->getHeight();
 		}
 		
 		/** Free allocated resources. */
@@ -53,8 +49,7 @@ class StaticEntity: public Entity
 		/** Display the entity at its current location on the map. */
 		virtual void render()
 		{
-			// Display the texture only if the entity is visible on screen
-			if (Renderer::isDisplayable(&_positionRectangle)) _pointerTexture->render(_positionRectangle.x - Renderer::displayX, _positionRectangle.y - Renderer::displayY);
+			_pointerTexture->render(_positionRectangle.x - Renderer::displayX, _positionRectangle.y - Renderer::displayY);
 		}
 		
 		// No need for documentation because it is the same as parent function

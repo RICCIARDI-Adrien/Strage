@@ -461,7 +461,7 @@ static TextureInformation _texturesInformations[] =
 	{
 		CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Bullet_Up.bmp",
 		1,
-		0,
+		4,
 		NULL,
 		NULL
 	},
@@ -469,7 +469,7 @@ static TextureInformation _texturesInformations[] =
 	{
 		CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Bullet_Down.bmp",
 		1,
-		0,
+		4,
 		NULL,
 		NULL
 	},
@@ -477,7 +477,7 @@ static TextureInformation _texturesInformations[] =
 	{
 		CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Bullet_Left.bmp",
 		1,
-		0,
+		4,
 		NULL,
 		NULL
 	},
@@ -485,7 +485,7 @@ static TextureInformation _texturesInformations[] =
 	{
 		CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Bullet_Right.bmp",
 		1,
-		0,
+		4,
 		NULL,
 		NULL
 	},
@@ -553,134 +553,6 @@ static TextureInformation _texturesInformations[] =
 		NULL,
 		NULL
 	},
-	// TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_UP
-	{
-		CONFIGURATION_PATH_TEXTURES "/Player_Muzzle_Flash_Up.bmp",
-		1,
-		0,
-		NULL,
-		NULL
-	},
-	// TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_DOWN
-	{
-		CONFIGURATION_PATH_TEXTURES "/Player_Muzzle_Flash_Down.bmp",
-		1,
-		0,
-		NULL,
-		NULL
-	},
-	// TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_LEFT
-	{
-		CONFIGURATION_PATH_TEXTURES "/Player_Muzzle_Flash_Left.bmp",
-		1,
-		0,
-		NULL,
-		NULL
-	},
-	// TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_RIGHT
-	{
-		CONFIGURATION_PATH_TEXTURES "/Player_Muzzle_Flash_Right.bmp",
-		1,
-		0,
-		NULL,
-		NULL
-	},
-	// TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_UP
-	{
-		CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Muzzle_Flash_Up.bmp",
-		1,
-		0,
-		NULL,
-		NULL
-	},
-	// TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_DOWN
-	{
-		CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Muzzle_Flash_Down.bmp",
-		1,
-		0,
-		NULL,
-		NULL
-	},
-	// TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_LEFT
-	{
-		CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Muzzle_Flash_Left.bmp",
-		1,
-		0,
-		NULL,
-		NULL
-	},
-	// TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_RIGHT
-	{
-		CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Muzzle_Flash_Right.bmp",
-		1,
-		0,
-		NULL,
-		NULL
-	},
-	// TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_UP
-	{
-		CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Muzzle_Flash_Up.bmp",
-		1,
-		0,
-		NULL,
-		NULL
-	},
-	// TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_DOWN
-	{
-		CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Muzzle_Flash_Down.bmp",
-		1,
-		0,
-		NULL,
-		NULL
-	},
-	// TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_LEFT
-	{
-		CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Muzzle_Flash_Left.bmp",
-		1,
-		0,
-		NULL,
-		NULL
-	},
-	// TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_RIGHT
-	{
-		CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Muzzle_Flash_Right.bmp",
-		1,
-		0,
-		NULL,
-		NULL
-	},
-	// TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_UP
-	{
-		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Muzzle_Flash_Up.bmp",
-		1,
-		0,
-		NULL,
-		NULL
-	},
-	// TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_DOWN
-	{
-		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Muzzle_Flash_Down.bmp",
-		1,
-		0,
-		NULL,
-		NULL
-	},
-	// TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_LEFT
-	{
-		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Muzzle_Flash_Left.bmp",
-		1,
-		0,
-		NULL,
-		NULL
-	},
-	// TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_RIGHT
-	{
-		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Muzzle_Flash_Right.bmp",
-		1,
-		0,
-		NULL,
-		NULL
-	},
 	
 	// Overlays
 	// TEXTURE_ID_PLAYER_HIT_OVERLAY
@@ -711,7 +583,7 @@ static TextureInformation _texturesInformations[] =
 	},
 	
 	// Animated textures
-	// TEXTURE_ID_SMALL_ENEMY_EXPLOSION_0
+	// TEXTURE_ID_ENEMY_SPAWNER_EXPLOSION
 	{
 		CONFIGURATION_PATH_TEXTURES "/Enemy_Spawner_Explosion.bmp",
 		16,
@@ -739,6 +611,134 @@ static TextureInformation _texturesInformations[] =
 	{
 		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Explosion.bmp",
 		16,
+		8,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_UP
+	{
+		CONFIGURATION_PATH_TEXTURES "/Player_Muzzle_Flash_Up.bmp",
+		1,
+		4,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_DOWN
+	{
+		CONFIGURATION_PATH_TEXTURES "/Player_Muzzle_Flash_Down.bmp",
+		1,
+		4,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_LEFT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Player_Muzzle_Flash_Left.bmp",
+		1,
+		4,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_RIGHT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Player_Muzzle_Flash_Right.bmp",
+		1,
+		4,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_UP
+	{
+		CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Muzzle_Flash_Up.bmp",
+		1,
+		4,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_DOWN
+	{
+		CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Muzzle_Flash_Down.bmp",
+		1,
+		4,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_LEFT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Muzzle_Flash_Left.bmp",
+		1,
+		4,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_RIGHT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Muzzle_Flash_Right.bmp",
+		1,
+		4,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_UP
+	{
+		CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Muzzle_Flash_Up.bmp",
+		1,
+		6,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_DOWN
+	{
+		CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Muzzle_Flash_Down.bmp",
+		1,
+		6,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_LEFT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Muzzle_Flash_Left.bmp",
+		1,
+		6,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_RIGHT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Muzzle_Flash_Right.bmp",
+		1,
+		6,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_UP
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Muzzle_Flash_Up.bmp",
+		1,
+		8,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_DOWN
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Muzzle_Flash_Down.bmp",
+		1,
+		8,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_LEFT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Muzzle_Flash_Left.bmp",
+		1,
+		8,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_RIGHT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Muzzle_Flash_Right.bmp",
+		1,
 		8,
 		NULL,
 		NULL

@@ -22,7 +22,7 @@ class StaticEntityEnemySpawner: public StaticEntity
 		 * @param x X coordinate in pixels.
 		 * @param y Y coordinate in pixels.
 		 */
-		StaticEntityEnemySpawner(int x, int y): StaticEntity(x, y, TextureManager::TEXTURE_ID_ENEMY_SPAWNER)
+		StaticEntityEnemySpawner(int x, int y): StaticEntity(x, y, TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SPAWNER))
 		{
 			_lifePointsAmount = 10;
 		}

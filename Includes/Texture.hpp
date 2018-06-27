@@ -44,13 +44,16 @@ class Texture
 		/** Render the texture using the main renderer. The provided coordinates indicate texture's top left angle.
 		 * @param x X coordinate where to draw the texture on the display.
 		 * @param y Y coordinate where to draw the texture on the display.
+		 * @return Always 0.
 		 */
-		virtual void render(int x, int y)
+		virtual int render(int x, int y)
 		{
 			_positionRectangle.x = x;
 			_positionRectangle.y = y;
 			
 			SDL_RenderCopy(Renderer::pointerRenderer, _pointerSDLTexture, NULL, &_positionRectangle);
+			
+			return 0;
 		}
 		
 		/** Get the texture width in pixels.

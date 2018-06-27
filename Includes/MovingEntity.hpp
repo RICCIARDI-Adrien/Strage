@@ -304,8 +304,8 @@ class MovingEntity: public Entity
 		{
 			SDL_Rect *pointerPositionRectangle = &_positionRectangles[_facingDirection];
 			
-			// Display the texture only if the entity is visible on screen
-			if (Renderer::isDisplayable(pointerPositionRectangle)) _pointerTextures[_facingDirection]->render(pointerPositionRectangle->x - Renderer::displayX, pointerPositionRectangle->y - Renderer::displayY);
+			// Display the texture
+			_pointerTextures[_facingDirection]->render(pointerPositionRectangle->x - Renderer::displayX, pointerPositionRectangle->y - Renderer::displayY);
 			
 			// Display collision rectangle in debug mode
 			#if CONFIGURATION_LOG_LEVEL == 3

@@ -31,12 +31,14 @@ class AnimatedTexture: public Texture
 		 */
 		AnimatedTexture(SDL_Texture *pointerSDLTexture, int imagesCount, int framesPerImageCount): Texture(pointerSDLTexture)
 		{
+			_currentImageIndex = 0;
+			_framesCounter = 0;
+			_imagesCount = imagesCount;
 			_framesPerImageCount = framesPerImageCount;
 			
 			// Determine a single image width
-			_imagesCount = imagesCount;
 			_positionRectangle.w /= imagesCount; // Texture() constructor computed total texture width yet, so use this value then adjust it
-			LOG_DEBUG("Loaded animated texture '%s'. Image width : %d.", pointerStringFileName, _positionRectangle.w);
+			LOG_DEBUG("Created animated texture. Single image width : %d, single image height : %d.", _positionRectangle.w, _positionRectangle.h);
 		}
 		
 		/** Free allocated resources. */
@@ -45,8 +47,10 @@ class AnimatedTexture: public Texture
 		/** Render the texture using the main renderer. The provided coordinates indicate texture's top left angle.
 		 * @param x X coordinate where to draw the texture on the display.
 		 * @param y Y coordinate where to draw the texture on the display.
+		 * @return 0 if the animation is not finished,
+		 * @return 1 if the animation has finished playing.
 		 */
-		virtual void render(int x, int y)
+		virtual int render(int x, int y)
 		{
 			SDL_Rect displayingRectangle;
 			
@@ -54,12 +58,16 @@ class AnimatedTexture: public Texture
 			_framesCounter++;
 			if (_framesCounter >= _framesPerImageCount)
 			{
-				// Restart animation from the beginning if end has been reached
-				if (_currentImageIndex >= _imagesCount) _currentImageIndex = 0;
+				// Stop displaying if the animation end has been reached (TODO handle looping animations if needed)
+				if (_currentImageIndex >= _imagesCount) return 1;
 				else _currentImageIndex++;
 				
 				_framesCounter = 0;
 			}
+			
+			// Update texture position
+			_positionRectangle.x = x;
+			_positionRectangle.y = y;
 			
 			// Determine the part of the sprite to display
 			displayingRectangle.x = _currentImageIndex * _positionRectangle.w;
@@ -67,10 +75,9 @@ class AnimatedTexture: public Texture
 			displayingRectangle.w = _positionRectangle.w;
 			displayingRectangle.h = _positionRectangle.h;
 			
-			_positionRectangle.x = x;
-			_positionRectangle.y = y;
-			
 			SDL_RenderCopy(Renderer::pointerRenderer, _pointerSDLTexture, &displayingRectangle, &_positionRectangle);
+			
+			return 0;
 		}
 };
 
