@@ -8,7 +8,6 @@
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
-#include <DisplayOverlayTexture.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <FightingEntityPlayer.hpp>
 #include <FightingEntityEnemyBig.hpp>

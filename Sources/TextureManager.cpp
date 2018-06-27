@@ -5,7 +5,6 @@
 #include <AnimatedTexture.hpp>
 #include <cassert>
 #include <cstdio>
-#include <DisplayOverlayTexture.hpp>
 #include <FileManager.hpp>
 #include <Log.hpp>
 #include <Renderer.hpp>
