@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
+#include <DisplayOverlayTexture.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <FightingEntityPlayer.hpp>
 #include <FightingEntityEnemyBig.hpp>
@@ -23,11 +24,7 @@
 #include <SavegameManager.hpp>
 #include <SDL2/SDL.h>
 #include <StaticEntityEnemySpawner.hpp>
-#include <TextureDisplayOverlay.hpp>
 #include <TextureManager.hpp>
-
-// TEST
-#include <AnimatedTexture.hpp>
 
 //-------------------------------------------------------------------------------------------------
 // Private types
@@ -65,7 +62,7 @@ static int _isPlayerDead = 0;
 static int _isPlayerHit = 0;
 
 /** Draw the screen in red if the player has been hit. */
-static TextureDisplayOverlay *_pointerPlayerHitOverlayTexture;
+static Texture *_pointerPlayerHitOverlayTexture;
 
 /** The current level number. */
 static int _currentLevelNumber = 0;
@@ -79,10 +76,6 @@ static int _isGameFinished = 0;
 static SDL_Texture *_pointerInterfaceStringTextures[INTERFACE_STRING_IDS_COUNT];
 /** Point to the interface background texture with the right type for the rendering function. */
 static SDL_Texture *_pointerInterfaceBackgroundTexture;
-
-// TEST
-AnimatedTexture *test;
-Texture *test2;
 
 //-------------------------------------------------------------------------------------------------
 // Public variables
@@ -617,13 +610,9 @@ static inline void _renderGame()
 	// Display the red overlay
 	if (_isPlayerHit)
 	{
-		_pointerPlayerHitOverlayTexture->render();
+		SDL_RenderCopy(Renderer::pointerRenderer, _pointerPlayerHitOverlayTexture->getTexture(), NULL, NULL);
 		_isPlayerHit = 0;
 	}
-	
-	// TEST
-	test->render(_cameraOffsetX + 100, _cameraOffsetY + 100);
-	test2->render(_cameraOffsetX + 200, _cameraOffsetY + 100);
 	
 	// Display HUD
 	_renderInterface();
@@ -711,16 +700,12 @@ int main(int argc, char *argv[])
 	_cameraOffsetX = (Renderer::displayWidth / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_FACING_UP)->getWidth() / 2);
 	_cameraOffsetY = (Renderer::displayHeight / 2) - (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_FACING_UP)->getHeight() / 2);
 	// Player damage overlay
-	_pointerPlayerHitOverlayTexture = (TextureDisplayOverlay *) TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_HIT_OVERLAY);
+	_pointerPlayerHitOverlayTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_HIT_OVERLAY);
 	// Static interface strings
 	_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_LOST] =  Renderer::renderTextToTexture("You are dead !", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
 	_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_WON] = Renderer::renderTextToTexture("All levels completed. You are legend.", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
 	// Interface background
 	_pointerInterfaceBackgroundTexture = getTextureFromId(TextureManager::TEXTURE_ID_GRAPHIC_USER_INTERFACE_BACKGROUND)->getTexture();
-	
-	// TEST
-	test = new AnimatedTexture("Textures/Big_Enemy_Explosion_test.bmp", 1, 16, 4);
-	test2 = new AnimatedTexture("Textures/Big_Enemy_Explosion_test.bmp", 1, 16, 4);
 	
 	LOG_INFORMATION("Game engine successfully initialized.");
 	

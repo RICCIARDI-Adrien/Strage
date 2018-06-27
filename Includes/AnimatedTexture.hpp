@@ -14,7 +14,7 @@ class AnimatedTexture: public Texture
 	protected:
 		/** How many static images are contained in the provided image file. */
 		int _imagesCount;
-		/** TODO */
+		/** The currently displayed image. */
 		int _currentImageIndex;
 		
 		/** How much time each static image must be displayed on the screen. Time is computed taking into account engine frames per second. */
@@ -23,28 +23,19 @@ class AnimatedTexture: public Texture
 		int _framesCounter;
 	
 	public:
-		/** TODO */
-		AnimatedTexture(const char *pointerStringFileName, int isRleCompressionEnabled, int imagesCount, int framesPerImageCount)
+		/** Create an animated texture.
+		 * @param pointerSDLTexture The SDL texture to use.
+		 * @param imagesCount How many single images are present in the provided texture.
+		 * @param framesPerImageCount How many game frames to wait between each single image displaying.
+		 * @note Texture starts playing from the first image.
+		 */
+		AnimatedTexture(SDL_Texture *pointerSDLTexture, int imagesCount, int framesPerImageCount): Texture(pointerSDLTexture)
 		{
-			unsigned int pixelFormat;
-			int access, spriteWidth;
-			
-			// Try to load the texture
-			_pointerTexture = _loadFromBitmap(pointerStringFileName, isRleCompressionEnabled);
-			if (_pointerTexture == NULL) exit(-1);
-			
-			// Cache width and height parameters
-			if (SDL_QueryTexture(_pointerTexture, &pixelFormat, &access, &spriteWidth, &_positionRectangle.h) != 0)
-			{
-				LOG_ERROR("Failed to query texture information (%s).", SDL_GetError());
-				exit(-1);
-			}
-			
 			_framesPerImageCount = framesPerImageCount;
 			
 			// Determine a single image width
 			_imagesCount = imagesCount;
-			_positionRectangle.w = spriteWidth / imagesCount;
+			_positionRectangle.w /= imagesCount; // Texture() constructor computed total texture width yet, so use this value then adjust it
 			LOG_DEBUG("Loaded animated texture '%s'. Image width : %d.", pointerStringFileName, _positionRectangle.w);
 		}
 		
@@ -79,15 +70,7 @@ class AnimatedTexture: public Texture
 			_positionRectangle.x = x;
 			_positionRectangle.y = y;
 			
-			SDL_RenderCopy(Renderer::pointerRenderer, _pointerTexture, &displayingRectangle, &_positionRectangle);
-		}
-		
-		/** Get the SDL texture which can be rendered using SDL API.
-		 * @return The SDL texture.
-		 */
-		inline SDL_Texture *getTexture() // TODO ?
-		{
-			return _pointerTexture;
+			SDL_RenderCopy(Renderer::pointerRenderer, _pointerSDLTexture, &displayingRectangle, &_positionRectangle);
 		}
 };
 

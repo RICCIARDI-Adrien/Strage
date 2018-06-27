@@ -15,87 +15,31 @@ class Texture
 {
 	protected:
 		/** The texture. */
-		SDL_Texture *_pointerTexture;
+		SDL_Texture *_pointerSDLTexture;
 		
 		/** Use this rectangle to render the texture (some values are cached this way). */
 		SDL_Rect _positionRectangle;
 	
-		/** Load a texture from a bitmap file.
-		 * @param pointerStringFileName The bitmap file.
-		 * @param isRleCompressionEnabled Set to 1 to enable the RLE compression, resulting in faster rendering on highly transparent pictures.
-		 * @return a valid pointer if the texture was successfully loaded,
-		 * @return NULL if an error occurred.
-		 */
-		SDL_Texture *_loadFromBitmap(const char *pointerStringFileName, int isRleCompressionEnabled)
-		{
-			// Try to load bitmap
-			SDL_Surface *pointerSurface = SDL_LoadBMP(pointerStringFileName);
-			if (pointerSurface == NULL)
-			{
-				LOG_ERROR("Failed to load texture '%s' (%s).", pointerStringFileName, SDL_GetError());
-				return NULL;
-			}
-			
-			// Set the transparent color as bright green (lime)
-			unsigned int transparentColor = SDL_MapRGB(pointerSurface->format, 0x00, 0xFF, 0x00);
-			if (SDL_SetColorKey(pointerSurface, SDL_TRUE, transparentColor) != 0)
-			{
-				LOG_ERROR("Failed to set the surface transparent color (%s).", SDL_GetError());
-				return NULL;
-			}
-			
-			// Enable RLE compression if requested to
-			if (isRleCompressionEnabled)
-			{
-				if (SDL_SetSurfaceRLE(pointerSurface, 1) != 0)
-				{
-					LOG_ERROR("Failed to enable RLE compression (%s).", SDL_GetError());
-					return NULL;
-				}
-			}
-			
-			// Convert the surface to a texture
-			SDL_Texture *pointerTexture = SDL_CreateTextureFromSurface(Renderer::pointerRenderer, pointerSurface);
-			SDL_FreeSurface(pointerSurface);
-			if (pointerTexture == NULL)
-			{
-				LOG_ERROR("Failed to convert the surface to a texture (%s).", SDL_GetError());
-				return NULL;
-			}
-			
-			return pointerTexture;
-		}
-	
 	public:
-		/** Create a SDL texture from a picture file.
-		 * @param pointerStringFileName The picture file.
-		 * @param isRleCompressionEnabled Set to 1 to enable the RLE compression, resulting in faster rendering on highly transparent pictures.
+		/** Create a still texture.
+		 * @param pointerSDLTexture The SDL texture to display.
 		 */
-		Texture(const char *pointerStringFileName, int isRleCompressionEnabled)
+		Texture(SDL_Texture *pointerSDLTexture)
 		{
 			unsigned int pixelFormat;
 			int access;
 			
-			// Try to load the texture
-			_pointerTexture = _loadFromBitmap(pointerStringFileName, isRleCompressionEnabled);
-			if (_pointerTexture == NULL) exit(-1);
-			
 			// Cache width and height parameters
-			if (SDL_QueryTexture(_pointerTexture, &pixelFormat, &access, &_positionRectangle.w, &_positionRectangle.h) != 0)
+			_pointerSDLTexture = pointerSDLTexture;
+			if (SDL_QueryTexture(_pointerSDLTexture, &pixelFormat, &access, &_positionRectangle.w, &_positionRectangle.h) != 0)
 			{
 				LOG_ERROR("Failed to query texture information (%s).", SDL_GetError());
 				exit(-1);
 			}
 		}
 		
-		/** Implicit default constructor called when instantiating an AnimatedTexture object. */
-		Texture() {}
-		
 		/** Free allocated resources. */
-		virtual ~Texture()
-		{
-			SDL_DestroyTexture(_pointerTexture);
-		}
+		virtual ~Texture() {}
 		
 		/** Render the texture using the main renderer. The provided coordinates indicate texture's top left angle.
 		 * @param x X coordinate where to draw the texture on the display.
@@ -106,7 +50,7 @@ class Texture
 			_positionRectangle.x = x;
 			_positionRectangle.y = y;
 			
-			SDL_RenderCopy(Renderer::pointerRenderer, _pointerTexture, NULL, &_positionRectangle);
+			SDL_RenderCopy(Renderer::pointerRenderer, _pointerSDLTexture, NULL, &_positionRectangle);
 		}
 		
 		/** Get the texture width in pixels.
@@ -128,9 +72,9 @@ class Texture
 		/** Get the SDL texture which can be rendered using SDL API.
 		 * @return The SDL texture.
 		 */
-		inline SDL_Texture *getTexture()
+		inline SDL_Texture *getTexture() // TODO rename in getSDLTexture ?
 		{
-			return _pointerTexture;
+			return _pointerSDLTexture;
 		}
 };
 

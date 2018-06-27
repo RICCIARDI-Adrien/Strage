@@ -11,6 +11,8 @@
 // Paths
 /** Path to "Sounds" directory relative to game executable. */
 #define CONFIGURATION_PATH_SOUNDS "Sounds"
+/** Path to "Textures" directory relative to game executable. */
+#define CONFIGURATION_PATH_TEXTURES "Textures"
 
 // Display
 /** Display width in pixels (only in windowed mode). */
