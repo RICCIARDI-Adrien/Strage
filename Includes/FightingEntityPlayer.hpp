@@ -37,6 +37,9 @@ class FightingEntityPlayer: public FightingEntity
 		
 		/** Offset to add to entity coordinates to fire the bullet in the entity facing direction. */
 		SDL_Point _secondaryFireStartingPositionOffsets[DIRECTIONS_COUNT]; // Offsets are in the same order than Direction enum
+		
+		/** Offset to add to entity coordinates to put the shoot firing effect in front of the entity cannon. */
+		SDL_Point _secondaryFireFiringEffectStartingPositionOffsets[DIRECTIONS_COUNT]; // Offsets are in the same order than Direction enum
 	
 	protected:
 		// No need for documentation because it is the same as parent function
@@ -61,11 +64,20 @@ class FightingEntityPlayer: public FightingEntity
 			_ammunitionAmount = CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_AMMUNITION_AMOUNT;
 			
 			// Allow to shoot immediately
-			_secondaryFireTimeBetweenShots = 950; // Slightly faster than a big enemy reloading time
+			_secondaryFireTimeBetweenShots = 9500; // Slightly faster than a big enemy reloading time
 			_secondaryFireLastShotTime = -_secondaryFireTimeBetweenShots;
 			
 			// Cache bullet and firing effect position offsets
 			_computeBulletStartingPositionOffsets(_pointerTextures[DIRECTION_UP], TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLET_MORTAR_SHELL_FACING_UP), _secondaryFireStartingPositionOffsets);
+			// Secondary firing effect position
+			_secondaryFireFiringEffectStartingPositionOffsets[DIRECTION_UP].x = CONFIGURATION_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_FACING_UP_STARTING_POSITION_OFFSET_X;
+			_secondaryFireFiringEffectStartingPositionOffsets[DIRECTION_UP].y = CONFIGURATION_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_FACING_UP_STARTING_POSITION_OFFSET_Y;
+			_secondaryFireFiringEffectStartingPositionOffsets[DIRECTION_DOWN].x = CONFIGURATION_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_FACING_DOWN_STARTING_POSITION_OFFSET_X;
+			_secondaryFireFiringEffectStartingPositionOffsets[DIRECTION_DOWN].y = CONFIGURATION_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_FACING_DOWN_STARTING_POSITION_OFFSET_Y;
+			_secondaryFireFiringEffectStartingPositionOffsets[DIRECTION_LEFT].x = CONFIGURATION_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_FACING_LEFT_STARTING_POSITION_OFFSET_X;
+			_secondaryFireFiringEffectStartingPositionOffsets[DIRECTION_LEFT].y = CONFIGURATION_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_FACING_LEFT_STARTING_POSITION_OFFSET_Y;
+			_secondaryFireFiringEffectStartingPositionOffsets[DIRECTION_RIGHT].x = CONFIGURATION_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_FACING_RIGHT_STARTING_POSITION_OFFSET_X;
+			_secondaryFireFiringEffectStartingPositionOffsets[DIRECTION_RIGHT].y = CONFIGURATION_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_FACING_RIGHT_STARTING_POSITION_OFFSET_Y;
 		}
 		
 		/** Free allocated resources. */
@@ -95,7 +107,7 @@ class FightingEntityPlayer: public FightingEntity
 		 */
 		virtual MovingEntityBullet *shootSecondaryFire()
 		{
-			int bulletStartingPositionOffsetX, bulletStartingPositionOffsetY, entityX, entityY;
+			int bulletStartingPositionOffsetX, bulletStartingPositionOffsetY, firingEffectStartingPositionOffsetX, firingEffectStartingPositionOffsetY, entityX, entityY;
 			MovingEntityBullet *pointerBullet;
 			
 			// The player can't shoot if it has no more ammunition
@@ -111,12 +123,14 @@ class FightingEntityPlayer: public FightingEntity
 				// Select the right offsets according to entity direction
 				bulletStartingPositionOffsetX = _secondaryFireStartingPositionOffsets[_facingDirection].x;
 				bulletStartingPositionOffsetY = _secondaryFireStartingPositionOffsets[_facingDirection].y;
+				firingEffectStartingPositionOffsetX = _secondaryFireFiringEffectStartingPositionOffsets[_facingDirection].x;
+				firingEffectStartingPositionOffsetY = _secondaryFireFiringEffectStartingPositionOffsets[_facingDirection].y;
 				
 				// Create the bullet
 				pointerBullet = new MovingEntityBullet(entityX + bulletStartingPositionOffsetX, entityY + bulletStartingPositionOffsetY, TextureManager::TEXTURE_ID_PLAYER_BULLET_MORTAR_SHELL_FACING_UP, 4, _facingDirection, 20, 1);
 				
 				// Play the shoot effect
-				EffectManager::addEffect(entityX + CONFIGURATION_PLAYER_MORTAL_SHELL_MUZZLE_FLASH_STARTING_POSITION_OFFSET_X, entityY + CONFIGURATION_PLAYER_MORTAL_SHELL_MUZZLE_FLASH_STARTING_POSITION_OFFSET_Y, EffectManager::EFFECT_ID_PLAYER_MUZZLE_FLASH_MORTAR_SHELL);
+				EffectManager::addEffect(entityX + firingEffectStartingPositionOffsetX, entityY + firingEffectStartingPositionOffsetY, EffectManager::EFFECT_ID_PLAYER_MUZZLE_FLASH_MORTAR_SHELL);
 				
 				_ammunitionAmount -= CONFIGURATION_GAMEPLAY_PLAYER_SECONDARY_FIRE_NEEDED_AMMUNITION_AMOUNT;
 				

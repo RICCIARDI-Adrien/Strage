@@ -101,9 +101,21 @@
 #define CONFIGURATION_SAVEGAME_FILE_NAME "Savegame.txt"
 
 // Player entity
-/** The offset to add to player left side when spawning the "mortar shell muzzle flash" effect. */
-#define CONFIGURATION_PLAYER_MORTAL_SHELL_MUZZLE_FLASH_STARTING_POSITION_OFFSET_X 4
-/** The offset to add to player top side when spawning the "mortar shell muzzle flash" effect. */
-#define CONFIGURATION_PLAYER_MORTAL_SHELL_MUZZLE_FLASH_STARTING_POSITION_OFFSET_Y (-12)
+/** The offset to add to player left side when spawning the "mortar shell muzzle flash" effect while the player is facing up. */
+#define CONFIGURATION_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_FACING_UP_STARTING_POSITION_OFFSET_X 4
+/** The offset to add to player top side when spawning the "mortar shell muzzle flash" effect while the player is facing up. */
+#define CONFIGURATION_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_FACING_UP_STARTING_POSITION_OFFSET_Y (-12)
+/** The offset to add to player left side when spawning the "mortar shell muzzle flash" effect while the player is facing down. */
+#define CONFIGURATION_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_FACING_DOWN_STARTING_POSITION_OFFSET_X 4
+/** The offset to add to player top side when spawning the "mortar shell muzzle flash" effect while the player is facing down. */
+#define CONFIGURATION_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_FACING_DOWN_STARTING_POSITION_OFFSET_Y 20
+/** The offset to add to player left side when spawning the "mortar shell muzzle flash" effect while the player is facing left. */
+#define CONFIGURATION_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_FACING_LEFT_STARTING_POSITION_OFFSET_X (-12)
+/** The offset to add to player top side when spawning the "mortar shell muzzle flash" effect while the player is facing left. */
+#define CONFIGURATION_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_FACING_LEFT_STARTING_POSITION_OFFSET_Y 4
+/** The offset to add to player left side when spawning the "mortar shell muzzle flash" effect while the player is facing right. */
+#define CONFIGURATION_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_FACING_RIGHT_STARTING_POSITION_OFFSET_X 20
+/** The offset to add to player top side when spawning the "mortar shell muzzle flash" effect while the player is facing right. */
+#define CONFIGURATION_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_FACING_RIGHT_STARTING_POSITION_OFFSET_Y 4
 
 #endif
