@@ -88,6 +88,9 @@ class Texture
 			}
 		}
 		
+		/** Implicit default constructor called when instantiating an AnimatedTexture object. */
+		Texture() {}
+		
 		/** Free allocated resources. */
 		virtual ~Texture()
 		{
@@ -98,7 +101,7 @@ class Texture
 		 * @param x X coordinate where to draw the texture on the display.
 		 * @param y Y coordinate where to draw the texture on the display.
 		 */
-		void render(int x, int y)
+		virtual void render(int x, int y)
 		{
 			_positionRectangle.x = x;
 			_positionRectangle.y = y;

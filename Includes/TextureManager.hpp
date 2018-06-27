@@ -150,6 +150,7 @@ typedef enum
 	TEXTURE_ID_BIG_ENEMY_EXPLOSION_13,
 	TEXTURE_ID_BIG_ENEMY_EXPLOSION_14,
 	TEXTURE_ID_BIG_ENEMY_EXPLOSION_15,
+	TEXTURE_ID_BIG_ENEMY_EXPLOSION_test,
 	TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_UP,
 	TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_DOWN,
 	TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_LEFT,
@@ -217,6 +218,9 @@ void uninitialize();
  * @return The texture or NULL if the provided ID is bad.
  */
 Texture *getTextureFromId(TextureId id);
+
+/** TODO */
+//AnimatedTexture *createAnimatedTextureFromId(TextureId id);
 
 }
 

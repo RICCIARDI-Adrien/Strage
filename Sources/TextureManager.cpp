@@ -14,6 +14,17 @@ namespace TextureManager
 {
 
 //-------------------------------------------------------------------------------------------------
+// Private types
+//-------------------------------------------------------------------------------------------------
+/** All internal data corresponding to each texture. */
+typedef struct
+{
+	char *pointerStringFileName; //!< The file the texture is loaded from.
+	SDL_Texture *pointerSDLTexture; //!< The SDL texture that can be rendered.
+	Texture *pointerTexture; //!< The game texture representation associated with this image (it can be still or animated).
+} TextureInformation;
+	
+//-------------------------------------------------------------------------------------------------
 // Private variables
 //-------------------------------------------------------------------------------------------------
 /** All tiles. */
@@ -161,6 +172,7 @@ int initialize()
 	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_EXPLOSION_13] = new Texture(FileManager::getFilePath("Textures/Big_Enemy_Explosion_13.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_EXPLOSION_14] = new Texture(FileManager::getFilePath("Textures/Big_Enemy_Explosion_14.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_EXPLOSION_15] = new Texture(FileManager::getFilePath("Textures/Big_Enemy_Explosion_15.bmp"), 1);
+	_pointerTextureManagerTextures[TEXTURE_ID_BIG_ENEMY_EXPLOSION_test] = new Texture(FileManager::getFilePath("Textures/Big_Enemy_Explosion_test.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_UP] = new Texture(FileManager::getFilePath("Textures/Player_Muzzle_Flash_Up.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_DOWN] = new Texture(FileManager::getFilePath("Textures/Player_Muzzle_Flash_Down.bmp"), 1);
 	_pointerTextureManagerTextures[TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_LEFT] = new Texture(FileManager::getFilePath("Textures/Player_Muzzle_Flash_Left.bmp"), 1);

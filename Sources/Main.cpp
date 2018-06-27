@@ -26,6 +26,9 @@
 #include <TextureDisplayOverlay.hpp>
 #include <TextureManager.hpp>
 
+// TEST
+#include <AnimatedTexture.hpp>
+
 //-------------------------------------------------------------------------------------------------
 // Private types
 //-------------------------------------------------------------------------------------------------
@@ -76,6 +79,10 @@ static int _isGameFinished = 0;
 static SDL_Texture *_pointerInterfaceStringTextures[INTERFACE_STRING_IDS_COUNT];
 /** Point to the interface background texture with the right type for the rendering function. */
 static SDL_Texture *_pointerInterfaceBackgroundTexture;
+
+// TEST
+AnimatedTexture *test;
+Texture *test2;
 
 //-------------------------------------------------------------------------------------------------
 // Public variables
@@ -614,6 +621,10 @@ static inline void _renderGame()
 		_isPlayerHit = 0;
 	}
 	
+	// TEST
+	test->render(_cameraOffsetX + 100, _cameraOffsetY + 100);
+	test2->render(_cameraOffsetX + 200, _cameraOffsetY + 100);
+	
 	// Display HUD
 	_renderInterface();
 	
@@ -706,6 +717,10 @@ int main(int argc, char *argv[])
 	_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_WON] = Renderer::renderTextToTexture("All levels completed. You are legend.", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
 	// Interface background
 	_pointerInterfaceBackgroundTexture = getTextureFromId(TextureManager::TEXTURE_ID_GRAPHIC_USER_INTERFACE_BACKGROUND)->getTexture();
+	
+	// TEST
+	test = new AnimatedTexture("Textures/Big_Enemy_Explosion_test.bmp", 1, 16, 4);
+	test2 = new AnimatedTexture("Textures/Big_Enemy_Explosion_test.bmp", 1, 16, 4);
 	
 	LOG_INFORMATION("Game engine successfully initialized.");
 	
