@@ -193,7 +193,7 @@ int display(const char *pointerStringMenuTitle, const char *pointerStringsMenuIt
 		// Display menu
 		Renderer::beginRendering(0, 0);
 		// Display stretched background (so it can fit any screen resolution)
-		SDL_RenderCopy(Renderer::pointerRenderer, TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_MENU_BACKGROUND)->getTexture(), NULL, NULL);
+		SDL_RenderCopy(Renderer::pointerRenderer, TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_MENU_BACKGROUND)->getSDLTexture(), NULL, NULL);
 		// Display title
 		Renderer::renderTexture(_pointerMenuTitleTexture, _menuTitleTextureX, CONFIGURATION_MENU_TITLE_Y);
 		// Display items

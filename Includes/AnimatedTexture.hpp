@@ -4,6 +4,8 @@
 #ifndef HPP_ANIMATED_TEXTURE_HPP
 #define HPP_ANIMATED_TEXTURE_HPP
 
+#include <Log.hpp>
+#include <Renderer.hpp>
 #include <Texture.hpp>
 
 /** @class AnimatedTexture
@@ -38,7 +40,7 @@ class AnimatedTexture: public Texture
 			
 			// Determine a single image width
 			_width /= imagesCount; // Texture() constructor computed total texture width yet, so use this value then adjust it
-			LOG_DEBUG("Created animated texture. Single image width : %d, single image height : %d.", _positionRectangle.w, _positionRectangle.h);
+			LOG_DEBUG("Created animated texture. Single image width : %d, single image height : %d.", _width, _height);
 		}
 		
 		/** Free allocated resources. */

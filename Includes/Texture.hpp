@@ -4,8 +4,6 @@
 #ifndef HPP_TEXTURE_HPP
 #define HPP_TEXTURE_HPP
 
-#include <Log.hpp>
-#include <Renderer.hpp>
 #include <SDL2/SDL.h>
 
 /** @class Texture
@@ -26,19 +24,7 @@ class Texture
 		/** Create a still texture.
 		 * @param pointerSDLTexture The SDL texture to display.
 		 */
-		Texture(SDL_Texture *pointerSDLTexture)
-		{
-			unsigned int pixelFormat;
-			int access;
-			
-			// Cache width and height parameters
-			_pointerSDLTexture = pointerSDLTexture;
-			if (SDL_QueryTexture(_pointerSDLTexture, &pixelFormat, &access, &_width, &_height) != 0)
-			{
-				LOG_ERROR("Failed to query texture information (%s).", SDL_GetError());
-				exit(-1);
-			}
-		}
+		Texture(SDL_Texture *pointerSDLTexture);
 		
 		/** Free allocated resources. */
 		virtual ~Texture() {}
@@ -48,19 +34,7 @@ class Texture
 		 * @param y Y coordinate where to draw the texture on the display.
 		 * @return Always 0.
 		 */
-		virtual int render(int x, int y)
-		{
-			SDL_Rect positionRectangle;
-			
-			positionRectangle.x = x;
-			positionRectangle.y = y;
-			positionRectangle.w = _width;
-			positionRectangle.h = _height;
-			
-			SDL_RenderCopy(Renderer::pointerRenderer, _pointerSDLTexture, NULL, &positionRectangle);
-			
-			return 0;
-		}
+		virtual int render(int x, int y);
 		
 		/** Get the texture width in pixels.
 		 * @return The texture width.
@@ -81,7 +55,7 @@ class Texture
 		/** Get the SDL texture which can be rendered using SDL API.
 		 * @return The SDL texture.
 		 */
-		inline SDL_Texture *getTexture() // TODO rename in getSDLTexture ?
+		inline SDL_Texture *getSDLTexture()
 		{
 			return _pointerSDLTexture;
 		}

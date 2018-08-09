@@ -609,7 +609,7 @@ static inline void _renderGame()
 	// Display the red overlay
 	if (_isPlayerHit)
 	{
-		SDL_RenderCopy(Renderer::pointerRenderer, _pointerPlayerHitOverlayTexture->getTexture(), NULL, NULL);
+		SDL_RenderCopy(Renderer::pointerRenderer, _pointerPlayerHitOverlayTexture->getSDLTexture(), NULL, NULL);
 		_isPlayerHit = 0;
 	}
 	
@@ -704,7 +704,7 @@ int main(int argc, char *argv[])
 	_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_LOST] =  Renderer::renderTextToTexture("You are dead !", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
 	_pointerInterfaceStringTextures[INTERFACE_STRING_ID_GAME_WON] = Renderer::renderTextToTexture("All levels completed. You are legend.", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
 	// Interface background
-	_pointerInterfaceBackgroundTexture = getTextureFromId(TextureManager::TEXTURE_ID_GRAPHIC_USER_INTERFACE_BACKGROUND)->getTexture();
+	_pointerInterfaceBackgroundTexture = getTextureFromId(TextureManager::TEXTURE_ID_GRAPHIC_USER_INTERFACE_BACKGROUND)->getSDLTexture();
 	
 	LOG_INFORMATION("Game engine successfully initialized.");
 	
