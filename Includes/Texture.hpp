@@ -17,8 +17,10 @@ class Texture
 		/** The texture. */
 		SDL_Texture *_pointerSDLTexture;
 		
-		/** Use this rectangle to render the texture (some values are cached this way). */
-		SDL_Rect _positionRectangle;
+		/** Texture width in pixels. */
+		int _width;
+		/** Texture height in pixels. */
+		int _height;
 	
 	public:
 		/** Create a still texture.
@@ -31,7 +33,7 @@ class Texture
 			
 			// Cache width and height parameters
 			_pointerSDLTexture = pointerSDLTexture;
-			if (SDL_QueryTexture(_pointerSDLTexture, &pixelFormat, &access, &_positionRectangle.w, &_positionRectangle.h) != 0)
+			if (SDL_QueryTexture(_pointerSDLTexture, &pixelFormat, &access, &_width, &_height) != 0)
 			{
 				LOG_ERROR("Failed to query texture information (%s).", SDL_GetError());
 				exit(-1);
@@ -48,10 +50,14 @@ class Texture
 		 */
 		virtual int render(int x, int y)
 		{
-			_positionRectangle.x = x;
-			_positionRectangle.y = y;
+			SDL_Rect positionRectangle;
 			
-			SDL_RenderCopy(Renderer::pointerRenderer, _pointerSDLTexture, NULL, &_positionRectangle);
+			positionRectangle.x = x;
+			positionRectangle.y = y;
+			positionRectangle.w = _width;
+			positionRectangle.h = _height;
+			
+			SDL_RenderCopy(Renderer::pointerRenderer, _pointerSDLTexture, NULL, &positionRectangle);
 			
 			return 0;
 		}
@@ -61,7 +67,7 @@ class Texture
 		 */
 		inline int getWidth()
 		{
-			return _positionRectangle.w;
+			return _width;
 		}
 		
 		/** Get the texture height in pixels.
@@ -69,7 +75,7 @@ class Texture
 		 */
 		inline int getHeight()
 		{
-			return _positionRectangle.h;
+			return _height;
 		}
 		
 		/** Get the SDL texture which can be rendered using SDL API.

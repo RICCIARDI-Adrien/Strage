@@ -37,7 +37,7 @@ class AnimatedTexture: public Texture
 			_framesPerImageCount = framesPerImageCount;
 			
 			// Determine a single image width
-			_positionRectangle.w /= imagesCount; // Texture() constructor computed total texture width yet, so use this value then adjust it
+			_width /= imagesCount; // Texture() constructor computed total texture width yet, so use this value then adjust it
 			LOG_DEBUG("Created animated texture. Single image width : %d, single image height : %d.", _positionRectangle.w, _positionRectangle.h);
 		}
 		
@@ -52,7 +52,7 @@ class AnimatedTexture: public Texture
 		 */
 		virtual int render(int x, int y)
 		{
-			SDL_Rect displayingRectangle;
+			SDL_Rect positionRectangle, displayingRectangle;
 			
 			// Should the next image be displayed ?
 			_framesCounter++;
@@ -65,17 +65,19 @@ class AnimatedTexture: public Texture
 				_framesCounter = 0;
 			}
 			
-			// Update texture position
-			_positionRectangle.x = x;
-			_positionRectangle.y = y;
+			// Set texture position on display
+			positionRectangle.x = x;
+			positionRectangle.y = y;
+			positionRectangle.w = _width;
+			positionRectangle.h = _height;
 			
 			// Determine the part of the sprite to display
-			displayingRectangle.x = _currentImageIndex * _positionRectangle.w;
+			displayingRectangle.x = _currentImageIndex * _width;
 			displayingRectangle.y = 0;
-			displayingRectangle.w = _positionRectangle.w;
-			displayingRectangle.h = _positionRectangle.h;
+			displayingRectangle.w = _width;
+			displayingRectangle.h = _height;
 			
-			SDL_RenderCopy(Renderer::pointerRenderer, _pointerSDLTexture, &displayingRectangle, &_positionRectangle);
+			SDL_RenderCopy(Renderer::pointerRenderer, _pointerSDLTexture, &displayingRectangle, &positionRectangle);
 			
 			return 0;
 		}
