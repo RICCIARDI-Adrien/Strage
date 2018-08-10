@@ -456,6 +456,134 @@ static TextureInformation _texturesInformations[] =
 		NULL,
 		NULL
 	},
+	// TEXTURE_ID_BIG_ENEMY_DAMAGED_1_FACING_UP
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Damaged_1_Up.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_DAMAGED_1_FACING_DOWN
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Damaged_1_Down.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_DAMAGED_1_FACING_LEFT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Damaged_1_Left.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_DAMAGED_1_FACING_RIGHT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Damaged_1_Right.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_DAMAGED_2_FACING_UP
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Damaged_2_Up.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_DAMAGED_2_FACING_DOWN
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Damaged_2_Down.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_DAMAGED_2_FACING_LEFT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Damaged_2_Left.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_DAMAGED_2_FACING_RIGHT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Damaged_2_Right.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_DAMAGED_3_FACING_UP
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Damaged_3_Up.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_DAMAGED_3_FACING_DOWN
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Damaged_3_Down.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_DAMAGED_3_FACING_LEFT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Damaged_3_Left.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_DAMAGED_3_FACING_RIGHT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Damaged_3_Right.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_DAMAGED_4_FACING_UP
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Damaged_4_Up.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_DAMAGED_4_FACING_DOWN
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Damaged_4_Down.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_DAMAGED_4_FACING_LEFT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Damaged_4_Left.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_BIG_ENEMY_DAMAGED_4_FACING_RIGHT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Damaged_4_Right.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
 	// TEXTURE_ID_PLAYER_BULLET_FACING_UP
 	{
 		CONFIGURATION_PATH_TEXTURES "/Player_Bullet_Up.bmp",
