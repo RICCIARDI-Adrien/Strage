@@ -360,6 +360,70 @@ static TextureInformation _texturesInformations[] =
 		NULL,
 		NULL
 	},
+	// TEXTURE_ID_MEDIUM_ENEMY_DAMAGED_1_FACING_UP
+	{
+		CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Damaged_1_Up.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_MEDIUM_ENEMY_DAMAGED_1_FACING_DOWN
+	{
+		CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Damaged_1_Down.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_MEDIUM_ENEMY_DAMAGED_1_FACING_LEFT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Damaged_1_Left.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_MEDIUM_ENEMY_DAMAGED_1_FACING_RIGHT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Damaged_1_Right.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_MEDIUM_ENEMY_DAMAGED_2_FACING_UP
+	{
+		CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Damaged_2_Up.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_MEDIUM_ENEMY_DAMAGED_2_FACING_DOWN
+	{
+		CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Damaged_2_Down.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_MEDIUM_ENEMY_DAMAGED_2_FACING_LEFT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Damaged_2_Left.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_MEDIUM_ENEMY_DAMAGED_2_FACING_RIGHT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Damaged_2_Right.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
 	// TEXTURE_ID_BIG_ENEMY_FACING_UP
 	{
 		CONFIGURATION_PATH_TEXTURES "/Big_Enemy_Up.bmp",
