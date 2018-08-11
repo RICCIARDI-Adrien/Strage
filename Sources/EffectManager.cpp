@@ -184,7 +184,7 @@ void addEffect(int x, int y, EffectId effectId)
 	pointerEffect = &effects[effectId];
 	
 	// Generate the graphic effect
-	_animatedTexturesList.push_front(new StaticEntityAnimatedTexture(x, y, TextureManager::createAnimatedTextureFromId(pointerEffect->textureId)));
+	_animatedTexturesList.push_front(new StaticEntityAnimatedTexture(x, y, TextureManager::createAnimatedTextureFromId(pointerEffect->textureId, false)));
 	
 	// Play audio effect
 	AudioManager::playSound(pointerEffect->soundId);

@@ -2,12 +2,30 @@
  * See StaticEntityEnemySpawner.hpp for description.
  * @author Adrien RICCIARDI
  */
+#include <Renderer.hpp>
 #include <StaticEntityEnemySpawner.hpp>
 #include <TextureManager.hpp>
 
 StaticEntityEnemySpawner::StaticEntityEnemySpawner(int x, int y): StaticEntity(x, y, TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SPAWNER))
 {
 	_lifePointsAmount = 10;
+	
+	// Create the looped teleportation animation
+	_pointerEffectTexture = TextureManager::createAnimatedTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SPAWNER_TELEPORTATION_EFFECT, true);
+}
+
+StaticEntityEnemySpawner::~StaticEntityEnemySpawner()
+{
+	delete _pointerEffectTexture;
+}
+
+void StaticEntityEnemySpawner::render()
+{
+	// Display spawner
+	StaticEntity::render();
+	
+	// Display teleportation effect
+	_pointerEffectTexture->render(_positionRectangle.x - Renderer::displayX + 15, _positionRectangle.y - Renderer::displayY + 15);
 }
 
 int StaticEntityEnemySpawner::update()

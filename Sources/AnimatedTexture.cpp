@@ -6,12 +6,13 @@
 #include <Log.hpp>
 #include <Renderer.hpp>
 
-AnimatedTexture::AnimatedTexture(SDL_Texture *pointerSDLTexture, int imagesCount, int framesPerImageCount): Texture(pointerSDLTexture)
+AnimatedTexture::AnimatedTexture(SDL_Texture *pointerSDLTexture, int imagesCount, int framesPerImageCount, bool isAnimationLooping): Texture(pointerSDLTexture)
 {
 	_currentImageIndex = 0;
 	_framesCounter = 0;
 	_imagesCount = imagesCount;
 	_framesPerImageCount = framesPerImageCount;
+	_isAnimationLooping = isAnimationLooping;
 	
 	// Determine a single image width
 	_width /= imagesCount; // Texture() constructor computed total texture width yet, so use this value then adjust it
@@ -26,9 +27,13 @@ int AnimatedTexture::render(int x, int y)
 	_framesCounter++;
 	if (_framesCounter >= _framesPerImageCount)
 	{
-		// Stop displaying if the animation end has been reached (TODO handle looping animations if needed)
-		if (_currentImageIndex >= _imagesCount) return 1;
-		else _currentImageIndex++;
+		// Is the animation end reached ?
+		_currentImageIndex++;
+		if (_currentImageIndex >= _imagesCount)
+		{
+			if (!_isAnimationLooping) return 1; // Looping mode is disabled, stop displaying if the animation end has been reached
+			else _currentImageIndex = 0;
+		}
 		
 		_framesCounter = 0;
 	}

@@ -4,6 +4,7 @@
 #ifndef HPP_STATIC_ENTITY_ENEMY_SPAWNER_HPP
 #define HPP_STATIC_ENTITY_ENEMY_SPAWNER_HPP
 
+#include <AnimatedTexture.hpp>
 #include <StaticEntity.hpp>
 
 /** @class StaticEntityEnemySpawner
@@ -15,6 +16,9 @@ class StaticEntityEnemySpawner: public StaticEntity
 		/** How many life points the entity owns. */
 		int _lifePointsAmount;
 		
+		/** The animation shown in the middle of the spawner. Using a separate texture allows to change the spawner texture without interfering with the animation. */
+		AnimatedTexture *_pointerEffectTexture;
+		
 	public:
 		/** Spawn an enemy spawner at the specified coordinates.
 		 * @param x X coordinate in pixels.
@@ -23,7 +27,7 @@ class StaticEntityEnemySpawner: public StaticEntity
 		StaticEntityEnemySpawner(int x, int y);
 		
 		// No need for documentation because it is the same as parent function
-		virtual ~StaticEntityEnemySpawner() {}
+		virtual ~StaticEntityEnemySpawner();
 		
 		/** Change entity life value by adding or removing some life points.
 		 * @param lifePointsAmount How many life points to add or subtract.
@@ -35,6 +39,9 @@ class StaticEntityEnemySpawner: public StaticEntity
 			// Make sure life points do not become negative
 			if (_lifePointsAmount < 0) _lifePointsAmount = 0;
 		}
+		
+		// No need for documentation because it is the same as parent function
+		virtual void render();
 		
 		/** Handle only spawner life state.
 		 * @return 0 if the spawner must be kept,

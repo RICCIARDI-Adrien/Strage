@@ -997,6 +997,14 @@ static TextureInformation _texturesInformations[] =
 		6,
 		NULL,
 		NULL
+	},
+	// TEXTURE_ID_ENEMY_SPAWNER_TELEPORTATION_EFFECT
+	{
+		CONFIGURATION_PATH_TEXTURES "/Enemy_Spawner_Teleportation_Effect.bmp",
+		8,
+		16,
+		NULL,
+		NULL
 	}
 };
 
@@ -1064,12 +1072,12 @@ Texture *getTextureFromId(TextureId id)
 	return _texturesInformations[id].pointerTexture;
 }
 
-AnimatedTexture *createAnimatedTextureFromId(TextureId id)
+AnimatedTexture *createAnimatedTextureFromId(TextureId id, bool isAnimationLooping)
 {
 	// Make sure the provided ID is valid
 	assert(id < TEXTURE_IDS_COUNT);
 	
-	return new AnimatedTexture(_texturesInformations[id].pointerSDLTexture, _texturesInformations[id].imagesCount, _texturesInformations[id].framesPerImageCount);
+	return new AnimatedTexture(_texturesInformations[id].pointerSDLTexture, _texturesInformations[id].imagesCount, _texturesInformations[id].framesPerImageCount, isAnimationLooping);
 }
 
 }

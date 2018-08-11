@@ -22,15 +22,19 @@ class AnimatedTexture: public Texture
 		int _framesPerImageCount;
 		/** Incremented by one on each engine frame, tell when to display the next texture. */
 		int _framesCounter;
+		
+		/** Tell whether animation should loop forever or stop when the last frame has been displayed. */
+		bool _isAnimationLooping;
 	
 	public:
 		/** Create an animated texture.
 		 * @param pointerSDLTexture The SDL texture to use.
 		 * @param imagesCount How many single images are present in the provided texture.
 		 * @param framesPerImageCount How many game frames to wait between each single image displaying.
+		 * @param isAnimationLooping Set to true to make the animation loop forever, set to false to display the animation only once.
 		 * @note Texture starts playing from the first image.
 		 */
-		AnimatedTexture(SDL_Texture *pointerSDLTexture, int imagesCount, int framesPerImageCount);
+		AnimatedTexture(SDL_Texture *pointerSDLTexture, int imagesCount, int framesPerImageCount, bool isAnimationLooping);
 		
 		/** Free allocated resources. */
 		virtual ~AnimatedTexture() {}
@@ -39,7 +43,7 @@ class AnimatedTexture: public Texture
 		 * @param x X coordinate where to draw the texture on the display.
 		 * @param y Y coordinate where to draw the texture on the display.
 		 * @return 0 if the animation is not finished,
-		 * @return 1 if the animation has finished playing.
+		 * @return 1 if the animation has finished playing (only if the texture was created with isAnimationLooping set to false).
 		 */
 		virtual int render(int x, int y);
 };

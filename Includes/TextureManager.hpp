@@ -146,6 +146,7 @@ typedef enum
 	TEXTURE_ID_MEDIPACK_TAKEN,
 	TEXTURE_ID_GOLDEN_MEDIPACK_TAKEN,
 	TEXTURE_ID_AMMUNITION_TAKEN,
+	TEXTURE_ID_ENEMY_SPAWNER_TELEPORTATION_EFFECT,
 	
 	TEXTURE_IDS_COUNT
 } TextureId;
@@ -171,11 +172,12 @@ Texture *getTextureFromId(TextureId id);
 
 /** Create an animated texture that can be used like a Texture object.
  * @param id The texture ID to use as template.
+ * @param isAnimationLooping Set to true to make the animation loop forever, set to false to display the animation only once.
  * @return The animated texture.
  * @note It's the caller responsibility to free the created animated texture.
- * * @note The function will crash if an invalid ID is provided.
+ * @note The function will crash if an invalid ID is provided.
  */
-AnimatedTexture *createAnimatedTextureFromId(TextureId id);
+AnimatedTexture *createAnimatedTextureFromId(TextureId id, bool isAnimationLooping);
 
 }
 
