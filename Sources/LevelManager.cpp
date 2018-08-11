@@ -67,8 +67,6 @@ static int _displayHeightBlocks;
 /** Contain all level blocks. */
 static Block _levelBlocks[CONFIGURATION_LEVEL_MAXIMUM_WIDTH * CONFIGURATION_LEVEL_MAXIMUM_HEIGHT];
 
-/** Cache enemy spawner texture. */
-static Texture *_pointerEnemySpawnerTexture;
 /** Cache medipack texture. */
 static Texture *_pointerMedipackTexture;
 /** Cache golden medipack texture. */
@@ -94,7 +92,6 @@ int initialize()
 	LOG_DEBUG("Display size : %dx%d pixels, %dx%d blocks.", Renderer::displayWidth, Renderer::displayHeight, _displayWidthBlocks, _displayHeightBlocks);
 	
 	// Cache some values
-	_pointerEnemySpawnerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SPAWNER);
 	_pointerMedipackTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_MEDIPACK);
 	_pointerGoldenMedipackTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_GOLDEN_MEDIPACK);
 	_pointerAmmunitionTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_AMMUNITION);
@@ -308,8 +305,7 @@ void renderScene(int topLeftX, int topLeftY)
 				pointerBlock->pointerTexture->render(xPixel, yPixel);
 				
 				// Display an eventual item which can be on the block
-				if (pointerBlock->content & BLOCK_CONTENT_ENEMY_SPAWNER) _pointerEnemySpawnerTexture->render(xPixel, yPixel);
-				else if (pointerBlock->content & BLOCK_CONTENT_MEDIPACK) _pointerMedipackTexture->render(xPixel, yPixel);
+				if (pointerBlock->content & BLOCK_CONTENT_MEDIPACK) _pointerMedipackTexture->render(xPixel, yPixel);
 				else if (pointerBlock->content & BLOCK_CONTENT_GOLDEN_MEDIPACK) _pointerGoldenMedipackTexture->render(xPixel, yPixel);
 				else if (pointerBlock->content & BLOCK_CONTENT_AMMUNITION) _pointerAmmunitionTexture->render(xPixel, yPixel);
 			}

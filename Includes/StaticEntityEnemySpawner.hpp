@@ -27,7 +27,7 @@ class StaticEntityEnemySpawner: public StaticEntity
 			_lifePointsAmount = 10;
 		}
 		
-		/** Free allocated resources. */
+		// No need for documentation because it is the same as parent function
 		virtual ~StaticEntityEnemySpawner() {}
 		
 		/** Change entity life value by adding or removing some life points.
@@ -49,6 +49,13 @@ class StaticEntityEnemySpawner: public StaticEntity
 		{
 			// Remove the spawner if it is destroyed
 			if (_lifePointsAmount == 0) return 1;
+			
+			// Update textures to show spawner damage state
+			if (_lifePointsAmount == 8) _pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SPAWNER_DAMAGED_1);
+			else if (_lifePointsAmount == 6) _pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SPAWNER_DAMAGED_2);
+			else if (_lifePointsAmount == 4) _pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SPAWNER_DAMAGED_3);
+			else if (_lifePointsAmount == 2) _pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SPAWNER_DAMAGED_4);
+			
 			return 0;
 		}
 };

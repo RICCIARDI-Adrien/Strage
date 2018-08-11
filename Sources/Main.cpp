@@ -588,8 +588,12 @@ static inline void _renderGame()
 	// Start rendering
 	Renderer::beginRendering(sceneX, sceneY);
 	
-	// Render the level walls and static objects (ammunition, medipacks, enemy spawners...)
+	// Render the level walls and static objects (ammunition, medipacks, ...)
 	LevelManager::renderScene(sceneX, sceneY);
+	
+	// Display enemy spawners
+	std::list<StaticEntityEnemySpawner *>::iterator enemySpawnersListIterator;
+	for (enemySpawnersListIterator = LevelManager::enemySpawnersList.begin(); enemySpawnersListIterator != LevelManager::enemySpawnersList.end(); ++enemySpawnersListIterator) (*enemySpawnersListIterator)->render();
 	
 	// Display enemies
 	std::list<FightingEntityEnemy *>::iterator enemiesListIterator;

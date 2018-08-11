@@ -262,6 +262,38 @@ static TextureInformation _texturesInformations[] =
 		NULL,
 		NULL
 	},
+	// TEXTURE_ID_ENEMY_SPAWNER_DAMAGED_1
+	{
+		CONFIGURATION_PATH_TEXTURES "/Enemy_Spawner_Damaged_1.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_ENEMY_SPAWNER_DAMAGED_2
+	{
+		CONFIGURATION_PATH_TEXTURES "/Enemy_Spawner_Damaged_2.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_ENEMY_SPAWNER_DAMAGED_3
+	{
+		CONFIGURATION_PATH_TEXTURES "/Enemy_Spawner_Damaged_3.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
+	// TEXTURE_ID_ENEMY_SPAWNER_DAMAGED_4
+	{
+		CONFIGURATION_PATH_TEXTURES "/Enemy_Spawner_Damaged_4.bmp",
+		1,
+		0,
+		NULL,
+		NULL
+	},
 	
 	// Moving objects
 	// TEXTURE_ID_PLAYER_FACING_UP
