@@ -6,6 +6,7 @@
 
 #include <AnimatedTexture.hpp>
 #include <Log.hpp>
+#include <Renderer.hpp>
 #include <StaticEntity.hpp>
 #include <TextureManager.hpp>
 
