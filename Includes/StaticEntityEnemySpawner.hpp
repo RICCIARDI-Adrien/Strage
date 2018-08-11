@@ -4,9 +4,7 @@
 #ifndef HPP_STATIC_ENTITY_ENEMY_SPAWNER_HPP
 #define HPP_STATIC_ENTITY_ENEMY_SPAWNER_HPP
 
-#include <SDL2/SDL.h>
 #include <StaticEntity.hpp>
-#include <TextureManager.hpp>
 
 /** @class StaticEntityEnemySpawner
  * A destructible still entity spawning enemies all around.
@@ -22,10 +20,7 @@ class StaticEntityEnemySpawner: public StaticEntity
 		 * @param x X coordinate in pixels.
 		 * @param y Y coordinate in pixels.
 		 */
-		StaticEntityEnemySpawner(int x, int y): StaticEntity(x, y, TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SPAWNER))
-		{
-			_lifePointsAmount = 10;
-		}
+		StaticEntityEnemySpawner(int x, int y);
 		
 		// No need for documentation because it is the same as parent function
 		virtual ~StaticEntityEnemySpawner() {}
@@ -45,19 +40,7 @@ class StaticEntityEnemySpawner: public StaticEntity
 		 * @return 0 if the spawner must be kept,
 		 * @return 1 if the spawner is destroyed and must be removed.
 		 */
-		virtual int update()
-		{
-			// Remove the spawner if it is destroyed
-			if (_lifePointsAmount == 0) return 1;
-			
-			// Update textures to show spawner damage state
-			if (_lifePointsAmount == 8) _pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SPAWNER_DAMAGED_1);
-			else if (_lifePointsAmount == 6) _pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SPAWNER_DAMAGED_2);
-			else if (_lifePointsAmount == 4) _pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SPAWNER_DAMAGED_3);
-			else if (_lifePointsAmount == 2) _pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SPAWNER_DAMAGED_4);
-			
-			return 0;
-		}
+		virtual int update();
 };
 
 #endif
