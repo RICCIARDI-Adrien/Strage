@@ -186,3 +186,6 @@ windows_release: windows
 	
 	@# Remove now useless release directory
 	rm -r $(PATH_WINDOWS_RELEASE)
+
+memory_leak_check:
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./Strage
