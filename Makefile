@@ -188,4 +188,7 @@ windows_release: windows
 	rm -r $(PATH_WINDOWS_RELEASE)
 
 memory_leak_check:
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./Strage
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(BINARY)
+
+processor_usage_check:
+	valgrind --tool=callgrind ./$(BINARY)
