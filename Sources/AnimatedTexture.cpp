@@ -44,13 +44,17 @@ int AnimatedTexture::render(int x, int y)
 	positionRectangle.w = _width;
 	positionRectangle.h = _height;
 	
-	// Determine the part of the sprite to display
-	displayingRectangle.x = _currentImageIndex * _width;
-	displayingRectangle.y = 0;
-	displayingRectangle.w = _width;
-	displayingRectangle.h = _height;
-	
-	SDL_RenderCopy(Renderer::pointerRenderer, _pointerSDLTexture, &displayingRectangle, &positionRectangle);
+	// Render texture only if it is visible on the screen
+	if ((x + _width >= 0) && (y + _height >= 0) && (x < Renderer::displayWidth) && (y < Renderer::displayHeight))
+	{
+		// Determine the part of the sprite to display
+		displayingRectangle.x = _currentImageIndex * _width;
+		displayingRectangle.y = 0;
+		displayingRectangle.w = _width;
+		displayingRectangle.h = _height;
+		
+		SDL_RenderCopy(Renderer::pointerRenderer, _pointerSDLTexture, &displayingRectangle, &positionRectangle);
+	}
 	
 	return 0;
 }
