@@ -30,7 +30,8 @@ int Texture::render(int x, int y)
 	positionRectangle.w = _width;
 	positionRectangle.h = _height;
 	
-	SDL_RenderCopy(Renderer::pointerRenderer, _pointerSDLTexture, NULL, &positionRectangle);
+	// Render texture only if it is visible on the screen
+	if ((x + _width >= 0) && (y + _height >= 0) && (x < Renderer::displayWidth) && (y < Renderer::displayHeight)) SDL_RenderCopy(Renderer::pointerRenderer, _pointerSDLTexture, NULL, &positionRectangle);
 	
 	return 0;
 }
