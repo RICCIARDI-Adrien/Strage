@@ -418,7 +418,7 @@ int isObstaclePresentOnVerticalAxis(int topmostY, int downerY, int x)
 	// Check all blocks along between the specified coordinates
 	while (topmostY < downerY)
 	{
-		if (_levelBlocks[COMPUTE_BLOCK_INDEX(x, topmostY)].content & (BLOCK_CONTENT_WALL | BLOCK_CONTENT_ENEMY_SPAWNER)) return 1;
+		if (_levelBlocks[COMPUTE_BLOCK_INDEX(x, topmostY)].content & (BLOCK_CONTENT_WALL | BLOCK_CONTENT_ENEMY_SPAWNER | BLOCK_CONTENT_ENEMY)) return 1;
 		topmostY++;
 	}
 	
@@ -443,7 +443,7 @@ int isObstaclePresentOnHorizontalAxis(int leftmostX, int rightmostX, int y)
 	// Check all blocks along between the specified coordinates
 	while (leftmostX < rightmostX)
 	{
-		if (_levelBlocks[COMPUTE_BLOCK_INDEX(leftmostX, y)].content & (BLOCK_CONTENT_WALL | BLOCK_CONTENT_ENEMY_SPAWNER)) return 1;
+		if (_levelBlocks[COMPUTE_BLOCK_INDEX(leftmostX, y)].content & (BLOCK_CONTENT_WALL | BLOCK_CONTENT_ENEMY_SPAWNER | BLOCK_CONTENT_ENEMY)) return 1;
 		leftmostX++;
 	}
 	
