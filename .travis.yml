@@ -3,7 +3,6 @@ os:
   - linux
   - osx
 dist: trusty
-sudo: required
 addons:
   apt:
     packages:
@@ -13,6 +12,6 @@ addons:
       - mingw-w64
 install: true
 script:
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then make linux; fi
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then make windows; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then make macos; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then make linux_release; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then make windows_release; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then make macos_release; fi
