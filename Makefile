@@ -1,5 +1,6 @@
 PATH_INCLUDES = Includes
 PATH_SOURCES = Sources
+PATH_LINUX_RELEASE = /tmp/Strage
 PATH_MACOS_RELEASE = Strage.app
 PATH_WINDOWS_RELEASE = Strage
 
@@ -107,6 +108,27 @@ clean:
 	@# Remove Windows build files
 	rm -rf SDL2-$(VERSION_SDL2) SDL2_mixer-$(VERSION_SDL2_MIXER) SDL2_ttf-$(VERSION_SDL2_TTF) SDL2_Includes *.dll
 
+linux_release: linux
+	@# Create application directories
+	rm -rf $(PATH_LINUX_RELEASE)
+	mkdir $(PATH_LINUX_RELEASE)
+	
+	@# Copy relevant directories
+	cp -r Levels $(PATH_LINUX_RELEASE)
+	cp -r Sounds $(PATH_LINUX_RELEASE)
+	cp -r Textures $(PATH_LINUX_RELEASE)
+
+	@# Copy relevant files
+	cp Liberation_Sans_Bold.ttf $(PATH_LINUX_RELEASE)
+	cp README.md $(PATH_LINUX_RELEASE)
+	cp Strage $(PATH_LINUX_RELEASE)
+	
+	@# Create a compressed archive
+	tar -C $(dir $(PATH_LINUX_RELEASE)) -c $(notdir $(PATH_LINUX_RELEASE))/ -J -f ../Strage_Version_x.x_Linux.tar.xz
+	
+	@# Remove now useless release directory
+	rm -r $(PATH_LINUX_RELEASE)
+
 macos_release: macos
 	@# Create application directories
 	rm -rf $(PATH_MACOS_RELEASE)
@@ -153,7 +175,7 @@ macos_release: macos
 	echo "</plist>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
 	
 	@# Create a compressed archive
-	zip -r ../Strage_MacOS.zip $(PATH_MACOS_RELEASE)
+	zip -r ../Strage_Version_x.x_MacOS.zip $(PATH_MACOS_RELEASE)
 	
 	@# Remove now useless release directory
 	rm -r $(PATH_MACOS_RELEASE)
@@ -182,7 +204,7 @@ windows_release: windows
 	cp SDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/bin/zlib1.dll $(PATH_WINDOWS_RELEASE)
 	
 	@# Create a compressed archive
-	zip -r ../Strage_Windows.zip $(PATH_WINDOWS_RELEASE)
+	zip -r ../Strage_Version_x.x_Windows.zip $(PATH_WINDOWS_RELEASE)
 	
 	@# Remove now useless release directory
 	rm -r $(PATH_WINDOWS_RELEASE)
