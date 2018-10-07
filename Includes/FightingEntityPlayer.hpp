@@ -133,11 +133,13 @@ class FightingEntityPlayer: public FightingEntity
 				// Create the bullet
 				pointerBullet = new MovingEntityBullet(entityX + bulletStartingPositionOffsetX, entityY + bulletStartingPositionOffsetY, TextureManager::TEXTURE_ID_PLAYER_BULLET_MORTAR_SHELL_FACING_UP, 4, _facingDirection, 20, 1);
 				
-				// Play the shoot effect
-				EffectManager::addEffect(entityX + firingEffectStartingPositionOffsetX, entityY + firingEffectStartingPositionOffsetY, EffectManager::EFFECT_ID_PLAYER_MUZZLE_FLASH_MORTAR_SHELL);
-				
 				_ammunitionAmount -= CONFIGURATION_GAMEPLAY_PLAYER_SECONDARY_FIRE_NEEDED_AMMUNITION_AMOUNT;
 				HeadUpDisplay::setAmmunitionAmount(_ammunitionAmount);
+				
+				// Play the shoot effect
+				EffectManager::addEffect(entityX + firingEffectStartingPositionOffsetX, entityY + firingEffectStartingPositionOffsetY, EffectManager::EFFECT_ID_PLAYER_MUZZLE_FLASH_MORTAR_SHELL);
+				// There are enough ammunition to also play the reloading effect (it can be started at the same time that the firing sound because there is a purposely added delay in reloading sound)
+				if (_ammunitionAmount >= CONFIGURATION_GAMEPLAY_PLAYER_SECONDARY_FIRE_NEEDED_AMMUNITION_AMOUNT) AudioManager::playSound(AudioManager::SOUND_ID_PLAYER_MORTAR_SHELL_RELOADING);
 				
 				// Get time after having generated the bullet, in case this takes more than 1 millisecond
 				_isSecondaryShootReloadingTimeElapsed = false;

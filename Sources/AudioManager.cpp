@@ -91,6 +91,7 @@ static const char *pointerStringsSoundFileNames[] =
 	CONFIGURATION_PATH_SOUNDS "/Ammunition_Taken.wav",
 	CONFIGURATION_PATH_SOUNDS "/Player_Fireshot.wav",
 	CONFIGURATION_PATH_SOUNDS "/Player_Fireshot_Mortar_Shell.wav",
+	CONFIGURATION_PATH_SOUNDS "/Player_Mortar_Shell_Reloading.wav",
 	CONFIGURATION_PATH_SOUNDS "/Player_Healed.wav",
 	CONFIGURATION_PATH_SOUNDS "/Player_Life_Increased.wav",
 	CONFIGURATION_PATH_SOUNDS "/Small_Enemy_Fireshot.wav",
