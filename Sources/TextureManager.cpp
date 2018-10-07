@@ -9,7 +9,11 @@
 #include <Log.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#ifdef CONFIGURATION_BUILD_FOR_MACOS
+	#include <SDL2_image/SDL_image.h>
+#else
+	#include <SDL2/SDL_image.h>
+#endif
 #include <Texture.hpp>
 #include <TextureManager.hpp>
 

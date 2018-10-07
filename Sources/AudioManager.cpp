@@ -10,7 +10,7 @@
 #include <Log.hpp>
 #include <SDL2/SDL.h>
 #ifdef CONFIGURATION_BUILD_FOR_MACOS
-	#include <SDL2_Mixer/SDL_mixer.h>
+	#include <SDL2_mixer/SDL_mixer.h>
 #else
 	#include <SDL2/SDL_mixer.h>
 #endif
