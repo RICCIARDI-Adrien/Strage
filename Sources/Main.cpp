@@ -658,6 +658,10 @@ int main(int argc, char *argv[])
 			
 		// Start a new game (nothing to do because all needed variables are already initialized)
 		case 1:
+			// Set player life points and ammunition to generate the first HUD string textures (this can't be done in HeadUpDisplay::initialize() because the player object is not yet existing
+			pointerPlayer->setLifePointsAmount(CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_LIFE_POINTS_AMOUNT);
+			pointerPlayer->setMaximumLifePointsAmount(CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_LIFE_POINTS_AMOUNT);
+			pointerPlayer->setAmmunitionAmount(CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_AMMUNITION_AMOUNT);
 			break;
 			
 		default:
