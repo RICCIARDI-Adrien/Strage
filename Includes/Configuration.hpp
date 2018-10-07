@@ -39,6 +39,10 @@
 #define CONFIGURATION_DISPLAY_HUD_ENEMIES_X 15
 /** HUD enemies text screen Y coordinate. */
 #define CONFIGURATION_DISPLAY_HUD_ENEMIES_Y 61
+/** HUD mortar state text screen X coordinate. */
+#define CONFIGURATION_DISPLAY_HUD_MORTAR_STATE_X 15
+/** HUD mortar state text screen Y coordinate. */
+#define CONFIGURATION_DISPLAY_HUD_MORTAR_STATE_Y 84
 
 // Menu
 /** Maximum amount of items that a single menu can display. */

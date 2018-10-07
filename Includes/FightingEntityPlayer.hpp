@@ -35,6 +35,8 @@ class FightingEntityPlayer: public FightingEntity
 		unsigned int _secondaryFireLastShotTime;
 		/** How many milliseconds to wait between two shots. */
 		unsigned int _secondaryFireTimeBetweenShots;
+		/** Tell whether the time between two shoots has elapsed. */
+		bool _isSecondaryShootReloadingTimeElapsed = true; // Allow the player to immediately shoot on spawn
 		
 		/** Offset to add to entity coordinates to fire the bullet in the entity facing direction. */
 		SDL_Point _secondaryFireStartingPositionOffsets[DIRECTIONS_COUNT]; // Offsets are in the same order than Direction enum
@@ -116,7 +118,7 @@ class FightingEntityPlayer: public FightingEntity
 			if (_ammunitionAmount < CONFIGURATION_GAMEPLAY_PLAYER_SECONDARY_FIRE_NEEDED_AMMUNITION_AMOUNT) return NULL;
 			
 			// Allow to shoot only if enough time elapsed since last shot
-			if (SDL_GetTicks() - _secondaryFireLastShotTime >= _secondaryFireTimeBetweenShots)
+			if (_isSecondaryShootReloadingTimeElapsed)
 			{
 				// Cache entity coordinates
 				entityX = _positionRectangles[_facingDirection].x;
@@ -138,10 +140,12 @@ class FightingEntityPlayer: public FightingEntity
 				HeadUpDisplay::setAmmunitionAmount(_ammunitionAmount);
 				
 				// Get time after having generated the bullet, in case this takes more than 1 millisecond
+				_isSecondaryShootReloadingTimeElapsed = false;
 				_secondaryFireLastShotTime = SDL_GetTicks();
 				
 				return pointerBullet;
 			}
+			
 			return NULL; // No shot allowed
 		}
 		
@@ -184,20 +188,29 @@ class FightingEntityPlayer: public FightingEntity
 		 */
 		virtual int update()
 		{
-			int blockContent, playerCenterX, playerCenterY, blockX, blockY;
-			SDL_Rect *pointerPositionRectangle = &_positionRectangles[_facingDirection];
+			// Check whether the mortar reloading time has elapsed
+			if (SDL_GetTicks() - _secondaryFireLastShotTime >= _secondaryFireTimeBetweenShots) _isSecondaryShootReloadingTimeElapsed = true;
+			
+			// Update mortar HUD state
+			if (_ammunitionAmount < CONFIGURATION_GAMEPLAY_PLAYER_SECONDARY_FIRE_NEEDED_AMMUNITION_AMOUNT) HeadUpDisplay::setMortarState(HeadUpDisplay::MORTAR_STATE_LOW_AMMUNITION);
+			else
+			{
+				if (!_isSecondaryShootReloadingTimeElapsed) HeadUpDisplay::setMortarState(HeadUpDisplay::MORTAR_STATE_RELOADING);
+				else HeadUpDisplay::setMortarState(HeadUpDisplay::MORTAR_STATE_READY);
+			}
 			
 			// Cache player center coordinates
-			playerCenterX = pointerPositionRectangle->x + (pointerPositionRectangle->w / 2);
-			playerCenterY = pointerPositionRectangle->y + (pointerPositionRectangle->h / 2);
+			SDL_Rect *pointerPositionRectangle = &_positionRectangles[_facingDirection];
+			int playerCenterX = pointerPositionRectangle->x + (pointerPositionRectangle->w / 2);
+			int playerCenterY = pointerPositionRectangle->y + (pointerPositionRectangle->h / 2);
 			
 			// Cache the coordinates of the block the player is crossing
-			blockX = playerCenterX - (playerCenterX % CONFIGURATION_LEVEL_BLOCK_SIZE),
-			blockY = playerCenterY - (playerCenterY % CONFIGURATION_LEVEL_BLOCK_SIZE);
+			int blockX = playerCenterX - (playerCenterX % CONFIGURATION_LEVEL_BLOCK_SIZE);
+			int blockY = playerCenterY - (playerCenterY % CONFIGURATION_LEVEL_BLOCK_SIZE);
 			
 			// Get block under player center content
-			blockContent = LevelManager::getBlockContent(playerCenterX, playerCenterY);
-				
+			int blockContent = LevelManager::getBlockContent(playerCenterX, playerCenterY);
+			
 			// Is there a medipack ?
 			if (blockContent & LevelManager::BLOCK_CONTENT_MEDIPACK)
 			{

@@ -8,6 +8,7 @@
 #include <LevelManager.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
+#include <TextureManager.hpp>
 
 namespace HeadUpDisplay
 {
@@ -31,9 +32,20 @@ typedef enum
 /** Cache all the pre-rendered string textures to avoid to render them at each frame, which is useless if they don't change. */
 static SDL_Texture *_pointerStringTextures[STRING_IDS_COUNT] = {0};
 
+/** Point to the interface background texture with the right type for the rendering function. */
+static SDL_Texture *_pointerBackgroundTexture;
+
 //-------------------------------------------------------------------------------------------------
 // Public function
 //-------------------------------------------------------------------------------------------------
+int initialize()
+{
+	// Cache background texture access to avoid searching for it at each frame
+	_pointerBackgroundTexture = getTextureFromId(TextureManager::TEXTURE_ID_GRAPHIC_USER_INTERFACE_BACKGROUND)->getSDLTexture();
+	
+	return 0;
+}
+
 void setLifePointsAmount(int amount)
 {
 	Renderer::TextColorId colorId;
@@ -93,11 +105,50 @@ void setEnemiesAmount(int amount)
 	LOG_DEBUG("Refreshed enemies interface string.");
 }
 
+void setMortarState(MortarState state)
+{
+	Renderer::TextColorId colorId;
+	char string[64];
+	
+	// Add string prefix
+	strcpy(string, "Mortar : ");
+	
+	// Add string suffix
+	switch (state)
+	{
+		case MORTAR_STATE_LOW_AMMUNITION:
+			colorId = Renderer::TEXT_COLOR_ID_RED;
+			strcat(string, "low ammo");
+			break;
+			
+		case MORTAR_STATE_RELOADING:
+			colorId = Renderer::TEXT_COLOR_ID_BLUE;
+			strcat(string, "reloading...");
+			break;
+			
+		case MORTAR_STATE_READY:
+			colorId = Renderer::TEXT_COLOR_ID_GREEN;
+			strcat(string, "ready");
+			break;
+			
+		default:
+			break;
+	}
+	
+	// Render the string
+	_pointerStringTextures[STRING_ID_MORTAR_STATE] = Renderer::renderTextToTexture(string, colorId, Renderer::FONT_SIZE_ID_SMALL);
+}
+
 void render()
 {
+	// Display background
+	Renderer::renderTexture(_pointerBackgroundTexture, CONFIGURATION_DISPLAY_HUD_BACKGROUND_TEXTURE_X, CONFIGURATION_DISPLAY_HUD_BACKGROUND_TEXTURE_Y);
+	
+	// Display HUD content
 	Renderer::renderTexture(_pointerStringTextures[STRING_ID_LIFE_POINTS_AMOUNT], CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_X, CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y);
 	Renderer::renderTexture(_pointerStringTextures[STRING_ID_AMMUNITION_AMOUNT], CONFIGURATION_DISPLAY_HUD_AMMUNITION_X, CONFIGURATION_DISPLAY_HUD_AMMUNITION_Y);
 	Renderer::renderTexture(_pointerStringTextures[STRING_ID_ENEMIES_AMOUNT], CONFIGURATION_DISPLAY_HUD_ENEMIES_X, CONFIGURATION_DISPLAY_HUD_ENEMIES_Y);
+	Renderer::renderTexture(_pointerStringTextures[STRING_ID_MORTAR_STATE], CONFIGURATION_DISPLAY_HUD_MORTAR_STATE_X, CONFIGURATION_DISPLAY_HUD_MORTAR_STATE_Y);
 }
 
 }

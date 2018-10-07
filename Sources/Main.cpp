@@ -58,8 +58,6 @@ static int _isGamePaused = 0;
 /** Set to 1 when the player has finished all levels. */
 static int _isGameFinished = 0;
 
-/** Point to the interface background texture with the right type for the rendering function. */
-static SDL_Texture *_pointerInterfaceBackgroundTexture;
 /** The string to display when the player is dead. */
 static SDL_Texture *_pointerGameLostInterfaceStringTexture;
 /** The string to display when the player won the game. */
@@ -494,9 +492,6 @@ static inline void _updateGameLogic()
 /** Display and keep up to date interface strings. */
 static inline void _renderInterface()
 {
-	// Display background
-	Renderer::renderTexture(_pointerInterfaceBackgroundTexture, CONFIGURATION_DISPLAY_HUD_BACKGROUND_TEXTURE_X, CONFIGURATION_DISPLAY_HUD_BACKGROUND_TEXTURE_Y);
-	
 	HeadUpDisplay::render();
 	
 	// Display a centered message if needed
@@ -616,6 +611,7 @@ int main(int argc, char *argv[])
 	if (LevelManager::initialize() != 0) return -1;
 	if (AudioManager::initialize() != 0) return -1;
 	if (ControlManager::initialize() != 0) return -1;
+	if (HeadUpDisplay::initialize() != 0) return -1;
 	
 	// Create the player now that everything is working
 	pointerPlayer = new FightingEntityPlayer(0, 0); // It will be placed at the right location by the level loading function
@@ -635,8 +631,6 @@ int main(int argc, char *argv[])
 	// Static interface strings
 	_pointerGameLostInterfaceStringTexture =  Renderer::renderTextToTexture("You are dead !", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
 	_pointerGameWonInterfaceStringTexture = Renderer::renderTextToTexture("All levels completed. You are legend.", Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
-	// Interface background
-	_pointerInterfaceBackgroundTexture = getTextureFromId(TextureManager::TEXTURE_ID_GRAPHIC_USER_INTERFACE_BACKGROUND)->getSDLTexture();
 	
 	LOG_INFORMATION("Game engine successfully initialized.");
 	
