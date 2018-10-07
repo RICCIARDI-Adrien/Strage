@@ -41,7 +41,7 @@ static SDL_Texture *_pointerBackgroundTexture;
 int initialize()
 {
 	// Cache background texture access to avoid searching for it at each frame
-	_pointerBackgroundTexture = getTextureFromId(TextureManager::TEXTURE_ID_GRAPHIC_USER_INTERFACE_BACKGROUND)->getSDLTexture();
+	_pointerBackgroundTexture = getTextureFromId(TextureManager::TEXTURE_ID_HEAD_UP_DISPLAY_BACKGROUND)->getSDLTexture();
 	
 	return 0;
 }
@@ -55,7 +55,7 @@ void setLifePointsAmount(int amount)
 	if (amount < 20) colorId = Renderer::TEXT_COLOR_ID_RED;
 	// Display life points in green if the player life is full
 	else if (amount == pointerPlayer->getMaximumLifePointsAmount()) colorId = Renderer::TEXT_COLOR_ID_GREEN;
-	else colorId = Renderer::TEXT_COLOR_ID_BLUE;
+	else colorId = Renderer::TEXT_COLOR_ID_LIGHT_BLUE;
 	
 	// Free previous string
 	SDL_DestroyTexture(_pointerStringTextures[STRING_ID_LIFE_POINTS_AMOUNT]); // SDL_DestroyTexture() does not complain if the provided pointer is NULL, as it is on the first frame
@@ -74,7 +74,7 @@ void setAmmunitionAmount(int amount)
 	
 	// Display ammunition in red if they are exhausted
 	if (amount == 0) colorId = Renderer::TEXT_COLOR_ID_RED;
-	else colorId = Renderer::TEXT_COLOR_ID_BLUE;
+	else colorId = Renderer::TEXT_COLOR_ID_LIGHT_BLUE;
 	
 	// Free previous string
 	SDL_DestroyTexture(_pointerStringTextures[STRING_ID_AMMUNITION_AMOUNT]);
@@ -93,7 +93,7 @@ void setEnemiesAmount(int amount)
 	
 	// Display enemies in green if they are all dead and all enemy spawners are destroyed
 	if ((amount == 0) && (LevelManager::enemySpawnersList.empty())) colorId = Renderer::TEXT_COLOR_ID_GREEN;
-	else colorId = Renderer::TEXT_COLOR_ID_BLUE;
+	else colorId = Renderer::TEXT_COLOR_ID_LIGHT_BLUE;
 	
 	// Free previous string
 	SDL_DestroyTexture(_pointerStringTextures[STRING_ID_ENEMIES_AMOUNT]);
@@ -126,7 +126,7 @@ void setMortarState(MortarState state)
 			break;
 			
 		case MORTAR_STATE_RELOADING:
-			colorId = Renderer::TEXT_COLOR_ID_BLUE;
+			colorId = Renderer::TEXT_COLOR_ID_LIGHT_BLUE;
 			strcat(string, "reloading...");
 			break;
 			
@@ -136,6 +136,8 @@ void setMortarState(MortarState state)
 			break;
 			
 		default:
+			LOG_ERROR("Invalid mortar state : %d.", state);
+			exit(-1);
 			break;
 	}
 	

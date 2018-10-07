@@ -5,6 +5,7 @@ PATH_MACOS_RELEASE = Strage.app
 PATH_WINDOWS_RELEASE = Strage
 
 VERSION_SDL2 = 2.0.8
+VERSION_SDL2_IMAGE = 2.0.3
 VERSION_SDL2_MIXER = 2.0.2
 VERSION_SDL2_TTF = 2.0.14
 
@@ -15,19 +16,19 @@ SOURCES = $(shell find $(PATH_SOURCES) -name "*.cpp")
 # Debug target is only available on Linux
 debug: CPP = g++
 debug: CPPFLAGS += -g
-debug: LIBRARIES = -lSDL2 -lSDL2_mixer -lSDL2_ttf
+debug: LIBRARIES = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf
 debug: all
 
 linux: CPP = g++
 linux: CPPFLAGS += -Werror -O2 -DNDEBUG
-linux: LIBRARIES = -lSDL2 -lSDL2_mixer -lSDL2_ttf
+linux: LIBRARIES = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf
 linux: all
 
 macos: CPP = g++
 # Make all frameworks being searched in the application Frameworks directory
 macos: CPPFLAGS += -Werror -O2 -DNDEBUG -DCONFIGURATION_BUILD_FOR_MACOS -F Frameworks -rpath @executable_path/../Frameworks -rpath @executable_path/Frameworks
-macos: LIBRARIES = -framework SDL2 -framework SDL2_mixer -framework SDL2_ttf
-macos: Frameworks/SDL2-$(VERSION_SDL2).framework Frameworks/SDL2_mixer-$(VERSION_SDL2_MIXER).framework Frameworks/SDL2_ttf-$(VERSION_SDL2_TTF).framework all
+macos: LIBRARIES = -framework SDL2 -framework SDL2_image -framework SDL2_mixer -framework SDL2_ttf
+macos: Frameworks/SDL2-$(VERSION_SDL2).framework Frameworks/SDL2_image-$(VERSION_SDL2_IMAGE).framework Frameworks/SDL2_mixer-$(VERSION_SDL2_MIXER).framework Frameworks/SDL2_ttf-$(VERSION_SDL2_TTF).framework all
 
 # MacOS SDL dependencies
 Frameworks/SDL2-$(VERSION_SDL2).framework:
@@ -39,6 +40,13 @@ Frameworks/SDL2-$(VERSION_SDL2).framework:
 	@# However, framework must be named the same as in the DMG image, so use a symlink to fake the name
 	ln -sf SDL2-$(VERSION_SDL2).framework Frameworks/SDL2.framework
 	hdiutil eject /Volumes/SDL2
+
+Frameworks/SDL2_image-$(VERSION_SDL2_IMAGE).framework:
+	curl https://www.libsdl.org/projects/SDL_image/release/SDL2_image-$(VERSION_SDL2_IMAGE).dmg -o /tmp/SDL2_image-$(VERSION_SDL2_IMAGE).dmg
+	hdiutil attach /tmp/SDL2_image-$(VERSION_SDL2_IMAGE).dmg
+	cp -r /Volumes/SDL2_image/SDL2_image.framework Frameworks/SDL2_image-$(VERSION_SDL2_IMAGE).framework
+	ln -sf SDL2_image-$(VERSION_SDL2_IMAGE).framework Frameworks/SDL2_image.framework
+	hdiutil eject /Volumes/SDL2_image
 
 Frameworks/SDL2_mixer-$(VERSION_SDL2_MIXER).framework:
 	curl https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-$(VERSION_SDL2_MIXER).dmg -o /tmp/SDL2_mixer-$(VERSION_SDL2_MIXER).dmg
@@ -60,8 +68,8 @@ windows: CPP = i686-w64-mingw32-g++
 # Avoid shipping MinGW libgcc and libstdc++, build as a GUI program to avoid having an opened console when the game is started
 windows: CPPFLAGS += -Werror -O2 -DNDEBUG -static-libgcc -static-libstdc++ -mwindows -ISDL2_Includes
 # Windows needs custom libraries to provide WinMain() ; symbols are scattered into several libraries, so make sure they are all found
-windows: LIBRARIES = -Wl,--start-group -LSDL2-$(VERSION_SDL2)/i686-w64-mingw32/lib -lSDL2 -LSDL2_mixer-$(VERSION_SDL2_MIXER)/i686-w64-mingw32/lib -lSDL2_mixer -LSDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/lib -lSDL2_ttf -lmingw32 -lSDL2main -Wl,--end-group
-windows: SDL2-$(VERSION_SDL2) SDL2_mixer-$(VERSION_SDL2_MIXER) SDL2_ttf-$(VERSION_SDL2_TTF) windows_generate_executable_icon all windows_clean_executable_icon
+windows: LIBRARIES = -Wl,--start-group -LSDL2-$(VERSION_SDL2)/i686-w64-mingw32/lib -lSDL2 -LSDL2_image-$(VERSION_SDL2_IMAGE)/i686-w64-mingw32/lib -lSDL2_image -LSDL2_mixer-$(VERSION_SDL2_MIXER)/i686-w64-mingw32/lib -lSDL2_mixer -LSDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/lib -lSDL2_ttf -lmingw32 -lSDL2main -Wl,--end-group
+windows: SDL2-$(VERSION_SDL2) SDL2_image-$(VERSION_SDL2_IMAGE) SDL2_mixer-$(VERSION_SDL2_MIXER) SDL2_ttf-$(VERSION_SDL2_TTF) windows_generate_executable_icon all windows_clean_executable_icon
 
 # Windows SDL dependencies
 # Each rule copies headers to a unique SDL2 include directory because SDL_mixer and SDL_ttf internally refer to SDL2.h as a local file (i.e. #include "SDL2.h"), so multiple directories specified with -I options don't work
@@ -72,6 +80,13 @@ SDL2-$(VERSION_SDL2):
 	mkdir -p SDL2_Includes
 	cp -r SDL2-$(VERSION_SDL2)/i686-w64-mingw32/include/* SDL2_Includes
 	cp SDL2-$(VERSION_SDL2)/i686-w64-mingw32/bin/SDL2.dll .
+
+SDL2_image-$(VERSION_SDL2_IMAGE):
+	wget https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-$(VERSION_SDL2_IMAGE)-mingw.tar.gz -O /tmp/SDL2_image-devel-$(VERSION_SDL2_IMAGE)-mingw.tar.gz
+	tar -xf /tmp/SDL2_image-devel-$(VERSION_SDL2_IMAGE)-mingw.tar.gz
+	cp -r SDL2_image-$(VERSION_SDL2_IMAGE)/i686-w64-mingw32/include/* SDL2_Includes
+	cp SDL2_image-$(VERSION_SDL2_IMAGE)/i686-w64-mingw32/bin/libpng16-16.dll .
+	cp SDL2_image-$(VERSION_SDL2_IMAGE)/i686-w64-mingw32/bin/SDL2_image.dll .
 
 SDL2_mixer-$(VERSION_SDL2_MIXER):
 	wget https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-$(VERSION_SDL2_MIXER)-mingw.tar.gz -O /tmp/SDL2_mixer-devel-$(VERSION_SDL2_MIXER)-mingw.tar.gz
@@ -106,7 +121,7 @@ clean:
 	@# Remove macOS build files
 	rm -rf Frameworks
 	@# Remove Windows build files
-	rm -rf SDL2-$(VERSION_SDL2) SDL2_mixer-$(VERSION_SDL2_MIXER) SDL2_ttf-$(VERSION_SDL2_TTF) SDL2_Includes *.dll
+	rm -rf SDL2-$(VERSION_SDL2) SDL2_image-$(VERSION_SDL2_IMAGE) SDL2_mixer-$(VERSION_SDL2_MIXER) SDL2_ttf-$(VERSION_SDL2_TTF) SDL2_Includes *.dll
 
 linux_release: linux
 	@# Create application directories
@@ -138,6 +153,7 @@ macos_release: macos
 
 	@# Copy needed frameworks
 	cp -r Frameworks/SDL2.framework $(PATH_MACOS_RELEASE)/Contents/Frameworks
+	cp -r Frameworks/SDL2_image.framework $(PATH_MACOS_RELEASE)/Contents/Frameworks
 	cp -r Frameworks/SDL2_mixer.framework $(PATH_MACOS_RELEASE)/Contents/Frameworks
 	cp -r Frameworks/SDL2_ttf.framework $(PATH_MACOS_RELEASE)/Contents/Frameworks
 
@@ -197,11 +213,14 @@ windows_release: windows
 
 	@# Add needed DLLs
 	cp SDL2-$(VERSION_SDL2)/i686-w64-mingw32/bin/SDL2.dll $(PATH_WINDOWS_RELEASE)
+	cp SDL2_image-$(VERSION_SDL2_IMAGE)/i686-w64-mingw32/bin/libpng16-16.dll $(PATH_WINDOWS_RELEASE)
+	cp SDL2_image-$(VERSION_SDL2_IMAGE)/i686-w64-mingw32/bin/SDL2_image.dll $(PATH_WINDOWS_RELEASE)
+	@# Use SDL image ZLIB DLL instead of TTF's one because SDL image's one is more complete and contains SDL image mandatory functions which are not present in TTF DLL version
+	cp SDL2_image-$(VERSION_SDL2_IMAGE)/i686-w64-mingw32/bin/zlib1.dll $(PATH_WINDOWS_RELEASE)
 	cp SDL2_mixer-$(VERSION_SDL2_MIXER)/i686-w64-mingw32/bin/libmpg123-0.dll $(PATH_WINDOWS_RELEASE)
 	cp SDL2_mixer-$(VERSION_SDL2_MIXER)/i686-w64-mingw32/bin/SDL2_mixer.dll $(PATH_WINDOWS_RELEASE)
 	cp SDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/bin/libfreetype-6.dll $(PATH_WINDOWS_RELEASE)
 	cp SDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/bin/SDL2_ttf.dll $(PATH_WINDOWS_RELEASE)
-	cp SDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/bin/zlib1.dll $(PATH_WINDOWS_RELEASE)
 	
 	@# Create a compressed archive
 	zip -r ../Strage_Version_x.x_Windows.zip $(PATH_WINDOWS_RELEASE)

@@ -8,6 +8,8 @@
 #include <FileManager.hpp>
 #include <Log.hpp>
 #include <Renderer.hpp>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <Texture.hpp>
 #include <TextureManager.hpp>
 
@@ -788,9 +790,9 @@ static TextureInformation _texturesInformations[] =
 	},
 	
 	// Graphic user interface
-	// TEXTURE_ID_GRAPHIC_USER_INTERFACE_BACKGROUND
+	// TEXTURE_ID_HEAD_UP_DISPLAY_BACKGROUND
 	{
-		CONFIGURATION_PATH_TEXTURES "/Graphic_User_Interface_Background.bmp",
+		CONFIGURATION_PATH_TEXTURES "/Head_Up_Display_Background.png",
 		1,
 		0,
 		NULL,
@@ -1021,7 +1023,7 @@ int initialize()
 	for (i = 0; i < TEXTURE_IDS_COUNT; i++)
 	{
 		// Try to load bitmap
-		pointerSurface = SDL_LoadBMP(_texturesInformations[i].pointerStringFileName);
+		pointerSurface = IMG_Load(_texturesInformations[i].pointerStringFileName);
 		if (pointerSurface == NULL)
 		{
 			LOG_ERROR("Failed to load texture '%s' (%s).", _texturesInformations[i].pointerStringFileName, SDL_GetError());

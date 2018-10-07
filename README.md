@@ -45,7 +45,7 @@ And remember, *strage* means *slaughter* in Italian...
 ### Building for Linux
 On Debian/Ubuntu systems, you have to install some SDL2 packages.
 ```
-sudo apt install libsdl2-dev libsdl2-mixer-dev libsdl2-ttf-dev
+sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
 ```
 Then simply type the following command in the Strage directory to build the game :
 ```
