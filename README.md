@@ -2,6 +2,8 @@
 
 # Strage
 
+You can now download the game from [itch.io](https://ricciardi-adrien.itch.io/strage).
+
 ## Gameplay preview
 * [Strage version 0.2](https://www.youtube.com/watch?v=aTI6zjJu4h4)
 * [Strage version 0.3](https://www.youtube.com/watch?v=r5JJvJWiGF0)
