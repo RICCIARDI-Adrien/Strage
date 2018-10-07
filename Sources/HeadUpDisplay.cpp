@@ -107,13 +107,17 @@ void setEnemiesAmount(int amount)
 
 void setMortarState(MortarState state)
 {
-	Renderer::TextColorId colorId;
-	char string[64];
+	static MortarState previousMortarState = MORTAR_STATE_INVALID; // Initialize with an invalid value to make sure the first string is generated
+	
+	// Nothing to do if the string has been rendered yet
+	if (state == previousMortarState) return;
 	
 	// Add string prefix
+	char string[64];
 	strcpy(string, "Mortar : ");
 	
-	// Add string suffix
+	// Add string suffix and select color
+	Renderer::TextColorId colorId;
 	switch (state)
 	{
 		case MORTAR_STATE_LOW_AMMUNITION:
@@ -137,6 +141,8 @@ void setMortarState(MortarState state)
 	
 	// Render the string
 	_pointerStringTextures[STRING_ID_MORTAR_STATE] = Renderer::renderTextToTexture(string, colorId, Renderer::FONT_SIZE_ID_SMALL);
+	
+	previousMortarState = state;
 }
 
 void render()

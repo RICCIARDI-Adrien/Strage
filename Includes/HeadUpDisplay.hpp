@@ -16,7 +16,8 @@ typedef enum
 {
 	MORTAR_STATE_LOW_AMMUNITION,
 	MORTAR_STATE_RELOADING,
-	MORTAR_STATE_READY
+	MORTAR_STATE_READY,
+	MORTAR_STATE_INVALID
 } MortarState;
 
 //-------------------------------------------------------------------------------------------------
