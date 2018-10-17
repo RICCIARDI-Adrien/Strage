@@ -116,7 +116,7 @@ static inline void _uninitialize()
 int display(const char *pointerStringMenuTitle, const char *pointerStringsMenuItemsTexts[], int menuItemsCount)
 {
 	SDL_Event event;
-	int returnValue, i, focusedMenuItemIndex = 0, isGoUpKeyPressed = 0, isGoDownKeyPressed = 0, isShootKeyPressed = 0;
+	int returnValue, i, focusedMenuItemIndex = 0, isGoUpKeyPressed = 0, isGoDownKeyPressed = 0, isSelectKeyPressed = 0;
 	unsigned int frameStartingTime, frameElapsedTime;
 	SDL_Texture *pointerTexture;
 	
@@ -179,8 +179,8 @@ int display(const char *pointerStringMenuTitle, const char *pointerStringsMenuIt
 		}
 		else isGoDownKeyPressed = 0;
 		// Shoot key
-		if (ControlManager::isKeyPressed(ControlManager::KEY_ID_PRIMARY_SHOOT)) isShootKeyPressed = 1; // Wait for the key to be released to execute the associated action, so the shoot key is not pressed when entering the game (this avoids the player immediately shooting when entering the game because the shoot key is pressed yet)
-		else if (isShootKeyPressed)
+		if (ControlManager::isKeyPressed(ControlManager::KEY_ID_PRIMARY_SHOOT) || ControlManager::isKeyPressed(ControlManager::KEY_ID_MENU_SELECT)) isSelectKeyPressed = 1; // Wait for the key to be released to execute the associated action, so the shoot key is not pressed when entering the game (this avoids the player immediately shooting when entering the game because the shoot key is pressed yet)
+		else if (isSelectKeyPressed)
 		{
 			AudioManager::playSound(AudioManager::SOUND_ID_MENU_SELECT);
 			SDL_Delay(500); // Wait a bit for the sound to be played, because when this function quits _loadNextLevel() is called and it stops all playing sounds

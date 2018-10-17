@@ -132,6 +132,10 @@ void handleKeyboardEvent(SDL_Event *pointerEvent)
 				_isKeyPressed[KEY_ID_PAUSE_GAME] = 1;
 				break;
 				
+			case SDL_SCANCODE_RETURN:
+				_isKeyPressed[KEY_ID_MENU_SELECT] = 1;
+				break;
+				
 			default:
 				break;
 		}
@@ -171,6 +175,10 @@ void handleKeyboardEvent(SDL_Event *pointerEvent)
 			
 			case SDL_SCANCODE_ESCAPE:
 				_isKeyPressed[KEY_ID_PAUSE_GAME] = 0;
+				break;
+				
+			case SDL_SCANCODE_RETURN:
+				_isKeyPressed[KEY_ID_MENU_SELECT] = 0;
 				break;
 				
 			default:
