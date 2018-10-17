@@ -99,7 +99,6 @@ class FightingEntityPlayer: public FightingEntity
 			if (pointerBullet != NULL)
 			{
 				_ammunitionAmount--;
-				HeadUpDisplay::setAmmunitionAmount(_ammunitionAmount);
 				return pointerBullet;
 			}
 			return NULL;
@@ -134,7 +133,6 @@ class FightingEntityPlayer: public FightingEntity
 				pointerBullet = new MovingEntityBullet(entityX + bulletStartingPositionOffsetX, entityY + bulletStartingPositionOffsetY, TextureManager::TEXTURE_ID_PLAYER_BULLET_MORTAR_SHELL_FACING_UP, 4, _facingDirection, 20, 1);
 				
 				_ammunitionAmount -= CONFIGURATION_GAMEPLAY_PLAYER_SECONDARY_FIRE_NEEDED_AMMUNITION_AMOUNT;
-				HeadUpDisplay::setAmmunitionAmount(_ammunitionAmount);
 				
 				// Play the shoot effect
 				EffectManager::addEffect(entityX + firingEffectStartingPositionOffsetX, entityY + firingEffectStartingPositionOffsetY, EffectManager::EFFECT_ID_PLAYER_MUZZLE_FLASH_MORTAR_SHELL);
@@ -165,7 +163,6 @@ class FightingEntityPlayer: public FightingEntity
 		inline void setAmmunitionAmount(int ammunitionCount)
 		{
 			_ammunitionAmount = ammunitionCount;
-			HeadUpDisplay::setAmmunitionAmount(ammunitionCount);
 		}
 		
 		/** Add ammunition to the player owned ones.
@@ -174,7 +171,6 @@ class FightingEntityPlayer: public FightingEntity
 		inline void addAmmunition(int amount)
 		{
 			_ammunitionAmount += amount;
-			HeadUpDisplay::setAmmunitionAmount(_ammunitionAmount);
 		}
 		
 		/** Display the player at the screen center. */
@@ -262,27 +258,6 @@ class FightingEntityPlayer: public FightingEntity
 			else if (blockContent & LevelManager::BLOCK_CONTENT_LEVEL_EXIT) return 2;
 			
 			return 0;
-		}
-		
-		// No need for documentation because it is the same as parent function
-		inline void setLifePointsAmount(int lifePointsAmount)
-		{
-			FightingEntity::setLifePointsAmount(lifePointsAmount);
-			HeadUpDisplay::setLifePointsAmount(lifePointsAmount);
-		}
-		
-		// No need for documentation because it is the same as parent function
-		inline void setMaximumLifePointsAmount(int lifePointsAmount)
-		{
-			FightingEntity::setMaximumLifePointsAmount(lifePointsAmount);
-			HeadUpDisplay::setLifePointsAmount(lifePointsAmount); // Trigger a HUD refresh when this value is changed so the "life amount" HUD string text color (which depends on maximum life amount) can be updated
-		}
-		
-		// No need for documentation because it is the same as parent function
-		inline void modifyLife(int lifePointsAmount)
-		{
-			FightingEntity::modifyLife(lifePointsAmount);
-			HeadUpDisplay::setLifePointsAmount(_lifePointsAmount); // Function parameter is a delta value to add or subtract to player life amount, so use "total" player life points variable as the value to display
 		}
 };
 

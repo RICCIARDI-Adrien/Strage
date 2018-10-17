@@ -36,7 +36,69 @@ static SDL_Texture *_pointerStringTextures[STRING_IDS_COUNT] = {0};
 static SDL_Texture *_pointerBackgroundTexture;
 
 //-------------------------------------------------------------------------------------------------
-// Public function
+// Private functions
+//-------------------------------------------------------------------------------------------------
+/** Display player life amount. */
+static inline void _displayPlayerLifePointsAmount()
+{
+	// Check whether the string must be rendered
+	static int previousLifePointsAmount = -10; // This value can't be reached in game, so the string displaying is forced on game start
+	int lifePointsAmount = pointerPlayer->getLifePointsAmount();
+	if (lifePointsAmount != previousLifePointsAmount)
+	{
+		// Display life points in red if the player is near to death
+		Renderer::TextColorId colorId;
+		if (lifePointsAmount < 20) colorId = Renderer::TEXT_COLOR_ID_RED;
+		// Display life points in green if the player life is full
+		else if (lifePointsAmount == pointerPlayer->getMaximumLifePointsAmount()) colorId = Renderer::TEXT_COLOR_ID_GREEN;
+		else colorId = Renderer::TEXT_COLOR_ID_LIGHT_BLUE;
+		
+		// Free previous string
+		SDL_DestroyTexture(_pointerStringTextures[STRING_ID_LIFE_POINTS_AMOUNT]); // SDL_DestroyTexture() does not complain if the provided pointer is NULL, as it is on the first frame
+		
+		// Render the string
+		char string[64];
+		sprintf(string, "Life : %d", lifePointsAmount);
+		_pointerStringTextures[STRING_ID_LIFE_POINTS_AMOUNT] = Renderer::renderTextToTexture(string, colorId, Renderer::FONT_SIZE_ID_SMALL);
+		
+		previousLifePointsAmount = lifePointsAmount;
+		LOG_DEBUG("Refreshed life points interface string.");
+	}
+	
+	// Render the string
+	Renderer::renderTexture(_pointerStringTextures[STRING_ID_LIFE_POINTS_AMOUNT], CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_X, CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y);
+}
+
+static inline void _displayPlayerAmmunitionAmount()
+{
+	// Check whether the string must be rendered
+	static int previousAmmunitionAmount = -10; // This value can't be reached in game, so the string displaying is forced on game start
+	int ammunitionAmount = pointerPlayer->getAmmunitionAmount();
+	if (ammunitionAmount != previousAmmunitionAmount)
+	{
+		// Display ammunition in red if they are exhausted
+		Renderer::TextColorId colorId;
+		if (ammunitionAmount == 0) colorId = Renderer::TEXT_COLOR_ID_RED;
+		else colorId = Renderer::TEXT_COLOR_ID_LIGHT_BLUE;
+		
+		// Free previous string
+		SDL_DestroyTexture(_pointerStringTextures[STRING_ID_AMMUNITION_AMOUNT]);
+		
+		// Render the string
+		char string[64];
+		sprintf(string, "Ammo : %d", ammunitionAmount);
+		_pointerStringTextures[STRING_ID_AMMUNITION_AMOUNT] = Renderer::renderTextToTexture(string, colorId, Renderer::FONT_SIZE_ID_SMALL);
+		
+		previousAmmunitionAmount = ammunitionAmount;
+		LOG_DEBUG("Refreshed ammunition interface string.");
+	}
+	
+	// Render the string
+	Renderer::renderTexture(_pointerStringTextures[STRING_ID_AMMUNITION_AMOUNT], CONFIGURATION_DISPLAY_HUD_AMMUNITION_X, CONFIGURATION_DISPLAY_HUD_AMMUNITION_Y);
+}
+
+//-------------------------------------------------------------------------------------------------
+// Public functions
 //-------------------------------------------------------------------------------------------------
 int initialize()
 {
@@ -44,46 +106,6 @@ int initialize()
 	_pointerBackgroundTexture = getTextureFromId(TextureManager::TEXTURE_ID_HEAD_UP_DISPLAY_BACKGROUND)->getSDLTexture();
 	
 	return 0;
-}
-
-void setLifePointsAmount(int amount)
-{
-	Renderer::TextColorId colorId;
-	char string[64];
-	
-	// Display life points in red if the player is near to death
-	if (amount < 20) colorId = Renderer::TEXT_COLOR_ID_RED;
-	// Display life points in green if the player life is full
-	else if (amount == pointerPlayer->getMaximumLifePointsAmount()) colorId = Renderer::TEXT_COLOR_ID_GREEN;
-	else colorId = Renderer::TEXT_COLOR_ID_LIGHT_BLUE;
-	
-	// Free previous string
-	SDL_DestroyTexture(_pointerStringTextures[STRING_ID_LIFE_POINTS_AMOUNT]); // SDL_DestroyTexture() does not complain if the provided pointer is NULL, as it is on the first frame
-	
-	// Render the string
-	sprintf(string, "Life : %d", amount);
-	_pointerStringTextures[STRING_ID_LIFE_POINTS_AMOUNT] = Renderer::renderTextToTexture(string, colorId, Renderer::FONT_SIZE_ID_SMALL);
-	
-	LOG_DEBUG("Refreshed life points interface string.");
-}
-
-void setAmmunitionAmount(int amount)
-{
-	Renderer::TextColorId colorId;
-	char string[64];
-	
-	// Display ammunition in red if they are exhausted
-	if (amount == 0) colorId = Renderer::TEXT_COLOR_ID_RED;
-	else colorId = Renderer::TEXT_COLOR_ID_LIGHT_BLUE;
-	
-	// Free previous string
-	SDL_DestroyTexture(_pointerStringTextures[STRING_ID_AMMUNITION_AMOUNT]);
-	
-	// Render the string
-	sprintf(string, "Ammo : %d", amount);
-	_pointerStringTextures[STRING_ID_AMMUNITION_AMOUNT] = Renderer::renderTextToTexture(string, colorId, Renderer::FONT_SIZE_ID_SMALL);
-	
-	LOG_DEBUG("Refreshed ammunition interface string.");
 }
 
 void setEnemiesAmount(int amount)
@@ -153,8 +175,8 @@ void render()
 	Renderer::renderTexture(_pointerBackgroundTexture, CONFIGURATION_DISPLAY_HUD_BACKGROUND_TEXTURE_X, CONFIGURATION_DISPLAY_HUD_BACKGROUND_TEXTURE_Y);
 	
 	// Display HUD content
-	Renderer::renderTexture(_pointerStringTextures[STRING_ID_LIFE_POINTS_AMOUNT], CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_X, CONFIGURATION_DISPLAY_HUD_LIFE_POINTS_Y);
-	Renderer::renderTexture(_pointerStringTextures[STRING_ID_AMMUNITION_AMOUNT], CONFIGURATION_DISPLAY_HUD_AMMUNITION_X, CONFIGURATION_DISPLAY_HUD_AMMUNITION_Y);
+	_displayPlayerLifePointsAmount();
+	_displayPlayerAmmunitionAmount();
 	Renderer::renderTexture(_pointerStringTextures[STRING_ID_ENEMIES_AMOUNT], CONFIGURATION_DISPLAY_HUD_ENEMIES_X, CONFIGURATION_DISPLAY_HUD_ENEMIES_Y);
 	Renderer::renderTexture(_pointerStringTextures[STRING_ID_MORTAR_STATE], CONFIGURATION_DISPLAY_HUD_MORTAR_STATE_X, CONFIGURATION_DISPLAY_HUD_MORTAR_STATE_Y);
 }

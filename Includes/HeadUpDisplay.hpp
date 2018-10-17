@@ -28,16 +28,6 @@ typedef enum
  */
 int initialize();
 
-/** Update "life points amount" part of the HUD.
- * @param amount How many life points to display.
- */
-void setLifePointsAmount(int amount);
-
-/** Update "ammunition amount" part of the HUD.
- * @param amount How many ammunition to display.
- */
-void setAmmunitionAmount(int amount);
-
 /** Update "enemies count" part of the HUD.
  * @param amount How many enemies to display.
  */
