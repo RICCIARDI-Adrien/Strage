@@ -48,6 +48,12 @@ int getSavegameItem(SavegameItemId itemId);
  */
 void setSavegameItem(SavegameItemId itemId, int itemValue);
 
+/** Tell whether a savegame file is present.
+ * @return false if no savegame file is available,
+ * @return true if a savegame file has been found.
+ */
+bool isSavegamePresent();
+
 }
 
 #endif

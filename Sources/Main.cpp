@@ -555,9 +555,14 @@ int main(int argc, char *argv[])
 	unsigned int frameStartingTime, frameElapsedTime;
 	int isFullScreenEnabled = 1, levelToLoadNumber, i;
 	MovingEntityBullet *pointerBullet;
-	const char *pointerStringsMainMenuItems[] =
+	const char *pointerStringsMainMenuWithSavegameItems[] =
 	{
 		"Continue game",
+		"New game",
+		"Quit"
+	};
+	const char *pointerStringsMainMenuWithoutSavegameItems[] =
+	{
 		"New game",
 		"Quit"
 	};
@@ -635,33 +640,48 @@ int main(int argc, char *argv[])
 	LOG_INFORMATION("Game engine successfully initialized.");
 	
 	// Display the main menu and get user choice
-	switch (Menu::display("Main menu", pointerStringsMainMenuItems, 3))
+	if (SavegameManager::isSavegamePresent())
 	{
-		// Continue last saved game
-		case 0:
-			// Is a savegame available ?
-			if (SavegameManager::loadSavegame() == 0)
-			{
-				// Set which level to load
-				_currentLevelNumber = SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_STARTING_LEVEL);
+		switch (Menu::display("Main menu", pointerStringsMainMenuWithSavegameItems, 3))
+		{
+			// Continue last saved game
+			case 0:
+				// Is a savegame available ?
+				if (SavegameManager::loadSavegame() == 0)
+				{
+					// Set which level to load
+					_currentLevelNumber = SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_STARTING_LEVEL);
+					
+					// Set player life points
+					i = SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_MAXIMUM_LIFE_POINTS); // Recycle 'i' variable
+					pointerPlayer->setLifePointsAmount(i);
+					pointerPlayer->setMaximumLifePointsAmount(i);
+					
+					// Set player ammunition
+					pointerPlayer->setAmmunitionAmount(SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_AMMUNITION));
+				}
+				else LOG_ERROR("No valid savegame found, starting a new game.");
+				break;
 				
-				// Set player life points
-				i = SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_MAXIMUM_LIFE_POINTS); // Recycle 'i' variable
-				pointerPlayer->setLifePointsAmount(i);
-				pointerPlayer->setMaximumLifePointsAmount(i);
+			// Start a new game (nothing to do because all needed variables are already initialized)
+			case 1:
+				break;
 				
-				// Set player ammunition
-				pointerPlayer->setAmmunitionAmount(SavegameManager::getSavegameItem(SavegameManager::SAVEGAME_ITEM_ID_PLAYER_AMMUNITION));
-			}
-			else LOG_ERROR("No valid savegame found, starting a new game.");
-			break;
-			
-		// Start a new game (nothing to do because all needed variables are already initialized)
-		case 1:
-			break;
-			
-		default:
-			goto Exit;
+			default:
+				goto Exit;
+		}
+	}
+	else
+	{
+		switch (Menu::display("Main menu", pointerStringsMainMenuWithoutSavegameItems, 2))
+		{
+			// Start a new game (nothing to do because all needed variables are already initialized)
+			case 0:
+				break;
+				
+			default:
+				goto Exit;
+		}
 	}
 	
 	// Load first level

@@ -94,4 +94,17 @@ void setSavegameItem(SavegameItemId itemId, int itemValue)
 	_items[itemId] = itemValue;
 }
 
+bool isSavegamePresent()
+{
+	// Try to open the file
+	FILE *pointerFile = fopen(FileManager::getFilePath(CONFIGURATION_SAVEGAME_FILE_NAME), "r");
+	
+	// No file was found
+	if (pointerFile == NULL) return false;
+	
+	// The file is present
+	fclose(pointerFile);
+	return true;
+}
+
 }
