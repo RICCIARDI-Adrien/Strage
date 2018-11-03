@@ -156,19 +156,15 @@ static void _wakeUpMusicThread()
  */
 static int _playNextMusicThread(void *)
 {
-	while (1)
+	while (!_isThreadTerminated)
 	{
 		// Wait for a wake up signal from the callback called when a music is finished
 		SDL_LockMutex(_pointerMusicThreadMutex);
 		while (!_isCurrentMusicFinished) SDL_CondWait(_pointerMusicThreadCondition, _pointerMusicThreadMutex);
 		SDL_UnlockMutex(_pointerMusicThreadMutex);
 		
-		// Exit when the game is being unloaded
-		if (_isThreadTerminated)
-		{
-			LOG_DEBUG("Music thread exited.");
-			return 0;
-		}
+		// Avoid waiting 2 seconds if the delay was not started
+		if (_isThreadTerminated) break;
 		
 		// Pause 2 seconds to avoid directly starting a different music
 		SDL_Delay(2000);
@@ -176,6 +172,9 @@ static int _playNextMusicThread(void *)
 		playMusic();
 		_isCurrentMusicFinished = 0;
 	}
+	
+	LOG_DEBUG("Music thread exited.");
+	return 0;
 }
 
 //-------------------------------------------------------------------------------------------------
