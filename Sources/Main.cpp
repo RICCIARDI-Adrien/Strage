@@ -722,7 +722,7 @@ int main(int argc, char *argv[])
 		if (ControlManager::isKeyPressed(ControlManager::KEY_ID_PAUSE_GAME))
 		{
 			// Stop playing music while the game is paused (in case the game must be quickly hidden to an incoming person)
-			LOG_INFORMATION("Game paused.");
+			LOG_DEBUG("Game paused.");
 			AudioManager::pauseMusic(1);
 			
 			// Player won, display a specific menu
@@ -777,7 +777,7 @@ int main(int argc, char *argv[])
 				}
 			}
 			
-			LOG_INFORMATION("Game continuing.");
+			LOG_DEBUG("Game continuing.");
 			AudioManager::pauseMusic(0);
 		}
 		
