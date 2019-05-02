@@ -104,4 +104,6 @@ When exporting a level, let 20 blocks on each map wall side to avoid displaying 
    * Soundbay - Epic Future
    * Soundshrim - Epic Adventure
 * Sounds : [universal-soundbank.com](http://www.universal-soundbank.com), [soundbible.com](http://soundbible.com), [zapsplat.com](https://www.zapsplat.com)
+* Sprites : [OpenGameArt](https://opengameart.org)
+   * [Explosions](https://opengameart.org/content/explosions-0)
 * Textures : [textures.com](http://www.textures.com), [Minecraft EnfiCraft texture pack](http://www.minecrafttexturepacks.com/enficraft)
