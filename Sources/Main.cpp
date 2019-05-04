@@ -12,7 +12,6 @@
 #include <ctime>
 #include <EnemyFightingEntity.hpp>
 #include <EnemySpawnerStaticEntity.hpp>
-#include <FightingEntityPlayer.hpp>
 #include <FileManager.hpp>
 #include <HeadUpDisplay.hpp>
 #include <list>
@@ -20,6 +19,7 @@
 #include <LevelManager.hpp>
 #include <MediumEnemyFightingEntity.hpp>
 #include <Menu.hpp>
+#include <PlayerFightingEntity.hpp>
 #include <Renderer.hpp>
 #include <SavegameManager.hpp>
 #include <SDL2/SDL.h>
@@ -67,7 +67,7 @@ static SDL_Texture *_pointerGameWonInterfaceStringTexture;
 // Public variables
 //-------------------------------------------------------------------------------------------------
 // The variable must be outside of any namespace
-FightingEntityPlayer *pointerPlayer;
+PlayerFightingEntity *pointerPlayer;
 
 //-------------------------------------------------------------------------------------------------
 // Private functions
@@ -619,7 +619,7 @@ int main(int argc, char *argv[])
 	if (HeadUpDisplay::initialize() != 0) return -1;
 	
 	// Create the player now that everything is working
-	pointerPlayer = new FightingEntityPlayer(0, 0); // It will be placed at the right location by the level loading function
+	pointerPlayer = new PlayerFightingEntity(0, 0); // It will be placed at the right location by the level loading function
 	
 	// Automatically dispose of allocated resources on program exit (allowing to use exit() elsewhere in the program)
 	atexit(_exitFreeResources);

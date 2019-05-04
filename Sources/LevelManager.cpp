@@ -7,11 +7,12 @@
 #include <Configuration.hpp>
 #include <cstdio>
 #include <cstring>
-#include <FightingEntityPlayer.hpp>
 #include <FileManager.hpp>
 #include <LevelManager.hpp>
 #include <list>
 #include <Log.hpp>
+#include <PlayerFightingEntity.hpp>
+#include <Renderer.hpp>
 #include <Texture.hpp>
 #include <TextureManager.hpp>
 

@@ -4,6 +4,7 @@
  */
 #include <AnimatedTexture.hpp>
 #include <cassert>
+#include <Configuration.hpp>
 #include <cstdio>
 #include <FileManager.hpp>
 #include <Log.hpp>

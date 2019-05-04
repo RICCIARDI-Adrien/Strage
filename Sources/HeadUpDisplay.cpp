@@ -3,9 +3,10 @@
  * @author Adrien RICCIARDI
  */
 #include <Configuration.hpp>
-#include <FightingEntityPlayer.hpp>
 #include <HeadUpDisplay.hpp>
 #include <LevelManager.hpp>
+#include <Log.hpp>
+#include <PlayerFightingEntity.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
 #include <TextureManager.hpp>

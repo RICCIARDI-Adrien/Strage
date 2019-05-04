@@ -8,7 +8,9 @@
 #include <Configuration.hpp>
 #include <cstdlib>
 #include <EnemyFightingEntity.hpp>
-#include <FightingEntityPlayer.hpp>
+#include <LevelManager.hpp>
+#include <Log.hpp>
+#include <PlayerFightingEntity.hpp>
 #include <Renderer.hpp>
 #include <TextureManager.hpp>
 
