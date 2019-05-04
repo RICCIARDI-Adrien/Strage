@@ -1,12 +1,12 @@
-/** @file StaticEntityEnemySpawner.cpp
- * See StaticEntityEnemySpawner.hpp for description.
+/** @file EnemySpawnerStaticEntity.cpp
+ * See EnemySpawnerStaticEntity.hpp for description.
  * @author Adrien RICCIARDI
  */
 #include <Renderer.hpp>
-#include <StaticEntityEnemySpawner.hpp>
+#include <EnemySpawnerStaticEntity.hpp>
 #include <TextureManager.hpp>
 
-StaticEntityEnemySpawner::StaticEntityEnemySpawner(int x, int y): StaticEntity(x, y, TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SPAWNER))
+EnemySpawnerStaticEntity::EnemySpawnerStaticEntity(int x, int y): StaticEntity(x, y, TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SPAWNER))
 {
 	_lifePointsAmount = 10;
 	
@@ -14,12 +14,12 @@ StaticEntityEnemySpawner::StaticEntityEnemySpawner(int x, int y): StaticEntity(x
 	_pointerEffectTexture = TextureManager::createAnimatedTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SPAWNER_TELEPORTATION_EFFECT, true);
 }
 
-StaticEntityEnemySpawner::~StaticEntityEnemySpawner()
+EnemySpawnerStaticEntity::~EnemySpawnerStaticEntity()
 {
 	delete _pointerEffectTexture;
 }
 
-void StaticEntityEnemySpawner::render()
+void EnemySpawnerStaticEntity::render()
 {
 	// Display spawner
 	StaticEntity::render();
@@ -28,7 +28,7 @@ void StaticEntityEnemySpawner::render()
 	_pointerEffectTexture->render(_positionRectangle.x - Renderer::displayX + 15, _positionRectangle.y - Renderer::displayY + 15);
 }
 
-int StaticEntityEnemySpawner::update()
+int EnemySpawnerStaticEntity::update()
 {
 	// Remove the spawner if it is destroyed
 	if (_lifePointsAmount == 0) return 1;

@@ -12,7 +12,6 @@
 #include <LevelManager.hpp>
 #include <list>
 #include <Log.hpp>
-#include <StaticEntityEnemySpawner.hpp>
 #include <Texture.hpp>
 #include <TextureManager.hpp>
 
@@ -77,7 +76,7 @@ static Texture *_pointerAmmunitionTexture;
 //-------------------------------------------------------------------------------------------------
 // Public variables
 //-------------------------------------------------------------------------------------------------
-std::list<StaticEntityEnemySpawner *> enemySpawnersList;
+std::list<EnemySpawnerStaticEntity *> enemySpawnersList;
 
 //-------------------------------------------------------------------------------------------------
 // Public functions
@@ -230,7 +229,7 @@ Scene_Loading_End:
 					break;
 					
 				case OBJECT_ID_ENEMY_SPAWNER:
-					enemySpawnersList.push_front(new StaticEntityEnemySpawner(x * CONFIGURATION_LEVEL_BLOCK_SIZE, y * CONFIGURATION_LEVEL_BLOCK_SIZE));
+					enemySpawnersList.push_front(new EnemySpawnerStaticEntity(x * CONFIGURATION_LEVEL_BLOCK_SIZE, y * CONFIGURATION_LEVEL_BLOCK_SIZE));
 					_levelBlocks[COMPUTE_BLOCK_INDEX(x, y)].content |= BLOCK_CONTENT_ENEMY_SPAWNER;
 					LOG_DEBUG("Spawned enemy spawner on block (%d, %d).", x, y);
 					break;

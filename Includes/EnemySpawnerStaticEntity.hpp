@@ -1,33 +1,26 @@
-/** @file StaticEntityEnemySpawner.hpp
+/** @file EnemySpawnerStaticEntity.hpp
  * @author Adrien RICCIARDI
  */
-#ifndef HPP_STATIC_ENTITY_ENEMY_SPAWNER_HPP
-#define HPP_STATIC_ENTITY_ENEMY_SPAWNER_HPP
+#ifndef HPP_ENEMY_SPAWNER_STATIC_ENTITY_HPP
+#define HPP_ENEMY_SPAWNER_STATIC_ENTITY_HPP
 
 #include <AnimatedTexture.hpp>
 #include <StaticEntity.hpp>
 
-/** @class StaticEntityEnemySpawner
+/** @class EnemySpawnerStaticEntity
  * A destructible still entity spawning enemies all around.
  */
-class StaticEntityEnemySpawner: public StaticEntity
+class EnemySpawnerStaticEntity: public StaticEntity
 {
-	private:
-		/** How many life points the entity owns. */
-		int _lifePointsAmount;
-		
-		/** The animation shown in the middle of the spawner. Using a separate texture allows to change the spawner texture without interfering with the animation. */
-		AnimatedTexture *_pointerEffectTexture;
-		
 	public:
 		/** Spawn an enemy spawner at the specified coordinates.
 		 * @param x X coordinate in pixels.
 		 * @param y Y coordinate in pixels.
 		 */
-		StaticEntityEnemySpawner(int x, int y);
+		EnemySpawnerStaticEntity(int x, int y);
 		
 		// No need for documentation because it is the same as parent function
-		virtual ~StaticEntityEnemySpawner();
+		virtual ~EnemySpawnerStaticEntity();
 		
 		/** Change entity life value by adding or removing some life points.
 		 * @param lifePointsAmount How many life points to add or subtract.
@@ -48,6 +41,13 @@ class StaticEntityEnemySpawner: public StaticEntity
 		 * @return 1 if the spawner is destroyed and must be removed.
 		 */
 		virtual int update();
+
+private:
+		/** How many life points the entity owns. */
+		int _lifePointsAmount;
+		
+		/** The animation shown in the middle of the spawner. Using a separate texture allows to change the spawner texture without interfering with the animation. */
+		AnimatedTexture *_pointerEffectTexture;
 };
 
 #endif

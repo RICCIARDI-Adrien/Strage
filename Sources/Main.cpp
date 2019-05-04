@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
+#include <EnemySpawnerStaticEntity.hpp>
 #include <FightingEntityEnemy.hpp>
 #include <FightingEntityPlayer.hpp>
 #include <FightingEntityEnemyBig.hpp>
@@ -23,7 +24,6 @@
 #include <Renderer.hpp>
 #include <SavegameManager.hpp>
 #include <SDL2/SDL.h>
-#include <StaticEntityEnemySpawner.hpp>
 #include <TextureManager.hpp>
 
 //-------------------------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ FightingEntityPlayer *pointerPlayer;
 /** Free all lists content. */
 static void _clearAllLists()
 {
-	std::list<StaticEntityEnemySpawner *>::iterator enemySpawnersListIterator;
+	std::list<EnemySpawnerStaticEntity *>::iterator enemySpawnersListIterator;
 	for (enemySpawnersListIterator = LevelManager::enemySpawnersList.begin(); enemySpawnersListIterator != LevelManager::enemySpawnersList.end(); ++enemySpawnersListIterator) delete *enemySpawnersListIterator;
 	LevelManager::enemySpawnersList.clear();
 	
@@ -291,10 +291,10 @@ static inline void _updateGameLogic()
 	// Check if player bullets have hit a wall or an enemy
 	std::list<BulletMovingEntity *>::iterator bulletsListIterator = _playerBulletsList.begin();
 	std::list<FightingEntityEnemy *>::iterator enemiesListIterator;
-	std::list<StaticEntityEnemySpawner *>::iterator enemySpawnersListIterator;
+	std::list<EnemySpawnerStaticEntity *>::iterator enemySpawnersListIterator;
 	BulletMovingEntity *pointerPlayerBullet;
 	FightingEntityEnemy *pointerEnemy;
-	StaticEntityEnemySpawner *pointerEnemySpawner;
+	EnemySpawnerStaticEntity *pointerEnemySpawner;
 	while (bulletsListIterator != _playerBulletsList.end())
 	{
 		pointerPlayerBullet = *bulletsListIterator;
@@ -515,7 +515,7 @@ static inline void _renderGame()
 	LevelManager::renderScene(sceneX, sceneY);
 	
 	// Display enemy spawners
-	std::list<StaticEntityEnemySpawner *>::iterator enemySpawnersListIterator;
+	std::list<EnemySpawnerStaticEntity *>::iterator enemySpawnersListIterator;
 	for (enemySpawnersListIterator = LevelManager::enemySpawnersList.begin(); enemySpawnersListIterator != LevelManager::enemySpawnersList.end(); ++enemySpawnersListIterator) (*enemySpawnersListIterator)->render();
 	
 	// Display enemies
