@@ -5,14 +5,14 @@
 #define HPP_FIGHTING_ENTITY_ENEMY_BIG_HPP
 
 #include <EffectManager.hpp>
-#include <FightingEntityEnemy.hpp>
+#include <EnemyFightingEntity.hpp>
 #include <SDL2/SDL.h>
 #include <TextureManager.hpp>
 
 /** @class FightingEntityEnemyBig
  * A big enemy moving slowly and shooting huge caliber ammunition.
  */
-class FightingEntityEnemyBig: public FightingEntityEnemy
+class FightingEntityEnemyBig: public EnemyFightingEntity
 {
 	protected:
 		// No need for documentation because it is the same as parent function
@@ -26,7 +26,7 @@ class FightingEntityEnemyBig: public FightingEntityEnemy
 		 * @param x Enemy X coordinate.
 		 * @param y Enemy Y coordinate.
 		 */
-		FightingEntityEnemyBig(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_BIG_ENEMY_FACING_UP, 1, 10, 10000, TextureManager::TEXTURE_ID_BIG_ENEMY_BULLET_FACING_UP, EffectManager::EFFECT_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_UP, EffectManager::EFFECT_ID_BIG_ENEMY_EXPLOSION)
+		FightingEntityEnemyBig(int x, int y): EnemyFightingEntity(x, y, TextureManager::TEXTURE_ID_BIG_ENEMY_FACING_UP, 1, 10, 10000, TextureManager::TEXTURE_ID_BIG_ENEMY_BULLET_FACING_UP, EffectManager::EFFECT_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_UP, EffectManager::EFFECT_ID_BIG_ENEMY_EXPLOSION)
 		{
 			unsigned int currentTime;
 			
@@ -71,7 +71,7 @@ class FightingEntityEnemyBig: public FightingEntityEnemy
 				_pointerTextures[DIRECTION_RIGHT] = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_BIG_ENEMY_DAMAGED_4_FACING_RIGHT);
 			}
 			
-			return FightingEntityEnemy::update();
+			return EnemyFightingEntity::update();
 		}
 };
 

@@ -5,13 +5,13 @@
 #define HPP_FIGHTING_ENTITY_ENEMY_SMALL_HPP
 
 #include <EffectManager.hpp>
-#include <FightingEntityEnemy.hpp>
+#include <EnemyFightingEntity.hpp>
 #include <TextureManager.hpp>
 
 /** @class FightingEntityEnemySmall
  * A small enemy moving quickly (but no so fast as the player) and shooting small caliber ammunition.
  */
-class FightingEntityEnemySmall: public FightingEntityEnemy
+class FightingEntityEnemySmall: public EnemyFightingEntity
 {
 	protected:
 		// No need for documentation because it is the same as parent function
@@ -25,7 +25,7 @@ class FightingEntityEnemySmall: public FightingEntityEnemy
 		 * @param x Enemy X coordinate.
 		 * @param y Enemy Y coordinate.
 		 */
-		FightingEntityEnemySmall(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_SMALL_ENEMY_FACING_UP, 2, 1, 1000, TextureManager::TEXTURE_ID_SMALL_ENEMY_BULLET_FACING_UP, EffectManager::EFFECT_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_UP, EffectManager::EFFECT_ID_SMALL_ENEMY_EXPLOSION) {}
+		FightingEntityEnemySmall(int x, int y): EnemyFightingEntity(x, y, TextureManager::TEXTURE_ID_SMALL_ENEMY_FACING_UP, 2, 1, 1000, TextureManager::TEXTURE_ID_SMALL_ENEMY_BULLET_FACING_UP, EffectManager::EFFECT_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_UP, EffectManager::EFFECT_ID_SMALL_ENEMY_EXPLOSION) {}
 		
 		/** Free allocated resources. */
 		virtual ~FightingEntityEnemySmall() {}

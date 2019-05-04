@@ -5,13 +5,13 @@
 #define HPP_FIGHTING_ENTITY_ENEMY_MEDIUM_HPP
 
 #include <EffectManager.hpp>
-#include <FightingEntityEnemy.hpp>
+#include <EnemyFightingEntity.hpp>
 #include <TextureManager.hpp>
 
 /** @class FightingEntityEnemyMedium
  * A medium enemy moving a little slower than small enemy but shooting bigger caliber ammunition.
  */
-class FightingEntityEnemyMedium: public FightingEntityEnemy
+class FightingEntityEnemyMedium: public EnemyFightingEntity
 {
 	protected:
 		// No need for documentation because it is the same as parent function
@@ -25,7 +25,7 @@ class FightingEntityEnemyMedium: public FightingEntityEnemy
 		 * @param x Enemy X coordinate.
 		 * @param y Enemy Y coordinate.
 		 */
-		FightingEntityEnemyMedium(int x, int y): FightingEntityEnemy(x, y, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_FACING_UP, 2, 3, 2000, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_BULLET_FACING_UP, EffectManager::EFFECT_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_UP, EffectManager::EFFECT_ID_MEDIUM_ENEMY_EXPLOSION) {}
+		FightingEntityEnemyMedium(int x, int y): EnemyFightingEntity(x, y, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_FACING_UP, 2, 3, 2000, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_BULLET_FACING_UP, EffectManager::EFFECT_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_UP, EffectManager::EFFECT_ID_MEDIUM_ENEMY_EXPLOSION) {}
 		
 		/** Free allocated resources. */
 		virtual ~FightingEntityEnemyMedium() {}
@@ -49,7 +49,7 @@ class FightingEntityEnemyMedium: public FightingEntityEnemy
 				_pointerTextures[DIRECTION_RIGHT] = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_MEDIUM_ENEMY_DAMAGED_2_FACING_RIGHT);
 			}
 			
-			return FightingEntityEnemy::update();
+			return EnemyFightingEntity::update();
 		}
 };
 
