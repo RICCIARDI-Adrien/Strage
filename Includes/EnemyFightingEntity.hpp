@@ -58,7 +58,7 @@ class EnemyFightingEntity: public FightingEntity
 		// No need for documentation because it is the same as parent function
 		virtual void render();
 
-protected:
+	protected:
 		/** The player will be spotted by the enemy if he enters this area. */
 		SDL_Rect _spottingRectangle;
 		
@@ -73,7 +73,7 @@ protected:
 		/** The effect to generate when the enemy explodes. */
 		EffectManager::EffectId _explosionEffectId;
 
-private:
+	private:
 		/** Tell if the enemy can shoot the player or not.
 		 * @return 1 if the enemy can shoot,
 		 * @return 0 if the player is out of range.

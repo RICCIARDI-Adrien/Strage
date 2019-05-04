@@ -3,6 +3,7 @@
  * @author Adrien RICCIARDI
  */
 #include <AudioManager.hpp>
+#include <BigEnemyFightingEntity.hpp>
 #include <BulletMovingEntity.hpp>
 #include <Configuration.hpp>
 #include <ControlManager.hpp>
@@ -12,7 +13,6 @@
 #include <EnemyFightingEntity.hpp>
 #include <EnemySpawnerStaticEntity.hpp>
 #include <FightingEntityPlayer.hpp>
-#include <FightingEntityEnemyBig.hpp>
 #include <FightingEntityEnemyMedium.hpp>
 #include <FightingEntityEnemySmall.hpp>
 #include <FileManager.hpp>
@@ -219,7 +219,7 @@ Spawn_Enemy:
 	// Select which enemy to spawn
 	spawningPercentage = rand() % 100;
 	// Start with the smaller percentage and continue so on
-	if (spawningPercentage <= CONFIGURATION_GAMEPLAY_BIG_ENEMY_SPAWN_PROBABILITY_PERCENTAGE) pointerEnemy = new FightingEntityEnemyBig(x, y); // Spawn the enemy on the top-left part of the block, as the enemy size can't be known until it is instantiated
+	if (spawningPercentage <= CONFIGURATION_GAMEPLAY_BIG_ENEMY_SPAWN_PROBABILITY_PERCENTAGE) pointerEnemy = new BigEnemyFightingEntity(x, y); // Spawn the enemy on the top-left part of the block, as the enemy size can't be known until it is instantiated
 	else if (spawningPercentage <= CONFIGURATION_GAMEPLAY_MEDIUM_ENEMY_SPAWN_PROBABILITY_PERCENTAGE) pointerEnemy = new FightingEntityEnemyMedium(x, y);
 	else pointerEnemy = new FightingEntityEnemySmall(x, y);
 	

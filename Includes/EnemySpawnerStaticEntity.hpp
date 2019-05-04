@@ -42,7 +42,7 @@ class EnemySpawnerStaticEntity: public StaticEntity
 		 */
 		virtual int update();
 
-private:
+	private:
 		/** How many life points the entity owns. */
 		int _lifePointsAmount;
 		

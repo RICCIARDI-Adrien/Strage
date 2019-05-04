@@ -42,7 +42,7 @@ class StaticEntity: public Entity
 		// No need for documentation because it is the same as parent function
 		virtual SDL_Rect *getPositionRectangle();
 
-protected:
+	protected:
 		/** The texture used to render the entity. */
 		Texture *_pointerTexture;
 		

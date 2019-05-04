@@ -32,7 +32,7 @@ class AnimatedTextureStaticEntity: public StaticEntity
 		 */
 		virtual int update();
 
-private:
+	private:
 		/** Tell whether the animation finished playing. */
 		int _isAnimationTerminated;
 };
