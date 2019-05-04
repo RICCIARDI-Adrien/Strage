@@ -13,13 +13,6 @@
  */
 class StaticEntity: public Entity
 {
-	protected:
-		/** The texture used to render the entity. */
-		Texture *_pointerTexture;
-		
-		/** Hold entity dimensions and location on the map. Use this destination rectangle to render the entity. */
-		SDL_Rect _positionRectangle;
-		
 	public:
 		/** Load the entity texture.
 		 * @param x Entity X coordinate.
@@ -48,6 +41,13 @@ class StaticEntity: public Entity
 		
 		// No need for documentation because it is the same as parent function
 		virtual SDL_Rect *getPositionRectangle();
+
+protected:
+		/** The texture used to render the entity. */
+		Texture *_pointerTexture;
+		
+		/** Hold entity dimensions and location on the map. Use this destination rectangle to render the entity. */
+		SDL_Rect _positionRectangle;
 };
 
 #endif
