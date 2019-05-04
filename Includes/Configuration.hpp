@@ -21,8 +21,6 @@
 #define CONFIGURATION_DISPLAY_HEIGHT 768
 /** Display refresh period (for a 60Hz refresh frequency, the period is 1/60 = 0.016ms). */
 #define CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS 16
-/** Compute and display the current frame rate. Displaying requires log levels to be set to 1 or higher. */
-#define CONFIGURATION_DISPLAY_IS_FRAME_RATE_DISPLAYING_ENABLED 0
 /** HUD background texture screen X coordinate. */
 #define CONFIGURATION_DISPLAY_HUD_BACKGROUND_TEXTURE_X 10
 /** HUD background texture screen Y coordinate. */

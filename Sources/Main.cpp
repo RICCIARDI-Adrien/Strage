@@ -542,8 +542,6 @@ static inline void _renderGame()
 	
 	// Display HUD
 	_renderInterface();
-	
-	Renderer::endRendering();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -552,9 +550,12 @@ static inline void _renderGame()
 int main(int argc, char *argv[])
 {
 	SDL_Event event;
-	unsigned int frameStartingTime, frameElapsedTime;
-	int isFullScreenEnabled = 1, levelToLoadNumber, i;
+	unsigned int frameStartingTime, frameElapsedTime, frameRateStartingTime = 0;
+	bool isFullScreenEnabled = true, isFramesPerSecondDisplayingEnabled = false;
+	int levelToLoadNumber, i, framesCount = 0;
 	BulletMovingEntity *pointerBullet;
+	SDL_Texture *pointerFramesPerSecondSdlTexture = NULL;
+	char stringFramesPerSecond[16];
 	const char *pointerStringsMainMenuWithSavegameItems[] =
 	{
 		"Continue game",
@@ -578,24 +579,24 @@ int main(int argc, char *argv[])
 		"Quit"
 	};
 	
-	#if CONFIGURATION_DISPLAY_IS_FRAME_RATE_DISPLAYING_ENABLED
-		unsigned int frameRateStartingTime = 0;
-		int framesCount = 0;
-	#endif
-	
 	// Check parameters
 	if (argc > 1)
 	{
 		// Process all parameters
 		for (i = 1; i < argc; i++)
 		{
+			// Is FPS displaying requested ?
+			if (strcmp("-fps", argv[i]) == 0) isFramesPerSecondDisplayingEnabled = true;
 			// Is full screen mode requested ?
-			if (strcmp("-windowed", argv[i]) == 0) isFullScreenEnabled = 0;
-			else if (strcmp("-help", argv[i]) == 0)
+			else if (strcmp("-windowed", argv[i]) == 0) isFullScreenEnabled = false;
+			// Display help if a provided parameter is unknown
+			else
 			{
-				printf("Usage : %s [-windowed] [-help].\n"
-					"  -windowed : play game in windowed screen mode.\n"
+				printf("Usage : %s [option].\n"
+					"Available options :\n"
+					"  -fps      : display frames per second count.\n"
 					"  -help     : display this help and exit.\n"
+					"  -windowed : play game in windowed screen mode.\n"
 					"All other parameters are ignored.\n", argv[0]);
 				return 0;
 			}
@@ -688,14 +689,17 @@ int main(int argc, char *argv[])
 	_loadNextLevel();
 	AudioManager::playMusic();
 	
+	// Create a fake texture to be used by the FPS displaying code, this avoids multiple checks to detect whether the first texture is null
+	if (isFramesPerSecondDisplayingEnabled) pointerFramesPerSecondSdlTexture = Renderer::renderTextToTexture("--", Renderer::TEXT_COLOR_ID_RED, Renderer::FONT_SIZE_ID_BIG); // Provided text can have a zero character size or it would trigger a SDL error
+	
 	while (1)
 	{
 		// Store the time when the loop started
 		frameStartingTime = SDL_GetTicks();
-		
-		#if CONFIGURATION_DISPLAY_IS_FRAME_RATE_DISPLAYING_ENABLED
+		if (isFramesPerSecondDisplayingEnabled)
+		{
 			if (frameRateStartingTime == 0) frameRateStartingTime = frameStartingTime;
-		#endif
+		}
 		
 		// Handle all relevant events
 		while (SDL_PollEvent(&event))
@@ -829,20 +833,31 @@ int main(int argc, char *argv[])
 		
 		_renderGame();
 		
-		// Wait enough time to achieve a 60Hz refresh rate
-		frameElapsedTime = SDL_GetTicks() - frameStartingTime;
-		if (frameElapsedTime < CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS) SDL_Delay(CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS - frameElapsedTime);
-		
-		#if CONFIGURATION_DISPLAY_IS_FRAME_RATE_DISPLAYING_ENABLED
-			framesCount++;
-			// Display rendered frames count each second
+		// Append the FPS string before displaying the rendered frame
+		if (isFramesPerSecondDisplayingEnabled)
+		{
+			// Update rendered frames count each second
 			if (SDL_GetTicks() - frameRateStartingTime >= 1000)
 			{
-				LOG_INFORMATION("Frame rate : %d fps", framesCount);
+				// Render the FPS count to a string
+				SDL_DestroyTexture(pointerFramesPerSecondSdlTexture); // Free previously created texture
+				sprintf(stringFramesPerSecond, "%d", framesCount);
+				pointerFramesPerSecondSdlTexture = Renderer::renderTextToTexture(stringFramesPerSecond, Renderer::TEXT_COLOR_ID_RED, Renderer::FONT_SIZE_ID_BIG);
+				
+				// Restart computation
 				framesCount = 0;
 				frameRateStartingTime = 0;
 			}
-		#endif
+			else framesCount++;
+			
+			// Display the FPS count to the screen top right side at each frame
+			Renderer::renderTexture(pointerFramesPerSecondSdlTexture, Renderer::displayWidth - 100, 20);
+		}
+		Renderer::endRendering();
+		
+		// Wait enough time to achieve a 60Hz refresh rate
+		frameElapsedTime = SDL_GetTicks() - frameStartingTime;
+		if (frameElapsedTime < CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS) SDL_Delay(CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS - frameElapsedTime);
 	}
 	
 Exit:
