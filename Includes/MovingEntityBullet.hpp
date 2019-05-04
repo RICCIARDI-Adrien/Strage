@@ -4,7 +4,9 @@
 #ifndef HPP_MOVING_ENTITY_BULLET_HPP
 #define HPP_MOVING_ENTITY_BULLET_HPP
 
+#include <LevelManager.hpp> // TODO remove on refactoring
 #include <MovingEntity.hpp>
+#include <Renderer.hpp> // TODO remove on refactoring
 #include <TextureManager.hpp>
 
 /** @class MovingEntityBullet
