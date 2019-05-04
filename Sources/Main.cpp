@@ -13,13 +13,13 @@
 #include <EnemyFightingEntity.hpp>
 #include <EnemySpawnerStaticEntity.hpp>
 #include <FightingEntityPlayer.hpp>
-#include <FightingEntityEnemyMedium.hpp>
 #include <FightingEntityEnemySmall.hpp>
 #include <FileManager.hpp>
 #include <HeadUpDisplay.hpp>
 #include <list>
 #include <Log.hpp>
 #include <LevelManager.hpp>
+#include <MediumEnemyFightingEntity.hpp>
 #include <Menu.hpp>
 #include <Renderer.hpp>
 #include <SavegameManager.hpp>
@@ -220,7 +220,7 @@ Spawn_Enemy:
 	spawningPercentage = rand() % 100;
 	// Start with the smaller percentage and continue so on
 	if (spawningPercentage <= CONFIGURATION_GAMEPLAY_BIG_ENEMY_SPAWN_PROBABILITY_PERCENTAGE) pointerEnemy = new BigEnemyFightingEntity(x, y); // Spawn the enemy on the top-left part of the block, as the enemy size can't be known until it is instantiated
-	else if (spawningPercentage <= CONFIGURATION_GAMEPLAY_MEDIUM_ENEMY_SPAWN_PROBABILITY_PERCENTAGE) pointerEnemy = new FightingEntityEnemyMedium(x, y);
+	else if (spawningPercentage <= CONFIGURATION_GAMEPLAY_MEDIUM_ENEMY_SPAWN_PROBABILITY_PERCENTAGE) pointerEnemy = new MediumEnemyFightingEntity(x, y);
 	else pointerEnemy = new FightingEntityEnemySmall(x, y);
 	
 	// Adjust coordinates to spawn the enemy at the block center
