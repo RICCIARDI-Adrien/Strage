@@ -4,28 +4,14 @@
 #ifndef HPP_ANIMATED_TEXTURE_HPP
 #define HPP_ANIMATED_TEXTURE_HPP
 
-#include <Texture.hpp>
 #include <SDL2/SDL.h>
+#include <Texture.hpp>
 
 /** @class AnimatedTexture
  * Display a sequence of animated images. All images must have the same dimensions.
  */
 class AnimatedTexture: public Texture
 {
-	protected:
-		/** How many static images are contained in the provided image file. */
-		int _imagesCount;
-		/** The currently displayed image. */
-		int _currentImageIndex;
-		
-		/** How much time each static image must be displayed on the screen. Time is computed taking into account engine frames per second. */
-		int _framesPerImageCount;
-		/** Incremented by one on each engine frame, tell when to display the next texture. */
-		int _framesCounter;
-		
-		/** Tell whether animation should loop forever or stop when the last frame has been displayed. */
-		bool _isAnimationLooping;
-	
 	public:
 		/** Create an animated texture.
 		 * @param pointerSDLTexture The SDL texture to use.
@@ -46,6 +32,20 @@ class AnimatedTexture: public Texture
 		 * @return 1 if the animation has finished playing (only if the texture was created with isAnimationLooping set to false).
 		 */
 		virtual int render(int x, int y);
+	
+	protected:
+		/** How many static images are contained in the provided image file. */
+		int _imagesCount;
+		/** The currently displayed image. */
+		int _currentImageIndex;
+		
+		/** How much time each static image must be displayed on the screen. Time is computed taking into account engine frames per second. */
+		int _framesPerImageCount;
+		/** Incremented by one on each engine frame, tell when to display the next texture. */
+		int _framesCounter;
+		
+		/** Tell whether animation should loop forever or stop when the last frame has been displayed. */
+		bool _isAnimationLooping;
 };
 
 #endif

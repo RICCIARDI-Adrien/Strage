@@ -21,8 +21,6 @@ AnimatedTexture::AnimatedTexture(SDL_Texture *pointerSDLTexture, int imagesCount
 
 int AnimatedTexture::render(int x, int y)
 {
-	SDL_Rect positionRectangle, displayingRectangle;
-	
 	// Should the next image be displayed ?
 	_framesCounter++;
 	if (_framesCounter >= _framesPerImageCount)
@@ -39,6 +37,7 @@ int AnimatedTexture::render(int x, int y)
 	}
 	
 	// Set texture position on display
+	SDL_Rect positionRectangle;
 	positionRectangle.x = x;
 	positionRectangle.y = y;
 	positionRectangle.w = _width;
@@ -48,6 +47,7 @@ int AnimatedTexture::render(int x, int y)
 	if ((x + _width >= 0) && (y + _height >= 0) && (x < Renderer::displayWidth) && (y < Renderer::displayHeight))
 	{
 		// Determine the part of the sprite to display
+		SDL_Rect displayingRectangle;
 		displayingRectangle.x = _currentImageIndex * _width;
 		displayingRectangle.y = 0;
 		displayingRectangle.w = _width;
