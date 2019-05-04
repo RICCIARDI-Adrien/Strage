@@ -11,15 +11,6 @@
  */
 class Texture
 {
-	protected:
-		/** The texture. */
-		SDL_Texture *_pointerSDLTexture;
-		
-		/** Texture width in pixels. */
-		int _width;
-		/** Texture height in pixels. */
-		int _height;
-	
 	public:
 		/** Create a still texture.
 		 * @param pointerSDLTexture The SDL texture to display.
@@ -59,6 +50,15 @@ class Texture
 		{
 			return _pointerSDLTexture;
 		}
+
+	protected:
+		/** The texture. */
+		SDL_Texture *_pointerSDLTexture;
+		
+		/** Texture width in pixels. */
+		int _width;
+		/** Texture height in pixels. */
+		int _height;
 };
 
 #endif

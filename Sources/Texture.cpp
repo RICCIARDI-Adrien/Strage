@@ -9,11 +9,10 @@
 
 Texture::Texture(SDL_Texture *pointerSDLTexture)
 {
-	unsigned int pixelFormat;
-	int access;
-	
 	// Cache width and height parameters
 	_pointerSDLTexture = pointerSDLTexture;
+	unsigned int pixelFormat;
+	int access;
 	if (SDL_QueryTexture(_pointerSDLTexture, &pixelFormat, &access, &_width, &_height) != 0)
 	{
 		LOG_ERROR("Failed to query texture information (%s).", SDL_GetError());
@@ -24,7 +23,6 @@ Texture::Texture(SDL_Texture *pointerSDLTexture)
 int Texture::render(int x, int y)
 {
 	SDL_Rect positionRectangle;
-	
 	positionRectangle.x = x;
 	positionRectangle.y = y;
 	positionRectangle.w = _width;
