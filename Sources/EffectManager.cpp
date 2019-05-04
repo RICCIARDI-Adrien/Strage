@@ -2,12 +2,12 @@
  * @see EffectManager.hpp for description.
  * @author Adrien RICCIARDI
  */
+#include <AnimatedTextureStaticEntity.hpp>
 #include <AudioManager.hpp>
 #include <cassert>
 #include <EffectManager.hpp>
 #include <list>
 #include <Log.hpp>
-#include <StaticEntityAnimatedTexture.hpp>
 #include <TextureManager.hpp>
 
 namespace EffectManager
@@ -152,7 +152,7 @@ static Effect effects[EFFECT_IDS_COUNT] =
 };
 
 /** All animated textures. */
-static std::list<StaticEntityAnimatedTexture *> _animatedTexturesList;
+static std::list<AnimatedTextureStaticEntity *> _animatedTexturesList;
 
 //-------------------------------------------------------------------------------------------------
 // Public functions
@@ -184,7 +184,7 @@ void addEffect(int x, int y, EffectId effectId)
 	pointerEffect = &effects[effectId];
 	
 	// Generate the graphic effect
-	_animatedTexturesList.push_front(new StaticEntityAnimatedTexture(x, y, TextureManager::createAnimatedTextureFromId(pointerEffect->textureId, false)));
+	_animatedTexturesList.push_front(new AnimatedTextureStaticEntity(x, y, TextureManager::createAnimatedTextureFromId(pointerEffect->textureId, false)));
 	
 	// Play audio effect
 	AudioManager::playSound(pointerEffect->soundId);
@@ -192,7 +192,7 @@ void addEffect(int x, int y, EffectId effectId)
 
 void clearAllEffects()
 {
-	std::list<StaticEntityAnimatedTexture *>::iterator animatedTexturesListIterator;
+	std::list<AnimatedTextureStaticEntity *>::iterator animatedTexturesListIterator;
 	
 	for (animatedTexturesListIterator = _animatedTexturesList.begin(); animatedTexturesListIterator != _animatedTexturesList.end(); ++animatedTexturesListIterator) delete *animatedTexturesListIterator;
 	_animatedTexturesList.clear();
@@ -200,17 +200,17 @@ void clearAllEffects()
 
 void update()
 {
-	std::list<StaticEntityAnimatedTexture *>::iterator animatedTexturesListIterator = _animatedTexturesList.begin();
-	StaticEntityAnimatedTexture *pointerStaticEntityAnimatedTexture;
+	std::list<AnimatedTextureStaticEntity *>::iterator animatedTexturesListIterator = _animatedTexturesList.begin();
+	AnimatedTextureStaticEntity *pointerAnimatedTextureStaticEntity;
 	
 	while (animatedTexturesListIterator != _animatedTexturesList.end())
 	{
-		pointerStaticEntityAnimatedTexture = *animatedTexturesListIterator;
+		pointerAnimatedTextureStaticEntity = *animatedTexturesListIterator;
 		
-		if (pointerStaticEntityAnimatedTexture->update() != 0)
+		if (pointerAnimatedTextureStaticEntity->update() != 0)
 		{
 			// Remove the texture
-			delete pointerStaticEntityAnimatedTexture;
+			delete pointerAnimatedTextureStaticEntity;
 			animatedTexturesListIterator = _animatedTexturesList.erase(animatedTexturesListIterator);
 		}
 		// Animation is not finished, check next one
@@ -220,7 +220,7 @@ void update()
 
 void render()
 {
-	std::list<StaticEntityAnimatedTexture *>::iterator animatedTexturesListIterator;
+	std::list<AnimatedTextureStaticEntity *>::iterator animatedTexturesListIterator;
 	
  	for (animatedTexturesListIterator = _animatedTexturesList.begin(); animatedTexturesListIterator != _animatedTexturesList.end(); ++animatedTexturesListIterator) (*animatedTexturesListIterator)->render();
 }

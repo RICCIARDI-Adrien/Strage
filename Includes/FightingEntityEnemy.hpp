@@ -12,7 +12,7 @@
 #include <FightingEntityPlayer.hpp>
 #include <BulletMovingEntity.hpp>
 #include <Renderer.hpp>
-#include <StaticEntityAnimatedTexture.hpp>
+#include <AnimatedTextureStaticEntity.hpp>
 #include <SDL2/SDL.h>
 #include <TextureManager.hpp>
 
