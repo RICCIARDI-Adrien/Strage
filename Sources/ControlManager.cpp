@@ -1,5 +1,5 @@
 /** @file ControlManager.cpp
- * @see ControlManager.hpp for description.
+ * See ControlManager.hpp for description.
  * @author Adrien RICCIARDI
  */
 #include <Configuration.hpp>
