@@ -13,7 +13,6 @@
 #include <EnemyFightingEntity.hpp>
 #include <EnemySpawnerStaticEntity.hpp>
 #include <FightingEntityPlayer.hpp>
-#include <FightingEntityEnemySmall.hpp>
 #include <FileManager.hpp>
 #include <HeadUpDisplay.hpp>
 #include <list>
@@ -24,6 +23,7 @@
 #include <Renderer.hpp>
 #include <SavegameManager.hpp>
 #include <SDL2/SDL.h>
+#include <SmallEnemyFightingEntity.hpp>
 #include <TextureManager.hpp>
 
 //-------------------------------------------------------------------------------------------------
@@ -221,7 +221,7 @@ Spawn_Enemy:
 	// Start with the smaller percentage and continue so on
 	if (spawningPercentage <= CONFIGURATION_GAMEPLAY_BIG_ENEMY_SPAWN_PROBABILITY_PERCENTAGE) pointerEnemy = new BigEnemyFightingEntity(x, y); // Spawn the enemy on the top-left part of the block, as the enemy size can't be known until it is instantiated
 	else if (spawningPercentage <= CONFIGURATION_GAMEPLAY_MEDIUM_ENEMY_SPAWN_PROBABILITY_PERCENTAGE) pointerEnemy = new MediumEnemyFightingEntity(x, y);
-	else pointerEnemy = new FightingEntityEnemySmall(x, y);
+	else pointerEnemy = new SmallEnemyFightingEntity(x, y);
 	
 	// Adjust coordinates to spawn the enemy at the block center
 	pointerEnemyPositionRectangle = pointerEnemy->getPositionRectangle();
