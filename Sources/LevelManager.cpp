@@ -63,7 +63,7 @@ namespace LevelManager
 	/** Cache ammunition texture. */
 	static Texture *_pointerAmmunitionTexture;
 
-	// Public variable, comment is in the header file
+	// Public variable, documentation is in the header file
 	std::list<EnemySpawnerStaticEntity *> enemySpawnersList;
 
 	int initialize()

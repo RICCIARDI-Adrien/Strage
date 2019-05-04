@@ -19,9 +19,9 @@ class BulletMovingEntity: public MovingEntity
 		 * @param movingPixelsAmount Bullet moving speed in pixels.
 		 * @param facingDirection In which direction the bullet will move.
 		 * @param damageAmount How many life points the bullet removes when it hits an entity.
-		 * @param isEnemySpawnerDamageable Set to 1 to make the bullet damage enemy spawers, set to 0 to disable enemy spawners damage dealing.
+		 * @param isEnemySpawnerDamageable Set to true to make the bullet damage enemy spawers, set to false to disable enemy spawners damage dealing.
 		 */
-		BulletMovingEntity(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, Direction facingDirection, int damageAmount, int isEnemySpawnerDamageable);
+		BulletMovingEntity(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, Direction facingDirection, int damageAmount, bool isEnemySpawnerDamageable);
 		
 		/** Free allocated resources. */
 		virtual ~BulletMovingEntity();

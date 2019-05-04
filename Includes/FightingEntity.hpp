@@ -76,23 +76,23 @@ class FightingEntity: public MovingEntity
 		}
 		
 		/** Tell if the entity is at maximum life or not.
-		 * @return 1 if the entity can be healed,
-		 * @return 0 if the entity is healthy.
+		 * @return true if the entity can be healed,
+		 * @return false if the entity is healthy.
 		 */
-		inline int isWounded()
+		inline bool isWounded()
 		{
-			if (_lifePointsAmount < _maximumLifePointsAmount) return 1;
-			return 0;
+			if (_lifePointsAmount < _maximumLifePointsAmount) return true;
+			return false;
 		}
 		
 		/** Tell if the entity is dead or alive.
-		 * @return 1 if the entity has no more life point,
-		 * @return 0 if the entity is still alive.
+		 * @return true if the entity has no more life point,
+		 * @return false if the entity is still alive.
 		 */
-		inline int isDead()
+		inline bool isDead()
 		{
-			if (_lifePointsAmount == 0) return 1;
-			return 0;
+			if (_lifePointsAmount == 0) return true;
+			return false;
 		}
 		
 		/** Generate a bullet facing the entity direction and play the associated effect.

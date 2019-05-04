@@ -7,7 +7,7 @@
 #include <Renderer.hpp>
 #include <TextureManager.hpp>
 
-BulletMovingEntity::BulletMovingEntity(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, Direction facingDirection, int damageAmount, int isEnemySpawnerDamageable): MovingEntity(x, y, textureId, movingPixelsAmount)
+BulletMovingEntity::BulletMovingEntity(int x, int y, TextureManager::TextureId textureId, int movingPixelsAmount, Direction facingDirection, int damageAmount, bool isEnemySpawnerDamageable): MovingEntity(x, y, textureId, movingPixelsAmount)
 {
 	_range = 2 * Renderer::displayWidth;
 	_facingDirection = facingDirection;

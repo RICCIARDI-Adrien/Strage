@@ -267,7 +267,7 @@ namespace AudioManager
 		else LOG_DEBUG("Playing music '%s'.", _musics[musicIndex].pointerStringFileName);
 	}
 
-	void pauseMusic(int isMusicPaused)
+	void pauseMusic(bool isMusicPaused)
 	{
 		if (isMusicPaused) Mix_PauseMusic();
 		else Mix_ResumeMusic();

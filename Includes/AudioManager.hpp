@@ -51,7 +51,7 @@ namespace AudioManager
 	/** Pause or resume music playing.
 	* @param isMusicPaused Set to 1 to pause music, set to 0 to resume playing.
 	*/
-	void pauseMusic(int isMusicPaused);
+	void pauseMusic(bool isMusicPaused);
 
 	/** Immediately stop all channels. */
 	void stopAllSounds();
