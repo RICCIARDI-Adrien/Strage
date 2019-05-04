@@ -831,8 +831,8 @@ static TextureInformation _texturesInformations[] =
 	// TEXTURE_ID_MEDIUM_ENEMY_EXPLOSION
 	{
 		CONFIGURATION_PATH_TEXTURES "/Medium_Enemy_Explosion.png",
-		16,
-		8,
+		32,
+		4,
 		NULL,
 		NULL
 	},
