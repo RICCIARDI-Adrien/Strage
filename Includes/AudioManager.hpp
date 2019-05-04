@@ -27,7 +27,8 @@ namespace AudioManager
 		SOUND_ID_ENEMY_SPAWNER_EXPLOSION,
 		SOUND_ID_MENU_MOVE,
 		SOUND_ID_MENU_SELECT,
-		SOUND_IDS_COUNT
+		SOUND_IDS_COUNT,
+		SOUND_ID_NO_SOUND //!< Playing this sound ID results in no sound being played
 	} SoundId;
 
 	/** Load all game sounds.

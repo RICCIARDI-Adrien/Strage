@@ -120,4 +120,8 @@
 /** The offset to add to player top side when spawning the "mortar shell muzzle flash" effect while the player is facing right. */
 #define CONFIGURATION_PLAYER_MUZZLE_FLASH_MORTAR_SHELL_FACING_RIGHT_STARTING_POSITION_OFFSET_Y 4
 
+// Bullet entities
+/** The offset to add to the bullet X and Y positions (whatever direction the bullet is facing) when adding a bullet explosion effect. */
+#define CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET (-20)
+
 #endif

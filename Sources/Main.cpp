@@ -302,6 +302,8 @@ static inline void _updateGameLogic()
 		// Remove the bullet if it hit a wall
 		if (pointerPlayerBullet->update() != 0)
 		{
+			EffectManager::addEffect(pointerPlayerBullet->getX() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET, pointerPlayerBullet->getY() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET, EffectManager::EFFECT_ID_BULLET_EXPLOSION_NO_SOUND);
+			
 			delete pointerPlayerBullet;
 			bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
 			continue;
@@ -317,9 +319,9 @@ static inline void _updateGameLogic()
 			{
 				// Wound the enemy
 				pointerEnemy->modifyLife(pointerPlayerBullet->getDamageAmount());
-				
-				AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_BULLET_IMPACT);
 				LOG_DEBUG("Enemy hit.");
+				
+				EffectManager::addEffect(pointerPlayerBullet->getX() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET, pointerPlayerBullet->getY() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET, EffectManager::EFFECT_ID_BULLET_EXPLOSION_ENEMY_HIT);
 				
 				// Remove the bullet
 				delete pointerPlayerBullet;
@@ -341,9 +343,9 @@ static inline void _updateGameLogic()
 			{
 				// Damage the enemy spawner
 				pointerEnemySpawner->modifyLife(pointerPlayerBullet->getDamageAmount());
-				
-				AudioManager::playSound(AudioManager::SOUND_ID_ENEMY_SPAWNER_BULLET_IMPACT);
 				LOG_DEBUG("Enemy spawner hit.");
+				
+				EffectManager::addEffect(pointerPlayerBullet->getX() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET, pointerPlayerBullet->getY() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET, EffectManager::EFFECT_ID_BULLET_EXPLOSION_ENEMY_SPAWNER_HIT);
 				
 				// Remove the bullet
 				delete pointerPlayerBullet;
@@ -407,6 +409,8 @@ static inline void _updateGameLogic()
 		// Remove the bullet if it hit a wall
 		if (pointerEnemyBullet->update() != 0)
 		{
+			EffectManager::addEffect(pointerEnemyBullet->getX() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET, pointerEnemyBullet->getY() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET, EffectManager::EFFECT_ID_BULLET_EXPLOSION_NO_SOUND);
+			
 			delete pointerEnemyBullet;
 			bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
 			continue;
@@ -418,6 +422,8 @@ static inline void _updateGameLogic()
 			pointerPlayer->modifyLife(pointerEnemyBullet->getDamageAmount());
 			_isPlayerHit = 1;
 			LOG_DEBUG("Player hit.");
+			
+			EffectManager::addEffect(pointerEnemyBullet->getX() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET, pointerEnemyBullet->getY() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET, EffectManager::EFFECT_ID_BULLET_EXPLOSION_NO_SOUND);
 			
 			// Remove the bullet
 			delete pointerEnemyBullet;

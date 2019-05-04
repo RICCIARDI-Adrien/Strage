@@ -250,11 +250,11 @@ namespace AudioManager
 
 	void playSound(SoundId id)
 	{
-		// Make sure the requested sound exists
-		assert(id < SOUND_IDS_COUNT);
-		
-		// Try to play the sound on the first available channel
-		if (Mix_PlayChannel(-1, _pointerSounds[id], 0) == -1) LOG_DEBUG("Failed to play sound ID %d (%s).", id, Mix_GetError());
+		if (id < SOUND_IDS_COUNT)
+		{
+			// Try to play the sound on the first available channel
+			if (Mix_PlayChannel(-1, _pointerSounds[id], 0) == -1) LOG_DEBUG("Failed to play sound ID %d (%s).", id, Mix_GetError());
+		}
 	}
 
 	void playMusic()

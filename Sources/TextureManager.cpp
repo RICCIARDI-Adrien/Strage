@@ -838,6 +838,14 @@ namespace TextureManager
 			NULL,
 			NULL
 		},
+		// TEXTURE_ID_BULLET_EXPLOSION
+		{
+			CONFIGURATION_PATH_TEXTURES "/Bullet_Explosion.png",
+			3,
+			4,
+			NULL,
+			NULL
+		},
 		// TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_UP
 		{
 			CONFIGURATION_PATH_TEXTURES "/Player_Muzzle_Flash_Up.png",
