@@ -3,6 +3,7 @@
  * @author Adrien RICCIARDI
  */
 #include <AudioManager.hpp>
+#include <BulletMovingEntity.hpp>
 #include <Configuration.hpp>
 #include <ControlManager.hpp>
 #include <cstdlib>
@@ -19,7 +20,6 @@
 #include <Log.hpp>
 #include <LevelManager.hpp>
 #include <Menu.hpp>
-#include <MovingEntityBullet.hpp>
 #include <Renderer.hpp>
 #include <SavegameManager.hpp>
 #include <SDL2/SDL.h>
@@ -30,9 +30,9 @@
 // Private variables
 //-------------------------------------------------------------------------------------------------
 /** All bullets shot by the player. */
-static std::list<MovingEntityBullet *> _playerBulletsList;
+static std::list<BulletMovingEntity *> _playerBulletsList;
 /** All bullets shot by the enemies. */
-static std::list<MovingEntityBullet *> _enemiesBulletsList;
+static std::list<BulletMovingEntity *> _enemiesBulletsList;
 
 /** All enemies. */
 static std::list<FightingEntityEnemy *> _enemiesList;
@@ -79,7 +79,7 @@ static void _clearAllLists()
 	for (enemySpawnersListIterator = LevelManager::enemySpawnersList.begin(); enemySpawnersListIterator != LevelManager::enemySpawnersList.end(); ++enemySpawnersListIterator) delete *enemySpawnersListIterator;
 	LevelManager::enemySpawnersList.clear();
 	
-	std::list<MovingEntityBullet *>::iterator bulletsListIterator;
+	std::list<BulletMovingEntity *>::iterator bulletsListIterator;
 	for (bulletsListIterator = _playerBulletsList.begin(); bulletsListIterator != _playerBulletsList.end(); ++bulletsListIterator) delete *bulletsListIterator;
 	_playerBulletsList.clear();
 	
@@ -289,10 +289,10 @@ static inline void _updateGameLogic()
 	}
 	
 	// Check if player bullets have hit a wall or an enemy
-	std::list<MovingEntityBullet *>::iterator bulletsListIterator = _playerBulletsList.begin();
+	std::list<BulletMovingEntity *>::iterator bulletsListIterator = _playerBulletsList.begin();
 	std::list<FightingEntityEnemy *>::iterator enemiesListIterator;
 	std::list<StaticEntityEnemySpawner *>::iterator enemySpawnersListIterator;
-	MovingEntityBullet *pointerPlayerBullet;
+	BulletMovingEntity *pointerPlayerBullet;
 	FightingEntityEnemy *pointerEnemy;
 	StaticEntityEnemySpawner *pointerEnemySpawner;
 	while (bulletsListIterator != _playerBulletsList.end())
@@ -361,7 +361,7 @@ static inline void _updateGameLogic()
 	}
 	
 	// Update enemies artificial intelligence
-	MovingEntityBullet *pointerBullet;
+	BulletMovingEntity *pointerBullet;
 	int result;
 	int previousEnemiesAmount = _enemiesList.size();
 	SDL_Rect *pointerPositionRectangle;
@@ -397,7 +397,7 @@ static inline void _updateGameLogic()
 	}
 	
 	// Check if enemies bullets have hit the player (update enemies bullets after enemies, so if they shot a new bullet is it updated too, in the same way it's done for the player. Thus, it is possible to adjust bullet spawning coordinate offsets in the same way for player and enemies)
-	MovingEntityBullet *pointerEnemyBullet;
+	BulletMovingEntity *pointerEnemyBullet;
 	bulletsListIterator = _enemiesBulletsList.begin();
 	pointerPositionRectangle = pointerPlayer->getPositionRectangle();
 	while (bulletsListIterator != _enemiesBulletsList.end())
@@ -523,7 +523,7 @@ static inline void _renderGame()
 	for (enemiesListIterator = _enemiesList.begin(); enemiesListIterator != _enemiesList.end(); ++enemiesListIterator) (*enemiesListIterator)->render();
 	
 	// Display bullets after enemies, so when multiple enemies fire on themselves bullets are visible on top of enemies
-	std::list<MovingEntityBullet *>::iterator bulletsListIterator;
+	std::list<BulletMovingEntity *>::iterator bulletsListIterator;
 	for (bulletsListIterator = _playerBulletsList.begin(); bulletsListIterator != _playerBulletsList.end(); ++bulletsListIterator) (*bulletsListIterator)->render();
 	for (bulletsListIterator = _enemiesBulletsList.begin(); bulletsListIterator != _enemiesBulletsList.end(); ++bulletsListIterator) (*bulletsListIterator)->render();
 	
@@ -554,7 +554,7 @@ int main(int argc, char *argv[])
 	SDL_Event event;
 	unsigned int frameStartingTime, frameElapsedTime;
 	int isFullScreenEnabled = 1, levelToLoadNumber, i;
-	MovingEntityBullet *pointerBullet;
+	BulletMovingEntity *pointerBullet;
 	const char *pointerStringsMainMenuWithSavegameItems[] =
 	{
 		"Continue game",

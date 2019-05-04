@@ -10,7 +10,7 @@
 #include <EffectManager.hpp>
 #include <FightingEntity.hpp>
 #include <FightingEntityPlayer.hpp>
-#include <MovingEntityBullet.hpp>
+#include <BulletMovingEntity.hpp>
 #include <Renderer.hpp>
 #include <StaticEntityAnimatedTexture.hpp>
 #include <SDL2/SDL.h>

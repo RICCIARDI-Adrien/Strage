@@ -15,9 +15,9 @@ class FightingEntityEnemyMedium: public FightingEntityEnemy
 {
 	protected:
 		// No need for documentation because it is the same as parent function
-		virtual MovingEntityBullet *_fireBullet(int x, int y)
+		virtual BulletMovingEntity *_fireBullet(int x, int y)
 		{
-			return new MovingEntityBullet(x, y, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_BULLET_FACING_UP, 5, _facingDirection, 3, 0);
+			return new BulletMovingEntity(x, y, TextureManager::TEXTURE_ID_MEDIUM_ENEMY_BULLET_FACING_UP, 5, _facingDirection, 3, 0);
 		}
 		
 	public:

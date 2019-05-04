@@ -10,7 +10,7 @@
 #include <FightingEntity.hpp>
 #include <HeadUpDisplay.hpp>
 #include <Log.hpp>
-#include <MovingEntityBullet.hpp>
+#include <BulletMovingEntity.hpp>
 #include <Renderer.hpp>
 #include <TextureManager.hpp>
 
@@ -46,9 +46,9 @@ class FightingEntityPlayer: public FightingEntity
 	
 	protected:
 		// No need for documentation because it is the same as parent function
-		virtual MovingEntityBullet *_fireBullet(int x, int y)
+		virtual BulletMovingEntity *_fireBullet(int x, int y)
 		{
-			return new MovingEntityBullet(x, y, TextureManager::TEXTURE_ID_PLAYER_BULLET_FACING_UP, 6, _facingDirection, 1, 1);
+			return new BulletMovingEntity(x, y, TextureManager::TEXTURE_ID_PLAYER_BULLET_FACING_UP, 6, _facingDirection, 1, 1);
 		}
 	
 	public:
@@ -87,9 +87,9 @@ class FightingEntityPlayer: public FightingEntity
 		virtual ~FightingEntityPlayer() {}
 		
 		// No need for documentation because it is the same as parent function
-		virtual MovingEntityBullet *shoot()
+		virtual BulletMovingEntity *shoot()
 		{
-			MovingEntityBullet *pointerBullet;
+			BulletMovingEntity *pointerBullet;
 			
 			// The player can't shoot if it has no more ammunition
 			if (_ammunitionAmount == 0) return NULL;
@@ -108,10 +108,10 @@ class FightingEntityPlayer: public FightingEntity
 		 * @return A valid pointer if the entity was allowed to shot,
 		 * @return NULL if the entity could not shoot (no more ammunition, slower fire rate...).
 		 */
-		virtual MovingEntityBullet *shootSecondaryFire()
+		virtual BulletMovingEntity *shootSecondaryFire()
 		{
 			int bulletStartingPositionOffsetX, bulletStartingPositionOffsetY, firingEffectStartingPositionOffsetX, firingEffectStartingPositionOffsetY, entityX, entityY;
-			MovingEntityBullet *pointerBullet;
+			BulletMovingEntity *pointerBullet;
 			
 			// The player can't shoot if it has no more ammunition
 			if (_ammunitionAmount < CONFIGURATION_GAMEPLAY_PLAYER_SECONDARY_FIRE_NEEDED_AMMUNITION_AMOUNT) return NULL;
@@ -130,7 +130,7 @@ class FightingEntityPlayer: public FightingEntity
 				firingEffectStartingPositionOffsetY = _secondaryFireFiringEffectStartingPositionOffsets[_facingDirection].y;
 				
 				// Create the bullet
-				pointerBullet = new MovingEntityBullet(entityX + bulletStartingPositionOffsetX, entityY + bulletStartingPositionOffsetY, TextureManager::TEXTURE_ID_PLAYER_BULLET_MORTAR_SHELL_FACING_UP, 4, _facingDirection, 20, 1);
+				pointerBullet = new BulletMovingEntity(entityX + bulletStartingPositionOffsetX, entityY + bulletStartingPositionOffsetY, TextureManager::TEXTURE_ID_PLAYER_BULLET_MORTAR_SHELL_FACING_UP, 4, _facingDirection, 20, 1);
 				
 				_ammunitionAmount -= CONFIGURATION_GAMEPLAY_PLAYER_SECONDARY_FIRE_NEEDED_AMMUNITION_AMOUNT;
 				

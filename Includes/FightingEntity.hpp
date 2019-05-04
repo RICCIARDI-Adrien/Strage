@@ -5,8 +5,9 @@
 #define HPP_FIGHTING_ENTITY_HPP
 
 #include <EffectManager.hpp>
+#include <LevelManager.hpp>
 #include <MovingEntity.hpp>
-#include <MovingEntityBullet.hpp>
+#include <BulletMovingEntity.hpp>
 #include <SDL2/SDL.h>
 #include <StaticEntityAnimatedTexture.hpp>
 #include <TextureManager.hpp>
@@ -41,7 +42,7 @@ class FightingEntity: public MovingEntity
 		 * @param y Bullet Y coordinate.
 		 * @return An enemy-specific bullet.
 		 */
-		virtual MovingEntityBullet *_fireBullet(int x, int y) = 0;
+		virtual BulletMovingEntity *_fireBullet(int x, int y) = 0;
 		
 		/** Compute the offset to entity coordinates to spawn a bullet at the cannon location for each entity direction.
 		 * @param pointerEntityTexture The entity texture (all textures must have the same dimensions in all entity directions).
@@ -197,11 +198,11 @@ class FightingEntity: public MovingEntity
 		 * @return A valid pointer if the entity was allowed to shot,
 		 * @return NULL if the entity could not shoot (no more ammunition, slower fire rate...).
 		 */
-		virtual MovingEntityBullet *shoot()
+		virtual BulletMovingEntity *shoot()
 		{
 			int bulletStartingPositionOffsetX, bulletStartingPositionOffsetY, firingEffectStartingPositionOffsetX, firingEffectStartingPositionOffsetY, entityX, entityY;
 			EffectManager::EffectId muzzleFlashEffectId;
-			MovingEntityBullet *pointerBullet;
+			BulletMovingEntity *pointerBullet;
 			
 			// Allow to shoot only if enough time elapsed since last shot
 			if (SDL_GetTicks() - _lastShotTime >= _timeBetweenShots)

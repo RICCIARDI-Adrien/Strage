@@ -33,6 +33,8 @@ MovingEntity::MovingEntity(int x, int y, TextureManager::TextureId facingUpTextu
 	_facingDirection = DIRECTION_UP;
 }
 
+MovingEntity::~MovingEntity() {}
+
 int MovingEntity::getX()
 {
 	return _positionRectangles[_facingDirection].x;

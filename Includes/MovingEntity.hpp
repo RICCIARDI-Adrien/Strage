@@ -33,7 +33,7 @@ class MovingEntity: public Entity
 		MovingEntity(int x, int y, TextureManager::TextureId facingUpTextureId, int movingPixelsAmount);
 		
 		/** Free allocated resources. */
-		virtual ~MovingEntity() {}
+		virtual ~MovingEntity();
 		
 		/** Get the entity X coordinate.
 		 * @return The X coordinate.
