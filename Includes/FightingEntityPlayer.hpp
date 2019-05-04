@@ -9,6 +9,7 @@
 #include <EffectManager.hpp>
 #include <FightingEntity.hpp>
 #include <HeadUpDisplay.hpp>
+#include <LevelManager.hpp>
 #include <Log.hpp>
 #include <BulletMovingEntity.hpp>
 #include <Renderer.hpp>
