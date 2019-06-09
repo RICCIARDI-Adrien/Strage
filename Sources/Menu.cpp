@@ -163,7 +163,7 @@ namespace Menu
 				}
 			}
 			else isGoDownKeyPressed = 0;
-			// Shoot key
+			// Select key
 			if (ControlManager::isKeyPressed(ControlManager::KEY_ID_PRIMARY_SHOOT) || ControlManager::isKeyPressed(ControlManager::KEY_ID_MENU_SELECT)) isSelectKeyPressed = 1; // Wait for the key to be released to execute the associated action, so the shoot key is not pressed when entering the game (this avoids the player immediately shooting when entering the game because the shoot key is pressed yet)
 			else if (isSelectKeyPressed)
 			{
@@ -198,6 +198,89 @@ namespace Menu
 		}
 		
 	Exit:
+		// Free resources
+		_uninitialize();
+		return returnValue;
+	}
+	
+	int displayControlsMenu()
+	{
+		SDL_Event event;
+		int returnValue, i, isSelectKeyPressed = 0;
+		unsigned int frameStartingTime, frameElapsedTime;
+		static const char *pointerStringMenuItems[] =
+		{
+			"Arrow keys or WASD : move",
+			"Space : primary shoot",
+			"Left control : mortar shoot",
+			"Escape : pause game",
+			"Back"
+		};
+		
+		// This variable is shared by all internal functions, it must be initialized before calling any of the functions
+		_menuItemsCount = 5;
+		
+		// Cache textures to display
+		_initialize("Controls", pointerStringMenuItems);
+		
+		while (1)
+		{
+			// Store the time when the loop started
+			frameStartingTime = SDL_GetTicks();
+			
+			// Process SDL events
+			while (SDL_PollEvent(&event))
+			{
+				switch (event.type)
+				{
+					// User closed the game window or pressed alt+F4
+					case SDL_QUIT:
+						returnValue = -1;
+						LOG_DEBUG("Quitting game.");
+						goto Exit;
+						
+					case SDL_CONTROLLERBUTTONUP:
+					case SDL_CONTROLLERBUTTONDOWN:
+					case SDL_CONTROLLERAXISMOTION:
+						ControlManager::handleGameControllerEvent(&event);
+						break;
+							
+					case SDL_KEYUP:
+					case SDL_KEYDOWN:
+						ControlManager::handleKeyboardEvent(&event);
+						break;
+				}
+			}
+			
+			// Handle key press
+			// Select key
+			if (ControlManager::isKeyPressed(ControlManager::KEY_ID_PRIMARY_SHOOT) || ControlManager::isKeyPressed(ControlManager::KEY_ID_MENU_SELECT)) isSelectKeyPressed = 1; // Wait for the key to be released to execute the associated action, so the shoot key is not pressed when entering the game (this avoids the player immediately shooting when entering the game because the shoot key is pressed yet)
+			else if (isSelectKeyPressed)
+			{
+				AudioManager::playSound(AudioManager::SOUND_ID_MENU_SELECT);
+				SDL_Delay(500); // Wait a bit for the sound to be played, because when this function quits _loadNextLevel() is called and it stops all playing sounds
+				returnValue = 0;
+				goto Exit;
+			}
+			
+			// Display menu
+			Renderer::beginRendering(0, 0);
+			// Display stretched background (so it can fit any screen resolution)
+			SDL_RenderCopy(Renderer::pointerRenderer, TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_MENU_BACKGROUND)->getSDLTexture(), NULL, NULL);
+			// Display title
+			Renderer::renderTexture(_pointerMenuTitleTexture, _menuTitleTextureX, CONFIGURATION_MENU_TITLE_Y);
+			// Display items (do not draw the final "Back" texture)
+			for (i = 0; i < _menuItemsCount - 1; i++) Renderer::renderTexture(_menuItems[i].pointerNormalTexture, 20, _menuItems[i].y); // Use only default color texture and force left alignment
+			// Draw "Back" like it is a selected button
+			Renderer::renderTexture(_menuItems[_menuItemsCount - 1].pointerFocusedTexture, _menuItems[_menuItemsCount - 1].x, _menuItems[_menuItemsCount - 1].y);
+			Renderer::endRendering();
+			
+			// Wait enough time to achieve a 60Hz refresh rate
+			frameElapsedTime = SDL_GetTicks() - frameStartingTime;
+			if (frameElapsedTime < CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS) SDL_Delay(CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS - frameElapsedTime);
+		}
+		
+		Exit:
 		// Free resources
 		_uninitialize();
 		return returnValue;

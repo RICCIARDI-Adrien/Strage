@@ -44,7 +44,7 @@
 
 // Menu
 /** Maximum amount of items that a single menu can display. */
-#define CONFIGURATION_MENU_MAXIMUM_ITEMS_COUNT 4
+#define CONFIGURATION_MENU_MAXIMUM_ITEMS_COUNT 5
 /** Menu vertical space (in pixels) between two item strings. */
 #define CONFIGURATION_MENU_ITEM_STRINGS_VERTICAL_SPACING 60
 /** Menu title vertical coordinate. */

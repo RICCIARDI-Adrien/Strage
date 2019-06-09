@@ -16,6 +16,12 @@ namespace Menu
 	* @note As strings' coordinates are computed each time this function is called, the function can be used as-is in an in-game window resizing engine.
 	*/
 	int display(const char *pointerStringMenuTitle, const char *pointerStringsMenuItemsTexts[], int menuItemsCount);
+	
+	/** Display a menu listing all game controls.
+	 * @return -1 if the user pressed Alt+F4 or closed the window,
+	 * @return 0 if the user exited from the menu.
+	 */
+	int displayControlsMenu();
 }
 
 #endif
