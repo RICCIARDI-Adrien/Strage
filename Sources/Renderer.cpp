@@ -20,9 +20,6 @@ namespace Renderer
 	/** The game window. */
 	static SDL_Window *_pointerMainWindow;
 
-	/** Define the display area. */
-	static SDL_Rect _displayRectangle;
-
 	/** The fonts used to draw text. */
 	static TTF_Font *_pointerFonts[FONT_SIZE_IDS_COUNT];
 	/** All available text colors. */
@@ -112,8 +109,6 @@ namespace Renderer
 		}
 		
 		// Cache some values
-		_displayRectangle.w = Renderer::displayWidth;
-		_displayRectangle.h = Renderer::displayHeight;
 		_textColors[TEXT_COLOR_ID_BLACK].r = 0;
 		_textColors[TEXT_COLOR_ID_BLACK].g = 0;
 		_textColors[TEXT_COLOR_ID_BLACK].b = 0;
@@ -171,8 +166,6 @@ namespace Renderer
 		SDL_RenderClear(pointerRenderer);
 		
 		// Update the display location
-		_displayRectangle.x = x;
-		_displayRectangle.y = y;
 		displayX = x;
 		displayY = y;
 	}
