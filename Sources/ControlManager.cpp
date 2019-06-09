@@ -93,18 +93,22 @@ namespace ControlManager
 			switch (pointerEvent->key.keysym.scancode)
 			{
 				case SDL_SCANCODE_UP:
+				case SDL_SCANCODE_W:
 					_handleGoUpKeyPress();
 					break;
 					
 				case SDL_SCANCODE_DOWN:
+				case SDL_SCANCODE_S:
 					_handleGoDownKeyPress();
 					break;
 					
 				case SDL_SCANCODE_LEFT:
+				case SDL_SCANCODE_A:
 					_handleGoLeftKeyPress();
 					break;
 					
 				case SDL_SCANCODE_RIGHT:
+				case SDL_SCANCODE_D:
 					_handleGoRightKeyPress();
 					break;
 					
@@ -134,21 +138,25 @@ namespace ControlManager
 			switch (pointerEvent->key.keysym.scancode)
 			{
 				case SDL_SCANCODE_UP:
+				case SDL_SCANCODE_W:
 					_isKeyPressed[KEY_ID_GO_UP] = false;
 					_isLastPressedDirectionKeyOnVerticalAxis = false;
 					break;
 					
 				case SDL_SCANCODE_DOWN:
+				case SDL_SCANCODE_S:
 					_isKeyPressed[KEY_ID_GO_DOWN] = false;
 					_isLastPressedDirectionKeyOnVerticalAxis = false;
 					break;
 					
 				case SDL_SCANCODE_LEFT:
+				case SDL_SCANCODE_A:
 					_isKeyPressed[KEY_ID_GO_LEFT] = false;
 					_isLastPressedDirectionKeyOnVerticalAxis = true;
 					break;
 					
 				case SDL_SCANCODE_RIGHT:
+				case SDL_SCANCODE_D:
 					_isKeyPressed[KEY_ID_GO_RIGHT] = false;
 					_isLastPressedDirectionKeyOnVerticalAxis = true;
 					break;

@@ -23,7 +23,7 @@ And remember, *strage* means *slaughter* in Italian...
 
 ## Controls
 ### Keyboard
-* **Arrow keys** : move
+* **Arrow keys** or **WASD** : move
 * **Space bar** : primary shoot
 * **Left control** : secondary shoot
 * **Escape** : pause game
