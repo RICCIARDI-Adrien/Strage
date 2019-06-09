@@ -24,6 +24,9 @@ namespace Renderer
 	static TTF_Font *_pointerFonts[FONT_SIZE_IDS_COUNT];
 	/** All available text colors. */
 	static SDL_Color _textColors[TEXT_COLOR_IDS_COUNT];
+	
+	/** Store the time in milliseconds when a frame creation started. */
+	static unsigned int _frameStartingTime = 0;
 
 	// Public variable, documentation is in the header file
 	SDL_Renderer *pointerRenderer;
@@ -160,20 +163,23 @@ namespace Renderer
 		SDL_Quit();
 	}
 
-	void beginRendering(int x, int y)
+	void beginFrame()
 	{
+		// Store the time when the frame computation started
+		_frameStartingTime = SDL_GetTicks();
+		
 		// Clean the rendering area
 		SDL_RenderClear(pointerRenderer);
-		
-		// Update the display location
-		displayX = x;
-		displayY = y;
 	}
 
-	void endRendering()
+	void endFrame()
 	{
 		// Display the rendered picture
 		SDL_RenderPresent(pointerRenderer);
+
+		// Wait enough time to achieve a 60Hz refresh rate
+		unsigned int frameElapsedTime = SDL_GetTicks() - _frameStartingTime;
+		if (frameElapsedTime < CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS) SDL_Delay(CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS - frameElapsedTime);
 	}
 
 	SDL_Texture *renderTextToTexture(const char *pointerStringText, TextColorId colorId, FontSizeId fontSizeId)

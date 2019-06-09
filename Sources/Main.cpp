@@ -513,9 +513,8 @@ static inline void _renderGame()
 	// Compute rendering top left coordinates
 	sceneX = pointerPlayer->getX() - _cameraOffsetX;
 	sceneY = pointerPlayer->getY() - _cameraOffsetY;
-	
-	// Start rendering
-	Renderer::beginRendering(sceneX, sceneY);
+	Renderer::displayX = sceneX;
+	Renderer::displayY = sceneY;
 	
 	// Render the level walls and static objects (ammunition, medipacks, ...)
 	LevelManager::renderScene(sceneX, sceneY);
@@ -556,32 +555,32 @@ static inline void _renderGame()
 int main(int argc, char *argv[])
 {
 	SDL_Event event;
-	unsigned int frameStartingTime, frameElapsedTime, frameRateStartingTime = 0;
+	unsigned int frameRateStartingTime = 0;
 	bool isFullScreenEnabled = true, isFramesPerSecondDisplayingEnabled = false;
 	int levelToLoadNumber, i, framesCount = 0;
 	BulletMovingEntity *pointerBullet;
 	SDL_Texture *pointerFramesPerSecondSdlTexture = NULL;
 	char stringFramesPerSecond[16];
-	const char *pointerStringsMainMenuWithSavegameItems[] =
+	static const char *pointerStringsMainMenuWithSavegameItems[] =
 	{
 		"Continue game",
 		"New game",
 		"Controls",
 		"Quit"
 	};
-	const char *pointerStringsMainMenuWithoutSavegameItems[] =
+	static const char *pointerStringsMainMenuWithoutSavegameItems[] =
 	{
 		"New game",
 		"Controls",
 		"Quit"
 	};
-	const char *pointerStringsPauseMenuItems[] =
+	static const char *pointerStringsPauseMenuItems[] =
 	{
 		"Continue",
 		"Restart level",
 		"Quit"
 	};
-	const char *pointerStringsVictoryMenuItems[] =
+	static const char *pointerStringsVictoryMenuItems[] =
 	{
 		"Relish your victory",
 		"Quit"
@@ -720,11 +719,12 @@ int main(int argc, char *argv[])
 	
 	while (1)
 	{
+		Renderer::beginFrame();
+		
 		// Store the time when the loop started
-		frameStartingTime = SDL_GetTicks();
 		if (isFramesPerSecondDisplayingEnabled)
 		{
-			if (frameRateStartingTime == 0) frameRateStartingTime = frameStartingTime;
+			if (frameRateStartingTime == 0) frameRateStartingTime = SDL_GetTicks();
 		}
 		
 		// Handle all relevant events
@@ -879,11 +879,8 @@ int main(int argc, char *argv[])
 			// Display the FPS count to the screen top right side at each frame
 			Renderer::renderTexture(pointerFramesPerSecondSdlTexture, Renderer::displayWidth - 100, 20);
 		}
-		Renderer::endRendering();
 		
-		// Wait enough time to achieve a 60Hz refresh rate
-		frameElapsedTime = SDL_GetTicks() - frameStartingTime;
-		if (frameElapsedTime < CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS) SDL_Delay(CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS - frameElapsedTime);
+		Renderer::endFrame();
 	}
 	
 Exit:

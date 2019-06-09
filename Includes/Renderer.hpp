@@ -32,9 +32,9 @@ namespace Renderer
 	/** The renderer used to render to the game window. */
 	extern SDL_Renderer *pointerRenderer;
 
-	/** On rendering, contains the visible display leftmost coordinate. */
+	/** Contains the visible display (it can be though as the camera) leftmost coordinate. */
 	extern int displayX;
-	/** On rendering, contains the visible display topmost coordinate. */
+	/** Contains the visible display (it can be though as the camera) topmost coordinate. */
 	extern int displayY;
 
 	/** The display width in pixels. */
@@ -54,14 +54,11 @@ namespace Renderer
 	*/
 	void uninitialize();
 
-	/** Start rendering from the specified map coordinates.
-	* @param x Display left corner will be rendered with the scene stuff located at this horizontal coordinate.
-	* @param y Display top corner will be rendered with the scene stuff located at this vertical coordinate.
-	*/
-	void beginRendering(int x, int y);
+	/** This function must be called at the really beginning of a frame rendering. */
+	void beginFrame();
 
 	/** End the rendering step by displaying the final picture on the screen. */
-	void endRendering();
+	void endFrame();
 
 	/** Render the provided text on a texture.
 	* @param pointerStringText The string to render.

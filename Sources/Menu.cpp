@@ -102,7 +102,6 @@ namespace Menu
 	{
 		SDL_Event event;
 		int returnValue, i, focusedMenuItemIndex = 0, isGoUpKeyPressed = 0, isGoDownKeyPressed = 0, isSelectKeyPressed = 0;
-		unsigned int frameStartingTime, frameElapsedTime;
 		SDL_Texture *pointerTexture;
 		
 		// This variable is shared by all internal functions, it must be initialized before calling any of the functions
@@ -113,8 +112,7 @@ namespace Menu
 		
 		while (1)
 		{
-			// Store the time when the loop started
-			frameStartingTime = SDL_GetTicks();
+			Renderer::beginFrame();
 			
 			// Process SDL events
 			while (SDL_PollEvent(&event))
@@ -176,7 +174,6 @@ namespace Menu
 			}
 			
 			// Display menu
-			Renderer::beginRendering(0, 0);
 			// Display stretched background (so it can fit any screen resolution)
 			SDL_RenderCopy(Renderer::pointerRenderer, TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_MENU_BACKGROUND)->getSDLTexture(), NULL, NULL);
 			// Display title
@@ -190,11 +187,8 @@ namespace Menu
 				
 				Renderer::renderTexture(pointerTexture, _menuItems[i].x, _menuItems[i].y);
 			}
-			Renderer::endRendering();
 			
-			// Wait enough time to achieve a 60Hz refresh rate
-			frameElapsedTime = SDL_GetTicks() - frameStartingTime;
-			if (frameElapsedTime < CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS) SDL_Delay(CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS - frameElapsedTime);
+			Renderer::endFrame();
 		}
 		
 	Exit:
@@ -207,7 +201,6 @@ namespace Menu
 	{
 		SDL_Event event;
 		int returnValue, i, isSelectKeyPressed = 0;
-		unsigned int frameStartingTime, frameElapsedTime;
 		static const char *pointerStringMenuItems[] =
 		{
 			"Arrow keys or WASD : move",
@@ -225,8 +218,7 @@ namespace Menu
 		
 		while (1)
 		{
-			// Store the time when the loop started
-			frameStartingTime = SDL_GetTicks();
+			Renderer::beginFrame();
 			
 			// Process SDL events
 			while (SDL_PollEvent(&event))
@@ -264,7 +256,6 @@ namespace Menu
 			}
 			
 			// Display menu
-			Renderer::beginRendering(0, 0);
 			// Display stretched background (so it can fit any screen resolution)
 			SDL_RenderCopy(Renderer::pointerRenderer, TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_MENU_BACKGROUND)->getSDLTexture(), NULL, NULL);
 			// Display title
@@ -273,11 +264,8 @@ namespace Menu
 			for (i = 0; i < _menuItemsCount - 1; i++) Renderer::renderTexture(_menuItems[i].pointerNormalTexture, 20, _menuItems[i].y); // Use only default color texture and force left alignment
 			// Draw "Back" like it is a selected button
 			Renderer::renderTexture(_menuItems[_menuItemsCount - 1].pointerFocusedTexture, _menuItems[_menuItemsCount - 1].x, _menuItems[_menuItemsCount - 1].y);
-			Renderer::endRendering();
 			
-			// Wait enough time to achieve a 60Hz refresh rate
-			frameElapsedTime = SDL_GetTicks() - frameStartingTime;
-			if (frameElapsedTime < CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS) SDL_Delay(CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS - frameElapsedTime);
+			Renderer::endFrame();
 		}
 		
 		Exit:
