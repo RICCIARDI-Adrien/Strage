@@ -146,8 +146,8 @@ int PlayerFightingEntity::update()
 	{
 		LOG_DEBUG("Player is crossing a block containing a golden medipack.");
 		
-		// Increase maximum life
-		_maximumLifePointsAmount += 10;
+		// Increase maximum life by 20%
+		_maximumLifePointsAmount = (_maximumLifePointsAmount * 120) / 100;
 		// Restore life
 		_lifePointsAmount = _maximumLifePointsAmount;
 		EffectManager::addEffect(blockX, blockY, EffectManager::EFFECT_ID_GOLDEN_MEDIPACK_TAKEN);
