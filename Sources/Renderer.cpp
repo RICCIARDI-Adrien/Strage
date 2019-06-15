@@ -224,7 +224,7 @@ namespace Renderer
 		SDL_RenderCopy(pointerRenderer, pointerTexture, NULL, &destinationRectangle);
 	}
 
-	void renderCenteredTexture(SDL_Texture *pointerTexture)
+	void renderCenteredTexture(SDL_Texture *pointerTexture, int y)
 	{
 		// Get the texture dimensions
 		SDL_Rect destinationRectangle;
@@ -234,9 +234,12 @@ namespace Renderer
 			exit(-1);
 		}
 		
-		// Display the texture on the screen center
+		// Compute texture coordinates
 		destinationRectangle.x = (displayWidth - destinationRectangle.w) / 2;
-		destinationRectangle.y = (displayHeight - destinationRectangle.h) / 2;
+		if (y == -1) destinationRectangle.y = (displayHeight - destinationRectangle.h) / 2; // Automatically center on vertical axis
+		else destinationRectangle.y = y;
+		
+		// Display the centered texture
 		SDL_RenderCopy(pointerRenderer, pointerTexture, NULL, &destinationRectangle);
 	}
 }

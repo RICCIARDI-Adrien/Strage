@@ -31,6 +31,11 @@ namespace HeadUpDisplay
 	*/
 	void setMortarState(MortarState state);
 
+	/** Set the remaining bonus time to display.
+	 * @param timeSeconds How many bonus seconds remain. Setting 0 disables the bonus timer displaying.
+	 */
+	void setRemainingBonusTime(int timeSeconds);
+
 	/** Render the strings with the last provided values to the screen. */
 	void render();
 }

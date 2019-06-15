@@ -20,6 +20,7 @@ namespace HeadUpDisplay
 		STRING_ID_AMMUNITION_AMOUNT,
 		STRING_ID_ENEMIES_AMOUNT,
 		STRING_ID_MORTAR_STATE,
+		STRING_ID_REMAINING_BONUS_TIME,
 		STRING_IDS_COUNT
 	} StringId;
 
@@ -28,6 +29,9 @@ namespace HeadUpDisplay
 
 	/** Point to the interface background texture with the right type for the rendering function. */
 	static SDL_Texture *_pointerBackgroundTexture;
+
+	/** Tell whether bonus remaining time must be displayed. */
+	static bool _isBonusRemainingSecondsStringDisplayed = false;
 
 	/** Display player life amount. */
 	static inline void _displayPlayerLifePointsAmount()
@@ -156,6 +160,27 @@ namespace HeadUpDisplay
 		previousMortarState = state;
 	}
 
+	void setRemainingBonusTime(int timeSeconds)
+	{
+		if (timeSeconds == 0)
+		{
+			_isBonusRemainingSecondsStringDisplayed = false;
+			return;
+		}
+		
+		// Free previous string
+		SDL_DestroyTexture(_pointerStringTextures[STRING_ID_REMAINING_BONUS_TIME]);
+		
+		// Render the string
+		char string[64];
+		sprintf(string, "Bonus time : %d", timeSeconds);
+		_pointerStringTextures[STRING_ID_REMAINING_BONUS_TIME] = Renderer::renderTextToTexture(string, Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
+		
+		_isBonusRemainingSecondsStringDisplayed = true;
+		
+		LOG_DEBUG("Refreshed bonus timer interface string.");
+	}
+
 	void render()
 	{
 		// Display background
@@ -166,5 +191,8 @@ namespace HeadUpDisplay
 		_displayPlayerAmmunitionAmount();
 		Renderer::renderTexture(_pointerStringTextures[STRING_ID_ENEMIES_AMOUNT], CONFIGURATION_DISPLAY_HUD_ENEMIES_X, CONFIGURATION_DISPLAY_HUD_ENEMIES_Y);
 		Renderer::renderTexture(_pointerStringTextures[STRING_ID_MORTAR_STATE], CONFIGURATION_DISPLAY_HUD_MORTAR_STATE_X, CONFIGURATION_DISPLAY_HUD_MORTAR_STATE_Y);
+		
+		// Display bonus timer (if any)
+		if (_isBonusRemainingSecondsStringDisplayed) Renderer::renderCenteredTexture(_pointerStringTextures[STRING_ID_REMAINING_BONUS_TIME], CONFIGURATION_DISPLAY_HUD_BONUS_TIMER_Y);
 	}
 }

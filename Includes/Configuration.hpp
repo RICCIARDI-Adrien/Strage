@@ -41,6 +41,8 @@
 #define CONFIGURATION_DISPLAY_HUD_MORTAR_STATE_X 15
 /** HUD mortar state text screen Y coordinate. */
 #define CONFIGURATION_DISPLAY_HUD_MORTAR_STATE_Y 84
+/** Bonus timer text screen Y coordinate. */
+#define CONFIGURATION_DISPLAY_HUD_BONUS_TIMER_Y 20
 
 // Menu
 /** Maximum amount of items that a single menu can display. */

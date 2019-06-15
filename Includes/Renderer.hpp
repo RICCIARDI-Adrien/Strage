@@ -78,8 +78,9 @@ namespace Renderer
 
 	/** Display the provided texture at the display vertical and horizontal center.
 	* @param pointerTexture The texture to display.
+	* @param y Vertical coordinate of the texture top left corner. If set to -1 the texture will be also centered vertically.
 	*/
-	void renderCenteredTexture(SDL_Texture *pointerTexture);
+	void renderCenteredTexture(SDL_Texture *pointerTexture, int y = -1);
 }
 
 #endif
