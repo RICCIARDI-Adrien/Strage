@@ -95,12 +95,14 @@
 #define CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_LIFE_POINTS_AMOUNT 100
 /** Player default ammunition amount. */
 #define CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_AMMUNITION_AMOUNT 300
+/** Player primary fire time between two shots. */
+#define CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_PRIMARY_FIRE_TIME_BETWEEN_TWO_SHOTS 300
+/** Player secondary fire needed ammunition amount for shooting. */
+#define CONFIGURATION_GAMEPLAY_PLAYER_SECONDARY_FIRE_NEEDED_AMMUNITION_AMOUNT 100
 /** How many time a spawner waits before spawning a new enemy (in millisecond). */
 #define CONFIGURATION_GAMEPLAY_TIME_BETWEEN_ENEMY_SPAWN 3000
 /** Joystick analog parts threshold to consider the part is pushed (must be in range [0..32767] according to SDL documentation). */
 #define CONFIGURATION_GAMEPLAY_JOYSTICK_ANALOG_THRESHOLD 25000
-/** Player secondary fire needed ammunition amount for shooting. */
-#define CONFIGURATION_GAMEPLAY_PLAYER_SECONDARY_FIRE_NEEDED_AMMUNITION_AMOUNT 100
 
 // Savegame
 /** The savegame file. */

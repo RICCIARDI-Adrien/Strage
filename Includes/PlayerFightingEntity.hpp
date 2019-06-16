@@ -68,6 +68,13 @@ class PlayerFightingEntity: public FightingEntity
 		virtual BulletMovingEntity *_fireBullet(int x, int y);
 		
 	private:
+		/** All available bonuses. */
+		typedef enum
+		{
+			BONUS_NONE, //!< No bonus is currently enabled.
+			BONUS_MACHINE_GUN //!< Shoot faster without consuming ammunition.
+		} Bonus;
+		
 		/** Display the player at this horizontal display coordinate. */
 		int _renderingX;
 		/** Display the player at this vertical display coordinate. */
@@ -82,6 +89,11 @@ class PlayerFightingEntity: public FightingEntity
 		unsigned int _secondaryFireTimeBetweenShots;
 		/** Tell whether the time between two shoots has elapsed. */
 		bool _isSecondaryShootReloadingTimeElapsed = true; // Allow the player to immediately shoot on spawn
+		
+		/** How many time remaining before the bonus becomes inactive (in milliseconds). */
+		int _bonusRemainingTime = 0;
+		/** The currently active bonus. */
+		Bonus _currentActiveBonus = BONUS_NONE;
 		
 		/** Offset to add to entity coordinates to fire the bullet in the entity facing direction. */
 		SDL_Point _secondaryFireStartingPositionOffsets[DIRECTIONS_COUNT]; // Offsets are in the same order than Direction enum

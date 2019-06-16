@@ -12,7 +12,7 @@
 #include <Renderer.hpp>
 #include <TextureManager.hpp>
 
-PlayerFightingEntity::PlayerFightingEntity(int x, int y): FightingEntity(x, y, TextureManager::TEXTURE_ID_PLAYER_FACING_UP, 3, CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_LIFE_POINTS_AMOUNT, 300, TextureManager::TEXTURE_ID_PLAYER_BULLET_FACING_UP, EffectManager::EFFECT_ID_PLAYER_MUZZLE_FLASH_FACING_UP)
+PlayerFightingEntity::PlayerFightingEntity(int x, int y): FightingEntity(x, y, TextureManager::TEXTURE_ID_PLAYER_FACING_UP, 3, CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_LIFE_POINTS_AMOUNT, CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_PRIMARY_FIRE_TIME_BETWEEN_TWO_SHOTS, TextureManager::TEXTURE_ID_PLAYER_BULLET_FACING_UP, EffectManager::EFFECT_ID_PLAYER_MUZZLE_FLASH_FACING_UP)
 {
 	
 	// Cache rendering coordinates
@@ -44,13 +44,13 @@ PlayerFightingEntity::~PlayerFightingEntity() {}
 BulletMovingEntity *PlayerFightingEntity::shoot()
 {
 	// The player can't shoot if it has no more ammunition
-	if (_ammunitionAmount == 0) return NULL;
+	if ((_currentActiveBonus != BONUS_MACHINE_GUN) && (_ammunitionAmount == 0)) return NULL; // Ammunition are unlimited with "machine gun" bonus
 	
 	// Decrement ammunition count if the player shot
 	BulletMovingEntity *pointerBullet = FightingEntity::shoot();
 	if (pointerBullet != NULL)
 	{
-		_ammunitionAmount--;
+		if (_currentActiveBonus != BONUS_MACHINE_GUN) _ammunitionAmount--; // Ammunition are unlimited with "machine gun" bonus
 		return pointerBullet;
 	}
 	return NULL;
@@ -111,6 +111,22 @@ int PlayerFightingEntity::update()
 	{
 		if (!_isSecondaryShootReloadingTimeElapsed) HeadUpDisplay::setMortarState(HeadUpDisplay::MORTAR_STATE_RELOADING);
 		else HeadUpDisplay::setMortarState(HeadUpDisplay::MORTAR_STATE_READY);
+	}
+	
+	// Handle bonus
+	if (_bonusRemainingTime > 0)
+	{
+		HeadUpDisplay::setRemainingBonusTime(((_bonusRemainingTime * CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS) / 1000) + 1); // Convert frame time to seconds, add one more second to compensate for integer computation rounding
+		_bonusRemainingTime--;
+	}
+	else
+	{
+		// Disable bonus time displaying
+		HeadUpDisplay::setRemainingBonusTime(0);
+		
+		// Restore player default attributes
+		_timeBetweenShots = CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_PRIMARY_FIRE_TIME_BETWEEN_TWO_SHOTS;
+		_currentActiveBonus = BONUS_NONE;
 	}
 	
 	// Cache player center coordinates
@@ -175,15 +191,21 @@ int PlayerFightingEntity::update()
 	{
 		LOG_DEBUG("Player is crossing a block containing machine gun bonus.");
 		
-		
-		// TODO
-		
-		EffectManager::addEffect(blockX, blockY, EffectManager::EFFECT_ID_MACHINE_GUN_TAKEN);
-		LOG_DEBUG("Player got machine gun bonus.");
-		
-		// Remove the ammunition item
-		blockContent &= ~LevelManager::BLOCK_CONTENT_MACHINE_GUN_BONUS;
-		LevelManager::setBlockContent(playerCenterX, playerCenterY, blockContent);
+		// Bonus can't be taken if another bonus is currently in use
+		if (_bonusRemainingTime == 0)
+		{
+			// Configure bonus
+			_bonusRemainingTime = 30000 / CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS; // Initialize timer, bonus effect lasts 30s (this method is called each game frame, so adjust time)
+			_timeBetweenShots = CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_PRIMARY_FIRE_TIME_BETWEEN_TWO_SHOTS / 3; // Make shoots three times faster
+			_currentActiveBonus = BONUS_MACHINE_GUN;
+			
+			EffectManager::addEffect(blockX, blockY, EffectManager::EFFECT_ID_MACHINE_GUN_TAKEN);
+			LOG_DEBUG("Player got machine gun bonus.");
+			
+			// Remove the bonus item
+			blockContent &= ~LevelManager::BLOCK_CONTENT_MACHINE_GUN_BONUS;
+			LevelManager::setBlockContent(playerCenterX, playerCenterY, blockContent);
+		}
 	}
 	// Is it the level end ?
 	else if (blockContent & LevelManager::BLOCK_CONTENT_LEVEL_EXIT) return 2;
