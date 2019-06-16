@@ -89,6 +89,8 @@ Scene textures and objects are gathered in two Tiled tilesets (Scene.tsx and Obj
 When exporting a level, let 20 blocks on each map wall side to avoid displaying a black background when the player is approaching the map walls.
 
 ## Credits
+* Icons :
+   * [Machine gun](https://www.flaticon.com/free-icon/machine-gun_238558) : icon made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com)
 * Maps :
    * Level 1 made by Yannick Bilcot
    * Levels 4, 5 and 6 made by Sylvain Heude

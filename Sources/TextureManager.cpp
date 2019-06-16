@@ -254,6 +254,14 @@ namespace TextureManager
 			NULL,
 			NULL
 		},
+		// TEXTURE_ID_MACHINE_GUN
+		{
+			CONFIGURATION_PATH_TEXTURES "/Machine_Gun.png",
+			1,
+			0,
+			NULL,
+			NULL
+		},
 		// TEXTURE_ID_ENEMY_SPAWNER
 		{
 			CONFIGURATION_PATH_TEXTURES "/Enemy_Spawner.png",
