@@ -82,6 +82,8 @@
 #define CONFIGURATION_GAMEPLAY_MEDIPACK_ITEM_SPAWN_PROBABILITY_PERCENTAGE 10
 /** The probability (in range 0% to 100%) to spawn ammunition when an enemy dies. */
 #define CONFIGURATION_GAMEPLAY_AMMUNITION_ITEM_SPAWN_PROBABILITY_PERCENTAGE 20
+/** The probability (in range 0% to 100%) to spawn machine gun bonus when an enemy dies. */
+#define CONFIGURATION_GAMEPLAY_MACHINE_GUN_BONUS_ITEM_SPAWN_PROBABILITY_PERCENTAGE 3
 // The probability (in range 0% to 100%) to spawn a specific enemy (sum of all enemies percentages must be 100 and each percentage must be less than the previous one)
 /** Small enemy spawning probability. */
 #define CONFIGURATION_GAMEPLAY_SMALL_ENEMY_SPAWN_PROBABILITY_PERCENTAGE 80

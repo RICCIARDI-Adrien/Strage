@@ -114,45 +114,6 @@ static void _exitFreeResources()
 	SDL_Quit();
 }
 
-/** Spawn a random item (or nothing) on the block into which coordinates are contained.
- * @param x X coordinate in pixels.
- * @param y Y coordinate in pixels.
- */
-static inline void _spawnItem(int x, int y)
-{
-	int blockContent;
-	
-	// Spawn nothing if the block contains an item yet
-	blockContent = LevelManager::getBlockContent(x, y);
-	if ((blockContent & LevelManager::BLOCK_CONTENT_MEDIPACK) || (blockContent & LevelManager::BLOCK_CONTENT_GOLDEN_MEDIPACK) || (blockContent & LevelManager::BLOCK_CONTENT_AMMUNITION)) return;
-	
-	// Select which item to spawn
-	if (rand() % 2 == 0)
-	{
-		// Spawn a medipack
-		if (rand() % 100 < CONFIGURATION_GAMEPLAY_MEDIPACK_ITEM_SPAWN_PROBABILITY_PERCENTAGE)
-		{
-			// Spawn the item
-			blockContent |= LevelManager::BLOCK_CONTENT_MEDIPACK;
-			LevelManager::setBlockContent(x, y, blockContent);
-			
-			LOG_DEBUG("Enemy dropped a medipack.");
-		}
-	}
-	else
-	{
-		// Spawn ammunition
-		if (rand() % 100 < CONFIGURATION_GAMEPLAY_AMMUNITION_ITEM_SPAWN_PROBABILITY_PERCENTAGE)
-		{
-			// Spawn the item
-			blockContent |= LevelManager::BLOCK_CONTENT_AMMUNITION;
-			LevelManager::setBlockContent(x, y, blockContent);
-			
-			LOG_DEBUG("Enemy dropped ammunition.");
-		}
-	}
-}
-
 /** Tell whether an enemy can be spawned on the block located at the provided map coordinates.
  * @param x X map coordinate in the block.
  * @param y Y map coordinate in the block.
@@ -378,7 +339,7 @@ static inline void _updateGameLogic()
 		{
 			// Spawn an item on the current block if player is lucky
 			pointerPositionRectangle = pointerEnemy->getPositionRectangle();
-			_spawnItem(pointerPositionRectangle->x + (pointerPositionRectangle->w / 2), pointerPositionRectangle->y + (pointerPositionRectangle->h / 2)); // Use enemy center coordinates to avoid favoring one block among others
+			LevelManager::spawnItem(pointerPositionRectangle->x + (pointerPositionRectangle->w / 2), pointerPositionRectangle->y + (pointerPositionRectangle->h / 2)); // Use enemy center coordinates to avoid favoring one block among others
 			
 			// Remove the enemy
 			delete pointerEnemy;

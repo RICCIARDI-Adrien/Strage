@@ -63,6 +63,8 @@ namespace LevelManager
 	static Texture *_pointerGoldenMedipackTexture;
 	/** Cache ammunition texture. */
 	static Texture *_pointerAmmunitionTexture;
+	/** Cache machine gun bonus texture. */
+	static Texture *_pointerMachineGunBonusTexture;
 
 	// Public variable, documentation is in the header file
 	std::list<EnemySpawnerStaticEntity *> enemySpawnersList;
@@ -80,6 +82,7 @@ namespace LevelManager
 		_pointerMedipackTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_MEDIPACK);
 		_pointerGoldenMedipackTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_GOLDEN_MEDIPACK);
 		_pointerAmmunitionTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_AMMUNITION);
+		_pointerMachineGunBonusTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_MACHINE_GUN);
 
 		return 0;
 	}
@@ -291,6 +294,7 @@ namespace LevelManager
 					if (pointerBlock->content & BLOCK_CONTENT_MEDIPACK) _pointerMedipackTexture->render(xPixel, yPixel);
 					else if (pointerBlock->content & BLOCK_CONTENT_GOLDEN_MEDIPACK) _pointerGoldenMedipackTexture->render(xPixel, yPixel);
 					else if (pointerBlock->content & BLOCK_CONTENT_AMMUNITION) _pointerAmmunitionTexture->render(xPixel, yPixel);
+					else if (pointerBlock->content & BLOCK_CONTENT_MACHINE_GUN_BONUS) _pointerMachineGunBonusTexture->render(xPixel, yPixel);
 				}
 				
 				xPixel += CONFIGURATION_LEVEL_BLOCK_SIZE;
@@ -453,5 +457,55 @@ namespace LevelManager
 		assert(yBlock < _levelHeightBlocks);
 		
 		_levelBlocks[COMPUTE_BLOCK_INDEX(xBlock, yBlock)].content = content;
+	}
+
+	void spawnItem(int x, int y)
+	{
+		int blockContent;
+		
+		// Spawn nothing if the block contains an item yet
+		blockContent = LevelManager::getBlockContent(x, y);
+		int itemsBitMask = LevelManager::BLOCK_CONTENT_MEDIPACK | LevelManager::BLOCK_CONTENT_GOLDEN_MEDIPACK | LevelManager::BLOCK_CONTENT_AMMUNITION | LevelManager::BLOCK_CONTENT_MACHINE_GUN_BONUS;
+		if (blockContent & itemsBitMask) return;
+		
+		// Select which item to spawn
+		switch (rand() % 3)
+		{
+			// Spawn a medipack
+			case 0:
+				if (rand() % 100 < CONFIGURATION_GAMEPLAY_MEDIPACK_ITEM_SPAWN_PROBABILITY_PERCENTAGE)
+				{
+					// Spawn the item
+					blockContent |= LevelManager::BLOCK_CONTENT_MEDIPACK;
+					LevelManager::setBlockContent(x, y, blockContent);
+					
+					LOG_DEBUG("Enemy dropped a medipack.");
+				}
+				break;
+				
+			// Spawn ammunition
+			case 1:
+				if (rand() % 100 < CONFIGURATION_GAMEPLAY_AMMUNITION_ITEM_SPAWN_PROBABILITY_PERCENTAGE)
+				{
+					// Spawn the item
+					blockContent |= LevelManager::BLOCK_CONTENT_AMMUNITION;
+					LevelManager::setBlockContent(x, y, blockContent);
+					
+					LOG_DEBUG("Enemy dropped ammunition.");
+				}
+				break;
+				
+			// Spawn machine gun bonus
+			case 2:
+				if (rand() % 100 < CONFIGURATION_GAMEPLAY_MACHINE_GUN_BONUS_ITEM_SPAWN_PROBABILITY_PERCENTAGE)
+				{
+					// Spawn the item
+					blockContent |= LevelManager::BLOCK_CONTENT_MACHINE_GUN_BONUS;
+					LevelManager::setBlockContent(x, y, blockContent);
+					
+					LOG_DEBUG("Enemy dropped machine gun bonus.");
+				}
+				break;
+		}
 	}
 }
