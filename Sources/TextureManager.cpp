@@ -1021,6 +1021,14 @@ namespace TextureManager
 			16,
 			NULL,
 			NULL
+		},
+		// TEXTURE_ID_MACHINE_GUN_TAKEN
+		{
+			CONFIGURATION_PATH_TEXTURES "/Machine_Gun_Taken.png",
+			8,
+			8,
+			NULL,
+			NULL
 		}
 	};
 

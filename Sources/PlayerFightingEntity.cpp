@@ -170,6 +170,21 @@ int PlayerFightingEntity::update()
 		blockContent &= ~LevelManager::BLOCK_CONTENT_AMMUNITION;
 		LevelManager::setBlockContent(playerCenterX, playerCenterY, blockContent);
 	}
+	// Is there a machine gun bonus ?
+	else if (blockContent & LevelManager::BLOCK_CONTENT_MACHINE_GUN_BONUS)
+	{
+		LOG_DEBUG("Player is crossing a block containing machine gun bonus.");
+		
+		
+		// TODO
+		
+		EffectManager::addEffect(blockX, blockY, EffectManager::EFFECT_ID_MACHINE_GUN_TAKEN);
+		LOG_DEBUG("Player got machine gun bonus.");
+		
+		// Remove the ammunition item
+		blockContent &= ~LevelManager::BLOCK_CONTENT_MACHINE_GUN_BONUS;
+		LevelManager::setBlockContent(playerCenterX, playerCenterY, blockContent);
+	}
 	// Is it the level end ?
 	else if (blockContent & LevelManager::BLOCK_CONTENT_LEVEL_EXIT) return 2;
 	

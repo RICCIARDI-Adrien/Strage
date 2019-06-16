@@ -156,6 +156,11 @@ namespace EffectManager
 		{
 			TextureManager::TEXTURE_ID_AMMUNITION_TAKEN,
 			AudioManager::SOUND_ID_AMMUNITION_TAKEN
+		},
+		// EFFECT_ID_MACHINE_GUN_TAKEN
+		{
+			TextureManager::TEXTURE_ID_MACHINE_GUN_TAKEN,
+			AudioManager::SOUND_ID_AMMUNITION_TAKEN // TODO
 		}
 	};
 
