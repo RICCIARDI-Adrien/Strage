@@ -43,9 +43,9 @@ static int _cameraOffsetX;
 static int _cameraOffsetY;
 
 /** When set to 1, stop game updating and display a text saying that the player is dead. */
-static int _isPlayerDead = 0;
+static bool _isPlayerDead = false;
 /** Set to 1 when the player has been hit. */
-static int _isPlayerHit = 0;
+static bool _isPlayerHit = false;
 
 /** Draw the screen in red if the player has been hit. */
 static Texture *_pointerPlayerHitOverlayTexture;
@@ -54,9 +54,9 @@ static Texture *_pointerPlayerHitOverlayTexture;
 static int _currentLevelNumber = 0;
 
 /** When set to 1, stop game updating but continue displaying the scene. */
-static int _isGamePaused = 0;
+static bool _isGamePaused = false;
 /** Set to 1 when the player has finished all levels. */
-static int _isGameFinished = 0;
+static bool _isGameFinished = false;
 
 /** The string to display when the player is dead. */
 static SDL_Texture *_pointerGameLostInterfaceStringTexture;
@@ -201,8 +201,8 @@ static inline void _loadNextLevel()
 	// Are all levels completed ?
 	if (_currentLevelNumber == CONFIGURATION_LEVELS_COUNT)
 	{
-		_isGameFinished = 1;
-		_isGamePaused = 1;
+		_isGameFinished = true;
+		_isGamePaused = true;
 		return;
 	}
 	
@@ -381,7 +381,7 @@ static inline void _updateGameLogic()
 		{
 			// Wound the player
 			pointerPlayer->modifyLife(pointerEnemyBullet->getDamageAmount());
-			_isPlayerHit = 1;
+			_isPlayerHit = true;
 			LOG_DEBUG("Player hit.");
 			
 			EffectManager::addEffect(pointerEnemyBullet->getX() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET, pointerEnemyBullet->getY() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET, EffectManager::EFFECT_ID_BULLET_EXPLOSION_NO_SOUND);
@@ -393,8 +393,8 @@ static inline void _updateGameLogic()
 			// Instantly stop game updating
 			if (pointerPlayer->isDead())
 			{
-				_isPlayerDead = 1;
-				_isGamePaused = 1; // Pause game updating
+				_isPlayerDead = true;
+				_isGamePaused = true; // Pause game updating
 				LOG_DEBUG("Player died.");
 				return;
 			}
@@ -503,7 +503,7 @@ static inline void _renderGame()
 	if (_isPlayerHit)
 	{
 		SDL_RenderCopy(Renderer::pointerRenderer, _pointerPlayerHitOverlayTexture->getSDLTexture(), NULL, NULL);
-		_isPlayerHit = 0;
+		_isPlayerHit = false;
 	}
 	
 	// Display HUD
@@ -758,8 +758,8 @@ int main(int argc, char *argv[])
 						// Allow the game to restart if the player is dead
 						if (_isPlayerDead)
 						{
-							_isPlayerDead = 0;
-							_isGamePaused = 0;
+							_isPlayerDead = false;
+							_isGamePaused = false;
 						}
 						break;
 					
