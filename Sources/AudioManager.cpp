@@ -95,7 +95,8 @@ namespace AudioManager
 		CONFIGURATION_PATH_SOUNDS "/Enemy_Spawner_Explosion.wav",
 		CONFIGURATION_PATH_SOUNDS "/Menu_Move.wav",
 		CONFIGURATION_PATH_SOUNDS "/Menu_Select.wav",
-		CONFIGURATION_PATH_SOUNDS "/Machine_Gun_Taken.wav"
+		CONFIGURATION_PATH_SOUNDS "/Machine_Gun_Taken.wav",
+		CONFIGURATION_PATH_SOUNDS "/Bulletproof_Vest_Taken.wav"
 	};
 
 	/** Make the thread wait until a new music must be played. */
