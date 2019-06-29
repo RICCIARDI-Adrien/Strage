@@ -207,6 +207,27 @@ int PlayerFightingEntity::update()
 			LevelManager::setBlockContent(playerCenterX, playerCenterY, blockContent);
 		}
 	}
+	// Is there a bulletproof vest bonus ?
+	else if (blockContent & LevelManager::BLOCK_CONTENT_BULLETPROOF_VEST_BONUS)
+	{
+		LOG_DEBUG("Player is crossing a block containing bulletproof vest bonus.");
+		
+		// Bonus can't be taken if another bonus is currently in use
+		if (_bonusRemainingTime == 0)
+		{
+			// Configure bonus
+			_bonusRemainingTime = 45000 / CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS; // Initialize timer, bonus effect lasts 45s (this method is called each game frame, so adjust time)
+			_currentActiveBonus = BONUS_BULLETPROOF_VEST;
+			
+			// TODO
+			//EffectManager::addEffect(blockX, blockY, EffectManager::EFFECT_ID_MACHINE_GUN_TAKEN);
+			LOG_DEBUG("Player got bulletproof vest bonus.");
+			
+			// Remove the bonus item
+			blockContent &= ~LevelManager::BLOCK_CONTENT_BULLETPROOF_VEST_BONUS;
+			LevelManager::setBlockContent(playerCenterX, playerCenterY, blockContent);
+		}
+	}
 	// Is it the level end ?
 	else if (blockContent & LevelManager::BLOCK_CONTENT_LEVEL_EXIT) return 2;
 	

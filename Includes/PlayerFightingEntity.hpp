@@ -72,7 +72,8 @@ class PlayerFightingEntity: public FightingEntity
 		typedef enum
 		{
 			BONUS_NONE, //!< No bonus is currently enabled.
-			BONUS_MACHINE_GUN //!< Shoot faster without consuming ammunition.
+			BONUS_MACHINE_GUN, //!< Shoot faster without consuming ammunition.
+			BONUS_BULLETPROOF_VEST //!< Enemy can't damage the player.
 		} Bonus;
 		
 		/** Display the player at this horizontal display coordinate. */
