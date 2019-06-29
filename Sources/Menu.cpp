@@ -39,7 +39,7 @@ namespace Menu
 	*/
 	static inline void _initialize(const char *pointerStringMenuTitle, const char *pointerStringsMenuItemsTexts[])
 	{
-		// Make sure there not too many items
+		// Make sure there are not too many items
 		assert(_menuItemsCount <= CONFIGURATION_MENU_MAXIMUM_ITEMS_COUNT);
 		
 		// Handle title texture separately because it is not a menu item (it can't be selected or focused)
@@ -60,8 +60,8 @@ namespace Menu
 		for (i = 0; i < _menuItemsCount; i++)
 		{
 			// Render strings
-			_menuItems[i].pointerNormalTexture = Renderer::renderTextToTexture(pointerStringsMenuItemsTexts[i], Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
-			_menuItems[i].pointerFocusedTexture = Renderer::renderTextToTexture(pointerStringsMenuItemsTexts[i], Renderer::TEXT_COLOR_ID_DARK_GREEN, Renderer::FONT_SIZE_ID_BIG);
+			_menuItems[i].pointerNormalTexture = Renderer::renderTextToTexture(pointerStringsMenuItemsTexts[i], Renderer::TEXT_COLOR_DARK_GREY, Renderer::FONT_SIZE_ID_BIG);
+			_menuItems[i].pointerFocusedTexture = Renderer::renderTextToTexture(pointerStringsMenuItemsTexts[i], Renderer::TEXT_COLOR_LIGHT_GREY, Renderer::FONT_SIZE_ID_BIG);
 			
 			// Compute displaying coordinates
 			// Get texture size (texture have same size because only color changes between normal and focused textures, so use the normal one)
