@@ -1057,6 +1057,8 @@ namespace TextureManager
 			
 			// Create the associated game texture (TODO even for animated textures ?)
 			_texturesInformations[i].pointerTexture = new Texture(_texturesInformations[i].pointerSDLTexture);
+			
+			LOG_DEBUG("Loaded texture. File name : %s, texture ID : %d, SDL texture pointer : %p.", _texturesInformations[i].pointerStringFileName, i, _texturesInformations[i].pointerSDLTexture);
 		}
 		
 		return 0;

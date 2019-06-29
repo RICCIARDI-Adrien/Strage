@@ -214,7 +214,7 @@ namespace Renderer
 		SDL_Rect destinationRectangle;
 		if (SDL_QueryTexture(pointerTexture, NULL, NULL, &destinationRectangle.w, &destinationRectangle.h) != 0)
 		{
-			LOG_ERROR("Failed to query information about the texture, shutting down (%s).", SDL_GetError());
+			LOG_ERROR("Failed to query information about the SDL texture (SDL texture pointer : %p), shutting down (%s).", pointerTexture, SDL_GetError());
 			exit(-1);
 		}
 		
