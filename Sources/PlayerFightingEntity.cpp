@@ -43,10 +43,10 @@ PlayerFightingEntity::~PlayerFightingEntity() {}
 
 bool PlayerFightingEntity::modifyLife(int lifePointsAmount)
 {
-	// Do not affect player life if player is wearing a bulletproof vest
-	if (_currentActiveBonus == BONUS_BULLETPROOF_VEST) return false;
+	// Do not wound player if he is wearing a bulletproof vest, but permit life restoration
+	if ((_currentActiveBonus == BONUS_BULLETPROOF_VEST) && (lifePointsAmount < 0)) return false;
 	
-	// No bonus, player takes all damages
+	// No defensive bonus or life restoration
 	FightingEntity::modifyLife(lifePointsAmount);
 	return true;
 }

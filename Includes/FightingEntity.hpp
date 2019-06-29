@@ -65,8 +65,8 @@ class FightingEntity: public MovingEntity
 		
 		/** Change entity life value by adding or removing some life points.
 		 * @param lifePointsAmount How many life points to add or subtract.
-		 * @return false if the entity resisted damage,
-		 * @return true if the entity has been wounded.
+		 * @return false if the entity life wasn't modified,
+		 * @return true if the entity life was modified.
 		 */
 		virtual bool modifyLife(int lifePointsAmount);
 		
