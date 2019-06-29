@@ -380,9 +380,8 @@ static inline void _updateGameLogic()
 		if (SDL_HasIntersection(pointerPositionRectangle, pointerEnemyBullet->getPositionRectangle()))
 		{
 			// Wound the player
-			pointerPlayer->modifyLife(pointerEnemyBullet->getDamageAmount());
-			_isPlayerHit = true;
-			LOG_DEBUG("Player hit.");
+			_isPlayerHit = pointerPlayer->modifyLife(pointerEnemyBullet->getDamageAmount());
+			if (_isPlayerHit) LOG_DEBUG("Player hit.");
 			
 			EffectManager::addEffect(pointerEnemyBullet->getX() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET, pointerEnemyBullet->getY() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET, EffectManager::EFFECT_ID_BULLET_EXPLOSION_NO_SOUND);
 			

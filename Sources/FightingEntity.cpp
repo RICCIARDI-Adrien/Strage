@@ -28,13 +28,15 @@ FightingEntity::FightingEntity(int x, int y, TextureManager::TextureId textureId
 
 FightingEntity::~FightingEntity() {}
 
-void FightingEntity::modifyLife(int lifePointsAmount)
+bool FightingEntity::modifyLife(int lifePointsAmount)
 {
 	_lifePointsAmount += lifePointsAmount;
 	
 	// Clamp life points to [0; _maximumLifePointsAmount]
 	if (_lifePointsAmount < 0) _lifePointsAmount = 0;
 	else if (_lifePointsAmount > _maximumLifePointsAmount) _lifePointsAmount = _maximumLifePointsAmount;
+	
+	return true;
 }
 
 BulletMovingEntity *FightingEntity::shoot()

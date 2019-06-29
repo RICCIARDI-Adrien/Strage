@@ -22,7 +22,7 @@ class PlayerFightingEntity: public FightingEntity
 		virtual ~PlayerFightingEntity();
 		
 		// No need for documentation because it is the same as parent function
-		virtual void modifyLife(int lifePointsAmount);
+		virtual bool modifyLife(int lifePointsAmount);
 		
 		// No need for documentation because it is the same as parent function
 		virtual BulletMovingEntity *shoot();

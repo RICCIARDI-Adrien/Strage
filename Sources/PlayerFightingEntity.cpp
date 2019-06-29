@@ -41,10 +41,14 @@ PlayerFightingEntity::PlayerFightingEntity(int x, int y): FightingEntity(x, y, T
 
 PlayerFightingEntity::~PlayerFightingEntity() {}
 
-void PlayerFightingEntity::modifyLife(int lifePointsAmount)
+bool PlayerFightingEntity::modifyLife(int lifePointsAmount)
 {
 	// Do not affect player life if player is wearing a bulletproof vest
-	if (_currentActiveBonus != BONUS_BULLETPROOF_VEST) FightingEntity::modifyLife(lifePointsAmount);
+	if (_currentActiveBonus == BONUS_BULLETPROOF_VEST) return false;
+	
+	// No bonus, player takes all damages
+	FightingEntity::modifyLife(lifePointsAmount);
+	return true;
 }
 
 BulletMovingEntity *PlayerFightingEntity::shoot()
