@@ -262,6 +262,14 @@ namespace TextureManager
 			NULL,
 			NULL
 		},
+		// TEXTURE_ID_BULLET_PROOF_VEST
+		{
+			CONFIGURATION_PATH_TEXTURES "/Bulletproof_Vest.png",
+			1,
+			0,
+			NULL,
+			NULL
+		},
 		// TEXTURE_ID_ENEMY_SPAWNER
 		{
 			CONFIGURATION_PATH_TEXTURES "/Enemy_Spawner.png",
