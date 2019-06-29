@@ -472,11 +472,12 @@ namespace LevelManager
 		int itemsBitMask = BLOCK_CONTENT_MEDIPACK | BLOCK_CONTENT_GOLDEN_MEDIPACK | BLOCK_CONTENT_AMMUNITION | BLOCK_CONTENT_MACHINE_GUN_BONUS | BLOCK_CONTENT_BULLETPROOF_VEST_BONUS;
 		if (blockContent & itemsBitMask) return;
 		
-		// Select which item to spawn
-		switch (rand() % 4)
+		// Make pickable items (like ammunition or medipacks) spawn more frequently
+		if (rand() % 100 < 75)
 		{
 			// Spawn a medipack
-			case 0:
+			if (rand() % 2 == 0)
+			{
 				if (rand() % 100 < CONFIGURATION_GAMEPLAY_MEDIPACK_ITEM_SPAWN_PROBABILITY_PERCENTAGE)
 				{
 					// Spawn the item
@@ -485,10 +486,10 @@ namespace LevelManager
 					
 					LOG_DEBUG("Enemy dropped a medipack.");
 				}
-				break;
-				
+			}
 			// Spawn ammunition
-			case 1:
+			else
+			{
 				if (rand() % 100 < CONFIGURATION_GAMEPLAY_AMMUNITION_ITEM_SPAWN_PROBABILITY_PERCENTAGE)
 				{
 					// Spawn the item
@@ -497,10 +498,14 @@ namespace LevelManager
 					
 					LOG_DEBUG("Enemy dropped ammunition.");
 				}
-				break;
-				
+			}
+		}
+		// Spawn a bonus
+		else
+		{
 			// Spawn machine gun bonus
-			case 2:
+			if (rand() % 2 == 0)
+			{
 				if (rand() % 100 < CONFIGURATION_GAMEPLAY_MACHINE_GUN_BONUS_ITEM_SPAWN_PROBABILITY_PERCENTAGE)
 				{
 					// Spawn the item
@@ -509,10 +514,10 @@ namespace LevelManager
 					
 					LOG_DEBUG("Enemy dropped machine gun bonus.");
 				}
-				break;
-				
+			}
 			// Spawn bulletproof vest bonus
-			case 3:
+			else
+			{
 				if (rand() % 100 < CONFIGURATION_GAMEPLAY_BULLETPROOF_VEST_BONUS_ITEM_SPAWN_PROBABILITY_PERCENTAGE)
 				{
 					// Spawn the item
@@ -521,7 +526,7 @@ namespace LevelManager
 					
 					LOG_DEBUG("Enemy dropped bulletproof vest bonus.");
 				}
-				break;
+			}
 		}
 	}
 }
