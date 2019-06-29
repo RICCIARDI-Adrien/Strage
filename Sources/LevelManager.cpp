@@ -65,6 +65,8 @@ namespace LevelManager
 	static Texture *_pointerAmmunitionTexture;
 	/** Cache machine gun bonus texture. */
 	static Texture *_pointerMachineGunBonusTexture;
+	/** Cache bulletproof vest bonus texture. */
+	static Texture *_pointerBulletproofVestBonusTexture;
 
 	// Public variable, documentation is in the header file
 	std::list<EnemySpawnerStaticEntity *> enemySpawnersList;
@@ -83,6 +85,7 @@ namespace LevelManager
 		_pointerGoldenMedipackTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_GOLDEN_MEDIPACK);
 		_pointerAmmunitionTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_AMMUNITION);
 		_pointerMachineGunBonusTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_MACHINE_GUN);
+		_pointerBulletproofVestBonusTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_BULLETPROOF_VEST);
 
 		return 0;
 	}
@@ -295,6 +298,7 @@ namespace LevelManager
 					else if (pointerBlock->content & BLOCK_CONTENT_GOLDEN_MEDIPACK) _pointerGoldenMedipackTexture->render(xPixel, yPixel);
 					else if (pointerBlock->content & BLOCK_CONTENT_AMMUNITION) _pointerAmmunitionTexture->render(xPixel, yPixel);
 					else if (pointerBlock->content & BLOCK_CONTENT_MACHINE_GUN_BONUS) _pointerMachineGunBonusTexture->render(xPixel, yPixel);
+					else if (pointerBlock->content & BLOCK_CONTENT_BULLETPROOF_VEST_BONUS) _pointerBulletproofVestBonusTexture->render(xPixel, yPixel);
 				}
 				
 				xPixel += CONFIGURATION_LEVEL_BLOCK_SIZE;

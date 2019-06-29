@@ -262,7 +262,7 @@ namespace TextureManager
 			NULL,
 			NULL
 		},
-		// TEXTURE_ID_BULLET_PROOF_VEST
+		// TEXTURE_ID_BULLETPROOF_VEST
 		{
 			CONFIGURATION_PATH_TEXTURES "/Bulletproof_Vest.png",
 			1,

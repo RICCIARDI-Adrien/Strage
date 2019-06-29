@@ -90,6 +90,7 @@ When exporting a level, let 20 blocks on each map wall side to avoid displaying 
 
 ## Credits
 * Icons :
+   * [Bulletproof vest](https://www.flaticon.com/free-icon/bulletproof-vest_238523) : icon made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com)
    * [Machine gun](https://www.flaticon.com/free-icon/machine-gun_238558) : icon made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com)
 * Maps :
    * Level 1 made by Yannick Bilcot
