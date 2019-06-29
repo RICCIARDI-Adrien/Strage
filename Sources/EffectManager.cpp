@@ -161,6 +161,11 @@ namespace EffectManager
 		{
 			TextureManager::TEXTURE_ID_MACHINE_GUN_TAKEN,
 			AudioManager::SOUND_ID_MACHINE_GUN_TAKEN
+		},
+		// EFFECT_ID_BULLETPROOF_VEST_TAKEN
+		{
+			TextureManager::TEXTURE_ID_BULLETPROOF_VEST_TAKEN,
+			AudioManager::SOUND_ID_BULLETPROOF_VEST_TAKEN
 		}
 	};
 

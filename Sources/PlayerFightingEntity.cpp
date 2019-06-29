@@ -225,8 +225,7 @@ int PlayerFightingEntity::update()
 			_bonusRemainingTime = 45000 / CONFIGURATION_DISPLAY_REFRESH_PERIOD_MILLISECONDS; // Initialize timer, bonus effect lasts 45s (this method is called each game frame, so adjust time)
 			_currentActiveBonus = BONUS_BULLETPROOF_VEST;
 			
-			// TODO
-			//EffectManager::addEffect(blockX, blockY, EffectManager::EFFECT_ID_MACHINE_GUN_TAKEN);
+			EffectManager::addEffect(blockX, blockY, EffectManager::EFFECT_ID_BULLETPROOF_VEST_TAKEN);
 			LOG_DEBUG("Player got bulletproof vest bonus.");
 			
 			// Remove the bonus item
