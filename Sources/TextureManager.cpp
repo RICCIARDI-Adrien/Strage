@@ -1037,6 +1037,14 @@ namespace TextureManager
 			8,
 			NULL,
 			NULL
+		},
+		// TEXTURE_ID_BULLETPROOF_VEST_TAKEN
+		{
+			CONFIGURATION_PATH_TEXTURES "/Bulletproof_Vest_Taken.png",
+			8,
+			8,
+			NULL,
+			NULL
 		}
 	};
 
