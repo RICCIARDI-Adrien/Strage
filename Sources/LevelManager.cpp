@@ -468,20 +468,20 @@ namespace LevelManager
 		int blockContent;
 		
 		// Spawn nothing if the block contains an item yet
-		blockContent = LevelManager::getBlockContent(x, y);
-		int itemsBitMask = LevelManager::BLOCK_CONTENT_MEDIPACK | LevelManager::BLOCK_CONTENT_GOLDEN_MEDIPACK | LevelManager::BLOCK_CONTENT_AMMUNITION | LevelManager::BLOCK_CONTENT_MACHINE_GUN_BONUS;
+		blockContent = getBlockContent(x, y);
+		int itemsBitMask = BLOCK_CONTENT_MEDIPACK | BLOCK_CONTENT_GOLDEN_MEDIPACK | BLOCK_CONTENT_AMMUNITION | BLOCK_CONTENT_MACHINE_GUN_BONUS | BLOCK_CONTENT_BULLETPROOF_VEST_BONUS;
 		if (blockContent & itemsBitMask) return;
 		
 		// Select which item to spawn
-		switch (rand() % 3)
+		switch (rand() % 4)
 		{
 			// Spawn a medipack
 			case 0:
 				if (rand() % 100 < CONFIGURATION_GAMEPLAY_MEDIPACK_ITEM_SPAWN_PROBABILITY_PERCENTAGE)
 				{
 					// Spawn the item
-					blockContent |= LevelManager::BLOCK_CONTENT_MEDIPACK;
-					LevelManager::setBlockContent(x, y, blockContent);
+					blockContent |= BLOCK_CONTENT_MEDIPACK;
+					setBlockContent(x, y, blockContent);
 					
 					LOG_DEBUG("Enemy dropped a medipack.");
 				}
@@ -492,8 +492,8 @@ namespace LevelManager
 				if (rand() % 100 < CONFIGURATION_GAMEPLAY_AMMUNITION_ITEM_SPAWN_PROBABILITY_PERCENTAGE)
 				{
 					// Spawn the item
-					blockContent |= LevelManager::BLOCK_CONTENT_AMMUNITION;
-					LevelManager::setBlockContent(x, y, blockContent);
+					blockContent |= BLOCK_CONTENT_AMMUNITION;
+					setBlockContent(x, y, blockContent);
 					
 					LOG_DEBUG("Enemy dropped ammunition.");
 				}
@@ -504,10 +504,22 @@ namespace LevelManager
 				if (rand() % 100 < CONFIGURATION_GAMEPLAY_MACHINE_GUN_BONUS_ITEM_SPAWN_PROBABILITY_PERCENTAGE)
 				{
 					// Spawn the item
-					blockContent |= LevelManager::BLOCK_CONTENT_MACHINE_GUN_BONUS;
-					LevelManager::setBlockContent(x, y, blockContent);
+					blockContent |= BLOCK_CONTENT_MACHINE_GUN_BONUS;
+					setBlockContent(x, y, blockContent);
 					
 					LOG_DEBUG("Enemy dropped machine gun bonus.");
+				}
+				break;
+				
+			// Spawn bulletproof vest bonus
+			case 3:
+				if (rand() % 100 < CONFIGURATION_GAMEPLAY_BULLETPROOF_VEST_BONUS_ITEM_SPAWN_PROBABILITY_PERCENTAGE)
+				{
+					// Spawn the item
+					blockContent |= BLOCK_CONTENT_BULLETPROOF_VEST_BONUS;
+					setBlockContent(x, y, blockContent);
+					
+					LOG_DEBUG("Enemy dropped bulletproof vest bonus.");
 				}
 				break;
 		}
