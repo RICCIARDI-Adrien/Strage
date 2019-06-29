@@ -22,6 +22,9 @@ class PlayerFightingEntity: public FightingEntity
 		virtual ~PlayerFightingEntity();
 		
 		// No need for documentation because it is the same as parent function
+		virtual void modifyLife(int lifePointsAmount);
+		
+		// No need for documentation because it is the same as parent function
 		virtual BulletMovingEntity *shoot();
 		
 		/** Generate a mortar shell facing the entity direction and play the associated effect.

@@ -66,14 +66,7 @@ class FightingEntity: public MovingEntity
 		/** Change entity life value by adding or removing some life points.
 		 * @param lifePointsAmount How many life points to add or subtract.
 		 */
-		inline void modifyLife(int lifePointsAmount)
-		{
-			_lifePointsAmount += lifePointsAmount;
-			
-			// Clamp life points to [0; _maximumLifePointsAmount]
-			if (_lifePointsAmount < 0) _lifePointsAmount = 0;
-			else if (_lifePointsAmount > _maximumLifePointsAmount) _lifePointsAmount = _maximumLifePointsAmount;
-		}
+		virtual void modifyLife(int lifePointsAmount);
 		
 		/** Tell if the entity is at maximum life or not.
 		 * @return true if the entity can be healed,
