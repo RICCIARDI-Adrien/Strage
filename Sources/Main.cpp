@@ -112,6 +112,8 @@ static void _exitFreeResources()
 	Renderer::uninitialize();
 	
 	SDL_Quit();
+	
+	LOG_INFORMATION("Game engine successfully exited.");
 }
 
 /** Tell whether an enemy can be spawned on the block located at the provided map coordinates.
@@ -571,7 +573,7 @@ int main(int argc, char *argv[])
 	}
 	
 	// Initialize the needed SDL subsystems
-	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER) != 0)
+	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER | SDL_INIT_AUDIO) != 0)
 	{
 		LOG_ERROR("SDL_Init() failed (%s).", SDL_GetError());
 		return -1;
@@ -844,5 +846,5 @@ int main(int argc, char *argv[])
 	}
 	
 Exit:
-	return 0;
+	return EXIT_SUCCESS;
 }
