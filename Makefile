@@ -13,6 +13,18 @@ BINARY = Strage
 CPPFLAGS = -W -Wall -std=c++11
 SOURCES = $(shell find $(PATH_SOURCES) -name "*.cpp")
 
+# Copy all relevant game files to the directory specified as first argument
+define CopyGameDataFiles
+	@# Copy directories
+	cp -r Levels $(1)
+	cp -r Sounds $(1)
+	cp -r Textures $(1)
+
+	@# Copy files
+	cp Liberation_Sans_Bold.ttf $(1)
+	cp README.md $(1)
+endef
+
 # Debug target is only available on Linux
 debug: CPP = g++
 debug: CPPFLAGS += -g
@@ -128,14 +140,9 @@ linux_release: linux
 	rm -rf $(PATH_LINUX_RELEASE)
 	mkdir $(PATH_LINUX_RELEASE)
 	
-	@# Copy relevant directories
-	cp -r Levels $(PATH_LINUX_RELEASE)
-	cp -r Sounds $(PATH_LINUX_RELEASE)
-	cp -r Textures $(PATH_LINUX_RELEASE)
-
-	@# Copy relevant files
-	cp Liberation_Sans_Bold.ttf $(PATH_LINUX_RELEASE)
-	cp README.md $(PATH_LINUX_RELEASE)
+	@# Copy game data
+	$(call CopyGameDataFiles,$(PATH_LINUX_RELEASE))
+	@# Copy binary
 	cp Strage $(PATH_LINUX_RELEASE)
 	
 	@# Create a compressed archive
@@ -157,15 +164,10 @@ macos_release: macos
 	cp -r Frameworks/SDL2_mixer.framework $(PATH_MACOS_RELEASE)/Contents/Frameworks
 	cp -r Frameworks/SDL2_ttf.framework $(PATH_MACOS_RELEASE)/Contents/Frameworks
 
+	@# Copy game data
+	$(call CopyGameDataFiles,$(PATH_MACOS_RELEASE)/Contents/Resources)
 	@# Copy binary
 	cp Strage $(PATH_MACOS_RELEASE)/Contents/MacOS
-
-	@# Copy game resource files
-	cp -r Levels $(PATH_MACOS_RELEASE)/Contents/Resources
-	cp -r Sounds $(PATH_MACOS_RELEASE)/Contents/Resources
-	cp -r Textures $(PATH_MACOS_RELEASE)/Contents/Resources
-	cp Liberation_Sans_Bold.ttf $(PATH_MACOS_RELEASE)/Contents/Resources
-	cp README.md $(PATH_MACOS_RELEASE)/Contents/Resources
 	
 	@# Copy app icon
 	cp Development_Resources/MacOS_Icon.icns $(PATH_MACOS_RELEASE)/Contents/Resources/Icon.icns
@@ -201,14 +203,9 @@ windows_release: windows
 	rm -rf $(PATH_WINDOWS_RELEASE)
 	mkdir $(PATH_WINDOWS_RELEASE)
 
-	@# Copy relevant directories
-	cp -r Levels $(PATH_WINDOWS_RELEASE)
-	cp -r Sounds $(PATH_WINDOWS_RELEASE)
-	cp -r Textures $(PATH_WINDOWS_RELEASE)
-
-	@# Copy relevant files
-	cp Liberation_Sans_Bold.ttf $(PATH_WINDOWS_RELEASE)
-	cp README.md $(PATH_WINDOWS_RELEASE)
+	@# Copy game data
+	$(call CopyGameDataFiles,$(PATH_WINDOWS_RELEASE))
+	@# Copy binary
 	cp Strage.exe $(PATH_WINDOWS_RELEASE)
 
 	@# Add needed DLLs
