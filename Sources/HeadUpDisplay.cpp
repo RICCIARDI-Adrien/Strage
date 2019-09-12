@@ -23,6 +23,16 @@ namespace HeadUpDisplay
 		STRING_ID_REMAINING_BONUS_TIME,
 		STRING_IDS_COUNT
 	} StringId;
+	
+	/** Display a specific arrow at a specific screen position. */
+	typedef struct
+	{
+		Texture *pointerTurnedOffTexture; //!< The texture to display when the arrow is not lighted.
+		Texture *pointerLightedTexture; //!< The texture to display when the arrow is lighted.
+		int x; //!< The texture displaying horizontal coordinate.
+		int y; //!< The texture displaying vertical coordinate.
+		// TODO boolean telling which texture to display
+	} CompassArrow;
 
 	/** Cache all the pre-rendered string textures to avoid to render them at each frame, which is useless if they don't change. */
 	static SDL_Texture *_pointerStringTextures[STRING_IDS_COUNT] = {0};
@@ -32,6 +42,9 @@ namespace HeadUpDisplay
 
 	/** Tell whether bonus remaining time must be displayed. */
 	static bool _isBonusRemainingSecondsStringDisplayed = false;
+
+	/** All compass arrows. */
+	static CompassArrow _compassArrows[4]; // 0 : up, 1 : down, 2 : left, 3 : right TODO ARROW_UP... enum
 
 	/** Display player life amount. */
 	static inline void _displayPlayerLifePointsAmount()
@@ -97,6 +110,28 @@ namespace HeadUpDisplay
 		// Cache background texture access to avoid searching for it at each frame
 		_pointerBackgroundTexture = getTextureFromId(TextureManager::TEXTURE_ID_HEAD_UP_DISPLAY_BACKGROUND)->getSDLTexture();
 		
+		// Cache compass textures and position
+		// Down arrow
+		_compassArrows[1].pointerTurnedOffTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_COMPASS_ARROW_DOWN_TURNED_OFF);
+		_compassArrows[1].pointerLightedTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_COMPASS_ARROW_DOWN_LIGHTED);
+		_compassArrows[1].x = (Renderer::displayWidth - _compassArrows[1].pointerTurnedOffTexture->getWidth()) / 2;
+		_compassArrows[1].y = Renderer::displayHeight - _compassArrows[1].pointerTurnedOffTexture->getHeight() - 20; // Start from downer arrow as it has a fixed vertical position from the screen bottom
+		// Left arrow
+		_compassArrows[2].pointerTurnedOffTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_COMPASS_ARROW_LEFT_TURNED_OFF);
+		_compassArrows[2].pointerLightedTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_COMPASS_ARROW_LEFT_LIGHTED);
+		_compassArrows[2].x = ((Renderer::displayWidth - _compassArrows[2].pointerTurnedOffTexture->getWidth()) / 2) - 42;
+		_compassArrows[2].y = _compassArrows[1].y - _compassArrows[2].pointerTurnedOffTexture->getHeight() + 8; // Left arrow vertical position is computed from down arrow position
+		// Right arrow
+		_compassArrows[3].pointerTurnedOffTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_COMPASS_ARROW_RIGHT_TURNED_OFF);
+		_compassArrows[3].pointerLightedTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_COMPASS_ARROW_RIGHT_LIGHTED);
+		_compassArrows[3].x = ((Renderer::displayWidth - _compassArrows[2].pointerTurnedOffTexture->getWidth()) / 2) + 42;
+		_compassArrows[3].y = _compassArrows[2].y; // Right arrow vertical position is the same than left arrow
+		// Up arrow
+		_compassArrows[0].pointerTurnedOffTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_COMPASS_ARROW_UP_TURNED_OFF);
+		_compassArrows[0].pointerLightedTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_COMPASS_ARROW_UP_LIGHTED);
+		_compassArrows[0].x = (Renderer::displayWidth - _compassArrows[0].pointerTurnedOffTexture->getWidth()) / 2;
+		_compassArrows[0].y = _compassArrows[2].y - _compassArrows[0].pointerTurnedOffTexture->getHeight() + 8;
+
 		return 0;
 	}
 
@@ -194,5 +229,8 @@ namespace HeadUpDisplay
 		
 		// Display bonus timer (if any)
 		if (_isBonusRemainingSecondsStringDisplayed) Renderer::renderCenteredTexture(_pointerStringTextures[STRING_ID_REMAINING_BONUS_TIME], CONFIGURATION_DISPLAY_HUD_BONUS_TIMER_Y);
+		
+		// Display compass TEST
+		for (int i = 0; i < 4; i++) _compassArrows[i].pointerTurnedOffTexture->render(_compassArrows[i].x, _compassArrows[i].y);
 	}
 }
