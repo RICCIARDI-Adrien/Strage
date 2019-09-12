@@ -820,6 +820,70 @@ namespace TextureManager
 			NULL,
 			NULL
 		},
+		// TEXTURE_ID_COMPASS_ARROW_UP_TURNED_OFF
+		{
+			CONFIGURATION_PATH_TEXTURES "/Compass_Arrow_Up_Turned_Off.png",
+			1,
+			0,
+			NULL,
+			NULL
+		},
+		// TEXTURE_ID_COMPASS_ARROW_DOWN_TURNED_OFF
+		{
+			CONFIGURATION_PATH_TEXTURES "/Compass_Arrow_Down_Turned_Off.png",
+			1,
+			0,
+			NULL,
+			NULL
+		},
+		// TEXTURE_ID_COMPASS_ARROW_LEFT_TURNED_OFF
+		{
+			CONFIGURATION_PATH_TEXTURES "/Compass_Arrow_Left_Turned_Off.png",
+			1,
+			0,
+			NULL,
+			NULL
+		},
+		// TEXTURE_ID_COMPASS_ARROW_RIGHT_TURNED_OFF
+		{
+			CONFIGURATION_PATH_TEXTURES "/Compass_Arrow_Right_Turned_Off.png",
+			1,
+			0,
+			NULL,
+			NULL
+		},
+		// TEXTURE_ID_COMPASS_ARROW_UP_LIGHTED
+		{
+			CONFIGURATION_PATH_TEXTURES "/Compass_Arrow_Up_Lighted.png",
+			1,
+			0,
+			NULL,
+			NULL
+		},
+		// TEXTURE_ID_COMPASS_ARROW_DOWN_LIGHTED
+		{
+			CONFIGURATION_PATH_TEXTURES "/Compass_Arrow_Down_Lighted.png",
+			1,
+			0,
+			NULL,
+			NULL
+		},
+		// TEXTURE_ID_COMPASS_ARROW_LEFT_LIGHTED
+		{
+			CONFIGURATION_PATH_TEXTURES "/Compass_Arrow_Left_Lighted.png",
+			1,
+			0,
+			NULL,
+			NULL
+		},
+		// TEXTURE_ID_COMPASS_ARROW_RIGHT_LIGHTED
+		{
+			CONFIGURATION_PATH_TEXTURES "/Compass_Arrow_Right_Lighted.png",
+			1,
+			0,
+			NULL,
+			NULL
+		},
 		
 		// Animated textures
 		// TEXTURE_ID_ENEMY_SPAWNER_EXPLOSION
