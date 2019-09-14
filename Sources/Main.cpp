@@ -460,6 +460,31 @@ static inline void _updateGameLogic()
 /** Display and keep up to date interface strings. */
 static inline void _renderInterface()
 {
+	// Turn off all compass arrows, so only the appropriate ones will be lighted
+	for (int i = 0; i < HeadUpDisplay::COMPASS_ARROW_IDS_COUNT; i++) HeadUpDisplay::setCompassArrowState(static_cast<HeadUpDisplay::CompassArrowId>(i), false);
+	
+	// Detect enemy spawners positions against player to light the corresponding compass arrows
+	std::list<EnemySpawnerStaticEntity *>::iterator enemySpawnersListIterator;
+	EnemySpawnerStaticEntity *pointerSpawner;
+	int playerBlockX = pointerPlayer->getX() / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	int playerBlockY = pointerPlayer->getY() / CONFIGURATION_LEVEL_BLOCK_SIZE;
+	int spawnerBlockX, spawnerBlockY;
+	for (enemySpawnersListIterator = LevelManager::enemySpawnersList.begin(); enemySpawnersListIterator != LevelManager::enemySpawnersList.end(); ++enemySpawnersListIterator)
+	{
+		// Compute spawner block position
+		pointerSpawner = *enemySpawnersListIterator;
+		spawnerBlockX = pointerSpawner->getX() / CONFIGURATION_LEVEL_BLOCK_SIZE;
+		spawnerBlockY = pointerSpawner->getY() / CONFIGURATION_LEVEL_BLOCK_SIZE;
+		
+		// Is the spawner above the player ?
+		if (spawnerBlockY < playerBlockY) HeadUpDisplay::setCompassArrowState(HeadUpDisplay::COMPASS_ARROW_ID_UP, true);
+		else if (spawnerBlockY > playerBlockY) HeadUpDisplay::setCompassArrowState(HeadUpDisplay::COMPASS_ARROW_ID_DOWN, true);
+		
+		// Is the spawner on the player left ?
+		if (spawnerBlockX < playerBlockX) HeadUpDisplay::setCompassArrowState(HeadUpDisplay::COMPASS_ARROW_ID_LEFT, true);
+		else if (spawnerBlockX > playerBlockX) HeadUpDisplay::setCompassArrowState(HeadUpDisplay::COMPASS_ARROW_ID_RIGHT, true);
+	}
+	
 	HeadUpDisplay::render();
 	
 	// Display a centered message if needed
@@ -470,11 +495,9 @@ static inline void _renderInterface()
 /** Display everything to the screen. */
 static inline void _renderGame()
 {
-	int sceneX, sceneY;
-	
 	// Compute rendering top left coordinates
-	sceneX = pointerPlayer->getX() - _cameraOffsetX;
-	sceneY = pointerPlayer->getY() - _cameraOffsetY;
+	int sceneX = pointerPlayer->getX() - _cameraOffsetX;
+	int sceneY = pointerPlayer->getY() - _cameraOffsetY;
 	Renderer::displayX = sceneX;
 	Renderer::displayY = sceneY;
 	
