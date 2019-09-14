@@ -2,6 +2,7 @@
  * See HeadUpDisplay.hpp for description.
  * @author Adrien RICCIARDI
  */
+#include <cassert>
 #include <Configuration.hpp>
 #include <HeadUpDisplay.hpp>
 #include <LevelManager.hpp>
@@ -31,7 +32,7 @@ namespace HeadUpDisplay
 		Texture *pointerLightedTexture; //!< The texture to display when the arrow is lighted.
 		int x; //!< The texture displaying horizontal coordinate.
 		int y; //!< The texture displaying vertical coordinate.
-		// TODO boolean telling which texture to display
+		bool isLighted; //!< Display lighted texture when true, display turned off texture when false.
 	} CompassArrow;
 
 	/** Cache all the pre-rendered string textures to avoid to render them at each frame, which is useless if they don't change. */
@@ -44,7 +45,7 @@ namespace HeadUpDisplay
 	static bool _isBonusRemainingSecondsStringDisplayed = false;
 
 	/** All compass arrows. */
-	static CompassArrow _compassArrows[4]; // 0 : up, 1 : down, 2 : left, 3 : right TODO ARROW_UP... enum
+	static CompassArrow _compassArrows[COMPASS_ARROW_IDS_COUNT];
 
 	/** Display player life amount. */
 	static inline void _displayPlayerLifePointsAmount()
@@ -216,6 +217,12 @@ namespace HeadUpDisplay
 		LOG_DEBUG("Refreshed bonus timer interface string.");
 	}
 
+	void setCompassArrowState(CompassArrowId id, bool isLighted)
+	{
+		assert(id < COMPASS_ARROW_IDS_COUNT);
+		_compassArrows[id].isLighted = isLighted;
+	}
+
 	void render()
 	{
 		// Display background
@@ -230,7 +237,11 @@ namespace HeadUpDisplay
 		// Display bonus timer (if any)
 		if (_isBonusRemainingSecondsStringDisplayed) Renderer::renderCenteredTexture(_pointerStringTextures[STRING_ID_REMAINING_BONUS_TIME], CONFIGURATION_DISPLAY_HUD_BONUS_TIMER_Y);
 		
-		// Display compass TEST
-		for (int i = 0; i < 4; i++) _compassArrows[i].pointerTurnedOffTexture->render(_compassArrows[i].x, _compassArrows[i].y);
+		// Display compass
+		for (int i = 0; i < COMPASS_ARROW_IDS_COUNT; i++)
+		{
+			if (_compassArrows[i].isLighted) _compassArrows[i].pointerLightedTexture->render(_compassArrows[i].x, _compassArrows[i].y);
+			else  _compassArrows[i].pointerTurnedOffTexture->render(_compassArrows[i].x, _compassArrows[i].y);
+		}
 	}
 }

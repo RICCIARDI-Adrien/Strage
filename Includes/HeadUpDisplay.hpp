@@ -15,6 +15,16 @@ namespace HeadUpDisplay
 		MORTAR_STATE_READY,
 		MORTAR_STATE_INVALID
 	} MortarState;
+	
+	/** All compass arrows. */
+	typedef enum
+	{
+		COMPASS_ARROW_ID_UP,
+		COMPASS_ARROW_ID_DOWN,
+		COMPASS_ARROW_ID_LEFT,
+		COMPASS_ARROW_ID_RIGHT,
+		COMPASS_ARROW_IDS_COUNT
+	} CompassArrowId;
 
 	/** Cache needed textures.
 	* @return Always 0 as it can't fail.
@@ -35,6 +45,12 @@ namespace HeadUpDisplay
 	 * @param timeSeconds How many bonus seconds remain. Setting 0 disables the bonus timer displaying.
 	 */
 	void setRemainingBonusTime(int timeSeconds);
+	
+	/** Set a specific compass arrow light state.
+	 * @param id The compass arrow to set state.
+	 * @param isLighted Set to true to light the arrow, set to false to turn off the arrow.
+	 */
+	void setCompassArrowState(CompassArrowId id, bool isLighted);
 
 	/** Render the strings with the last provided values to the screen. */
 	void render();
