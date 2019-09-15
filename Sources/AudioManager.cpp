@@ -78,25 +78,25 @@ namespace AudioManager
 	/** Gather all sounds file names to load. */
 	static const char *pointerStringsSoundFileNames[] =
 	{
-		CONFIGURATION_PATH_SOUNDS "/Ammunition_Taken.wav",
-		CONFIGURATION_PATH_SOUNDS "/Player_Fireshot.wav",
-		CONFIGURATION_PATH_SOUNDS "/Player_Fireshot_Mortar_Shell.wav",
-		CONFIGURATION_PATH_SOUNDS "/Player_Mortar_Shell_Reloading.wav",
-		CONFIGURATION_PATH_SOUNDS "/Player_Healed.wav",
-		CONFIGURATION_PATH_SOUNDS "/Player_Life_Increased.wav",
-		CONFIGURATION_PATH_SOUNDS "/Small_Enemy_Fireshot.wav",
-		CONFIGURATION_PATH_SOUNDS "/Medium_Enemy_Fireshot.wav",
-		CONFIGURATION_PATH_SOUNDS "/Big_Enemy_Fireshot.wav",
-		CONFIGURATION_PATH_SOUNDS "/Enemy_Bullet_Impact.wav",
-		CONFIGURATION_PATH_SOUNDS "/Small_Enemy_Explosion.wav",
-		CONFIGURATION_PATH_SOUNDS "/Medium_Enemy_Explosion.wav",
-		CONFIGURATION_PATH_SOUNDS "/Big_Enemy_Explosion.wav",
-		CONFIGURATION_PATH_SOUNDS "/Enemy_Spawner_Bullet_Impact.wav",
-		CONFIGURATION_PATH_SOUNDS "/Enemy_Spawner_Explosion.wav",
-		CONFIGURATION_PATH_SOUNDS "/Menu_Move.wav",
-		CONFIGURATION_PATH_SOUNDS "/Menu_Select.wav",
-		CONFIGURATION_PATH_SOUNDS "/Machine_Gun_Taken.wav",
-		CONFIGURATION_PATH_SOUNDS "/Bulletproof_Vest_Taken.wav"
+		CONFIGURATION_PATH_SOUNDS "/Ammunition_Taken.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Player_Fireshot.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Player_Fireshot_Mortar_Shell.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Player_Mortar_Shell_Reloading.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Player_Healed.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Player_Life_Increased.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Small_Enemy_Fireshot.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Medium_Enemy_Fireshot.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Big_Enemy_Fireshot.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Enemy_Bullet_Impact.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Small_Enemy_Explosion.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Medium_Enemy_Explosion.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Big_Enemy_Explosion.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Enemy_Spawner_Bullet_Impact.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Enemy_Spawner_Explosion.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Menu_Move.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Menu_Select.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Machine_Gun_Taken.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Bulletproof_Vest_Taken.mp3"
 	};
 
 	/** Make the thread wait until a new music must be played. */
