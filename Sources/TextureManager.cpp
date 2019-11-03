@@ -376,6 +376,38 @@ namespace TextureManager
 			NULL,
 			NULL
 		},
+		// TEXTURE_ID_PLAYER_MACHINE_GUN_BONUS_UP
+		{
+			CONFIGURATION_PATH_TEXTURES "/Player_Machine_Gun_Bonus_Up.png",
+			1,
+			0,
+			NULL,
+			NULL
+		},
+		// TEXTURE_ID_PLAYER_MACHINE_GUN_BONUS_DOWN
+		{
+			CONFIGURATION_PATH_TEXTURES "/Player_Machine_Gun_Bonus_Down.png",
+			1,
+			0,
+			NULL,
+			NULL
+		},
+		// TEXTURE_ID_PLAYER_MACHINE_GUN_BONUS_LEFT
+		{
+			CONFIGURATION_PATH_TEXTURES "/Player_Machine_Gun_Bonus_Left.png",
+			1,
+			0,
+			NULL,
+			NULL
+		},
+		// TEXTURE_ID_PLAYER_MACHINE_GUN_BONUS_RIGHT
+		{
+			CONFIGURATION_PATH_TEXTURES "/Player_Machine_Gun_Bonus_Right.png",
+			1,
+			0,
+			NULL,
+			NULL
+		},
 		// TEXTURE_ID_SMALL_ENEMY_FACING_UP
 		{
 			CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Up.png",
