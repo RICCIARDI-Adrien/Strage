@@ -137,6 +137,12 @@ int PlayerFightingEntity::update()
 		// Restore player default attributes
 		_timeBetweenShots = CONFIGURATION_GAMEPLAY_PLAYER_DEFAULT_PRIMARY_FIRE_TIME_BETWEEN_TWO_SHOTS;
 		_currentActiveBonus = BONUS_NONE;
+		
+		// Restore default player skin
+		_pointerTextures[DIRECTION_UP] = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_FACING_UP);
+		_pointerTextures[DIRECTION_DOWN] = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_FACING_DOWN);
+		_pointerTextures[DIRECTION_LEFT] = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_FACING_LEFT);
+		_pointerTextures[DIRECTION_RIGHT] = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_FACING_RIGHT);
 	}
 	
 	// Cache player center coordinates
@@ -211,6 +217,12 @@ int PlayerFightingEntity::update()
 			
 			EffectManager::addEffect(blockX, blockY, EffectManager::EFFECT_ID_MACHINE_GUN_TAKEN);
 			LOG_DEBUG("Player got machine gun bonus.");
+			
+			// Set specific player skin
+			_pointerTextures[DIRECTION_UP] = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_MACHINE_GUN_BONUS_UP);
+			_pointerTextures[DIRECTION_DOWN] = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_MACHINE_GUN_BONUS_DOWN);
+			_pointerTextures[DIRECTION_LEFT] = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_MACHINE_GUN_BONUS_LEFT);
+			_pointerTextures[DIRECTION_RIGHT] = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_MACHINE_GUN_BONUS_RIGHT);
 			
 			// Remove the bonus item
 			blockContent &= ~LevelManager::BLOCK_CONTENT_MACHINE_GUN_BONUS;
