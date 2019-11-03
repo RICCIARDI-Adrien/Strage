@@ -344,6 +344,38 @@ namespace TextureManager
 			NULL,
 			NULL
 		},
+		// TEXTURE_ID_PLAYER_BULLETPROOF_VEST_BONUS_UP
+		{
+			CONFIGURATION_PATH_TEXTURES "/Player_Bulletproof_Vest_Bonus_Up.png",
+			1,
+			0,
+			NULL,
+			NULL
+		},
+		// TEXTURE_ID_PLAYER_BULLETPROOF_VEST_BONUS_DOWN
+		{
+			CONFIGURATION_PATH_TEXTURES "/Player_Bulletproof_Vest_Bonus_Down.png",
+			1,
+			0,
+			NULL,
+			NULL
+		},
+		// TEXTURE_ID_PLAYER_BULLETPROOF_VEST_BONUS_LEFT
+		{
+			CONFIGURATION_PATH_TEXTURES "/Player_Bulletproof_Vest_Bonus_Left.png",
+			1,
+			0,
+			NULL,
+			NULL
+		},
+		// TEXTURE_ID_PLAYER_BULLETPROOF_VEST_BONUS_RIGHT
+		{
+			CONFIGURATION_PATH_TEXTURES "/Player_Bulletproof_Vest_Bonus_Right.png",
+			1,
+			0,
+			NULL,
+			NULL
+		},
 		// TEXTURE_ID_SMALL_ENEMY_FACING_UP
 		{
 			CONFIGURATION_PATH_TEXTURES "/Small_Enemy_Up.png",
