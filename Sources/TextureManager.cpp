@@ -376,7 +376,7 @@ namespace TextureManager
 			NULL,
 			NULL
 		},
-		// TEXTURE_ID_PLAYER_MACHINE_GUN_BONUS_UP
+		// TEXTURE_ID_PLAYER_MACHINE_GUN_BONUS_FACING_UP
 		{
 			CONFIGURATION_PATH_TEXTURES "/Player_Machine_Gun_Bonus_Up.png",
 			1,
@@ -384,7 +384,7 @@ namespace TextureManager
 			NULL,
 			NULL
 		},
-		// TEXTURE_ID_PLAYER_MACHINE_GUN_BONUS_DOWN
+		// TEXTURE_ID_PLAYER_MACHINE_GUN_BONUS_FACING_DOWN
 		{
 			CONFIGURATION_PATH_TEXTURES "/Player_Machine_Gun_Bonus_Down.png",
 			1,
@@ -392,7 +392,7 @@ namespace TextureManager
 			NULL,
 			NULL
 		},
-		// TEXTURE_ID_PLAYER_MACHINE_GUN_BONUS_LEFT
+		// TEXTURE_ID_PLAYER_MACHINE_GUN_BONUS_FACING_LEFT
 		{
 			CONFIGURATION_PATH_TEXTURES "/Player_Machine_Gun_Bonus_Left.png",
 			1,
@@ -400,7 +400,7 @@ namespace TextureManager
 			NULL,
 			NULL
 		},
-		// TEXTURE_ID_PLAYER_MACHINE_GUN_BONUS_RIGHT
+		// TEXTURE_ID_PLAYER_MACHINE_GUN_BONUS_FACING_RIGHT
 		{
 			CONFIGURATION_PATH_TEXTURES "/Player_Machine_Gun_Bonus_Right.png",
 			1,
