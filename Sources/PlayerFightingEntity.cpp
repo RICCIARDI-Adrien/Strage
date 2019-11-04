@@ -245,10 +245,10 @@ int PlayerFightingEntity::update()
 			LOG_DEBUG("Player got bulletproof vest bonus.");
 			
 			// Set specific player skin
-			_pointerTextures[DIRECTION_UP] = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLETPROOF_VEST_BONUS_UP);
-			_pointerTextures[DIRECTION_DOWN] = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLETPROOF_VEST_BONUS_DOWN);
-			_pointerTextures[DIRECTION_LEFT] = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLETPROOF_VEST_BONUS_LEFT);
-			_pointerTextures[DIRECTION_RIGHT] = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLETPROOF_VEST_BONUS_RIGHT);
+			_pointerTextures[DIRECTION_UP] = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLETPROOF_VEST_BONUS_FACING_UP);
+			_pointerTextures[DIRECTION_DOWN] = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLETPROOF_VEST_BONUS_FACING_DOWN);
+			_pointerTextures[DIRECTION_LEFT] = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLETPROOF_VEST_BONUS_FACING_LEFT);
+			_pointerTextures[DIRECTION_RIGHT] = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_BULLETPROOF_VEST_BONUS_FACING_RIGHT);
 			
 			// Remove the bonus item
 			blockContent &= ~LevelManager::BLOCK_CONTENT_BULLETPROOF_VEST_BONUS;
