@@ -1204,6 +1204,7 @@ namespace TextureManager
 			
 			LOG_DEBUG("Loaded texture. File name : %s, texture ID : %d, SDL texture pointer : %p.", _texturesInformations[i].pointerStringFileName, i, _texturesInformations[i].pointerSDLTexture);
 		}
+		LOG_DEBUG("Loaded %d textures.", TEXTURE_IDS_COUNT);
 		
 		return 0;
 	}

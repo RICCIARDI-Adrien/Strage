@@ -183,12 +183,13 @@ namespace AudioManager
 			LOG_DEBUG("Loading sound file %s...", pointerStringsSoundFileNames[i]);
 			_pointerSounds[i] = _loadFromWave(FileManager::getFilePath(pointerStringsSoundFileNames[i]));
 		}
-		LOG_DEBUG("Successfully loaded all sound files.");
+		LOG_DEBUG("Loaded %d sound files.", i);
 		
 		// Load all musics
 		for (i = 0; i < MUSICS_COUNT; i++)
 		{
 			// Try to load the file
+			LOG_DEBUG("Loading music file %s...", _musics[i].pointerStringFileName);
 			_musics[i].pointerMusicHandle = Mix_LoadMUS(FileManager::getFilePath(_musics[i].pointerStringFileName));
 			if (_musics[i].pointerMusicHandle == NULL)
 			{
@@ -196,6 +197,7 @@ namespace AudioManager
 				return -1;
 			}
 		}
+		LOG_DEBUG("Loaded %d music files.", i);
 		
 		// Call a callback when playing a music has finished
 		Mix_HookMusicFinished(_wakeUpMusicThread);
