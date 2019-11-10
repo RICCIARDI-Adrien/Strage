@@ -4,6 +4,7 @@ PATH_LINUX_RELEASE = /tmp/Strage
 PATH_MACOS_RELEASE = Strage.app
 PATH_WINDOWS_RELEASE = Strage
 
+VERSION_STRAGE = 0.13
 VERSION_SDL2 = 2.0.10
 VERSION_SDL2_IMAGE = 2.0.5
 VERSION_SDL2_MIXER = 2.0.4
@@ -146,7 +147,7 @@ linux_release: linux
 	cp Strage $(PATH_LINUX_RELEASE)
 	
 	@# Create a compressed archive
-	tar -C $(dir $(PATH_LINUX_RELEASE)) -c $(notdir $(PATH_LINUX_RELEASE))/ -J -f ../Strage_Version_x.x_Linux.tar.xz
+	tar -C $(dir $(PATH_LINUX_RELEASE)) -c $(notdir $(PATH_LINUX_RELEASE))/ -J -f ../Strage_Version_$(VERSION_STRAGE)_Linux.tar.xz
 	
 	@# Remove now useless release directory
 	rm -r $(PATH_LINUX_RELEASE)
@@ -193,7 +194,7 @@ macos_release: macos
 	echo "</plist>" >> $(PATH_MACOS_RELEASE)/Contents/Info.plist
 	
 	@# Create a compressed archive
-	zip -r ../Strage_Version_x.x_MacOS.zip $(PATH_MACOS_RELEASE)
+	zip -r ../Strage_Version_$(VERSION_STRAGE)_MacOS.zip $(PATH_MACOS_RELEASE)
 	
 	@# Remove now useless release directory
 	rm -r $(PATH_MACOS_RELEASE)
@@ -220,7 +221,7 @@ windows_release: windows
 	cp SDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/bin/SDL2_ttf.dll $(PATH_WINDOWS_RELEASE)
 	
 	@# Create a compressed archive
-	zip -r ../Strage_Version_x.x_Windows.zip $(PATH_WINDOWS_RELEASE)
+	zip -r ../Strage_Version_$(VERSION_STRAGE)_Windows.zip $(PATH_WINDOWS_RELEASE)
 	
 	@# Remove now useless release directory
 	rm -r $(PATH_WINDOWS_RELEASE)
