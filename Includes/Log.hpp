@@ -37,4 +37,19 @@
 	#define LOG_DEBUG(stringMessage, ...) {} // Replace by an empty scope instead of nothing in case the log is the only instruction of an if, which would have an empty body if logs are disabled
 #endif
 
+namespace Log
+{
+	/** Open log file.
+	 * @return -1 if an error occurred,
+	 * @return 0 on success.
+	 * @note There is no need for an uninitialize() method because the log file is automatically closed on application exit.
+	 */
+	int initialize();
+	
+	/** Append a string to the log file.
+	 * @param pointerMessageFormat A printf() like message format.
+	 */
+	void appendMessage(const char *pointerMessageFormat, ...);
+}
+
 #endif

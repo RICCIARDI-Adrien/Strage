@@ -595,6 +595,9 @@ int main(int argc, char *argv[])
 		}
 	}
 	
+	// Initialize logging system before anything else
+	if (Log::initialize() != 0) return -1;
+	
 	// Initialize the needed SDL subsystems
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER | SDL_INIT_AUDIO) != 0)
 	{

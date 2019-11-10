@@ -59,6 +59,8 @@
 #define CONFIGURATION_AUDIO_CHANNELS_COUNT 48
 
 // Logs
+/** The log file name. */
+#define CONFIGURATION_LOG_FILE_NAME "Log.txt"
 /** Set which logs to display (error logs are always enabled) :
  * 0 : error messages
  * 1 : error and information messages
