@@ -581,8 +581,8 @@ int main(int argc, char *argv[])
 			if (strcmp("-fps", argv[i]) == 0) isFramesPerSecondDisplayingEnabled = true;
 			// Is full screen mode requested ?
 			else if (strcmp("-windowed", argv[i]) == 0) isFullScreenEnabled = false;
-			// Display help if a provided parameter is unknown
-			else
+			// Display help only if requested, because macOS may add custom parameters like -psn_0_340051
+			else if (strcmp("-help", argv[i]) == 0)
 			{
 				printf("Usage : %s [option].\n"
 					"Available options :\n"
@@ -703,7 +703,7 @@ int main(int argc, char *argv[])
 	AudioManager::playMusic();
 	
 	// Create a fake texture to be used by the FPS displaying code, this avoids multiple checks to detect whether the first texture is null
-	if (isFramesPerSecondDisplayingEnabled) pointerFramesPerSecondSdlTexture = Renderer::renderTextToTexture("--", Renderer::TEXT_COLOR_ID_RED, Renderer::FONT_SIZE_ID_BIG); // Provided text can have a zero character size or it would trigger a SDL error
+	if (isFramesPerSecondDisplayingEnabled) pointerFramesPerSecondSdlTexture = Renderer::renderTextToTexture("--", Renderer::TEXT_COLOR_ID_RED, Renderer::FONT_SIZE_ID_BIG); // Provided text can't have a zero character size or it would trigger a SDL error
 	
 	while (1)
 	{
