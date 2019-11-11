@@ -595,7 +595,8 @@ int main(int argc, char *argv[])
 		}
 	}
 	
-	// Initialize logging system before anything else
+	// Initialize logging system as soon as possible
+	if (FileManager::initialize() != 0) return -1; // Must be initialized before the subsystems that use it
 	if (Log::initialize() != 0) return -1;
 	
 	// Initialize the needed SDL subsystems
@@ -606,7 +607,6 @@ int main(int argc, char *argv[])
 	}
 	
 	// Engine initialization
-	if (FileManager::initialize() != 0) return -1; // Must be initialized before the managers that use it
 	if (Renderer::initialize(isFullScreenEnabled) != 0) return -1;
 	if (TextureManager::initialize() != 0) return -1;
 	if (LevelManager::initialize() != 0) return -1;

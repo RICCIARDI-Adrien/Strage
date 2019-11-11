@@ -25,7 +25,7 @@ namespace FileManager
 			pointerStringPath = SDL_GetBasePath();
 			if (pointerStringPath == NULL)
 			{
-				LOG_ERROR("Failed to obtain the application base path (%s).", SDL_GetError());
+				printf("ERROR : failed to obtain the application base path (%s).", SDL_GetError()); // Can't use LOG_ERROR() macro because logging system is not yet initialized (it depends on file manager)
 				return -1;
 			}
 			
@@ -33,7 +33,7 @@ namespace FileManager
 			pathLength = strlen(pointerStringPath);
 			if (pathLength >= sizeof(stringBasePath))
 			{
-				LOG_ERROR("Base path is too long (%u characters).", pathLength);
+				printf("ERROR : base path is too long (%u characters).", pathLength); // Can't use LOG_ERROR() macro because logging system is not yet initialized (it depends on file manager)
 				SDL_free(pointerStringPath);
 				return -1;
 			}
@@ -41,7 +41,6 @@ namespace FileManager
 			// Internally store base path
 			strcpy(stringBasePath, pointerStringPath);
 			SDL_free(pointerStringPath);
-			LOG_DEBUG("Base path : %s", stringBasePath);
 		#endif
 
 		return 0;
