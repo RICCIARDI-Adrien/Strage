@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/RICCIARDI-Adrien/Strage.svg?branch=master)](https://travis-ci.org/RICCIARDI-Adrien/Strage)
+![](https://github.com/RICCIARDI-Adrien/Strage/workflows/Release%20builds%20for%20all%20supported%20platforms/badge.svg)
 
 # Strage
 
