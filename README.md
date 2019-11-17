@@ -1,4 +1,4 @@
-![](https://github.com/RICCIARDI-Adrien/Strage/workflows/Release%20builds%20for%20all%20supported%20platforms/badge.svg)
+![](https://github.com/RICCIARDI-Adrien/Strage/workflows/Release%20builds/badge.svg)
 
 # Strage
 

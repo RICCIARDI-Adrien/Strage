@@ -1,4 +1,4 @@
-name: Release builds for all supported platforms
+name: Release builds
 on: [push]
 
 jobs:
