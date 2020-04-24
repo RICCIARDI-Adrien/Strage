@@ -96,7 +96,8 @@ namespace AudioManager
 		CONFIGURATION_PATH_SOUNDS "/Menu_Move.mp3",
 		CONFIGURATION_PATH_SOUNDS "/Menu_Select.mp3",
 		CONFIGURATION_PATH_SOUNDS "/Machine_Gun_Taken.mp3",
-		CONFIGURATION_PATH_SOUNDS "/Bulletproof_Vest_Taken.mp3"
+		CONFIGURATION_PATH_SOUNDS "/Bulletproof_Vest_Taken.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Silence.mp3"
 	};
 
 	/** Make the thread wait until a new music must be played. */
@@ -254,11 +255,10 @@ namespace AudioManager
 
 	void playSound(SoundId id)
 	{
-		if (id < SOUND_IDS_COUNT)
-		{
-			// Try to play the sound on the first available channel
-			if (Mix_PlayChannel(-1, _pointerSounds[id], 0) == -1) LOG_DEBUG("Failed to play sound ID %d (%s).", id, Mix_GetError());
-		}
+		assert(id < SOUND_IDS_COUNT);
+		
+		// Try to play the sound on the first available channel
+		if (Mix_PlayChannel(-1, _pointerSounds[id], 0) == -1) LOG_DEBUG("Failed to play sound ID %d (%s).", id, Mix_GetError());
 	}
 
 	void playMusic()

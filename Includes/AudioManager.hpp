@@ -29,8 +29,8 @@ namespace AudioManager
 		SOUND_ID_MENU_SELECT,
 		SOUND_ID_MACHINE_GUN_TAKEN,
 		SOUND_ID_BULLETPROOF_VEST_TAKEN,
-		SOUND_IDS_COUNT,
-		SOUND_ID_NO_SOUND //!< Playing this sound ID results in no sound being played
+		SOUND_ID_NO_SOUND, //!< Playing this sound ID results in no sound being played
+		SOUND_IDS_COUNT
 	} SoundId;
 
 	/** Load all game sounds.
