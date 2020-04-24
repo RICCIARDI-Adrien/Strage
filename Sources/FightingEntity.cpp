@@ -2,6 +2,7 @@
  * See FightingEntity.hpp for description.
  * @author Adrien RICCIARDI
  */
+#include <AudioManager.hpp>
 #include <FightingEntity.hpp>
 #include <LevelManager.hpp>
 
@@ -58,8 +59,10 @@ BulletMovingEntity *FightingEntity::shoot()
 		BulletMovingEntity *pointerBullet = _fireBullet(entityX + bulletStartingPositionOffsetX, entityY + bulletStartingPositionOffsetY);
 		
 		// Play the shoot effect
+		int soundEmitterAngle = 0, soundEmitterDistance = 0;
+		if (_pointerTextures[0] != TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_FACING_UP)) AudioManager::computePositionFromCamera(entityX + firingEffectStartingPositionOffsetX, entityY + firingEffectStartingPositionOffsetY, &soundEmitterAngle, &soundEmitterDistance); // TODO replace this dirty hack used to avoid affecting player
 		EffectManager::EffectId muzzleFlashEffectId = (EffectManager::EffectId) ((int) _firingEffectId + (int) _facingDirection); // Select the right effect according to entity direction
-		EffectManager::addEffect(entityX + firingEffectStartingPositionOffsetX, entityY + firingEffectStartingPositionOffsetY, muzzleFlashEffectId);
+		EffectManager::addEffect(entityX + firingEffectStartingPositionOffsetX, entityY + firingEffectStartingPositionOffsetY, muzzleFlashEffectId, soundEmitterAngle, soundEmitterDistance);
 		
 		// Get time after having generated the bullet, in case this takes more than 1 millisecond
 		_lastShotTime = SDL_GetTicks();
