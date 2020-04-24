@@ -60,8 +60,11 @@ namespace EffectManager
 	* @param x Effect horizontal coordinate on the map.
 	* @param y Effect vertical coordinate on the map.
 	* @param effectId Specify the effect to generate.
+	* @param soundSourceAngle Angle between sound emitter and game camera. See AudioManager::playSound() for more information.
+	* @param soundSourceDistance Distance between sound emitter and game camera. See AudioManager::playSound() for more information.
+	* @note Letting default values to soundSourceAngle and soundSourceDistance disables 3D sound effect.
 	*/
-	void addEffect(int x, int y, EffectId effectId);
+	void addEffect(int x, int y, EffectId effectId, int soundSourceAngle = 0, int soundSourceDistance = 0);
 
 	/** Delete all currently playing effects. */
 	void clearAllEffects();

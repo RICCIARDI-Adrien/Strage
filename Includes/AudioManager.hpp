@@ -60,6 +60,14 @@ namespace AudioManager
 
 	/** Immediately stop all channels. */
 	void stopAllSounds();
+
+	/** Compute and object distance and angle from camera center.
+	 * @param objectCenterX Object center X coordinate, in map coordinates.
+	 * @param objectCenterY Object center Y coordinate, in map coordinates.
+	 * @param pointerAngle On output, contain an angle between 0 and 359 degrees. See AudioManager::playSound() for more information.
+	 * @param pointerDistance On output, contain a distance between 0 and 255. See AudioManager::playSound() for more information.
+	 */
+	void computePositionFromCamera(int objectCenterX, int objectCenterY, int *pointerAngle, int *pointerDistance);
 }
 
 #endif

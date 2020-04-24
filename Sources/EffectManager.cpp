@@ -188,7 +188,7 @@ namespace EffectManager
 		return TextureManager::getTextureFromId(effects[effectId].textureId)->getHeight();
 	}
 
-	void addEffect(int x, int y, EffectId effectId)
+	void addEffect(int x, int y, EffectId effectId, int soundSourceAngle, int soundSourceDistance)
 	{
 		// Make sure the requested effect is existing
 		assert(effectId < EFFECT_IDS_COUNT);
@@ -200,7 +200,7 @@ namespace EffectManager
 		_animatedTexturesList.push_front(new AnimatedTextureStaticEntity(x, y, TextureManager::createAnimatedTextureFromId(pointerEffect->textureId, false)));
 		
 		// Play audio effect
-		AudioManager::playSound(pointerEffect->soundId);
+		AudioManager::playSound(pointerEffect->soundId, soundSourceAngle, soundSourceDistance);
 	}
 
 	void clearAllEffects()

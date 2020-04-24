@@ -4,16 +4,19 @@
  */
 #include <AudioManager.hpp>
 #include <cassert>
+#include <cmath>
 #include <Configuration.hpp>
 #include <cstdlib>
 #include <FileManager.hpp>
 #include <Log.hpp>
+#include <PlayerFightingEntity.hpp>
 #include <SDL2/SDL.h>
 #ifdef CONFIGURATION_BUILD_FOR_MACOS
 	#include <SDL2_mixer/SDL_mixer.h>
 #else
 	#include <SDL2/SDL_mixer.h>
 #endif
+#include <TextureManager.hpp>
 
 namespace AudioManager
 {
@@ -288,5 +291,28 @@ namespace AudioManager
 	void stopAllSounds()
 	{
 		Mix_HaltChannel(-1);
+	}
+	
+	void computePositionFromCamera(int objectCenterX, int objectCenterY, int *pointerAngle, int *pointerDistance)
+	{
+		// Camera is centered on player, so retrieve player center to retrieve camera center
+		int playerCenterX = pointerPlayer->getX() + (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_FACING_UP)->getWidth() / 2);
+		int playerCenterY = pointerPlayer->getY() + (TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_FACING_UP)->getHeight() / 2);
+
+		// Create a vector going from player center to the top of the screen (because we want to compute the angle from this axis)
+		float playerCenterVectorX = 0; // Stands for playerCenterX - playerCenterX
+		float playerCenterVectorY = -1.f; // Stands for playerCenterY - (playerCenterY + 1)
+		
+		// Create a vector going from player center to object center
+		float objectCenterVectorX = static_cast<float>(objectCenterX - playerCenterX);
+		float objectCenterVectorY = static_cast<float>(objectCenterY - playerCenterY);
+
+		// Compute angle between object and camera thanks to vectors magic
+		float angleCosine = ((playerCenterVectorX * objectCenterVectorX) + (playerCenterVectorY * objectCenterVectorY)) / (sqrt((playerCenterVectorX * playerCenterVectorX) + (playerCenterVectorY * playerCenterVectorY)) * sqrt((objectCenterVectorX * objectCenterVectorX) + (objectCenterVectorY * objectCenterVectorY)));
+		*pointerAngle = static_cast<int>(acos(angleCosine) * (180.f / M_PI));
+		if (objectCenterVectorX < 0) *pointerAngle = 360 - *pointerAngle;
+
+		// TODO compute distance
+		*pointerDistance = 0;
 	}
 }
