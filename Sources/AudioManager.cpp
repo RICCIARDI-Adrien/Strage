@@ -253,12 +253,20 @@ namespace AudioManager
 		Mix_CloseAudio();
 	}
 
-	void playSound(SoundId id)
+	void playSound(SoundId id, int soundSourceAngle, int soundSourceDistance)
 	{
 		assert(id < SOUND_IDS_COUNT);
 		
 		// Try to play the sound on the first available channel
-		if (Mix_PlayChannel(-1, _pointerSounds[id], 0) == -1) LOG_DEBUG("Failed to play sound ID %d (%s).", id, Mix_GetError());
+		int channel = Mix_PlayChannel(-1, _pointerSounds[id], 0);
+		if (channel == -1)
+		{
+			LOG_INFORMATION("Failed to play sound ID %d on channel %d (%s).", id, channel, Mix_GetError());
+			return;
+		}
+		
+		// Set position effect on this channel (setting both angle and distance to 0 disable 3D sound effect)
+		if (Mix_SetPosition(channel, soundSourceAngle, soundSourceDistance) == 0) LOG_INFORMATION("Failed to set position effect to channel %d with angle=%d and distance=%d for sound ID %d (%s).", channel, soundSourceAngle, soundSourceDistance, id, Mix_GetError());
 	}
 
 	void playMusic()

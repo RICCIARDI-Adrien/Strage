@@ -34,26 +34,28 @@ namespace AudioManager
 	} SoundId;
 
 	/** Load all game sounds.
-	* @return 0 if all files were successfully loaded,
-	* @return -1 if an error occurred.
-	*/
+	 * @return 0 if all files were successfully loaded,
+	 * @return -1 if an error occurred.
+	 */
 	int initialize();
 
 	/** Free all allocated resources. */
 	void uninitialize();
 
 	/** Play the specified sound once.
-	* @param id Which sound to play.
-	* @note Do nothing if the provided ID is bad or if there is not enough resources to play a new sound.
-	*/
-	void playSound(SoundId id);
+	 * @param id Which sound to play.
+	 * @param soundSourceAngle Clockwise-oriented angle between sound emitter and game camera (which is screen center). Angle is an integer value between 0 and 359. Here are some notable angle values : 0 is directly in front, 90 is directly to the right, 180 is directly behind and 270 is directly to the left.
+	 * @param soundSourceDistance Distance between sound emitter and game camera. This is an integer number between 0 and 255. Value 0 is the nearest one, value 255 is the farthest (but player can still hear it).
+	 * @note Letting default values to soundSourceAngle and soundSourceDistance disables 3D sound effect.
+	 */
+	void playSound(SoundId id, int soundSourceAngle = 0, int soundSourceDistance = 0);
 
 	/** Start playing randomly all available musics. */
 	void playMusic();
 
 	/** Pause or resume music playing.
-	* @param isMusicPaused Set to 1 to pause music, set to 0 to resume playing.
-	*/
+	 * @param isMusicPaused Set to 1 to pause music, set to 0 to resume playing.
+	 */
 	void pauseMusic(bool isMusicPaused);
 
 	/** Immediately stop all channels. */
