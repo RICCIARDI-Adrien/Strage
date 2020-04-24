@@ -60,7 +60,7 @@ BulletMovingEntity *FightingEntity::shoot()
 		
 		// Play the shoot effect
 		int soundEmitterAngle = 0, soundEmitterDistance = 0;
-		if (_pointerTextures[0] != TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_PLAYER_FACING_UP)) AudioManager::computePositionFromCamera(entityX + firingEffectStartingPositionOffsetX, entityY + firingEffectStartingPositionOffsetY, &soundEmitterAngle, &soundEmitterDistance); // TODO replace this dirty hack used to avoid affecting player
+		if (_firingEffectId != EffectManager::EFFECT_ID_PLAYER_MUZZLE_FLASH_FACING_UP) AudioManager::computePositionFromCamera(entityX + firingEffectStartingPositionOffsetX, entityY + firingEffectStartingPositionOffsetY, &soundEmitterAngle, &soundEmitterDistance); // TODO replace this dirty hack used to avoid affecting player
 		EffectManager::EffectId muzzleFlashEffectId = (EffectManager::EffectId) ((int) _firingEffectId + (int) _facingDirection); // Select the right effect according to entity direction
 		EffectManager::addEffect(entityX + firingEffectStartingPositionOffsetX, entityY + firingEffectStartingPositionOffsetY, muzzleFlashEffectId, soundEmitterAngle, soundEmitterDistance);
 		
