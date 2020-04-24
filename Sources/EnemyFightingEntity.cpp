@@ -149,7 +149,9 @@ int EnemyFightingEntity::update()
 		_setBlockEnemyContent(0);
 		
 		// Display explosion
-		EffectManager::addEffect(this->getX(), this->getY(), _explosionEffectId);
+		int soundEmitterAngle = 0, soundEmitterDistance = 0, entityX = this->getX(), entityY = this->getY();
+		AudioManager::computePositionFromCamera(entityX + _pointerTextures[0]->getWidth() / 2, entityY + _pointerTextures[0]->getHeight() / 2, &soundEmitterAngle, &soundEmitterDistance);
+		EffectManager::addEffect(entityX, entityY, _explosionEffectId, soundEmitterAngle, soundEmitterDistance);
 		
 		return 1;
 	}
