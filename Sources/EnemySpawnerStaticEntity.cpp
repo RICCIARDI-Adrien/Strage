@@ -2,8 +2,10 @@
  * See EnemySpawnerStaticEntity.hpp for description.
  * @author Adrien RICCIARDI
  */
-#include <Renderer.hpp>
+#include <AudioManager.hpp>
+#include <EffectManager.hpp>
 #include <EnemySpawnerStaticEntity.hpp>
+#include <Renderer.hpp>
 #include <TextureManager.hpp>
 
 EnemySpawnerStaticEntity::EnemySpawnerStaticEntity(int x, int y): StaticEntity(x, y, TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SPAWNER))
@@ -31,7 +33,15 @@ void EnemySpawnerStaticEntity::render()
 int EnemySpawnerStaticEntity::update()
 {
 	// Remove the spawner if it is destroyed
-	if (_lifePointsAmount == 0) return 1;
+	if (_lifePointsAmount == 0)
+	{
+		// Display an explosion
+		int soundEmitterAngle = 0, soundEmitterDistance = 0;
+		AudioManager::computePositionFromCamera(_positionRectangle.x + _pointerTexture->getWidth() / 2, _positionRectangle.y + _pointerTexture->getHeight() / 2, &soundEmitterAngle, &soundEmitterDistance);
+		EffectManager::addEffect(_positionRectangle.x, _positionRectangle.y, EffectManager::EFFECT_ID_ENEMY_SPAWNER_EXPLOSION, soundEmitterAngle, soundEmitterDistance);
+		
+		return 1;
+	}
 	
 	// Update textures to show spawner damage state
 	if (_lifePointsAmount == 8) _pointerTexture = TextureManager::getTextureFromId(TextureManager::TEXTURE_ID_ENEMY_SPAWNER_DAMAGED_1);

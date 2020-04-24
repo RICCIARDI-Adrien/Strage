@@ -432,9 +432,6 @@ static inline void _updateGameLogic()
 			blockContent &= ~LevelManager::BLOCK_CONTENT_ENEMY_SPAWNER;
 			LevelManager::setBlockContent(pointerPositionRectangle->x, pointerPositionRectangle->y, blockContent);
 			
-			// Display an explosion
-			EffectManager::addEffect(pointerPositionRectangle->x, pointerPositionRectangle->y, EffectManager::EFFECT_ID_ENEMY_SPAWNER_EXPLOSION);
-			
 			// Remove the spawner
 			delete pointerEnemySpawner;
 			enemySpawnersListIterator = LevelManager::enemySpawnersList.erase(enemySpawnersListIterator);
