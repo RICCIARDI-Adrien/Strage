@@ -97,6 +97,7 @@ When exporting a level, let 20 blocks on each map wall side to avoid displaying 
    * Levels 4, 5 and 6 made by Sylvain Heude
 * Musics : [jamendo](https://www.jamendo.com)
    * Akashic Records - Epic Action Hero
+   * Aliaksei Yukhnevich - Epicness
    * Art Music - Epic Trailer
    * Blue Giraffe - Action Intense Cinematic
    * Celestial Aeon Project - Epic
@@ -104,6 +105,8 @@ When exporting a level, let 20 blocks on each map wall side to avoid displaying 
    * Matti Paalanen - Emotion
    * Matti Paalanen - Epic Action
    * Nico Wohlleben - Storm
+   * Not Really - Cinematic Epical
+   * Not Really - Dramatic Background Epic
    * Soundbay - Epic Future
    * Soundshrim - Epic Adventure
 * Sounds : [universal-soundbank.com](http://www.universal-soundbank.com), [soundbible.com](http://soundbible.com), [zapsplat.com](https://www.zapsplat.com)

@@ -41,6 +41,10 @@ namespace AudioManager
 			NULL
 		},
 		{
+			CONFIGURATION_PATH_SOUNDS "/Aliaksei_Yukhnevich_-_Epicness.mp3",
+			NULL
+		},
+		{
 			CONFIGURATION_PATH_SOUNDS "/Art_Music_-_Epic_Trailer.mp3",
 			NULL
 		},
@@ -65,15 +69,23 @@ namespace AudioManager
 			NULL
 		},
 		{
+			CONFIGURATION_PATH_SOUNDS "/Nico_Wohlleben_-_Storm.mp3",
+			NULL
+		},
+		{
+			CONFIGURATION_PATH_SOUNDS "/Not_Really_-_Cinematic_Epical.mp3",
+			NULL
+		},
+		{
+			CONFIGURATION_PATH_SOUNDS "/Not_Really_-_Dramatic_Background_Epic.mp3",
+			NULL
+		},
+		{
 			CONFIGURATION_PATH_SOUNDS "/Soundbay_-_Epic_Future.mp3",
 			NULL
 		},
 		{
 			CONFIGURATION_PATH_SOUNDS "/Soundshrim_-_Epic_Adventure.mp3",
-			NULL
-		},
-		{
-			CONFIGURATION_PATH_SOUNDS "/Nico_Wohlleben_-_Storm.mp3",
 			NULL
 		}
 	};
