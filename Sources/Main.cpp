@@ -580,6 +580,12 @@ int main(int argc, char *argv[])
 		{
 			// Is FPS displaying requested ?
 			if (strcmp("--fps", argv[i]) == 0) isFramesPerSecondDisplayingEnabled = true;
+			// Display game version
+			else if (strcmp("--version", argv[i]) == 0)
+			{
+				printf(CONFIGURATION_VERSION "\n");
+				return EXIT_SUCCESS;
+			}
 			// Is full screen mode requested ?
 			else if (strcmp("--windowed", argv[i]) == 0) isFullScreenEnabled = false;
 			// Display help only if requested, because macOS may add custom parameters like -psn_0_340051
@@ -589,9 +595,10 @@ int main(int argc, char *argv[])
 					"Available options :\n"
 					"  --fps      : display frames per second count.\n"
 					"  --help,-h  : display this help and exit.\n"
+					"  --version  : display the game version and exit.\n"
 					"  --windowed : play game in windowed screen mode.\n"
 					"All other parameters are ignored.\n", argv[0]);
-				return 0;
+				return EXIT_SUCCESS;
 			}
 			// Tell user that this parameter is not supported
 			else printf("Unknown parameter : \"%s\", ignoring it.\n", argv[i]);
