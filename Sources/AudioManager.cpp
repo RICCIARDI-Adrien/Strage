@@ -10,6 +10,7 @@
 #include <FileManager.hpp>
 #include <Log.hpp>
 #include <PlayerFightingEntity.hpp>
+#include <Renderer.hpp>
 #include <SDL2/SDL.h>
 #ifdef CONFIGURATION_BUILD_FOR_MACOS
 	#include <SDL2_mixer/SDL_mixer.h>
@@ -334,7 +335,14 @@ namespace AudioManager
 		*pointerAngle = static_cast<int>(acos(angleCosine) * (180.f / M_PI));
 		if (objectCenterVectorX < 0) *pointerAngle = 360 - *pointerAngle;
 
-		// TODO compute distance
-		*pointerDistance = 0;
+		// Compute distance from camera in pixels
+		int xDifference = objectCenterX - playerCenterX;
+		int yDifference = objectCenterY - playerCenterY;
+		int distanceVectorLength = sqrt((xDifference * xDifference) + (yDifference * yDifference));
+		
+		// Consider the further distance (when sound becomes totally quiet) to be twice the display width, use this to scale the distance to the SDL expected range of [0; 255]
+		int scaledDistance = (distanceVectorLength * 255) / (2 * Renderer::displayWidth);
+		if (scaledDistance > 255) scaledDistance = 255; // Clamp maximum distance
+		*pointerDistance = scaledDistance;
 	}
 }

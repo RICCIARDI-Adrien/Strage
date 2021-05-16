@@ -59,8 +59,14 @@ BulletMovingEntity *FightingEntity::shoot()
 		BulletMovingEntity *pointerBullet = _fireBullet(entityX + bulletStartingPositionOffsetX, entityY + bulletStartingPositionOffsetY);
 		
 		// Play the shoot effect
-		int soundEmitterAngle = 0, soundEmitterDistance = 0;
-		if (_firingEffectId != EffectManager::EFFECT_ID_PLAYER_MUZZLE_FLASH_FACING_UP) AudioManager::computePositionFromCamera(entityX + firingEffectStartingPositionOffsetX, entityY + firingEffectStartingPositionOffsetY, &soundEmitterAngle, &soundEmitterDistance); // TODO replace this dirty hack used to avoid affecting player
+		int soundEmitterAngle, soundEmitterDistance;
+		if (_firingEffectId == EffectManager::EFFECT_ID_PLAYER_MUZZLE_FLASH_FACING_UP) // TODO replace this dirty hack used to avoid affecting player
+		{
+			// Make sure the firing sound is loud when the player is shooting
+			soundEmitterAngle = 0;
+			soundEmitterDistance = 0;
+		}
+		else AudioManager::computePositionFromCamera(entityX + firingEffectStartingPositionOffsetX, entityY + firingEffectStartingPositionOffsetY, &soundEmitterAngle, &soundEmitterDistance);
 		EffectManager::EffectId muzzleFlashEffectId = (EffectManager::EffectId) ((int) _firingEffectId + (int) _facingDirection); // Select the right effect according to entity direction
 		EffectManager::addEffect(entityX + firingEffectStartingPositionOffsetX, entityY + firingEffectStartingPositionOffsetY, muzzleFlashEffectId, soundEmitterAngle, soundEmitterDistance);
 		
