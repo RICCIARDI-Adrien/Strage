@@ -33,7 +33,11 @@ namespace AudioManager
 		SOUND_ID_MENU_SELECT,
 		SOUND_ID_MACHINE_GUN_TAKEN,
 		SOUND_ID_BULLETPROOF_VEST_TAKEN,
-		SOUND_ID_NO_SOUND, //!< Playing this sound ID results in no sound being played
+		SOUND_ID_WALL_BULLET_IMPACT_1,
+		SOUND_ID_WALL_BULLET_IMPACT_2,
+		SOUND_ID_WALL_BULLET_IMPACT_3,
+		SOUND_ID_WALL_BULLET_IMPACT_4,
+		SOUND_ID_NO_SOUND, //!< Playing this sound ID results in no sound being played, this ID must always be the last one before SOUND_IDS_COUNT
 		SOUND_IDS_COUNT
 	} SoundId;
 

@@ -59,6 +59,12 @@ namespace EffectManager
 			AudioManager::SOUND_ID_ENEMY_SPAWNER_BULLET_IMPACT,
 			1
 		},
+		// EFFECT_ID_BULLET_EXPLOSION_WALL_HIT
+		{
+			TextureManager::TEXTURE_ID_BULLET_EXPLOSION,
+			AudioManager::SOUND_ID_WALL_BULLET_IMPACT_1,
+			4
+		},
 		// EFFECT_ID_BULLET_EXPLOSION_NO_SOUND
 		{
 			TextureManager::TEXTURE_ID_BULLET_EXPLOSION,

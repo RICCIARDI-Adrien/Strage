@@ -258,14 +258,21 @@ static inline void _updateGameLogic()
 	BulletMovingEntity *pointerPlayerBullet;
 	EnemyFightingEntity *pointerEnemy;
 	EnemySpawnerStaticEntity *pointerEnemySpawner;
+	int soundEmitterAngle, soundEmitterDistance, playerBulletCenterX, playerBulletCenterY;
 	while (bulletsListIterator != _playerBulletsList.end())
 	{
 		pointerPlayerBullet = *bulletsListIterator;
 		
+		// Cache player bullet position
+		playerBulletCenterX = pointerPlayerBullet->getX() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET;
+		playerBulletCenterY = pointerPlayerBullet->getY() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET;
+		
 		// Remove the bullet if it hit a wall
 		if (pointerPlayerBullet->update() != 0)
 		{
-			EffectManager::addEffect(pointerPlayerBullet->getX() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET, pointerPlayerBullet->getY() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET, EffectManager::EFFECT_ID_BULLET_EXPLOSION_NO_SOUND);
+			// Display the corresponding bullet explosion effect
+			AudioManager::computePositionFromCamera(playerBulletCenterX, playerBulletCenterY, &soundEmitterAngle, &soundEmitterDistance);
+			EffectManager::addEffect(playerBulletCenterX, playerBulletCenterY, EffectManager::EFFECT_ID_BULLET_EXPLOSION_WALL_HIT, soundEmitterAngle, soundEmitterDistance);
 			
 			delete pointerPlayerBullet;
 			bulletsListIterator = _playerBulletsList.erase(bulletsListIterator);
@@ -284,9 +291,9 @@ static inline void _updateGameLogic()
 				pointerEnemy->modifyLife(pointerPlayerBullet->getDamageAmount());
 				LOG_DEBUG("Enemy hit.");
 				
-				int soundEmitterAngle = 0, soundEmitterDistance = 0, bulletCenterX = pointerPlayerBullet->getX() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET, bulletCenterY = pointerPlayerBullet->getY() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET;
-				AudioManager::computePositionFromCamera(bulletCenterX, bulletCenterY, &soundEmitterAngle, &soundEmitterDistance);
-				EffectManager::addEffect(bulletCenterX, bulletCenterY, EffectManager::EFFECT_ID_BULLET_EXPLOSION_ENEMY_HIT, soundEmitterAngle, soundEmitterDistance);
+				// Display the corresponding bullet explosion effect
+				AudioManager::computePositionFromCamera(playerBulletCenterX, playerBulletCenterY, &soundEmitterAngle, &soundEmitterDistance);
+				EffectManager::addEffect(playerBulletCenterX, playerBulletCenterY, EffectManager::EFFECT_ID_BULLET_EXPLOSION_ENEMY_HIT, soundEmitterAngle, soundEmitterDistance);
 				
 				// Remove the bullet
 				delete pointerPlayerBullet;
@@ -310,9 +317,9 @@ static inline void _updateGameLogic()
 				pointerEnemySpawner->modifyLife(pointerPlayerBullet->getDamageAmount());
 				LOG_DEBUG("Enemy spawner hit.");
 				
-				int soundEmitterAngle = 0, soundEmitterDistance = 0, bulletCenterX = pointerPlayerBullet->getX() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET, bulletCenterY = pointerPlayerBullet->getY() + CONFIGURATION_BULLET_EXPLOSION_POSITION_OFFSET;
-				AudioManager::computePositionFromCamera(bulletCenterX, bulletCenterY, &soundEmitterAngle, &soundEmitterDistance);
-				EffectManager::addEffect(bulletCenterX, bulletCenterY, EffectManager::EFFECT_ID_BULLET_EXPLOSION_ENEMY_SPAWNER_HIT, soundEmitterAngle, soundEmitterDistance);
+				// Display the corresponding bullet explosion effect
+				AudioManager::computePositionFromCamera(playerBulletCenterX, playerBulletCenterY, &soundEmitterAngle, &soundEmitterDistance);
+				EffectManager::addEffect(playerBulletCenterX, playerBulletCenterY, EffectManager::EFFECT_ID_BULLET_EXPLOSION_ENEMY_SPAWNER_HIT, soundEmitterAngle, soundEmitterDistance);
 				
 				// Remove the bullet
 				delete pointerPlayerBullet;

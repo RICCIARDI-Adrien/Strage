@@ -115,7 +115,11 @@ namespace AudioManager
 		CONFIGURATION_PATH_SOUNDS "/Menu_Move.mp3",
 		CONFIGURATION_PATH_SOUNDS "/Menu_Select.mp3",
 		CONFIGURATION_PATH_SOUNDS "/Machine_Gun_Taken.mp3",
-		CONFIGURATION_PATH_SOUNDS "/Bulletproof_Vest_Taken.mp3"
+		CONFIGURATION_PATH_SOUNDS "/Bulletproof_Vest_Taken.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Wall_Bullet_Impact_1.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Wall_Bullet_Impact_2.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Wall_Bullet_Impact_3.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Wall_Bullet_Impact_4.mp3"
 	};
 
 	/** Make the thread wait until a new music must be played. */
@@ -197,7 +201,7 @@ namespace AudioManager
 		
 		// Load all sounds
 		unsigned int i;
-		for (i = 0; i < (sizeof(pointerStringsSoundFileNames) / sizeof(pointerStringsSoundFileNames[0])) - 1; i++) // The last sound stands for silence, so there is no file to load
+		for (i = 0; i < sizeof(pointerStringsSoundFileNames) / sizeof(pointerStringsSoundFileNames[0]); i++)
 		{
 			LOG_DEBUG("Loading sound file %s...", pointerStringsSoundFileNames[i]);
 			_pointerSounds[i] = _loadFromWave(FileManager::getFilePath(pointerStringsSoundFileNames[i]));
