@@ -115,8 +115,7 @@ namespace AudioManager
 		CONFIGURATION_PATH_SOUNDS "/Menu_Move.mp3",
 		CONFIGURATION_PATH_SOUNDS "/Menu_Select.mp3",
 		CONFIGURATION_PATH_SOUNDS "/Machine_Gun_Taken.mp3",
-		CONFIGURATION_PATH_SOUNDS "/Bulletproof_Vest_Taken.mp3",
-		CONFIGURATION_PATH_SOUNDS "/Silence.mp3"
+		CONFIGURATION_PATH_SOUNDS "/Bulletproof_Vest_Taken.mp3"
 	};
 
 	/** Make the thread wait until a new music must be played. */
@@ -198,7 +197,7 @@ namespace AudioManager
 		
 		// Load all sounds
 		unsigned int i;
-		for (i = 0; i < sizeof(pointerStringsSoundFileNames) / sizeof(pointerStringsSoundFileNames[0]); i++)
+		for (i = 0; i < (sizeof(pointerStringsSoundFileNames) / sizeof(pointerStringsSoundFileNames[0])) - 1; i++) // The last sound stands for silence, so there is no file to load
 		{
 			LOG_DEBUG("Loading sound file %s...", pointerStringsSoundFileNames[i]);
 			_pointerSounds[i] = _loadFromWave(FileManager::getFilePath(pointerStringsSoundFileNames[i]));
@@ -275,6 +274,9 @@ namespace AudioManager
 	void playSound(SoundId id, int soundSourceAngle, int soundSourceDistance)
 	{
 		assert(id < SOUND_IDS_COUNT);
+		
+		// Do nothing if no sound should be played
+		if (id == SOUND_ID_NO_SOUND) return;
 		
 		// Try to play the sound on the first available channel
 		int channel = Mix_PlayChannel(-1, _pointerSounds[id], 0);
