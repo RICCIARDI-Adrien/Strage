@@ -82,7 +82,9 @@ namespace AudioManager
 	static const char *pointerStringsSoundFileNames[] =
 	{
 		CONFIGURATION_PATH_SOUNDS "/Ammunition_Taken.mp3",
-		CONFIGURATION_PATH_SOUNDS "/Player_Fireshot.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Player_Fireshot_1.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Player_Fireshot_2.mp3",
+		CONFIGURATION_PATH_SOUNDS "/Player_Fireshot_3.mp3",
 		CONFIGURATION_PATH_SOUNDS "/Player_Fireshot_Mortar_Shell.mp3",
 		CONFIGURATION_PATH_SOUNDS "/Player_Mortar_Shell_Reloading.mp3",
 		CONFIGURATION_PATH_SOUNDS "/Player_Healed.mp3",

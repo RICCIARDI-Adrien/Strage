@@ -17,6 +17,7 @@ namespace EffectManager
 	{
 		TextureManager::TextureId textureId; //!< The animation texture ID.
 		AudioManager::SoundId soundId; //!< The sound to play.
+		int availableSounds; //!< How many available sound (their IDs must be contiguous to soundId), a sound will be randomly picked up from the available ones.
 	} Effect;
 
 	/** Cache all effect parameters. */
@@ -25,147 +26,176 @@ namespace EffectManager
 		// EFFECT_ID_SMALL_ENEMY_EXPLOSION
 		{
 			TextureManager::TEXTURE_ID_SMALL_ENEMY_EXPLOSION,
-			AudioManager::SOUND_ID_SMALL_ENEMY_EXPLOSION
+			AudioManager::SOUND_ID_SMALL_ENEMY_EXPLOSION,
+			1
 		},
 		// EFFECT_ID_MEDIUM_ENEMY_EXPLOSION
 		{
 			TextureManager::TEXTURE_ID_MEDIUM_ENEMY_EXPLOSION,
-			AudioManager::SOUND_ID_MEDIUM_ENEMY_EXPLOSION
+			AudioManager::SOUND_ID_MEDIUM_ENEMY_EXPLOSION,
+			1
 		},
 		// EFFECT_ID_BIG_ENEMY_EXPLOSION
 		{
 			TextureManager::TEXTURE_ID_BIG_ENEMY_EXPLOSION,
-			AudioManager::SOUND_ID_BIG_ENEMY_EXPLOSION
+			AudioManager::SOUND_ID_BIG_ENEMY_EXPLOSION,
+			1
 		},
 		// EFFECT_ID_ENEMY_SPAWNER_EXPLOSION
 		{
 			TextureManager::TEXTURE_ID_ENEMY_SPAWNER_EXPLOSION,
-			AudioManager::SOUND_ID_ENEMY_SPAWNER_EXPLOSION
+			AudioManager::SOUND_ID_ENEMY_SPAWNER_EXPLOSION,
+			1
 		},
 		// EFFECT_ID_BULLET_EXPLOSION_ENEMY_HIT
 		{
 			TextureManager::TEXTURE_ID_BULLET_EXPLOSION,
-			AudioManager::SOUND_ID_ENEMY_BULLET_IMPACT
+			AudioManager::SOUND_ID_ENEMY_BULLET_IMPACT,
+			1
 		},
 		// EFFECT_ID_BULLET_EXPLOSION_ENEMY_SPAWNER_HIT
 		{
 			TextureManager::TEXTURE_ID_BULLET_EXPLOSION,
-			AudioManager::SOUND_ID_ENEMY_SPAWNER_BULLET_IMPACT
+			AudioManager::SOUND_ID_ENEMY_SPAWNER_BULLET_IMPACT,
+			1
 		},
 		// EFFECT_ID_BULLET_EXPLOSION_NO_SOUND
 		{
 			TextureManager::TEXTURE_ID_BULLET_EXPLOSION,
-			AudioManager::SOUND_ID_NO_SOUND
+			AudioManager::SOUND_ID_NO_SOUND,
+			1
 		},
 		// EFFECT_ID_PLAYER_MUZZLE_FLASH_FACING_UP
 		{
 			TextureManager::TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_UP,
-			AudioManager::SOUND_ID_PLAYER_FIRESHOT
+			AudioManager::SOUND_ID_PLAYER_FIRESHOT_1,
+			3
 		},
 		// EFFECT_ID_PLAYER_MUZZLE_FLASH_FACING_DOWN
 		{
 			TextureManager::TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_DOWN,
-			AudioManager::SOUND_ID_PLAYER_FIRESHOT
+			AudioManager::SOUND_ID_PLAYER_FIRESHOT_1,
+			3
 		},
 		// EFFECT_ID_PLAYER_MUZZLE_FLASH_FACING_LEFT
 		{
 			TextureManager::TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_LEFT,
-			AudioManager::SOUND_ID_PLAYER_FIRESHOT
+			AudioManager::SOUND_ID_PLAYER_FIRESHOT_1,
+			3
 		},
 		// EFFECT_ID_PLAYER_MUZZLE_FLASH_FACING_RIGHT
 		{
 			TextureManager::TEXTURE_ID_PLAYER_MUZZLE_FLASH_FACING_RIGHT,
-			AudioManager::SOUND_ID_PLAYER_FIRESHOT
+			AudioManager::SOUND_ID_PLAYER_FIRESHOT_1,
+			3
 		},
 		// EFFECT_ID_PLAYER_MUZZLE_FLASH_MORTAR_SHELL
 		{
 			TextureManager::TEXTURE_ID_PLAYER_MUZZLE_FLASH_MORTAR_SHELL,
-			AudioManager::SOUND_ID_PLAYER_FIRESHOT_MORTAR_SHELL
+			AudioManager::SOUND_ID_PLAYER_FIRESHOT_MORTAR_SHELL,
+			1
 		},
 		// EFFECT_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_UP
 		{
 			TextureManager::TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_UP,
-			AudioManager::SOUND_ID_SMALL_ENEMY_FIRESHOT
+			AudioManager::SOUND_ID_SMALL_ENEMY_FIRESHOT,
+			1
 		},
 		// EFFECT_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_DOWN
 		{
 			TextureManager::TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_DOWN,
-			AudioManager::SOUND_ID_SMALL_ENEMY_FIRESHOT
+			AudioManager::SOUND_ID_SMALL_ENEMY_FIRESHOT,
+			1
 		},
 		// EFFECT_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_LEFT
 		{
 			TextureManager::TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_LEFT,
-			AudioManager::SOUND_ID_SMALL_ENEMY_FIRESHOT
+			AudioManager::SOUND_ID_SMALL_ENEMY_FIRESHOT,
+			1
 		},
 		// EFFECT_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_RIGHT
 		{
 			TextureManager::TEXTURE_ID_SMALL_ENEMY_MUZZLE_FLASH_FACING_RIGHT,
-			AudioManager::SOUND_ID_SMALL_ENEMY_FIRESHOT
+			AudioManager::SOUND_ID_SMALL_ENEMY_FIRESHOT,
+			1
 		},
 		// EFFECT_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_UP
 		{
 			TextureManager::TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_UP,
-			AudioManager::SOUND_ID_MEDIUM_ENEMY_FIRESHOT
+			AudioManager::SOUND_ID_MEDIUM_ENEMY_FIRESHOT,
+			1
 		},
 		// EFFECT_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_DOWN
 		{
 			TextureManager::TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_DOWN,
-			AudioManager::SOUND_ID_MEDIUM_ENEMY_FIRESHOT
+			AudioManager::SOUND_ID_MEDIUM_ENEMY_FIRESHOT,
+			1
 		},
 		// EFFECT_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_LEFT
 		{
 			TextureManager::TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_LEFT,
-			AudioManager::SOUND_ID_MEDIUM_ENEMY_FIRESHOT
+			AudioManager::SOUND_ID_MEDIUM_ENEMY_FIRESHOT,
+			1
 		},
 		// EFFECT_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_RIGHT
 		{
 			TextureManager::TEXTURE_ID_MEDIUM_ENEMY_MUZZLE_FLASH_FACING_RIGHT,
-			AudioManager::SOUND_ID_MEDIUM_ENEMY_FIRESHOT
+			AudioManager::SOUND_ID_MEDIUM_ENEMY_FIRESHOT,
+			1
 		},
 		// EFFECT_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_UP
 		{
 			TextureManager::TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_UP,
-			AudioManager::SOUND_ID_BIG_ENEMY_FIRESHOT
+			AudioManager::SOUND_ID_BIG_ENEMY_FIRESHOT,
+			1
 		},
 		// EFFECT_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_DOWN
 		{
 			TextureManager::TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_DOWN,
-			AudioManager::SOUND_ID_BIG_ENEMY_FIRESHOT
+			AudioManager::SOUND_ID_BIG_ENEMY_FIRESHOT,
+			1
 		},
 		// EFFECT_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_LEFT
 		{
 			TextureManager::TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_LEFT,
-			AudioManager::SOUND_ID_BIG_ENEMY_FIRESHOT
+			AudioManager::SOUND_ID_BIG_ENEMY_FIRESHOT,
+			1
 		},
 		// EFFECT_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_RIGHT
 		{
 			TextureManager::TEXTURE_ID_BIG_ENEMY_MUZZLE_FLASH_FACING_RIGHT,
-			AudioManager::SOUND_ID_BIG_ENEMY_FIRESHOT
+			AudioManager::SOUND_ID_BIG_ENEMY_FIRESHOT,
+			1
 		},
 		// EFFECT_ID_MEDIPACK_TAKEN
 		{
 			TextureManager::TEXTURE_ID_MEDIPACK_TAKEN,
-			AudioManager::SOUND_ID_PLAYER_HEALED
+			AudioManager::SOUND_ID_PLAYER_HEALED,
+			1
 		},
 		// EFFECT_ID_GOLDEN_MEDIPACK_TAKEN
 		{
 			TextureManager::TEXTURE_ID_GOLDEN_MEDIPACK_TAKEN,
-			AudioManager::SOUND_ID_PLAYER_LIFE_INCREASED
+			AudioManager::SOUND_ID_PLAYER_LIFE_INCREASED,
+			1
 		},
 		// EFFECT_ID_AMMUNITION_TAKEN
 		{
 			TextureManager::TEXTURE_ID_AMMUNITION_TAKEN,
-			AudioManager::SOUND_ID_AMMUNITION_TAKEN
+			AudioManager::SOUND_ID_AMMUNITION_TAKEN,
+			1
 		},
 		// EFFECT_ID_MACHINE_GUN_TAKEN
 		{
 			TextureManager::TEXTURE_ID_MACHINE_GUN_TAKEN,
-			AudioManager::SOUND_ID_MACHINE_GUN_TAKEN
+			AudioManager::SOUND_ID_MACHINE_GUN_TAKEN,
+			1
 		},
 		// EFFECT_ID_BULLETPROOF_VEST_TAKEN
 		{
 			TextureManager::TEXTURE_ID_BULLETPROOF_VEST_TAKEN,
-			AudioManager::SOUND_ID_BULLETPROOF_VEST_TAKEN
+			AudioManager::SOUND_ID_BULLETPROOF_VEST_TAKEN,
+			1
 		}
 	};
 
@@ -199,8 +229,17 @@ namespace EffectManager
 		// Generate the graphic effect
 		_animatedTexturesList.push_front(new AnimatedTextureStaticEntity(x, y, TextureManager::createAnimatedTextureFromId(pointerEffect->textureId, false)));
 		
+		// Randomly select a sound if more are available
+		AudioManager::SoundId soundId;
+		if (pointerEffect->availableSounds > 1)
+		{
+			int randomIndex = rand() % pointerEffect->availableSounds;
+			soundId = static_cast<AudioManager::SoundId>(pointerEffect->soundId + randomIndex);
+		}
+		else soundId = pointerEffect->soundId; // There is only one sound, select it
+		
 		// Play audio effect
-		AudioManager::playSound(pointerEffect->soundId, soundSourceAngle, soundSourceDistance);
+		AudioManager::playSound(soundId, soundSourceAngle, soundSourceDistance);
 	}
 
 	void clearAllEffects()
