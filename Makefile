@@ -12,7 +12,7 @@ VERSION_SDL2_TTF = 2.0.15
 
 BINARY = Strage
 CPPFLAGS = -W -Wall -std=c++11 -DCONFIGURATION_VERSION=\"$(VERSION_STRAGE)\"
-SOURCES = $(shell find $(PATH_SOURCES) -name "*.cpp")
+SOURCES = $(wildcard $(PATH_SOURCES)/*.cpp)
 
 # Copy all relevant game files to the directory specified as first argument
 define CopyGameDataFiles
