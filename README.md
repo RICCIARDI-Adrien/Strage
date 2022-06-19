@@ -52,6 +52,11 @@ Then simply type the following command in the Strage directory to build the game
 make linux
 ```
 
+You can package the game into an archive thanks to the following command :
+```
+make linux_release
+```
+
 ### Building for macOS
 Build the executable using the command :
 ```
