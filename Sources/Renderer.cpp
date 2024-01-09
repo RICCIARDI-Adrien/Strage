@@ -14,6 +14,9 @@
 #else
 	#include <SDL2/SDL_ttf.h>
 #endif
+#ifdef _WIN32
+	#include <windows.h>
+#endif
 
 namespace Renderer
 {
@@ -43,7 +46,16 @@ namespace Renderer
 	{
 		unsigned int flags;
 		SDL_RendererInfo rendererInformation;
-		
+
+		// Tell Windows that high DPI is supported by the application, so "DPI Unaware" mode is not enabled (it would decrease the reported screen resolution is some scaling factor is enabled in Windows)
+		#ifdef _WIN32
+			if (!SetProcessDPIAware())
+			{
+				LOG_ERROR("Windows specific error, SetProcessDPIAware() failed.");
+				goto Exit_Error;
+			}
+		#endif
+
 		// Create the game window
 		if (isFullScreenEnabled) flags = SDL_WINDOW_FULLSCREEN_DESKTOP; // Automatically adjust renderer resolution to the display one
 		else flags = 0;

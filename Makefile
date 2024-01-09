@@ -79,7 +79,8 @@ windows: ADDITIONAL_OBJECTS = Windows_Icon.o
 windows: BINARY = Strage.exe
 windows: CPP = i686-w64-mingw32-g++
 # Avoid shipping MinGW libgcc and libstdc++, build as a GUI program to avoid having an opened console when the game is started
-windows: CPPFLAGS += -Werror -O2 -DNDEBUG -static-libgcc -static-libstdc++ -mwindows -ISDL2_Includes
+# Tell MinGW to build for Windows 10 by setting the two macros WINVER and _WIN32_WINNT (see https://learn.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt?view=msvc-170), otherwise the SetProcessDPIAware() function that appeared with Windows Vista will not be available
+windows: CPPFLAGS += -Werror -O2 -DNDEBUG -DWINVER=0x0A00 -D_WIN32_WINNT=0x0A00 -static-libgcc -static-libstdc++ -mwindows -ISDL2_Includes
 # Windows needs custom libraries to provide WinMain() ; symbols are scattered into several libraries, so make sure they are all found
 windows: LIBRARIES = -Wl,--start-group -LSDL2-$(VERSION_SDL2)/i686-w64-mingw32/lib -lSDL2 -LSDL2_image-$(VERSION_SDL2_IMAGE)/i686-w64-mingw32/lib -lSDL2_image -LSDL2_mixer-$(VERSION_SDL2_MIXER)/i686-w64-mingw32/lib -lSDL2_mixer -LSDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/lib -lSDL2_ttf -lmingw32 -lSDL2main -Wl,--end-group
 windows: SDL2-$(VERSION_SDL2) SDL2_image-$(VERSION_SDL2_IMAGE) SDL2_mixer-$(VERSION_SDL2_MIXER) SDL2_ttf-$(VERSION_SDL2_TTF) windows_generate_executable_icon all windows_clean_executable_icon
