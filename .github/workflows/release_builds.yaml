@@ -4,6 +4,7 @@ on: [push]
 jobs:
   linux_build:
     runs-on: ubuntu-latest
+    name: Linux
     steps:
       - uses: actions/checkout@v4
       - name: Dependencies installation
@@ -15,6 +16,7 @@ jobs:
 
   macos_build:
     runs-on: macos-latest
+    name: macOS
     steps:
       - uses: actions/checkout@v4
       - name: macOS release build
@@ -22,6 +24,7 @@ jobs:
 
   windows_build:
     runs-on: ubuntu-latest
+    name: Windows
     steps:
       - uses: actions/checkout@v4
       - name: Dependencies installation
