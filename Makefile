@@ -231,3 +231,7 @@ check_memory_leak:
 
 check_processor_usage:
 	valgrind --tool=callgrind ./$(BINARY)
+
+check_code:
+	# System includes are difficult to find for cppcheck and also take a lot of time to process, so disable them
+	cppcheck --enable=all --suppress=missingIncludeSystem -I $(PATH_INCLUDES) $(SOURCES)
