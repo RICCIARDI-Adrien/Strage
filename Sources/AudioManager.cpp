@@ -12,7 +12,7 @@
 #include <PlayerFightingEntity.hpp>
 #include <Renderer.hpp>
 #include <SDL2/SDL.h>
-#ifdef CONFIGURATION_BUILD_FOR_MACOS
+#ifdef __APPLE__
 	#include <SDL2_mixer/SDL_mixer.h>
 #else
 	#include <SDL2/SDL_mixer.h>

@@ -9,7 +9,7 @@
 
 namespace FileManager
 {
-	#ifdef CONFIGURATION_BUILD_FOR_MACOS
+	#ifdef __APPLE__
 		/** Game base path (it leads to bundle/Content/Resources on macOS bundle). */
 		static char stringBasePath[2048];
 	#endif
@@ -17,7 +17,7 @@ namespace FileManager
 	int initialize()
 	{
 		// Only macOS needs that, other platforms use a relative path
-		#ifdef CONFIGURATION_BUILD_FOR_MACOS
+		#ifdef __APPLE__
 			char *pointerStringPath;
 			unsigned int pathLength;
 			
@@ -48,7 +48,7 @@ namespace FileManager
 
 	const char *getFilePath(const char *pointerStringFileName)
 	{
-		#ifdef CONFIGURATION_BUILD_FOR_MACOS
+		#ifdef __APPLE__
 			static char stringPath[16384];
 			
 			// Build the path

@@ -39,7 +39,7 @@ linux: all
 
 macos: CPP = g++
 # Make all frameworks being searched in the application Frameworks directory
-macos: CPPFLAGS += -Werror -O2 -DNDEBUG -DCONFIGURATION_BUILD_FOR_MACOS -F Frameworks -rpath @executable_path/../Frameworks -rpath @executable_path/Frameworks
+macos: CPPFLAGS += -Werror -O2 -DNDEBUG -F Frameworks -rpath @executable_path/../Frameworks -rpath @executable_path/Frameworks
 macos: LIBRARIES = -framework SDL2 -framework SDL2_image -framework SDL2_mixer -framework SDL2_ttf
 macos: Frameworks/SDL2-$(VERSION_SDL2).framework Frameworks/SDL2_image-$(VERSION_SDL2_IMAGE).framework Frameworks/SDL2_mixer-$(VERSION_SDL2_MIXER).framework Frameworks/SDL2_ttf-$(VERSION_SDL2_TTF).framework all
 
