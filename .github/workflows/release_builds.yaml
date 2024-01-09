@@ -5,7 +5,7 @@ jobs:
   linux_build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Dependencies installation
         run: |
           sudo apt update
@@ -16,14 +16,14 @@ jobs:
   macos_build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: macOS release build
         run: make macos_release
 
   windows_build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Dependencies installation
         run: sudo apt install mingw-w64
       - name: Windows release build
