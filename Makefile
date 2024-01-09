@@ -5,10 +5,10 @@ PATH_MACOS_RELEASE = Strage.app
 PATH_WINDOWS_RELEASE = Strage
 
 VERSION_STRAGE = 0.14
-VERSION_SDL2 = 2.0.14
-VERSION_SDL2_IMAGE = 2.0.5
-VERSION_SDL2_MIXER = 2.0.4
-VERSION_SDL2_TTF = 2.0.15
+VERSION_SDL2 = 2.28.5
+VERSION_SDL2_IMAGE = 2.8.2
+VERSION_SDL2_MIXER = 2.6.3
+VERSION_SDL2_TTF = 2.20.2
 
 BINARY = Strage
 CPPFLAGS = -W -Wall -std=c++11 -DCONFIGURATION_VERSION=\"$(VERSION_STRAGE)\"
@@ -45,7 +45,7 @@ macos: Frameworks/SDL2-$(VERSION_SDL2).framework Frameworks/SDL2_image-$(VERSION
 
 # MacOS SDL dependencies
 Frameworks/SDL2-$(VERSION_SDL2).framework:
-	curl https://www.libsdl.org/release/SDL2-$(VERSION_SDL2).dmg -o /tmp/SDL2-$(VERSION_SDL2).dmg
+	curl -L https://github.com/libsdl-org/SDL/releases/download/release-$(VERSION_SDL2)/SDL2-$(VERSION_SDL2).dmg -o /tmp/SDL2-$(VERSION_SDL2).dmg
 	hdiutil attach /tmp/SDL2-$(VERSION_SDL2).dmg
 	mkdir -p Frameworks
 	@# Explicitly adding the SDL version to the framework makes the makefile rule automatically download an unpack the new version when the SDL version variable is updated (it would not have been the case if the directory name was not dependent of a version), so SDL frameworks are always up-to-date even without doing a "make clean" when version changed
@@ -55,21 +55,21 @@ Frameworks/SDL2-$(VERSION_SDL2).framework:
 	hdiutil eject /Volumes/SDL2
 
 Frameworks/SDL2_image-$(VERSION_SDL2_IMAGE).framework:
-	curl https://www.libsdl.org/projects/SDL_image/release/SDL2_image-$(VERSION_SDL2_IMAGE).dmg -o /tmp/SDL2_image-$(VERSION_SDL2_IMAGE).dmg
+	curl -L https://github.com/libsdl-org/SDL_image/releases/download/release-$(VERSION_SDL2_IMAGE)/SDL2_image-$(VERSION_SDL2_IMAGE).dmg -o /tmp/SDL2_image-$(VERSION_SDL2_IMAGE).dmg
 	hdiutil attach /tmp/SDL2_image-$(VERSION_SDL2_IMAGE).dmg
 	cp -r /Volumes/SDL2_image/SDL2_image.framework Frameworks/SDL2_image-$(VERSION_SDL2_IMAGE).framework
 	ln -sf SDL2_image-$(VERSION_SDL2_IMAGE).framework Frameworks/SDL2_image.framework
 	hdiutil eject /Volumes/SDL2_image
 
 Frameworks/SDL2_mixer-$(VERSION_SDL2_MIXER).framework:
-	curl https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-$(VERSION_SDL2_MIXER).dmg -o /tmp/SDL2_mixer-$(VERSION_SDL2_MIXER).dmg
+	curl -L https://github.com/libsdl-org/SDL_mixer/releases/download/release-$(VERSION_SDL2_MIXER)/SDL2_mixer-$(VERSION_SDL2_MIXER).dmg -o /tmp/SDL2_mixer-$(VERSION_SDL2_MIXER).dmg
 	hdiutil attach /tmp/SDL2_mixer-$(VERSION_SDL2_MIXER).dmg
 	cp -r /Volumes/SDL2_mixer/SDL2_mixer.framework Frameworks/SDL2_mixer-$(VERSION_SDL2_MIXER).framework
 	ln -sf SDL2_mixer-$(VERSION_SDL2_MIXER).framework Frameworks/SDL2_mixer.framework
 	hdiutil eject /Volumes/SDL2_mixer
 
 Frameworks/SDL2_ttf-$(VERSION_SDL2_TTF).framework:
-	curl https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-$(VERSION_SDL2_TTF).dmg -o /tmp/SDL2_ttf-$(VERSION_SDL2_TTF).dmg
+	curl -L https://github.com/libsdl-org/SDL_ttf/releases/download/release-$(VERSION_SDL2_TTF)/SDL2_ttf-$(VERSION_SDL2_TTF).dmg -o /tmp/SDL2_ttf-$(VERSION_SDL2_TTF).dmg
 	hdiutil attach /tmp/SDL2_ttf-$(VERSION_SDL2_TTF).dmg
 	cp -r /Volumes/SDL2_ttf/SDL2_ttf.framework Frameworks/SDL2_ttf-$(VERSION_SDL2_TTF).framework
 	ln -sf SDL2_ttf-$(VERSION_SDL2_TTF).framework Frameworks/SDL2_ttf.framework
@@ -89,33 +89,29 @@ windows: SDL2-$(VERSION_SDL2) SDL2_image-$(VERSION_SDL2_IMAGE) SDL2_mixer-$(VERS
 # Each rule copies headers to a unique SDL2 include directory because SDL_mixer and SDL_ttf internally refer to SDL2.h as a local file (i.e. #include "SDL2.h"), so multiple directories specified with -I options don't work
 # Each rule also places the DLLs needed by the game executable near to the executable to make it easily testable using wine
 SDL2-$(VERSION_SDL2):
-	wget https://www.libsdl.org/release/SDL2-devel-$(VERSION_SDL2)-mingw.tar.gz -O /tmp/SDL2-devel-$(VERSION_SDL2)-mingw.tar.gz
+	wget https://github.com/libsdl-org/SDL/releases/download/release-$(VERSION_SDL2)/SDL2-devel-$(VERSION_SDL2)-mingw.tar.gz -O /tmp/SDL2-devel-$(VERSION_SDL2)-mingw.tar.gz
 	tar -xf /tmp/SDL2-devel-$(VERSION_SDL2)-mingw.tar.gz
 	mkdir -p SDL2_Includes
 	cp -r SDL2-$(VERSION_SDL2)/i686-w64-mingw32/include/* SDL2_Includes
 	cp SDL2-$(VERSION_SDL2)/i686-w64-mingw32/bin/SDL2.dll .
 
 SDL2_image-$(VERSION_SDL2_IMAGE):
-	wget https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-$(VERSION_SDL2_IMAGE)-mingw.tar.gz -O /tmp/SDL2_image-devel-$(VERSION_SDL2_IMAGE)-mingw.tar.gz
+	wget https://github.com/libsdl-org/SDL_image/releases/download/release-$(VERSION_SDL2_IMAGE)/SDL2_image-devel-$(VERSION_SDL2_IMAGE)-mingw.tar.gz -O /tmp/SDL2_image-devel-$(VERSION_SDL2_IMAGE)-mingw.tar.gz
 	tar -xf /tmp/SDL2_image-devel-$(VERSION_SDL2_IMAGE)-mingw.tar.gz
 	cp -r SDL2_image-$(VERSION_SDL2_IMAGE)/i686-w64-mingw32/include/* SDL2_Includes
-	cp SDL2_image-$(VERSION_SDL2_IMAGE)/i686-w64-mingw32/bin/libpng16-16.dll .
 	cp SDL2_image-$(VERSION_SDL2_IMAGE)/i686-w64-mingw32/bin/SDL2_image.dll .
 
 SDL2_mixer-$(VERSION_SDL2_MIXER):
-	wget https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-$(VERSION_SDL2_MIXER)-mingw.tar.gz -O /tmp/SDL2_mixer-devel-$(VERSION_SDL2_MIXER)-mingw.tar.gz
+	wget https://github.com/libsdl-org/SDL_mixer/releases/download/release-$(VERSION_SDL2_MIXER)/SDL2_mixer-devel-$(VERSION_SDL2_MIXER)-mingw.tar.gz -O /tmp/SDL2_mixer-devel-$(VERSION_SDL2_MIXER)-mingw.tar.gz
 	tar -xf /tmp/SDL2_mixer-devel-$(VERSION_SDL2_MIXER)-mingw.tar.gz
 	cp -r SDL2_mixer-$(VERSION_SDL2_MIXER)/i686-w64-mingw32/include/* SDL2_Includes
-	cp SDL2_mixer-$(VERSION_SDL2_MIXER)/i686-w64-mingw32/bin/libmpg123-0.dll .
 	cp SDL2_mixer-$(VERSION_SDL2_MIXER)/i686-w64-mingw32/bin/SDL2_mixer.dll .
 
 SDL2_ttf-$(VERSION_SDL2_TTF):
-	wget https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-$(VERSION_SDL2_TTF)-mingw.tar.gz -O /tmp/SDL2_ttf-devel-$(VERSION_SDL2_TTF)-mingw.tar.gz
+	wget https://github.com/libsdl-org/SDL_ttf/releases/download/release-$(VERSION_SDL2_TTF)/SDL2_ttf-devel-$(VERSION_SDL2_TTF)-mingw.tar.gz -O /tmp/SDL2_ttf-devel-$(VERSION_SDL2_TTF)-mingw.tar.gz
 	tar -xf /tmp/SDL2_ttf-devel-$(VERSION_SDL2_TTF)-mingw.tar.gz
 	cp -r SDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/include/* SDL2_Includes
-	cp SDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/bin/libfreetype-6.dll .
 	cp SDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/bin/SDL2_ttf.dll .
-	cp SDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/bin/zlib1.dll .
 
 windows_generate_executable_icon:
 	@# Create resource file (.rc)
@@ -212,13 +208,8 @@ windows_release: windows
 
 	@# Add needed DLLs
 	cp SDL2-$(VERSION_SDL2)/i686-w64-mingw32/bin/SDL2.dll $(PATH_WINDOWS_RELEASE)
-	cp SDL2_image-$(VERSION_SDL2_IMAGE)/i686-w64-mingw32/bin/libpng16-16.dll $(PATH_WINDOWS_RELEASE)
 	cp SDL2_image-$(VERSION_SDL2_IMAGE)/i686-w64-mingw32/bin/SDL2_image.dll $(PATH_WINDOWS_RELEASE)
-	@# Use SDL image ZLIB DLL instead of TTF's one because SDL image's one is more complete and contains SDL image mandatory functions which are not present in TTF DLL version
-	cp SDL2_image-$(VERSION_SDL2_IMAGE)/i686-w64-mingw32/bin/zlib1.dll $(PATH_WINDOWS_RELEASE)
-	cp SDL2_mixer-$(VERSION_SDL2_MIXER)/i686-w64-mingw32/bin/libmpg123-0.dll $(PATH_WINDOWS_RELEASE)
 	cp SDL2_mixer-$(VERSION_SDL2_MIXER)/i686-w64-mingw32/bin/SDL2_mixer.dll $(PATH_WINDOWS_RELEASE)
-	cp SDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/bin/libfreetype-6.dll $(PATH_WINDOWS_RELEASE)
 	cp SDL2_ttf-$(VERSION_SDL2_TTF)/i686-w64-mingw32/bin/SDL2_ttf.dll $(PATH_WINDOWS_RELEASE)
 	
 	@# Create a compressed archive
