@@ -67,7 +67,7 @@ namespace HeadUpDisplay
 			
 			// Render the string
 			char string[64];
-			sprintf(string, "Life : %d", lifePointsAmount);
+			snprintf(string, sizeof(string), "Life : %d", lifePointsAmount);
 			_pointerStringTextures[STRING_ID_LIFE_POINTS_AMOUNT] = Renderer::renderTextToTexture(string, colorId, Renderer::FONT_SIZE_ID_SMALL);
 			
 			previousLifePointsAmount = lifePointsAmount;
@@ -95,7 +95,7 @@ namespace HeadUpDisplay
 			
 			// Render the string
 			char string[64];
-			sprintf(string, "Ammo : %d", ammunitionAmount);
+			snprintf(string, sizeof(string), "Ammo : %d", ammunitionAmount);
 			_pointerStringTextures[STRING_ID_AMMUNITION_AMOUNT] = Renderer::renderTextToTexture(string, colorId, Renderer::FONT_SIZE_ID_SMALL);
 			
 			previousAmmunitionAmount = ammunitionAmount;
@@ -148,7 +148,7 @@ namespace HeadUpDisplay
 		
 		// Render the string
 		char string[64];
-		sprintf(string, "Enemies : %d", amount);
+		snprintf(string, sizeof(string), "Enemies : %d", amount);
 		_pointerStringTextures[STRING_ID_ENEMIES_AMOUNT] = Renderer::renderTextToTexture(string, colorId, Renderer::FONT_SIZE_ID_SMALL);
 		
 		LOG_DEBUG("Refreshed enemies interface string.");
@@ -209,7 +209,7 @@ namespace HeadUpDisplay
 		
 		// Render the string
 		char string[64];
-		sprintf(string, "Bonus time : %d", timeSeconds);
+		snprintf(string, sizeof(string), "Bonus time : %d", timeSeconds);
 		_pointerStringTextures[STRING_ID_REMAINING_BONUS_TIME] = Renderer::renderTextToTexture(string, Renderer::TEXT_COLOR_ID_BLUE, Renderer::FONT_SIZE_ID_BIG);
 		
 		_isBonusRemainingSecondsStringDisplayed = true;

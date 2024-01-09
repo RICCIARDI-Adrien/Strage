@@ -872,7 +872,7 @@ int main(int argc, char *argv[])
 			{
 				// Render the FPS count to a string
 				SDL_DestroyTexture(pointerFramesPerSecondSdlTexture); // Free previously created texture
-				sprintf(stringFramesPerSecond, "%d", framesCount);
+				snprintf(stringFramesPerSecond, sizeof(stringFramesPerSecond), "%d", framesCount);
 				pointerFramesPerSecondSdlTexture = Renderer::renderTextToTexture(stringFramesPerSecond, Renderer::TEXT_COLOR_ID_RED, Renderer::FONT_SIZE_ID_BIG);
 				
 				// Restart computation
