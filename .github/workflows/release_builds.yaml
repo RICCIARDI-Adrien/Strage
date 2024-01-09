@@ -9,7 +9,7 @@ jobs:
       - name: Dependencies installation
         run: |
           sudo apt update
-          sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
+          sudo apt install -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
       - name: Linux release build
         run: make linux_release
 
@@ -25,6 +25,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Dependencies installation
-        run: sudo apt install mingw-w64
+        run: |
+          sudo apt update
+          sudo apt install -y mingw-w64
       - name: Windows release build
         run: make windows_release
